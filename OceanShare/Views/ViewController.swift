@@ -23,12 +23,9 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         
         self.scrollView.frame = CGRect(x:0, y:0, width:self.view.frame.width, height:self.view.frame.height)
-        
         textView.textAlignment = .center
-        
         textView.textColor = UIColor.white
         self.startButton.layer.cornerRadius = 4.0
-        
         self.scrollView.contentSize = CGSize(width:self.scrollView.frame.width * 4, height:self.scrollView.frame.height)
         self.scrollView.delegate = self
         self.pageControll.currentPage = 0
@@ -43,25 +40,23 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         self.pageControll.currentPage = Int(currentPage);
         
         if Int(currentPage) == 0 {
+            textView.isHidden = false
             textView.text = "Discover OceanShare, your new navigation companion which will change your life on the seas !"
             startButton.isHidden = false
+            
         } else if Int(currentPage) == 1 {
-            textView.isHidden = true
-            if startButton.isHidden == false {
-                startButton.isHidden = true
-                
-            }
+            textView.isHidden = false
+            textView.text = "Login"
+            startButton.isHidden = true
+            
         } else if Int(currentPage) == 2 {
-            if startButton.isHidden == false {
-                startButton.isHidden = true
-                
-            }
+            textView.isHidden = false
+            textView.text = "Register"
+            startButton.isHidden = true
             
         } else {
-            if startButton.isHidden == false {
-                startButton.isHidden = true
-                
-            }
+            textView.isHidden = true
+            startButton.isHidden = true
             self.startButton.alpha = 1.0
         }
     }
