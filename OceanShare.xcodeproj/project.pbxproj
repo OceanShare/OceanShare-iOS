@@ -1,0 +1,591 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BF92736921D1D57500BDCC16 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92736821D1D57500BDCC16 /* AppDelegate.swift */; };
+		BF92736B21D1D57500BDCC16 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92736A21D1D57500BDCC16 /* ViewController.swift */; };
+		BF92736E21D1D57500BDCC16 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF92736C21D1D57500BDCC16 /* Main.storyboard */; };
+		BF92737021D1D57600BDCC16 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF92736F21D1D57600BDCC16 /* Assets.xcassets */; };
+		BF92737321D1D57600BDCC16 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF92737121D1D57600BDCC16 /* LaunchScreen.storyboard */; };
+		BF92737E21D1D57600BDCC16 /* OceanShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92737D21D1D57600BDCC16 /* OceanShareTests.swift */; };
+		BF92738921D1D57600BDCC16 /* OceanShareUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92738821D1D57600BDCC16 /* OceanShareUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BF92737A21D1D57600BDCC16 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BF92735D21D1D57500BDCC16 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BF92736421D1D57500BDCC16;
+			remoteInfo = OceanShare;
+		};
+		BF92738521D1D57600BDCC16 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BF92735D21D1D57500BDCC16 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BF92736421D1D57500BDCC16;
+			remoteInfo = OceanShare;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BF92736521D1D57500BDCC16 /* OceanShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OceanShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF92736821D1D57500BDCC16 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BF92736A21D1D57500BDCC16 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BF92736D21D1D57500BDCC16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		BF92736F21D1D57600BDCC16 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BF92737221D1D57600BDCC16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BF92737421D1D57600BDCC16 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF92737921D1D57600BDCC16 /* OceanShareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OceanShareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF92737D21D1D57600BDCC16 /* OceanShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceanShareTests.swift; sourceTree = "<group>"; };
+		BF92737F21D1D57600BDCC16 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF92738421D1D57600BDCC16 /* OceanShareUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OceanShareUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF92738821D1D57600BDCC16 /* OceanShareUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceanShareUITests.swift; sourceTree = "<group>"; };
+		BF92738A21D1D57600BDCC16 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BF92736221D1D57500BDCC16 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF92737621D1D57600BDCC16 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF92738121D1D57600BDCC16 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BF92735C21D1D57500BDCC16 = {
+			isa = PBXGroup;
+			children = (
+				BF92736721D1D57500BDCC16 /* OceanShare */,
+				BF92737C21D1D57600BDCC16 /* OceanShareTests */,
+				BF92738721D1D57600BDCC16 /* OceanShareUITests */,
+				BF92736621D1D57500BDCC16 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BF92736621D1D57500BDCC16 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BF92736521D1D57500BDCC16 /* OceanShare.app */,
+				BF92737921D1D57600BDCC16 /* OceanShareTests.xctest */,
+				BF92738421D1D57600BDCC16 /* OceanShareUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BF92736721D1D57500BDCC16 /* OceanShare */ = {
+			isa = PBXGroup;
+			children = (
+				BF92736821D1D57500BDCC16 /* AppDelegate.swift */,
+				BF92736A21D1D57500BDCC16 /* ViewController.swift */,
+				BF92736C21D1D57500BDCC16 /* Main.storyboard */,
+				BF92736F21D1D57600BDCC16 /* Assets.xcassets */,
+				BF92737121D1D57600BDCC16 /* LaunchScreen.storyboard */,
+				BF92737421D1D57600BDCC16 /* Info.plist */,
+			);
+			path = OceanShare;
+			sourceTree = "<group>";
+		};
+		BF92737C21D1D57600BDCC16 /* OceanShareTests */ = {
+			isa = PBXGroup;
+			children = (
+				BF92737D21D1D57600BDCC16 /* OceanShareTests.swift */,
+				BF92737F21D1D57600BDCC16 /* Info.plist */,
+			);
+			path = OceanShareTests;
+			sourceTree = "<group>";
+		};
+		BF92738721D1D57600BDCC16 /* OceanShareUITests */ = {
+			isa = PBXGroup;
+			children = (
+				BF92738821D1D57600BDCC16 /* OceanShareUITests.swift */,
+				BF92738A21D1D57600BDCC16 /* Info.plist */,
+			);
+			path = OceanShareUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BF92736421D1D57500BDCC16 /* OceanShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF92738D21D1D57600BDCC16 /* Build configuration list for PBXNativeTarget "OceanShare" */;
+			buildPhases = (
+				BF92736121D1D57500BDCC16 /* Sources */,
+				BF92736221D1D57500BDCC16 /* Frameworks */,
+				BF92736321D1D57500BDCC16 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OceanShare;
+			productName = OceanShare;
+			productReference = BF92736521D1D57500BDCC16 /* OceanShare.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BF92737821D1D57600BDCC16 /* OceanShareTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF92739021D1D57600BDCC16 /* Build configuration list for PBXNativeTarget "OceanShareTests" */;
+			buildPhases = (
+				BF92737521D1D57600BDCC16 /* Sources */,
+				BF92737621D1D57600BDCC16 /* Frameworks */,
+				BF92737721D1D57600BDCC16 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BF92737B21D1D57600BDCC16 /* PBXTargetDependency */,
+			);
+			name = OceanShareTests;
+			productName = OceanShareTests;
+			productReference = BF92737921D1D57600BDCC16 /* OceanShareTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		BF92738321D1D57600BDCC16 /* OceanShareUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF92739321D1D57600BDCC16 /* Build configuration list for PBXNativeTarget "OceanShareUITests" */;
+			buildPhases = (
+				BF92738021D1D57600BDCC16 /* Sources */,
+				BF92738121D1D57600BDCC16 /* Frameworks */,
+				BF92738221D1D57600BDCC16 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BF92738621D1D57600BDCC16 /* PBXTargetDependency */,
+			);
+			name = OceanShareUITests;
+			productName = OceanShareUITests;
+			productReference = BF92738421D1D57600BDCC16 /* OceanShareUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BF92735D21D1D57500BDCC16 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Joseph Pereniguez";
+				TargetAttributes = {
+					BF92736421D1D57500BDCC16 = {
+						CreatedOnToolsVersion = 10.1;
+					};
+					BF92737821D1D57600BDCC16 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = BF92736421D1D57500BDCC16;
+					};
+					BF92738321D1D57600BDCC16 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = BF92736421D1D57500BDCC16;
+					};
+				};
+			};
+			buildConfigurationList = BF92736021D1D57500BDCC16 /* Build configuration list for PBXProject "OceanShare" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BF92735C21D1D57500BDCC16;
+			productRefGroup = BF92736621D1D57500BDCC16 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BF92736421D1D57500BDCC16 /* OceanShare */,
+				BF92737821D1D57600BDCC16 /* OceanShareTests */,
+				BF92738321D1D57600BDCC16 /* OceanShareUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BF92736321D1D57500BDCC16 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF92737321D1D57600BDCC16 /* LaunchScreen.storyboard in Resources */,
+				BF92737021D1D57600BDCC16 /* Assets.xcassets in Resources */,
+				BF92736E21D1D57500BDCC16 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF92737721D1D57600BDCC16 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF92738221D1D57600BDCC16 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BF92736121D1D57500BDCC16 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF92736B21D1D57500BDCC16 /* ViewController.swift in Sources */,
+				BF92736921D1D57500BDCC16 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF92737521D1D57600BDCC16 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF92737E21D1D57600BDCC16 /* OceanShareTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF92738021D1D57600BDCC16 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF92738921D1D57600BDCC16 /* OceanShareUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BF92737B21D1D57600BDCC16 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BF92736421D1D57500BDCC16 /* OceanShare */;
+			targetProxy = BF92737A21D1D57600BDCC16 /* PBXContainerItemProxy */;
+		};
+		BF92738621D1D57600BDCC16 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BF92736421D1D57500BDCC16 /* OceanShare */;
+			targetProxy = BF92738521D1D57600BDCC16 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		BF92736C21D1D57500BDCC16 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BF92736D21D1D57500BDCC16 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		BF92737121D1D57600BDCC16 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BF92737221D1D57600BDCC16 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BF92738B21D1D57600BDCC16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BF92738C21D1D57600BDCC16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BF92738E21D1D57600BDCC16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E9E8YC38ND;
+				INFOPLIST_FILE = OceanShare/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = OceanShare.OceanShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BF92738F21D1D57600BDCC16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E9E8YC38ND;
+				INFOPLIST_FILE = OceanShare/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = OceanShare.OceanShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BF92739121D1D57600BDCC16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E9E8YC38ND;
+				INFOPLIST_FILE = OceanShareTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = OceanShare.OceanShareTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OceanShare.app/OceanShare";
+			};
+			name = Debug;
+		};
+		BF92739221D1D57600BDCC16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E9E8YC38ND;
+				INFOPLIST_FILE = OceanShareTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = OceanShare.OceanShareTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OceanShare.app/OceanShare";
+			};
+			name = Release;
+		};
+		BF92739421D1D57600BDCC16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E9E8YC38ND;
+				INFOPLIST_FILE = OceanShareUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = OceanShare.OceanShareUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = OceanShare;
+			};
+			name = Debug;
+		};
+		BF92739521D1D57600BDCC16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E9E8YC38ND;
+				INFOPLIST_FILE = OceanShareUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = OceanShare.OceanShareUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = OceanShare;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BF92736021D1D57500BDCC16 /* Build configuration list for PBXProject "OceanShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF92738B21D1D57600BDCC16 /* Debug */,
+				BF92738C21D1D57600BDCC16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF92738D21D1D57600BDCC16 /* Build configuration list for PBXNativeTarget "OceanShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF92738E21D1D57600BDCC16 /* Debug */,
+				BF92738F21D1D57600BDCC16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF92739021D1D57600BDCC16 /* Build configuration list for PBXNativeTarget "OceanShareTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF92739121D1D57600BDCC16 /* Debug */,
+				BF92739221D1D57600BDCC16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF92739321D1D57600BDCC16 /* Build configuration list for PBXNativeTarget "OceanShareUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF92739421D1D57600BDCC16 /* Debug */,
+				BF92739521D1D57600BDCC16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BF92735D21D1D57500BDCC16 /* Project object */;
+}
