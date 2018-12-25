@@ -52,15 +52,12 @@ class ViewController: UIViewController, UIScrollViewDelegate {
                 
             }
         } else if Int(currentPage) == 2 {
-            textView.text = "OceanShare, your navigation companion 3."
-            textView.isHidden = true
-            
             if startButton.isHidden == false {
                 startButton.isHidden = true
                 
-            }        } else {
-            textView.text = "OceanShare, your navigation companion 4."
-            textView.isHidden = true
+            }
+            
+        } else {
             if startButton.isHidden == false {
                 startButton.isHidden = true
                 
@@ -89,14 +86,6 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     @IBAction func startHandler(_ sender: UIButton) {
         moveToNextPage()
         startButton.isHidden = true
-    }
-    
-    class ViewController: UIViewController {
-        
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            // Do any additional setup after loading the view, typically from a nib.
-        }
     }
     
 }

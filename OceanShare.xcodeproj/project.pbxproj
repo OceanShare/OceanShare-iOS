@@ -14,6 +14,10 @@
 		BF92737321D1D57600BDCC16 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF92737121D1D57600BDCC16 /* LaunchScreen.storyboard */; };
 		BF92737E21D1D57600BDCC16 /* OceanShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92737D21D1D57600BDCC16 /* OceanShareTests.swift */; };
 		BF92738921D1D57600BDCC16 /* OceanShareUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92738821D1D57600BDCC16 /* OceanShareUITests.swift */; };
+		BF92739D21D231BB00BDCC16 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */; };
+		BF92739E21D231BB00BDCC16 /* UILabelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92739A21D231BB00BDCC16 /* UILabelExtensions.swift */; };
+		BF92739F21D231BB00BDCC16 /* UIButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92739B21D231BB00BDCC16 /* UIButtonExtensions.swift */; };
+		BF9273A021D231BB00BDCC16 /* UITexFieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92739C21D231BB00BDCC16 /* UITexFieldExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +51,10 @@
 		BF92738421D1D57600BDCC16 /* OceanShareUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OceanShareUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF92738821D1D57600BDCC16 /* OceanShareUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceanShareUITests.swift; sourceTree = "<group>"; };
 		BF92738A21D1D57600BDCC16 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
+		BF92739A21D231BB00BDCC16 /* UILabelExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabelExtensions.swift; sourceTree = "<group>"; };
+		BF92739B21D231BB00BDCC16 /* UIButtonExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonExtensions.swift; sourceTree = "<group>"; };
+		BF92739C21D231BB00BDCC16 /* UITexFieldExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITexFieldExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +105,10 @@
 		BF92736721D1D57500BDCC16 /* OceanShare */ = {
 			isa = PBXGroup;
 			children = (
+				BF92739821D2302900BDCC16 /* Models */,
+				BF92739721D2302200BDCC16 /* Extensions */,
+				BF92739621D22FEF00BDCC16 /* Views */,
 				BF92736821D1D57500BDCC16 /* AppDelegate.swift */,
-				BF92736A21D1D57500BDCC16 /* ViewController.swift */,
 				BF92736C21D1D57500BDCC16 /* Main.storyboard */,
 				BF92736F21D1D57600BDCC16 /* Assets.xcassets */,
 				BF92737121D1D57600BDCC16 /* LaunchScreen.storyboard */,
@@ -123,6 +133,32 @@
 				BF92738A21D1D57600BDCC16 /* Info.plist */,
 			);
 			path = OceanShareUITests;
+			sourceTree = "<group>";
+		};
+		BF92739621D22FEF00BDCC16 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BF92736A21D1D57500BDCC16 /* ViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BF92739721D2302200BDCC16 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BF92739B21D231BB00BDCC16 /* UIButtonExtensions.swift */,
+				BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */,
+				BF92739A21D231BB00BDCC16 /* UILabelExtensions.swift */,
+				BF92739C21D231BB00BDCC16 /* UITexFieldExtensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		BF92739821D2302900BDCC16 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,6 +292,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF9273A021D231BB00BDCC16 /* UITexFieldExtensions.swift in Sources */,
+				BF92739F21D231BB00BDCC16 /* UIButtonExtensions.swift in Sources */,
+				BF92739E21D231BB00BDCC16 /* UILabelExtensions.swift in Sources */,
+				BF92739D21D231BB00BDCC16 /* UIColorExtensions.swift in Sources */,
 				BF92736B21D1D57500BDCC16 /* ViewController.swift in Sources */,
 				BF92736921D1D57500BDCC16 /* AppDelegate.swift in Sources */,
 			);
