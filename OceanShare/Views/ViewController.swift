@@ -16,6 +16,14 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var pageControll: UIPageControl!
     @IBOutlet weak var startButton: UIButton!
+  
+    @IBOutlet weak var loginEmailLabel: UILabel!
+    @IBOutlet weak var loginPasswordLabel: UILabel!
+    @IBOutlet weak var loginEmailTextField: UITextField!
+    @IBOutlet weak var loginPasswordTextField: UITextField!
+    @IBOutlet weak var loginForgotButton: UIButton!
+    @IBOutlet weak var loginSigninButton: UIButton!
+    @IBOutlet weak var loginSignupButton: UIButton!
     
     // MARK: loader
     
@@ -25,7 +33,6 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         self.scrollView.frame = CGRect(x:0, y:0, width:self.view.frame.width, height:self.view.frame.height)
         textView.textAlignment = .center
         textView.textColor = UIColor.white
-        self.startButton.layer.cornerRadius = 4.0
         self.scrollView.contentSize = CGSize(width:self.scrollView.frame.width * 4, height:self.scrollView.frame.height)
         self.scrollView.delegate = self
         self.pageControll.currentPage = 0
@@ -81,6 +88,8 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     @IBAction func startHandler(_ sender: UIButton) {
         moveToNextPage()
         startButton.isHidden = true
+        textView.isHidden = true
+        pageControll.currentPage += 1
     }
     
 }
