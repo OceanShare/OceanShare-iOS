@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF89D36F21D3152800E522AC /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D36E21D3152800E522AC /* RootViewController.swift */; };
+		BF89D37321D32EBC00E522AC /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D37221D32EBC00E522AC /* SignupViewController.swift */; };
+		BF89D37521D32EE900E522AC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D37421D32EE900E522AC /* LoginViewController.swift */; };
 		BF92736921D1D57500BDCC16 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92736821D1D57500BDCC16 /* AppDelegate.swift */; };
-		BF92736B21D1D57500BDCC16 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92736A21D1D57500BDCC16 /* ViewController.swift */; };
+		BF92736B21D1D57500BDCC16 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92736A21D1D57500BDCC16 /* StartViewController.swift */; };
 		BF92736E21D1D57500BDCC16 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF92736C21D1D57500BDCC16 /* Main.storyboard */; };
 		BF92737021D1D57600BDCC16 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF92736F21D1D57600BDCC16 /* Assets.xcassets */; };
 		BF92737321D1D57600BDCC16 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF92737121D1D57600BDCC16 /* LaunchScreen.storyboard */; };
@@ -38,9 +41,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BF89D36E21D3152800E522AC /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		BF89D37221D32EBC00E522AC /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
+		BF89D37421D32EE900E522AC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		BF92736521D1D57500BDCC16 /* OceanShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OceanShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF92736821D1D57500BDCC16 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		BF92736A21D1D57500BDCC16 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BF92736A21D1D57500BDCC16 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		BF92736D21D1D57500BDCC16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BF92736F21D1D57600BDCC16 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF92737221D1D57600BDCC16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -138,7 +144,10 @@
 		BF92739621D22FEF00BDCC16 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				BF92736A21D1D57500BDCC16 /* ViewController.swift */,
+				BF89D36E21D3152800E522AC /* RootViewController.swift */,
+				BF92736A21D1D57500BDCC16 /* StartViewController.swift */,
+				BF89D37421D32EE900E522AC /* LoginViewController.swift */,
+				BF89D37221D32EBC00E522AC /* SignupViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -292,11 +301,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF89D37521D32EE900E522AC /* LoginViewController.swift in Sources */,
+				BF89D37321D32EBC00E522AC /* SignupViewController.swift in Sources */,
 				BF9273A021D231BB00BDCC16 /* UITexFieldExtensions.swift in Sources */,
 				BF92739F21D231BB00BDCC16 /* UIButtonExtensions.swift in Sources */,
 				BF92739E21D231BB00BDCC16 /* UILabelExtensions.swift in Sources */,
+				BF89D36F21D3152800E522AC /* RootViewController.swift in Sources */,
 				BF92739D21D231BB00BDCC16 /* UIColorExtensions.swift in Sources */,
-				BF92736B21D1D57500BDCC16 /* ViewController.swift in Sources */,
+				BF92736B21D1D57500BDCC16 /* StartViewController.swift in Sources */,
 				BF92736921D1D57500BDCC16 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
