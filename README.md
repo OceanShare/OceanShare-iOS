@@ -3,6 +3,7 @@
 * Open 'OceanShare.xcworkspace' in Xcode.
 * Open 'OceanShare' in the 'Project Navigator'.
 * Define a Team name in the 'Signin' Part.
+* Download the 'GoogleService-info.plist' file in the Firebase console and put it in the 'OceanShare' directory.
 * If needed, in 'OceanShare-iOS' directory, run:
 ```
 >>> pod install
@@ -11,6 +12,7 @@
 
 ## Important
 * Don't push the 'Pods/' directory.
+* Don't push the 'GoogleService-info.plist' file.
 * Don't remove '.gitignore' file.
 * 'Google-info.plist' is located in 'Ressources' file.
 * All the used assets are located in 'Ressources/images.zip'.
