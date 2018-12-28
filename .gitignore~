@@ -22,8 +22,6 @@ xcuserdata/
 *.xccheckout
 *.xcscmblueprint
 
-OceanShare/GoogleService-Info.plist
-
 ## Obj-C/Swift specific
 *.hmap
 *.ipa
