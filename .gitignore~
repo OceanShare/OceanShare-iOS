@@ -22,7 +22,6 @@ xcuserdata/
 *.xccheckout
 *.xcscmblueprint
 
-## Google API KEY
 OceanShare/GoogleService-Info.plist
 
 ## Obj-C/Swift specific

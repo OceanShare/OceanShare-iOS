@@ -10,8 +10,8 @@
 		3498DFD13C988E4213C9BCE5 /* Pods_OceanShareTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 171220035AD7E9421089E428 /* Pods_OceanShareTests.framework */; };
 		3D7D8576AEC9FA7FBD012875 /* Pods_OceanShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 021AC87DA7218724C5919087 /* Pods_OceanShare.framework */; };
 		BF56CDE621D5CB17003707A9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56CDE521D5CB17003707A9 /* HomeViewController.swift */; };
-		BF56CDE821D5D056003707A9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF56CDE721D5D056003707A9 /* GoogleService-Info.plist */; };
 		BF56CDEA21D5D3A7003707A9 /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56CDE921D5D3A7003707A9 /* AppUser.swift */; };
+		BF56CDEC21D5E9F7003707A9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF56CDEB21D5E9F7003707A9 /* GoogleService-Info.plist */; };
 		BF89D36F21D3152800E522AC /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D36E21D3152800E522AC /* RootViewController.swift */; };
 		BF89D37321D32EBC00E522AC /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D37221D32EBC00E522AC /* SignupViewController.swift */; };
 		BF89D37521D32EE900E522AC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D37421D32EE900E522AC /* LoginViewController.swift */; };
@@ -56,8 +56,8 @@
 		74C98D08BEE164993E9B1C50 /* Pods-OceanShareTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareTests.release.xcconfig"; path = "Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests.release.xcconfig"; sourceTree = "<group>"; };
 		783A9ACB1D25FB8E05ADDA5C /* Pods-OceanShareTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareTests.debug.xcconfig"; path = "Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BF56CDE521D5CB17003707A9 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		BF56CDE721D5D056003707A9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BF56CDE921D5D3A7003707A9 /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
+		BF56CDEB21D5E9F7003707A9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BF89D36E21D3152800E522AC /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		BF89D37221D32EBC00E522AC /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		BF89D37421D32EE900E522AC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -152,7 +152,7 @@
 				BF92736F21D1D57600BDCC16 /* Assets.xcassets */,
 				BF92737121D1D57600BDCC16 /* LaunchScreen.storyboard */,
 				BF92737421D1D57600BDCC16 /* Info.plist */,
-				BF56CDE721D5D056003707A9 /* GoogleService-Info.plist */,
+				BF56CDEB21D5E9F7003707A9 /* GoogleService-Info.plist */,
 			);
 			path = OceanShare;
 			sourceTree = "<group>";
@@ -328,7 +328,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF92737321D1D57600BDCC16 /* LaunchScreen.storyboard in Resources */,
-				BF56CDE821D5D056003707A9 /* GoogleService-Info.plist in Resources */,
+				BF56CDEC21D5E9F7003707A9 /* GoogleService-Info.plist in Resources */,
 				BF92737021D1D57600BDCC16 /* Assets.xcassets in Resources */,
 				BF92736E21D1D57500BDCC16 /* Main.storyboard in Resources */,
 			);
