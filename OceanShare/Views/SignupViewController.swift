@@ -70,6 +70,11 @@ class SignupViewController: UIViewController {
         }
     }
     
+    @IBAction func SigninButtonTapped(_ sender: UIButton) {
+        // show signin view controller
+    }
+    
+    
     // MARK : functions
     
     func displayMessage(userMessage:String) -> Void {

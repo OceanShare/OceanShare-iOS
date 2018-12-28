@@ -36,6 +36,9 @@
                                         <integer key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="LetsStartButtonTapped:" destination="UcI-SK-gg2" eventType="touchUpInside" id="40a-6k-RYM"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="uDS-3e-hGH">
                                 <rect key="frame" x="67.666666666666686" y="247" width="240" height="200"/>
@@ -174,7 +177,7 @@
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <connections>
-                                            <segue destination="1lK-en-euY" kind="show" id="6MT-XG-4an"/>
+                                            <action selector="SignupButtonTapped:" destination="ejb-pn-Tma" eventType="touchUpInside" id="mFs-In-KUs"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -379,7 +382,7 @@
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <connections>
-                                            <segue destination="ejb-pn-Tma" kind="show" id="tZh-AT-WKJ"/>
+                                            <action selector="SigninButtonTapped:" destination="1lK-en-euY" eventType="touchUpInside" id="S8Z-2r-eCe"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -451,7 +454,4 @@
         <image name="bluredBackgound" width="503.51998901367188" height="833.280029296875"/>
         <image name="logo" width="1920" height="1920"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="tZh-AT-WKJ"/>
-    </inferredMetricsTieBreakers>
 </document>

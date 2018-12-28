@@ -49,4 +49,8 @@ class LoginViewController: UIViewController {
         // add forgot password function
     }
     
+    @IBAction func SignupButtonTapped(_ sender: UIButton) {
+        // show signup view controller
+    }
+    
 }

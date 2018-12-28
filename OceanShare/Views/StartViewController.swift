@@ -15,4 +15,10 @@ class StartViewController: UIViewController {
         
     }
     
+    // MARK: actions
+    
+    @IBAction func LetsStartButtonTapped(_ sender: UIButton) {
+    // show Login view controller
+    }
+    
 }
