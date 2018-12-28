@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		3498DFD13C988E4213C9BCE5 /* Pods_OceanShareTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 171220035AD7E9421089E428 /* Pods_OceanShareTests.framework */; };
 		3D7D8576AEC9FA7FBD012875 /* Pods_OceanShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 021AC87DA7218724C5919087 /* Pods_OceanShare.framework */; };
+		BF56CDE621D5CB17003707A9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56CDE521D5CB17003707A9 /* HomeViewController.swift */; };
+		BF56CDE821D5D056003707A9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF56CDE721D5D056003707A9 /* GoogleService-Info.plist */; };
+		BF56CDEA21D5D3A7003707A9 /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56CDE921D5D3A7003707A9 /* AppUser.swift */; };
 		BF89D36F21D3152800E522AC /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D36E21D3152800E522AC /* RootViewController.swift */; };
 		BF89D37321D32EBC00E522AC /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D37221D32EBC00E522AC /* SignupViewController.swift */; };
 		BF89D37521D32EE900E522AC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D37421D32EE900E522AC /* LoginViewController.swift */; };
@@ -52,6 +55,9 @@
 		63A0292141E4382E098436B6 /* Pods_OceanShareUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OceanShareUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74C98D08BEE164993E9B1C50 /* Pods-OceanShareTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareTests.release.xcconfig"; path = "Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests.release.xcconfig"; sourceTree = "<group>"; };
 		783A9ACB1D25FB8E05ADDA5C /* Pods-OceanShareTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareTests.debug.xcconfig"; path = "Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BF56CDE521D5CB17003707A9 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		BF56CDE721D5D056003707A9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BF56CDE921D5D3A7003707A9 /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
 		BF89D36E21D3152800E522AC /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		BF89D37221D32EBC00E522AC /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		BF89D37421D32EE900E522AC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -146,6 +152,7 @@
 				BF92736F21D1D57600BDCC16 /* Assets.xcassets */,
 				BF92737121D1D57600BDCC16 /* LaunchScreen.storyboard */,
 				BF92737421D1D57600BDCC16 /* Info.plist */,
+				BF56CDE721D5D056003707A9 /* GoogleService-Info.plist */,
 			);
 			path = OceanShare;
 			sourceTree = "<group>";
@@ -175,6 +182,7 @@
 				BF92736A21D1D57500BDCC16 /* StartViewController.swift */,
 				BF89D37421D32EE900E522AC /* LoginViewController.swift */,
 				BF89D37221D32EBC00E522AC /* SignupViewController.swift */,
+				BF56CDE521D5CB17003707A9 /* HomeViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -193,6 +201,7 @@
 		BF92739821D2302900BDCC16 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				BF56CDE921D5D3A7003707A9 /* AppUser.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -207,7 +216,6 @@
 				0FA63FB964274DCB0FB79200 /* Pods-OceanShareUITests.debug.xcconfig */,
 				F3A46E28483D16D19D3A09C2 /* Pods-OceanShareUITests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -320,6 +328,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF92737321D1D57600BDCC16 /* LaunchScreen.storyboard in Resources */,
+				BF56CDE821D5D056003707A9 /* GoogleService-Info.plist in Resources */,
 				BF92737021D1D57600BDCC16 /* Assets.xcassets in Resources */,
 				BF92736E21D1D57500BDCC16 /* Main.storyboard in Resources */,
 			);
@@ -421,6 +430,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework.dSYM",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -431,6 +441,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/Mapbox.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -448,8 +459,10 @@
 				BF89D37521D32EE900E522AC /* LoginViewController.swift in Sources */,
 				BF89D37321D32EBC00E522AC /* SignupViewController.swift in Sources */,
 				BF9273A021D231BB00BDCC16 /* UITexFieldExtensions.swift in Sources */,
+				BF56CDEA21D5D3A7003707A9 /* AppUser.swift in Sources */,
 				BF92739F21D231BB00BDCC16 /* UIButtonExtensions.swift in Sources */,
 				BF92739E21D231BB00BDCC16 /* UILabelExtensions.swift in Sources */,
+				BF56CDE621D5CB17003707A9 /* HomeViewController.swift in Sources */,
 				BF89D36F21D3152800E522AC /* RootViewController.swift in Sources */,
 				BF92739D21D231BB00BDCC16 /* UIColorExtensions.swift in Sources */,
 				BF92736B21D1D57500BDCC16 /* StartViewController.swift in Sources */,

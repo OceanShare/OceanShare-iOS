@@ -24,7 +24,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.dataSource = self
         
         if let firstViewController = viewControllerList.first {
@@ -41,7 +41,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource {
         
         guard previousIndex >= 0 else { return nil }
         guard viewControllerList.count > previousIndex else { return nil }
-
+        
         return viewControllerList[previousIndex]
     }
     

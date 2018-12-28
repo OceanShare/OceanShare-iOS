@@ -135,6 +135,9 @@
                                 <state key="normal" title="Forgot Password ?">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="ForgotButtonTapped:" destination="ejb-pn-Tma" eventType="touchUpInside" id="tcg-s4-Py3"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iHj-dX-4gJ" userLabel="Login">
                                 <rect key="frame" x="68" y="607" width="239" height="55"/>
@@ -151,6 +154,9 @@
                                         <integer key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="LoginButtonTapped:" destination="ejb-pn-Tma" eventType="touchUpInside" id="KoB-x3-mGc"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wO7-2P-htt">
                                 <rect key="frame" x="30" y="742" width="315" height="40"/>
@@ -167,6 +173,9 @@
                                         <state key="normal" title="SIGN UP">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
+                                        <connections>
+                                            <segue destination="1lK-en-euY" kind="show" id="6MT-XG-4an"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -208,10 +217,29 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="eAw-iE-6bn"/>
                     </view>
+                    <connections>
+                        <outlet property="EmailTextField" destination="PWu-YA-ZWm" id="COl-kq-21j"/>
+                        <outlet property="PasswordTextField" destination="MoI-ji-Hz1" id="X7I-uB-FSC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EgX-vB-xGf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-4498.3999999999996" y="-255.66502463054189"/>
+        </scene>
+        <!--Home View Controller-->
+        <scene sceneID="3qA-6N-fBM">
+            <objects>
+                <viewController storyboardIdentifier="HomeViewController" id="qfA-s7-A9k" customClass="HomeViewController" customModule="OceanShare" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8tc-mm-1Hp">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="q0F-wn-G16"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bb6-vC-N5I" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4498" y="410"/>
         </scene>
         <!--Signup View Controller-->
         <scene sceneID="Tti-Fz-Tdc">
@@ -322,6 +350,9 @@
                                         <integer key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="RegisterButtonTapped:" destination="1lK-en-euY" eventType="touchUpInside" id="U93-Zl-er0"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign Up" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HAy-io-7hA">
                                 <rect key="frame" x="20" y="128" width="120" height="41"/>
@@ -347,6 +378,9 @@
                                         <state key="normal" title="SIGN IN">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
+                                        <connections>
+                                            <segue destination="ejb-pn-Tma" kind="show" id="tZh-AT-WKJ"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -392,10 +426,16 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="9zY-n8-Zrv"/>
                     </view>
+                    <connections>
+                        <outlet property="ConfirmTextField" destination="bQa-fG-H6k" id="TIj-HT-8mD"/>
+                        <outlet property="EmailTextField" destination="1Oo-of-Uya" id="YU1-5b-XPX"/>
+                        <outlet property="NameTextField" destination="8tq-jb-JCZ" id="bfO-K1-bq1"/>
+                        <outlet property="PasswordTextField" destination="uZm-Gu-K1d" id="JPw-Vn-E8W"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I4e-L4-bD8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3783.1999999999998" y="-255.66502463054189"/>
+            <point key="canvasLocation" x="-3780" y="-256"/>
         </scene>
         <!--Root View Controller-->
         <scene sceneID="EDT-Pj-Jjp">
@@ -411,4 +451,7 @@
         <image name="bluredBackgound" width="503.51998901367188" height="833.280029296875"/>
         <image name="logo" width="1920" height="1920"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="tZh-AT-WKJ"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -8,6 +8,8 @@ target 'OceanShare' do
   # Pods for OceanShare
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
+  pod 'Firebase/Database'
+  pod 'Firebase/Storage'
   pod 'Mapbox-iOS-SDK'
 
   target 'OceanShareTests' do
