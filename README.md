@@ -14,7 +14,6 @@
 * Don't push the 'Pods/' directory.
 * Don't push the 'GoogleService-info.plist' file.
 * Don't remove '.gitignore' file.
-* 'Google-info.plist' is located in 'Ressources' file.
 * All the used assets are located in 'Ressources/images.zip'.
 
 ## Useful pod commands
