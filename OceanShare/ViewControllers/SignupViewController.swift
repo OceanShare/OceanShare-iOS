@@ -63,8 +63,10 @@ class SignupViewController: UIViewController {
                     guard let uid = result?.user.uid else { return }
                     self.ref.child("users/\(uid)").setValue(userData) // send the data to the Firebase database
                     print("User has been correctly created.")
-                    let homeView = UINavigationController(rootViewController: HomeViewController())
-                    self.present(homeView, animated: true,completion: nil)
+                    //let homeView = UINavigationController(rootViewController: HomeViewController())
+                    let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+                    mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+                    self.present(mainTabBarController, animated: true,completion: nil)
                 }
             }
         }

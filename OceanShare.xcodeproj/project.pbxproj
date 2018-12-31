@@ -12,13 +12,16 @@
 		BF56CDE621D5CB17003707A9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56CDE521D5CB17003707A9 /* HomeViewController.swift */; };
 		BF56CDEA21D5D3A7003707A9 /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56CDE921D5D3A7003707A9 /* AppUser.swift */; };
 		BF56CDEC21D5E9F7003707A9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF56CDEB21D5E9F7003707A9 /* GoogleService-Info.plist */; };
+		BF7563D621DA0BB300F8166B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7563D521DA0BB300F8166B /* ProfileViewController.swift */; };
+		BF7563D821DA12E700F8166B /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7563D721DA12E700F8166B /* SettingViewController.swift */; };
+		BF7563DB21DA155B00F8166B /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7563DA21DA155B00F8166B /* MainTabBarController.swift */; };
+		BF7563DD21DA1CE700F8166B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF7563DC21DA1CE400F8166B /* Assets.xcassets */; };
 		BF89D36F21D3152800E522AC /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D36E21D3152800E522AC /* RootViewController.swift */; };
 		BF89D37321D32EBC00E522AC /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D37221D32EBC00E522AC /* SignupViewController.swift */; };
 		BF89D37521D32EE900E522AC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D37421D32EE900E522AC /* LoginViewController.swift */; };
 		BF92736921D1D57500BDCC16 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92736821D1D57500BDCC16 /* AppDelegate.swift */; };
 		BF92736B21D1D57500BDCC16 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92736A21D1D57500BDCC16 /* StartViewController.swift */; };
 		BF92736E21D1D57500BDCC16 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF92736C21D1D57500BDCC16 /* Main.storyboard */; };
-		BF92737021D1D57600BDCC16 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF92736F21D1D57600BDCC16 /* Assets.xcassets */; };
 		BF92737321D1D57600BDCC16 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF92737121D1D57600BDCC16 /* LaunchScreen.storyboard */; };
 		BF92737E21D1D57600BDCC16 /* OceanShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92737D21D1D57600BDCC16 /* OceanShareTests.swift */; };
 		BF92738921D1D57600BDCC16 /* OceanShareUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92738821D1D57600BDCC16 /* OceanShareUITests.swift */; };
@@ -58,6 +61,10 @@
 		BF56CDE521D5CB17003707A9 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		BF56CDE921D5D3A7003707A9 /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
 		BF56CDEB21D5E9F7003707A9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BF7563D521DA0BB300F8166B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		BF7563D721DA12E700F8166B /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		BF7563DA21DA155B00F8166B /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		BF7563DC21DA1CE400F8166B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF89D36E21D3152800E522AC /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		BF89D37221D32EBC00E522AC /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		BF89D37421D32EE900E522AC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -65,7 +72,6 @@
 		BF92736821D1D57500BDCC16 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF92736A21D1D57500BDCC16 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		BF92736D21D1D57500BDCC16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		BF92736F21D1D57600BDCC16 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF92737221D1D57600BDCC16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BF92737421D1D57600BDCC16 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF92737921D1D57600BDCC16 /* OceanShareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OceanShareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,6 +125,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		BF7563D921DA150D00F8166B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BF7563DA21DA155B00F8166B /* MainTabBarController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		BF92735C21D1D57500BDCC16 = {
 			isa = PBXGroup;
 			children = (
@@ -146,10 +160,11 @@
 			children = (
 				BF92739821D2302900BDCC16 /* Models */,
 				BF92739721D2302200BDCC16 /* Extensions */,
-				BF92739621D22FEF00BDCC16 /* Views */,
+				BF7563D921DA150D00F8166B /* Controllers */,
+				BF92739621D22FEF00BDCC16 /* ViewControllers */,
+				BF7563DC21DA1CE400F8166B /* Assets.xcassets */,
 				BF92736821D1D57500BDCC16 /* AppDelegate.swift */,
 				BF92736C21D1D57500BDCC16 /* Main.storyboard */,
-				BF92736F21D1D57600BDCC16 /* Assets.xcassets */,
 				BF92737121D1D57600BDCC16 /* LaunchScreen.storyboard */,
 				BF92737421D1D57600BDCC16 /* Info.plist */,
 				BF56CDEB21D5E9F7003707A9 /* GoogleService-Info.plist */,
@@ -175,7 +190,7 @@
 			path = OceanShareUITests;
 			sourceTree = "<group>";
 		};
-		BF92739621D22FEF00BDCC16 /* Views */ = {
+		BF92739621D22FEF00BDCC16 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				BF89D36E21D3152800E522AC /* RootViewController.swift */,
@@ -183,8 +198,10 @@
 				BF89D37421D32EE900E522AC /* LoginViewController.swift */,
 				BF89D37221D32EBC00E522AC /* SignupViewController.swift */,
 				BF56CDE521D5CB17003707A9 /* HomeViewController.swift */,
+				BF7563D521DA0BB300F8166B /* ProfileViewController.swift */,
+				BF7563D721DA12E700F8166B /* SettingViewController.swift */,
 			);
-			path = Views;
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		BF92739721D2302200BDCC16 /* Extensions */ = {
@@ -329,7 +346,7 @@
 			files = (
 				BF92737321D1D57600BDCC16 /* LaunchScreen.storyboard in Resources */,
 				BF56CDEC21D5E9F7003707A9 /* GoogleService-Info.plist in Resources */,
-				BF92737021D1D57600BDCC16 /* Assets.xcassets in Resources */,
+				BF7563DD21DA1CE700F8166B /* Assets.xcassets in Resources */,
 				BF92736E21D1D57500BDCC16 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -459,11 +476,14 @@
 				BF89D37521D32EE900E522AC /* LoginViewController.swift in Sources */,
 				BF89D37321D32EBC00E522AC /* SignupViewController.swift in Sources */,
 				BF9273A021D231BB00BDCC16 /* UITexFieldExtensions.swift in Sources */,
+				BF7563D821DA12E700F8166B /* SettingViewController.swift in Sources */,
 				BF56CDEA21D5D3A7003707A9 /* AppUser.swift in Sources */,
 				BF92739F21D231BB00BDCC16 /* UIButtonExtensions.swift in Sources */,
 				BF92739E21D231BB00BDCC16 /* UILabelExtensions.swift in Sources */,
+				BF7563D621DA0BB300F8166B /* ProfileViewController.swift in Sources */,
 				BF56CDE621D5CB17003707A9 /* HomeViewController.swift in Sources */,
 				BF89D36F21D3152800E522AC /* RootViewController.swift in Sources */,
+				BF7563DB21DA155B00F8166B /* MainTabBarController.swift in Sources */,
 				BF92739D21D231BB00BDCC16 /* UIColorExtensions.swift in Sources */,
 				BF92736B21D1D57500BDCC16 /* StartViewController.swift in Sources */,
 				BF92736921D1D57500BDCC16 /* AppDelegate.swift in Sources */,

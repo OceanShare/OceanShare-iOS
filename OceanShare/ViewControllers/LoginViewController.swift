@@ -38,8 +38,10 @@ class LoginViewController: UIViewController {
                 self.present(alertController, animated: true, completion: nil)
             } else {
                 print("User has logged in successfully.")
-                let homeView = UINavigationController(rootViewController: HomeViewController())
-                self.present(homeView, animated: true,completion: nil)
+                //let homeView = UINavigationController(rootViewController: HomeViewController())
+                let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+                mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+                self.present(mainTabBarController, animated: true,completion: nil)
             }
         }
         
