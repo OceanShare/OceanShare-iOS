@@ -13,6 +13,8 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     
     // MARK: definitions
     
+    var pageControl = UIPageControl()
+    
     lazy var viewControllerList:[UIViewController] = {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         
@@ -32,9 +34,36 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         if let firstViewController = viewControllerList.first {
             self.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
         }
+        
+        configurePageControl()
     }
     
-    // MARK: functions
+    /*
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let pageVC = UIPageControl()
+        
+        for view in self.view.subviews {
+            if view is UIScrollView {
+                let pageControl = UIPageControl()
+                pageControl.pageIndicatorTintColor = UIColor.gray
+                pageControl.currentPageIndicatorTintColor = UIColor.blue
+                pageControl.backgroundColor = UIColor.darkGray
+                pageControl.numberOfPages = viewControllerList.count
+                pageControl.center = self.view.center
+                self.view.addSubview(pageControl)
+                pageControl.layer.position.y = self.view.frame.height - 100;
+            } else if view is UIPageControl {
+                view.backgroundColor = UIColor.clear
+                pageVC.numberOfPages = 3
+                pageVC.center = self.view.center
+                pageVC.layer.position.y = self.view.frame.height - 180 ;
+                
+            }
+        }
+    }*/
+    
+    // MARK: data source functions
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
@@ -58,18 +87,27 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         return viewControllerList[nextIndex]
     }
     
-    public func presentationCount(for pageViewController: UIPageViewController) -> Int {
-        return viewControllerList.count
+    // MARK: Delegate methods
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        let pageContentViewController = pageViewController.viewControllers![0]
+        self.pageControl.currentPage = viewControllerList.index(of: pageContentViewController)!
     }
     
-    /*public func presentationIndex(for pageViewController: UIPageViewController) -> Int {
-        guard let firstViewController = viewControllers?.first,
-            let firstViewControllerIndex = viewControllerList.index(of: firstViewController) else {
-                return 0
-        }
-        
-        return firstViewControllerIndex
-    }*/
+    // MARK: setup functions
     
+    func configurePageControl() {
+        // The total number of pages that are available is based on how many available colors we have.
+        pageControl = UIPageControl(frame: CGRect(x: 0,y: UIScreen.main.bounds.maxY - 50,width: UIScreen.main.bounds.width,height: 50))
+        
+        self.pageControl.numberOfPages = viewControllerList.count
+        self.pageControl.currentPage = 0
+        self.pageControl.tintColor = UIColor.black
+        self.pageControl.pageIndicatorTintColor = UIColor.gray
+        self.pageControl.currentPageIndicatorTintColor = UIColor(rgb: 0x57A1FF)
+        self.pageControl.layer.position.y = self.view.frame.height - 75 ;
+
+        self.view.addSubview(pageControl)
+    }
     
 }

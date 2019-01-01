@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 import FirebaseAuth
 
 class StartViewController: UIViewController {
@@ -18,8 +19,14 @@ class StartViewController: UIViewController {
     
     // MARK: actions
     
-    @IBAction func LetsStartButtonTapped(_ sender: UIButton) {
-    // show Login view controller
+    @IBAction func LetsStartButtonTapped(_ sender: AnyObject) {
+        
+        /*
+        if let loginViewController = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") {
+            self.present(loginViewController, animated: true, completion: nil)
+        }
+         */
+        
     }
     
 }

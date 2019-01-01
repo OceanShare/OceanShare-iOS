@@ -41,8 +41,8 @@ class SignupViewController: UIViewController {
         // define the database
         let userData: [String: Any] = [
             "name": name,
-            "email": email,
-            "password": password
+            "email": email
+            //"password": password
         ]
         
         if (email?.isEmpty)! || (password?.isEmpty)! || (ConfirmTextField.text?.isEmpty)! || (NameTextField.text?.isEmpty)! {
