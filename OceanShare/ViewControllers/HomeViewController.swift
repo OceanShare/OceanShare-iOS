@@ -8,6 +8,7 @@
 
 import UIKit
 import Mapbox
+import FirebaseAuth
 
 class HomeViewController: UIViewController, MGLMapViewDelegate {
     

@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import FirebaseAuth
 
-class RootViewController: UIPageViewController, UIPageViewControllerDataSource {
+class RootViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     // MARK: definitions
     
@@ -26,6 +27,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource {
         super.viewDidLoad()
         
         self.dataSource = self
+        self.delegate = self
         
         if let firstViewController = viewControllerList.first {
             self.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
@@ -55,6 +57,19 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource {
         
         return viewControllerList[nextIndex]
     }
+    
+    public func presentationCount(for pageViewController: UIPageViewController) -> Int {
+        return viewControllerList.count
+    }
+    
+    /*public func presentationIndex(for pageViewController: UIPageViewController) -> Int {
+        guard let firstViewController = viewControllers?.first,
+            let firstViewControllerIndex = viewControllerList.index(of: firstViewController) else {
+                return 0
+        }
+        
+        return firstViewControllerIndex
+    }*/
     
     
 }
