@@ -64,7 +64,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         do {
             try Auth.auth().signOut()
-            let signInPage = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! UIViewController
+            let signInPage = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! UIViewController //Todo: find a way to return to tabbarviewcontroller
             let appDelegate = UIApplication.shared.delegate
             appDelegate?.window??.rootViewController = signInPage
             print("User has correctly logged out.")

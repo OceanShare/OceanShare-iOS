@@ -10,6 +10,7 @@ import UIKit
 import UIKit.UIGestureRecognizerSubclass
 import FirebaseAuth
 import GoogleSignIn
+import FBSDKLoginKit
 
 class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
@@ -22,6 +23,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         super.viewDidLoad()
         
         configureGoogleSignInButton()
+        configureFacebookSignInButton()
     }
     
     // MARK: actions
@@ -46,7 +48,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 self.present(mainTabBarController, animated: true,completion: nil)
             }
         }
-        
     }
     
     @IBAction func ForgotButtonTapped(_ sender: UIButton) {
@@ -57,15 +58,50 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         // show signup view controller
     }
     
-    // MARK: google functions
+    // MARK: google & facebook login
     
     fileprivate func configureGoogleSignInButton() {
         
         let googleSignInButton = GIDSignInButton()
-        googleSignInButton.frame = CGRect(x: 120, y: 200, width: view.frame.width - 240, height: 50)
+        googleSignInButton.frame = CGRect(x: 200, y: 200, width: 40, height: 50)
         view.addSubview(googleSignInButton)
         GIDSignIn.sharedInstance().uiDelegate = self
         googleSignInButton.layer.position.y = self.view.frame.height - 220 ;
+    }
+    
+    fileprivate func configureFacebookSignInButton() {
+        
+        let facebookSignInButton = FBSDKLoginButton()
+        facebookSignInButton.frame = CGRect(x: 120, y: 200, width: 75, height: 40)
+        view.addSubview(facebookSignInButton)
+        facebookSignInButton.delegate = self as? FBSDKLoginButtonDelegate
+        facebookSignInButton.layer.position.y = self.view.frame.height - 220 ;
+    }
+    
+    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+        
+        if error == nil {
+            print("User just logged in via Facebook")
+            let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+            
+            Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
+                if (error != nil) {
+                    print("Facebook authentication failed")
+                    
+                } else {
+                    print("Facebook authentication succeed")
+                    
+                }
+            }
+            
+        } else {
+            print("An error occured the user couldn't log in")
+            
+        }
+    }
+    
+    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
+        print("User just logged out from his Facebook account")
     }
     
 }
