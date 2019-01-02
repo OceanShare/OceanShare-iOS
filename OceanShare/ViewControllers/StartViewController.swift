@@ -20,13 +20,7 @@ class StartViewController: UIViewController {
     // MARK: actions
     
     @IBAction func LetsStartButtonTapped(_ sender: AnyObject) {
-        
-        /*
-        if let loginViewController = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") {
-            self.present(loginViewController, animated: true, completion: nil)
-        }
-         */
-        
+        //Todo: Show LoginViewController
     }
     
 }

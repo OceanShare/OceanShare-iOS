@@ -9,8 +9,9 @@
 import UIKit
 import UIKit.UIGestureRecognizerSubclass
 import FirebaseAuth
+import GoogleSignIn
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
     // MARK: outlets
     
@@ -20,6 +21,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureGoogleSignInButton()
     }
     
     // MARK: actions
@@ -53,6 +55,17 @@ class LoginViewController: UIViewController {
     
     @IBAction func SignupButtonTapped(_ sender: UIButton) {
         // show signup view controller
+    }
+    
+    // MARK: google functions
+    
+    fileprivate func configureGoogleSignInButton() {
+        
+        let googleSignInButton = GIDSignInButton()
+        googleSignInButton.frame = CGRect(x: 120, y: 200, width: view.frame.width - 240, height: 50)
+        view.addSubview(googleSignInButton)
+        GIDSignIn.sharedInstance().uiDelegate = self
+        googleSignInButton.layer.position.y = self.view.frame.height - 220 ;
     }
     
 }

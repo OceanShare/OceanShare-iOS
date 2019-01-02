@@ -12,6 +12,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import FirebaseCore
 import FirebaseStorage
+import GoogleSignIn
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -61,9 +62,17 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     @IBAction func handleLogout(_ sender: UIButton) {
         
-        try! Auth.auth().signOut()
-        self.dismiss(animated: true, completion: nil)
-        print("User has correctly logged out.")
+        do {
+            try Auth.auth().signOut()
+            let signInPage = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! UIViewController
+            let appDelegate = UIApplication.shared.delegate
+            appDelegate?.window??.rootViewController = signInPage
+            print("User has correctly logged out.")
+            
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
+        //self.dismiss(animated: true, completion: nil)
         
     }
     

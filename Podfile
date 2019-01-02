@@ -11,10 +11,12 @@ target 'OceanShare' do
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
   pod 'Mapbox-iOS-SDK'
+  pod 'GoogleSignIn'
 
   target 'OceanShareTests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'Firebase/Core'
   end
 
   target 'OceanShareUITests' do

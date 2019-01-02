@@ -15,4 +15,6 @@ class SettingViewController: UIViewController {
 
     }
 
+    //Todo: add setting stuff
+    
 }
