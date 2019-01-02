@@ -15,6 +15,7 @@ target 'OceanShare' do
   pod 'FBSDKCoreKit'
   pod 'FBSDKShareKit'
   pod 'FBSDKLoginKit'
+  pod ‘TwitterKit’
 
   target 'OceanShareTests' do
     inherit! :search_paths
