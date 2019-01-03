@@ -12,9 +12,11 @@ target 'OceanShare' do
   pod 'Firebase/Storage'
   pod 'Mapbox-iOS-SDK'
   pod 'GoogleSignIn'
-  pod 'FBSDKCoreKit'
-  pod 'FBSDKShareKit'
-  pod 'FBSDKLoginKit'
+  pod 'FBSDKCoreKit', '4.36.0'
+  pod 'FBSDKShareKit', '4.36.0'
+  pod 'FBSDKLoginKit', '4.36.0'
+  pod 'FacebookCore', '0.4'
+  pod 'FacebookLogin', '0.4'
   pod ‘TwitterKit’
 
   target 'OceanShareTests' do

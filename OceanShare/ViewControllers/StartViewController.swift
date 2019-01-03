@@ -14,13 +14,7 @@ class StartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-    }
     
-    // MARK: actions
-    
-    @IBAction func LetsStartButtonTapped(_ sender: AnyObject) {
-        //Todo: Show LoginViewController
     }
     
 }

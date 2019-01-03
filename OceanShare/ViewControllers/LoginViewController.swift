@@ -19,6 +19,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
     @IBOutlet weak var EmailTextField: UITextField!
     @IBOutlet weak var PasswordTextField: UITextField!
+    @IBOutlet weak var FacebookLogin: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +31,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
     // MARK: actions
     
+    // login with email
     @IBAction func LoginButtonTapped(_ sender: UIButton) {
         
         guard let email = EmailTextField.text else { return }
@@ -51,32 +53,42 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         }
     }
     
-    @IBAction func ForgotButtonTapped(_ sender: UIButton) {
-        // add forgot password function
+    // login with facebook
+    @IBAction func facebookLogin (sender: AnyObject){
+        let facebookLogin = FBSDKLoginManager()
+        facebookLogin.logIn(withReadPermissions: ["email"], from: self, handler:{(facebookResult, facebookError) -> Void in
+            if facebookError != nil {
+                print("Facebook login failed. Error \(facebookError)")
+            } else if facebookResult!.isCancelled {
+                print("Facebook login was cancelled.")
+            } else {
+                let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+                mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+                self.present(mainTabBarController, animated: true,completion: nil)
+                print("User Logged in successfully by Facebook.")
+                
+            }
+        });
     }
+
+    // MARK: google, facebook and twitter login
     
-    @IBAction func SignupButtonTapped(_ sender: UIButton) {
-        // show signup view controller
-    }
-    
-    // MARK: google & facebook login
-    
+    // google button configuration
     fileprivate func configureGoogleSignInButton() {
         let googleSignInButton = GIDSignInButton()
         googleSignInButton.frame = CGRect(x: 10, y: 200, width: 40, height: 50)
         view.addSubview(googleSignInButton)
         GIDSignIn.sharedInstance().uiDelegate = self
-        googleSignInButton.layer.position.y = self.view.frame.height - 220 ;
+        googleSignInButton.layer.position.y = self.view.frame.height - 220
     }
     
+    // Facebook button configuration
     fileprivate func configureFacebookSignInButton() {
-        let facebookSignInButton = FBSDKLoginButton()
-        facebookSignInButton.frame = CGRect(x: 128, y: 200, width: 75, height: 40)
-        view.addSubview(facebookSignInButton)
-        facebookSignInButton.delegate = self as? FBSDKLoginButtonDelegate
-        facebookSignInButton.layer.position.y = self.view.frame.height - 220 ;
+        self.FacebookLogin.frame = CGRect(x: 128, y: 200, width: 75, height: 40)
+        self.FacebookLogin.layer.position.y = self.view.frame.height - 220
     }
     
+    // Twitter button configuration
     fileprivate func configureTwitterSignInButton() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
             if (error != nil) {
@@ -85,7 +97,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 guard let token = session?.authToken else {return}
                 guard let secret = session?.authTokenSecret else {return}
                 let credential = TwitterAuthProvider.credential(withToken: token, secret: secret)
-                Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
+                Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in // change
                     if error == nil {
                         let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                         mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
@@ -101,29 +113,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         twitterSignInButton.frame = CGRect(x: 204, y: 200, width: 200, height: 40)
         view.addSubview(twitterSignInButton)
         twitterSignInButton.layer.position.y = self.view.frame.height - 220
-    }
-    
-    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
-        print("User just logged out from his Facebook account")
-    }
-    
-    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
-        if error == nil {
-            print("User just logged in via Facebook")
-            let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
-            Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
-                if (error != nil) {
-                    print("Facebook authentication failed")
-                } else {
-                    let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                    mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
-                    self.present(mainTabBarController, animated: true,completion: nil)
-                    print("Facebook authentication succeed")
-                }
-            }
-        } else {
-            print("An error occured the user couldn't log in")
-        }
     }
     
 }

@@ -29,10 +29,10 @@
 			</array>
 		</dict>
 	</array>
-	<key>FacebookAppID</key>
-	<string>733919516975040</string>
-	<key>FacebookDisplayName</key>
-	<string>OceanShare</string>
+    <key>FacebookAppID</key>
+    <string>733919516975040</string>
+    <key>FacebookDisplayName</key>
+    <string>OceanShare</string>
     <key>LSApplicationQueriesSchemes</key>
     <array>
         <string>twitter</string>

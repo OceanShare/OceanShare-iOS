@@ -105,7 +105,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         self.pageControl.tintColor = UIColor.black
         self.pageControl.pageIndicatorTintColor = UIColor.gray
         self.pageControl.currentPageIndicatorTintColor = UIColor(rgb: 0x57A1FF)
-        self.pageControl.layer.position.y = self.view.frame.height - 75 ;
+        self.pageControl.layer.position.y = self.view.frame.height - 75
 
         self.view.addSubview(pageControl)
     }
