@@ -13,6 +13,14 @@ import GoogleSignIn
 import FBSDKLoginKit
 import TwitterKit
 
+class CustomView: UIView {
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 100, height: 100)
+    }
+    
+}
+
 class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
     // MARK: outlets
@@ -20,12 +28,13 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     @IBOutlet weak var EmailTextField: UITextField!
     @IBOutlet weak var PasswordTextField: UITextField!
     @IBOutlet weak var FacebookLogin: UIButton!
+    @IBOutlet weak var TwitterLogo: UIImageView!
+    @IBOutlet weak var GoogleLogo: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureGoogleSignInButton()
-        configureFacebookSignInButton()
         configureTwitterSignInButton()
     }
     
@@ -76,16 +85,11 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     // google button configuration
     fileprivate func configureGoogleSignInButton() {
         let googleSignInButton = GIDSignInButton()
-        googleSignInButton.frame = CGRect(x: 10, y: 200, width: 40, height: 50)
+        googleSignInButton.frame = CGRect(x: 40, y: 200, width: 73, height: 80)
         view.addSubview(googleSignInButton)
         GIDSignIn.sharedInstance().uiDelegate = self
         googleSignInButton.layer.position.y = self.view.frame.height - 220
-    }
-    
-    // Facebook button configuration
-    fileprivate func configureFacebookSignInButton() {
-        self.FacebookLogin.frame = CGRect(x: 128, y: 200, width: 75, height: 40)
-        self.FacebookLogin.layer.position.y = self.view.frame.height - 220
+        //googleSignInButton.tintColor = UIColor.white.withAlphaComponent(0)
     }
     
     // Twitter button configuration
@@ -110,9 +114,13 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
             }
         })
         
-        twitterSignInButton.frame = CGRect(x: 204, y: 200, width: 200, height: 40)
+        twitterSignInButton.frame = CGRect(x: 300, y: 200, width: 73, height: 80)
         view.addSubview(twitterSignInButton)
-        twitterSignInButton.layer.position.y = self.view.frame.height - 220
+        twitterSignInButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addConstraint(NSLayoutConstraint(item: twitterSignInButton, attribute: .trailing, relatedBy: .equal, toItem: self.TwitterLogo, attribute: .trailing, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: twitterSignInButton, attribute: .leading, relatedBy: .equal, toItem: self.TwitterLogo, attribute: .leading, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: twitterSignInButton, attribute: .bottom, relatedBy: .equal, toItem: self.TwitterLogo, attribute: .bottom, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: twitterSignInButton, attribute: .top, relatedBy: .equal, toItem: self.TwitterLogo, attribute: .top, multiplier: 1, constant: 0))
     }
     
 }
