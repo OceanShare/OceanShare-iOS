@@ -186,8 +186,8 @@
                                     <constraint firstAttribute="height" constant="100" id="lzv-w8-TEr"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="twitterLogo" translatesAutoresizingMaskIntoConstraints="NO" id="Yll-0h-cEF">
-                                <rect key="frame" x="252.66666666666666" y="552" width="73" height="80"/>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="twitterLogo" translatesAutoresizingMaskIntoConstraints="NO" id="Yll-0h-cEF">
+                                <rect key="frame" x="252.66666666666663" y="552" width="73" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="E6t-JO-EnL"/>
                                     <constraint firstAttribute="width" constant="73" id="m30-e2-9f6"/>
@@ -227,6 +227,16 @@
                                     <action selector="facebookLoginWithSender:" destination="ejb-pn-Tma" eventType="touchUpInside" id="YA8-dQ-b5q"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LW0-xu-tVr">
+                                <rect key="frame" x="49.666666666666657" y="552" width="73" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="73" id="773-oh-KZY"/>
+                                    <constraint firstAttribute="height" constant="80" id="Wzv-Ca-Xb5"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="googleLogin:" destination="ejb-pn-Tma" eventType="touchUpInside" id="X0E-BL-ZrT"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -248,6 +258,7 @@
                             <constraint firstItem="NMx-Hk-pql" firstAttribute="centerX" secondItem="DGG-65-t0A" secondAttribute="centerX" id="Hdp-Np-gY9"/>
                             <constraint firstItem="wO7-2P-htt" firstAttribute="top" secondItem="iHj-dX-4gJ" secondAttribute="bottom" constant="50" id="I8z-bv-anX"/>
                             <constraint firstItem="YeP-hp-JvN" firstAttribute="leading" secondItem="eAw-iE-6bn" secondAttribute="leading" constant="20" id="JOR-ih-bv5"/>
+                            <constraint firstItem="CKp-gy-XeD" firstAttribute="leading" secondItem="LW0-xu-tVr" secondAttribute="trailing" constant="25" id="KqC-hc-RDW"/>
                             <constraint firstItem="wO7-2P-htt" firstAttribute="centerX" secondItem="DGG-65-t0A" secondAttribute="centerX" id="Lc8-zn-9RR"/>
                             <constraint firstItem="Yll-0h-cEF" firstAttribute="leading" secondItem="CKp-gy-XeD" secondAttribute="trailing" constant="25" id="PR7-rb-pvF"/>
                             <constraint firstItem="iHj-dX-4gJ" firstAttribute="top" secondItem="Yll-0h-cEF" secondAttribute="bottom" constant="20" id="Rqp-qh-4ws"/>
@@ -265,6 +276,7 @@
                             <constraint firstItem="YeP-hp-JvN" firstAttribute="top" secondItem="NMx-Hk-pql" secondAttribute="bottom" constant="20" id="ezO-i5-a1W"/>
                             <constraint firstItem="mrM-vm-iMk" firstAttribute="top" secondItem="gc9-tF-Ms2" secondAttribute="bottom" constant="40" id="gYE-Ee-rHL"/>
                             <constraint firstItem="iHj-dX-4gJ" firstAttribute="top" secondItem="8Cb-tu-SEp" secondAttribute="bottom" constant="20" id="hZv-vZ-hVO"/>
+                            <constraint firstItem="iHj-dX-4gJ" firstAttribute="top" secondItem="LW0-xu-tVr" secondAttribute="bottom" constant="20" id="hrQ-6t-F4m"/>
                             <constraint firstItem="PWu-YA-ZWm" firstAttribute="centerX" secondItem="DGG-65-t0A" secondAttribute="centerX" id="pUd-tQ-Rdu"/>
                             <constraint firstItem="PWu-YA-ZWm" firstAttribute="top" secondItem="mrM-vm-iMk" secondAttribute="bottom" constant="8" id="wCW-IZ-7Lu"/>
                             <constraint firstItem="iHj-dX-4gJ" firstAttribute="leading" secondItem="eAw-iE-6bn" secondAttribute="leading" constant="68" id="wEc-fL-uHx"/>
@@ -274,6 +286,7 @@
                     <connections>
                         <outlet property="EmailTextField" destination="PWu-YA-ZWm" id="COl-kq-21j"/>
                         <outlet property="FacebookLogin" destination="8Cb-tu-SEp" id="7zA-cP-dg4"/>
+                        <outlet property="GoogleLogin" destination="LW0-xu-tVr" id="i2X-rd-aqg"/>
                         <outlet property="GoogleLogo" destination="88K-4w-x4a" id="U8D-mF-JiN"/>
                         <outlet property="PasswordTextField" destination="MoI-ji-Hz1" id="X7I-uB-FSC"/>
                         <outlet property="TwitterLogo" destination="Yll-0h-cEF" id="I5F-WQ-er7"/>
