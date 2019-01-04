@@ -33,6 +33,9 @@
                                         <integer key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="ejb-pn-Tma" kind="show" id="xi1-wM-fVC"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="uDS-3e-hGH">
                                 <rect key="frame" x="67.666666666666686" y="272" width="240" height="200"/>
@@ -174,7 +177,7 @@
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <connections>
-                                            <action selector="SignupButtonTapped:" destination="ejb-pn-Tma" eventType="touchUpInside" id="mFs-In-KUs"/>
+                                            <segue destination="1lK-en-euY" kind="show" id="kTw-W1-TFf"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -630,7 +633,7 @@
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <connections>
-                                            <action selector="SigninButtonTapped:" destination="1lK-en-euY" eventType="touchUpInside" id="S8Z-2r-eCe"/>
+                                            <segue destination="ejb-pn-Tma" kind="show" id="z37-DP-6A3"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -713,4 +716,7 @@
         <image name="settings" width="30" height="30"/>
         <image name="twitterLogo" width="512" height="512"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="z37-DP-6A3"/>
+    </inferredMetricsTieBreakers>
 </document>

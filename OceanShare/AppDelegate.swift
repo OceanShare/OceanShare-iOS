@@ -11,11 +11,13 @@ import Firebase
 import GoogleSignIn
 import FBSDKCoreKit
 import TwitterKit
+import FirebaseDatabase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 
     var window: UIWindow?
+    var ref: DatabaseReference!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -52,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        FBSDKAppEvents.activateApp() // test
+        FBSDKAppEvents.activateApp()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -64,6 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             return
         }
         
+        // get the credentials
         guard let authentication = user.authentication else { return }
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken, accessToken: authentication.accessToken)
         
@@ -72,7 +75,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 print("Google Authentification Fail")
             } else {
                 print("Google Authentification Success")
-                //Todo: get google user info + push or update it firebase database
+                let user = Auth.auth().currentUser
+                
+                // define the database structure
+                let userData: [String: Any] = [
+                    "name": user?.displayName as Any,
+                    "email": user?.email as Any
+                    
+                ]
+                
+                self.ref = Database.database().reference() // not safe
+                // push the user datas on the database
+                guard let uid = authResult?.user.uid else { return }
+                self.ref.child("users/\(uid)").setValue(userData)
+                
+                // access to the homeviewcontroller
                 let mainStoryBoard: UIStoryboard = UIStoryboard(name:"Main", bundle:nil)
                 let protectedPage = mainStoryBoard.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                 protectedPage.selectedViewController = protectedPage.viewControllers?[1]

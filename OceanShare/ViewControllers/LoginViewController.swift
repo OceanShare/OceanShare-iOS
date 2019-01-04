@@ -15,14 +15,6 @@ import FBSDKLoginKit
 import TwitterKit
 import Alamofire
 
-/*class CustomView: UIView {
-    
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: 100, height: 100)
-    }
-    
-}*/
-
 class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
     // MARK: outlets
@@ -42,7 +34,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         super.viewDidLoad()
         
         ref = Database.database().reference()
-        configureTwitterSignInButton()
+        twitterLogin()
     }
     
     // MARK: actions
@@ -56,12 +48,14 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if let err = error {
                 print(err.localizedDescription)
+                
+                // error handling
                 let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 alertController.addAction(defaultAction)
                 self.present(alertController, animated: true, completion: nil)
             } else {
-                print("User has logged in successfully.")
+                // access to the homeviewcontroller
                 let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                 mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
                 self.present(mainTabBarController, animated: true,completion: nil)
@@ -69,51 +63,60 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         }
     }
     
-    // login with facebook
-    @IBAction func facebookLogin (sender: AnyObject){
+    @IBAction func facebookLogin(sender: AnyObject){
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self, handler:{(facebookResult, facebookError) -> Void in
             if facebookError != nil {
                 print("Facebook login failed. Error \(String(describing: facebookError))")
             } else if facebookResult!.isCancelled {
                 print("Facebook login was cancelled.")
             } else {
-                
+                // get the credentials
                 let accessToken = FBSDKAccessToken.current()
                 guard let accessTokenString = accessToken?.tokenString else { return }
                 let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
                 
-                FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email"]).start(completionHandler: { (connection, result, err) in
+                // get user datas from the facebook account as the profile picture
+                FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
                     if err != nil {
                         print("Failed to start graph request.")
                         return
                     }
                     
-                    let response = result.unsafelyUnwrapped as! Dictionary<String,AnyObject>
-                    // define the database
+                    // DO NOT DELETE -> Retrieve user profile picture
+                    /*let response = result.unsafelyUnwrapped as! Dictionary<String,AnyObject>
                     let userData: [String: Any] = [
                         "name": response["name"] as? String,
                         "email": response["email"] as? String
-                    ]
+                        //"picture": response["picture"]["data"]["url"] as? String
+                    ]*/
                     
-                    Auth.auth().signInAndRetrieveData(with: credentials, completion: { (result, err) in
+                    Auth.auth().signInAndRetrieveData(with: credentials, completion: { (authResult, err) in
                         if let err = err {
                             print("Something wrong happened with the FB user: ", err)
                             return
                         }
-                        guard let uid = result?.user.uid else { return }
-                        self.ref.child("users/\(uid)").setValue(userData) // send the data to the Firebase database
+                        let user = Auth.auth().currentUser
+                        
+                        // define the database structure
+                        let userData: [String: Any] = [
+                            "name": user?.displayName as Any,
+                            "email": user?.email as Any
+                            
+                        ]
+                        
+                        // push the user datas on the database
+                        guard let uid = authResult?.user.uid else { return }
+                        self.ref.child("users/\(uid)").setValue(userData)
                     })
                 })
-                
+                // access to the homeviewcontroller
                 let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                 mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
                 self.present(mainTabBarController, animated: true,completion: nil)
-                print("User Accessed successfully to the map.")
             }
         })
     }
     
-    // login with google
     @IBAction func googleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().signIn()
@@ -121,28 +124,42 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
     // MARK: file private functions
     
-    // Twitter button configuration
-    fileprivate func configureTwitterSignInButton() {
+    fileprivate func twitterLogin() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
             if (error != nil) {
                 print("Twitter authentication failed")
             } else {
+                // get the twitter credentials
                 guard let token = session?.authToken else {return}
                 guard let secret = session?.authTokenSecret else {return}
                 let credential = TwitterAuthProvider.credential(withToken: token, secret: secret)
-                Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in // change
-                    if error == nil {
+                
+                Auth.auth().signInAndRetrieveData(with: credential, completion: { (authResult, err) in
+                    if let err = err {
+                        print(err.localizedDescription)
+                    } else {
+                        let user = Auth.auth().currentUser
+                        
+                        // define the database structure
+                        let userData: [String: Any] = [
+                            "name": user?.displayName as Any,
+                            "email": user?.email as Any
+                            
+                        ]
+                        
+                        // push the user datas on the database
+                        guard let uid = authResult?.user.uid else { return }
+                        self.ref.child("users/\(uid)").setValue(userData)
+                        
+                        // access to the homeviewcontroller
                         let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                         mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
                         self.present(mainTabBarController, animated: true,completion: nil)
-                        print("Twitter authentication succeed")
-                    } else {
-                        print("Twitter authentication failed")
                     }
-                }
+                })
             }
         })
-        
+        //Todo: find a way to design the twitter button
         twitterSignInButton.frame = CGRect(x: 300, y: 200, width: 73, height: 65)
         view.addSubview(twitterSignInButton)
         twitterSignInButton.translatesAutoresizingMaskIntoConstraints = false

@@ -24,26 +24,34 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb733919516975040</string>
-                <string>twitterkit-sANCETJynukAwPblwMice7q3n</string>
+				<string>twitterkit-sANCETJynukAwPblwMice7q3n</string>
+				<string>com.googleusercontent.apps.508733132694-ah67tk9d9v69neht0v2um8af9slm8al7</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
 				<string>com.googleusercontent.apps.508733132694-ah67tk9d9v69neht0v2um8af9slm8al7</string>
 			</array>
 		</dict>
 	</array>
-    <key>FacebookAppID</key>
-    <string>733919516975040</string>
-    <key>FacebookDisplayName</key>
-    <string>OceanShare</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>twitter</string>
-        <string>twitterauth</string>
-        <string>fbapi</string>
-        <string>fb-messenger-share-api</string>
-        <string>fbauth2</string>
-        <string>fbshareextension</string>
-    </array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>FacebookAppID</key>
+	<string>733919516975040</string>
+	<key>FacebookDisplayName</key>
+	<string>OceanShare</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>twitter</string>
+		<string>twitterauth</string>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MGLMapboxAccessToken</key>

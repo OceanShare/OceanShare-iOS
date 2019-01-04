@@ -38,32 +38,35 @@ class SignupViewController: UIViewController {
         let email = EmailTextField.text
         let password = PasswordTextField.text
         
-        // define the database
+        // define the database structure
         let userData: [String: Any] = [
-            "name": name,
-            "email": email
-            //"password": password
+            "name": name as Any,
+            "email": email as Any
         ]
         
         if (email?.isEmpty)! || (password?.isEmpty)! || (ConfirmTextField.text?.isEmpty)! || (NameTextField.text?.isEmpty)! {
             displayMessage(userMessage: "All Field are required")
             return
-        }; if ((ConfirmTextField.text?.elementsEqual(password!))! != true) {
+        }
+        if ((ConfirmTextField.text?.elementsEqual(password!))! != true) {
             displayMessage(userMessage: "Please make sure that passwords match")
             return
         } else {
-            Auth.auth().createUserAndRetrieveData(withEmail: email!, password: password!) { (result, err) in
+            Auth.auth().createUserAndRetrieveData(withEmail: email!, password: password!) { (authResult, err) in
                 if let err = err {
                     print(err.localizedDescription)
+                    
+                    // error handling
                     let alertController = UIAlertController(title: "Error", message: err.localizedDescription, preferredStyle: .alert)
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)
                     self.present(alertController, animated: true, completion: nil)
                 } else {
-                    guard let uid = result?.user.uid else { return }
-                    self.ref.child("users/\(uid)").setValue(userData) // send the data to the Firebase database
-                    print("User has been correctly created.")
-                    //let homeView = UINavigationController(rootViewController: HomeViewController())
+                    // push the user datas on the database
+                    guard let uid = authResult?.user.uid else { return }
+                    self.ref.child("users/\(uid)").setValue(userData)
+                    
+                    // access to the homeviewcontroller
                     let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                     mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
                     self.present(mainTabBarController, animated: true,completion: nil)
@@ -72,23 +75,15 @@ class SignupViewController: UIViewController {
         }
     }
     
-    @IBAction func SigninButtonTapped(_ sender: UIButton) {
-        // show signin view controller
-    }
-    
-    
     // MARK : functions
     
     func displayMessage(userMessage:String) -> Void {
-        DispatchQueue.main.async
-            {
+        DispatchQueue.main.async {
                 let alertController = UIAlertController(title: "Alert", message: userMessage, preferredStyle: .alert)
                 let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
                     // Code in this block will trigger when OK button tapped.
-                    print("Ok button tapped")
-                    DispatchQueue.main.async
-                        {
-                            self.dismiss(animated: true, completion: nil)
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: true, completion: nil)
                     }
                 }
                 alertController.addAction(OKAction)
