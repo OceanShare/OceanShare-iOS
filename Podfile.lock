@@ -100,6 +100,7 @@ PODS:
   - GoogleUtilities/UserDefaults (5.3.6):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.2.1)
+  - JJFloatingActionButton (1.0.0)
   - leveldb-library (1.20)
   - Mapbox-iOS-SDK (4.7.1)
   - nanopb (0.3.901):
@@ -123,6 +124,7 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Storage
   - GoogleSignIn
+  - JJFloatingActionButton
   - Mapbox-iOS-SDK
   - TwitterKit
 
@@ -148,6 +150,7 @@ SPEC REPOS:
     - GoogleToolboxForMac
     - GoogleUtilities
     - GTMSessionFetcher
+    - JJFloatingActionButton
     - leveldb-library
     - Mapbox-iOS-SDK
     - nanopb
@@ -175,12 +178,13 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
   GoogleUtilities: 95996bea7c7d9b8fb811b7507669a4a8762f80c7
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
+  JJFloatingActionButton: 3d79b8c2c6b7250264db44ef2cb654691941f107
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   Mapbox-iOS-SDK: f9292a75e8cd5eb828f4432623bfc48aac42146a
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: 243d2a301c7229a05dcd0d220798910d87773865
+PODFILE CHECKSUM: 42b54d9d22b9e818cb4974871c0d940b23f9554e
 
 COCOAPODS: 1.6.0.beta.2

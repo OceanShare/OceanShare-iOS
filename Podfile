@@ -19,6 +19,7 @@ target 'OceanShare' do
   pod 'FacebookLogin', '0.4'
   pod ‘TwitterKit’
   pod 'Alamofire', '~> 5.0.0.beta.1'
+  pod 'JJFloatingActionButton'
 
   target 'OceanShareTests' do
     inherit! :search_paths

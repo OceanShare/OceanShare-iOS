@@ -9,12 +9,14 @@
 import UIKit
 import Mapbox
 import FirebaseAuth
+import JJFloatingActionButton
 
 class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     // MARK: definitions
     
     let point = MGLPointAnnotation()
+    fileprivate let actionButton = JJFloatingActionButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +40,18 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         hello.subtitle = "Présence de dauphins dans cette zone."
         
         mapView.addAnnotation(hello) // Add marker `hello` to the map.
+        
+        // icon menu implementation
+        actionButton.addItem(title: "Dolphins", image: UIImage(named: "map")?.withRenderingMode(.alwaysTemplate)) { item in
+            Helper.showAlert(for: item)
+        }
+        actionButton.addItem(title: "Wastes", image: UIImage(named: "profile")?.withRenderingMode(.alwaysTemplate)) { item in
+            Helper.showAlert(for: item)
+        }
+        actionButton.addItem(title: "Divers", image: UIImage(named: "settings")?.withRenderingMode(.alwaysTemplate)) { item in
+            Helper.showAlert(for: item)
+        }
+        actionButton.display(inViewController: self)
     }
     
     // MARK : Functions
