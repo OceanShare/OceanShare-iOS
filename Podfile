@@ -18,6 +18,7 @@ target 'OceanShare' do
   pod 'FacebookCore', '0.4'
   pod 'FacebookLogin', '0.4'
   pod ‘TwitterKit’
+  pod 'Alamofire', '~> 5.0.0.beta.1'
 
   target 'OceanShareTests' do
     inherit! :search_paths

@@ -9,17 +9,19 @@
 import UIKit
 import UIKit.UIGestureRecognizerSubclass
 import FirebaseAuth
+import FirebaseDatabase
 import GoogleSignIn
 import FBSDKLoginKit
 import TwitterKit
+import Alamofire
 
-class CustomView: UIView {
+/*class CustomView: UIView {
     
     override var intrinsicContentSize: CGSize {
         return CGSize(width: 100, height: 100)
     }
     
-}
+}*/
 
 class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
@@ -32,9 +34,14 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     @IBOutlet weak var TwitterLogo: UIImageView!
     @IBOutlet weak var GoogleLogo: UIImageView!
     
+    // MARK: definitions
+    
+    var ref: DatabaseReference!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
         configureTwitterSignInButton()
     }
     
@@ -64,29 +71,55 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
     // login with facebook
     @IBAction func facebookLogin (sender: AnyObject){
-        let facebookLogin = FBSDKLoginManager()
-        facebookLogin.logIn(withReadPermissions: ["email"], from: self, handler:{(facebookResult, facebookError) -> Void in
+        FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self, handler:{(facebookResult, facebookError) -> Void in
             if facebookError != nil {
-                print("Facebook login failed. Error \(facebookError)")
+                print("Facebook login failed. Error \(String(describing: facebookError))")
             } else if facebookResult!.isCancelled {
                 print("Facebook login was cancelled.")
             } else {
+                
+                let accessToken = FBSDKAccessToken.current()
+                guard let accessTokenString = accessToken?.tokenString else { return }
+                let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
+                
+                FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email"]).start(completionHandler: { (connection, result, err) in
+                    if err != nil {
+                        print("Failed to start graph request.")
+                        return
+                    }
+                    
+                    let response = result.unsafelyUnwrapped as! Dictionary<String,AnyObject>
+                    // define the database
+                    let userData: [String: Any] = [
+                        "name": response["name"] as? String,
+                        "email": response["email"] as? String
+                    ]
+                    
+                    Auth.auth().signInAndRetrieveData(with: credentials, completion: { (result, err) in
+                        if let err = err {
+                            print("Something wrong happened with the FB user: ", err)
+                            return
+                        }
+                        guard let uid = result?.user.uid else { return }
+                        self.ref.child("users/\(uid)").setValue(userData) // send the data to the Firebase database
+                    })
+                })
+                
                 let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                 mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
                 self.present(mainTabBarController, animated: true,completion: nil)
-                print("User Logged in successfully by Facebook.")
-                
+                print("User Accessed successfully to the map.")
             }
-        });
+        })
     }
-
+    
     // login with google
     @IBAction func googleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().signIn()
     }
     
-    // MARK: twitter login
+    // MARK: file private functions
     
     // Twitter button configuration
     fileprivate func configureTwitterSignInButton() {
