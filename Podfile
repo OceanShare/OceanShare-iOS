@@ -20,7 +20,6 @@ target 'OceanShare' do
   pod ‘TwitterKit’
   pod 'Alamofire', '~> 5.0.0.beta.1'
   pod 'JJFloatingActionButton'
-  pod 'Fabric'
 
   target 'OceanShareTests' do
     inherit! :search_paths
