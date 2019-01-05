@@ -30,7 +30,7 @@
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="8"/>
+                                        <real key="value" value="27.5"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
@@ -143,9 +143,10 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iHj-dX-4gJ" userLabel="Login">
-                                <rect key="frame" x="68" y="652" width="239" height="55"/>
+                                <rect key="frame" x="87.666666666666686" y="652" width="200" height="55"/>
                                 <color key="backgroundColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="Olv-ky-rVr"/>
                                     <constraint firstAttribute="height" constant="55" id="uaY-Bo-1me"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
@@ -154,7 +155,7 @@
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="8"/>
+                                        <real key="value" value="27.5"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
@@ -265,7 +266,6 @@
                             <constraint firstItem="nL7-bw-ysa" firstAttribute="leading" secondItem="eAw-iE-6bn" secondAttribute="leading" constant="30" id="6j0-xn-X6r"/>
                             <constraint firstItem="nL7-bw-ysa" firstAttribute="top" secondItem="PWu-YA-ZWm" secondAttribute="bottom" constant="40" id="6s1-PN-pi8"/>
                             <constraint firstItem="Ts1-lW-8fa" firstAttribute="top" secondItem="MoI-ji-Hz1" secondAttribute="bottom" constant="8" id="7fW-6J-frx"/>
-                            <constraint firstItem="eAw-iE-6bn" firstAttribute="trailing" secondItem="iHj-dX-4gJ" secondAttribute="trailing" constant="68" id="7wc-Ig-HSl"/>
                             <constraint firstItem="iHj-dX-4gJ" firstAttribute="top" secondItem="G1i-Rp-RzD" secondAttribute="bottom" constant="29" id="8qc-Pr-qOX"/>
                             <constraint firstAttribute="bottom" secondItem="iHj-dX-4gJ" secondAttribute="bottom" constant="105" id="8tE-IJ-foY"/>
                             <constraint firstItem="mrM-vm-iMk" firstAttribute="leading" secondItem="eAw-iE-6bn" secondAttribute="leading" constant="30" id="A6v-B8-Wb3"/>
@@ -295,7 +295,6 @@
                             <constraint firstItem="PWu-YA-ZWm" firstAttribute="centerX" secondItem="DGG-65-t0A" secondAttribute="centerX" id="pUd-tQ-Rdu"/>
                             <constraint firstAttribute="trailing" secondItem="MVd-dU-pKr" secondAttribute="trailing" constant="30" id="uZC-Jq-cpQ"/>
                             <constraint firstItem="PWu-YA-ZWm" firstAttribute="top" secondItem="mrM-vm-iMk" secondAttribute="bottom" constant="8" id="wCW-IZ-7Lu"/>
-                            <constraint firstItem="iHj-dX-4gJ" firstAttribute="leading" secondItem="eAw-iE-6bn" secondAttribute="leading" constant="68" id="wEc-fL-uHx"/>
                             <constraint firstAttribute="trailing" secondItem="HQC-6c-vcK" secondAttribute="trailing" constant="30" id="zvC-J2-m4E"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="eAw-iE-6bn"/>
@@ -604,18 +603,19 @@
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBQ-zF-gbt">
-                                <rect key="frame" x="68" y="652" width="239" height="55"/>
+                                <rect key="frame" x="87.666666666666686" y="652" width="200" height="55"/>
                                 <color key="backgroundColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="MQD-J7-6Z2"/>
+                                    <constraint firstAttribute="width" constant="200" id="pvG-Gz-BnC"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
-                                <state key="normal" title="Register">
+                                <state key="normal" title="Sign Up">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="8"/>
+                                        <real key="value" value="27.5"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
@@ -686,7 +686,6 @@
                             <constraint firstItem="1Oo-of-Uya" firstAttribute="leading" secondItem="7d9-r0-nYw" secondAttribute="leading" constant="30" id="Gix-4E-eFD"/>
                             <constraint firstItem="pBQ-zF-gbt" firstAttribute="top" secondItem="5Mt-Tj-EyN" secondAttribute="bottom" constant="20" id="GsK-v1-Nrw"/>
                             <constraint firstItem="uZm-Gu-K1d" firstAttribute="top" secondItem="boM-sY-Kqr" secondAttribute="bottom" constant="8" id="I4k-CB-sII"/>
-                            <constraint firstAttribute="trailing" secondItem="pBQ-zF-gbt" secondAttribute="trailing" constant="68" id="ILc-03-NWV"/>
                             <constraint firstItem="8tq-jb-JCZ" firstAttribute="leading" secondItem="9zY-n8-Zrv" secondAttribute="leading" constant="30" id="J56-QU-mVz"/>
                             <constraint firstItem="9zY-n8-Zrv" firstAttribute="trailing" secondItem="uZm-Gu-K1d" secondAttribute="trailing" constant="30" id="Jsl-7k-ubb"/>
                             <constraint firstAttribute="trailing" secondItem="LYh-hB-q4Q" secondAttribute="trailing" constant="30" id="Kfj-O2-BKl"/>
@@ -695,6 +694,7 @@
                             <constraint firstItem="LaY-a3-Fo7" firstAttribute="leading" secondItem="9zY-n8-Zrv" secondAttribute="leading" constant="30" id="T87-44-tvU"/>
                             <constraint firstItem="HAy-io-7hA" firstAttribute="leading" secondItem="9zY-n8-Zrv" secondAttribute="leading" constant="20" id="VJv-co-1jV"/>
                             <constraint firstItem="bOk-aN-6bg" firstAttribute="leading" secondItem="9zY-n8-Zrv" secondAttribute="leading" constant="30" id="W5z-Mp-eUN"/>
+                            <constraint firstItem="pBQ-zF-gbt" firstAttribute="centerX" secondItem="7d9-r0-nYw" secondAttribute="centerX" id="a3T-yI-KAy"/>
                             <constraint firstItem="mTA-hD-c0n" firstAttribute="centerX" secondItem="7d9-r0-nYw" secondAttribute="centerX" id="cXK-9C-sBe"/>
                             <constraint firstItem="bQa-fG-H6k" firstAttribute="top" secondItem="LYh-hB-q4Q" secondAttribute="bottom" constant="8" id="chw-8B-IuW"/>
                             <constraint firstAttribute="trailing" secondItem="boM-sY-Kqr" secondAttribute="trailing" constant="30" id="fBH-Zh-nHo"/>
@@ -707,7 +707,6 @@
                             <constraint firstItem="5Mt-Tj-EyN" firstAttribute="top" secondItem="mTA-hD-c0n" secondAttribute="bottom" constant="20" id="o21-4c-8TU"/>
                             <constraint firstItem="uZm-Gu-K1d" firstAttribute="top" secondItem="bOk-aN-6bg" secondAttribute="bottom" constant="8" id="p4g-Dj-MZD"/>
                             <constraint firstAttribute="bottom" secondItem="pBQ-zF-gbt" secondAttribute="bottom" constant="105" id="pCV-FC-QRl"/>
-                            <constraint firstItem="pBQ-zF-gbt" firstAttribute="leading" secondItem="7d9-r0-nYw" secondAttribute="leading" constant="68" id="tQB-5u-CcP"/>
                             <constraint firstAttribute="trailing" secondItem="rHy-NW-pAM" secondAttribute="trailing" constant="30" id="upV-52-pm2"/>
                             <constraint firstItem="8tq-jb-JCZ" firstAttribute="top" secondItem="rHy-NW-pAM" secondAttribute="bottom" constant="8" id="wP0-Nv-xKc"/>
                             <constraint firstItem="5Mt-Tj-EyN" firstAttribute="leading" secondItem="9zY-n8-Zrv" secondAttribute="leading" constant="20" id="wrw-Xl-tjK"/>
