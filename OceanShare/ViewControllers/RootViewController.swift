@@ -87,14 +87,14 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         return viewControllerList[nextIndex]
     }
     
-    // MARK: Delegate methods
+    // MARK: delegate methods
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         let pageContentViewController = pageViewController.viewControllers![0]
         self.pageControl.currentPage = viewControllerList.index(of: pageContentViewController)!
     }
     
-    // MARK: setup functions
+    // MARK: setup
     
     func configurePageControl() {
         // The total number of pages that are available is based on how many available colors we have.

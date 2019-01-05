@@ -23,8 +23,8 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     @IBOutlet weak var PasswordTextField: UITextField!
     @IBOutlet weak var FacebookLogin: UIButton!
     @IBOutlet weak var GoogleLogin: UIButton!
-    @IBOutlet weak var TwitterLogo: UIImageView!
-    @IBOutlet weak var GoogleLogo: UIImageView!
+    @IBOutlet weak var email: UIImageView!
+    @IBOutlet weak var password: UIImageView!
     
     // MARK: definitions
     
@@ -34,7 +34,17 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         super.viewDidLoad()
         
         ref = Database.database().reference()
-        //twitterLogin()
+        
+        setupIcons()
+    }
+    
+    // MARK: setup
+    
+    func setupIcons() {
+        self.email.image = self.email.image!.withRenderingMode(.alwaysTemplate)
+        self.email.tintColor = UIColor(rgb: 0xFFFFFF)
+        self.password.image = self.password.image!.withRenderingMode(.alwaysTemplate)
+        self.password.tintColor = UIColor(rgb: 0xFFFFFF)
     }
     
     // MARK: actions
@@ -128,9 +138,8 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     @IBAction func twitterLogin(_ sender: UIButton) {
         configureTwitter()
     }
-    
-    
-    // MARK: file private functions
+
+    // MARK: configuration
     
     fileprivate func configureTwitter() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in

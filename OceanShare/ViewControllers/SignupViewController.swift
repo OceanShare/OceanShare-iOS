@@ -19,6 +19,10 @@ class SignupViewController: UIViewController {
     @IBOutlet weak var EmailTextField: UITextField!
     @IBOutlet weak var PasswordTextField: UITextField!
     @IBOutlet weak var ConfirmTextField: UITextField!
+    @IBOutlet weak var name: UIImageView!
+    @IBOutlet weak var email: UIImageView!
+    @IBOutlet weak var password: UIImageView!
+    @IBOutlet weak var confirm: UIImageView!
     
     // MARK: definitions
     
@@ -28,6 +32,21 @@ class SignupViewController: UIViewController {
         super.viewDidLoad()
         
         ref = Database.database().reference()
+        
+        setupIcons()
+    }
+    
+    // MARK: setup
+    
+    func setupIcons() {
+        self.name.image = self.name.image!.withRenderingMode(.alwaysTemplate)
+        self.name.tintColor = UIColor(rgb: 0xFFFFFF)
+        self.email.image = self.email.image!.withRenderingMode(.alwaysTemplate)
+        self.email.tintColor = UIColor(rgb: 0xFFFFFF)
+        self.password.image = self.password.image!.withRenderingMode(.alwaysTemplate)
+        self.password.tintColor = UIColor(rgb: 0xFFFFFF)
+        self.confirm.image = self.confirm.image!.withRenderingMode(.alwaysTemplate)
+        self.confirm.tintColor = UIColor(rgb: 0xFFFFFF)
     }
     
     // MARK: actions
@@ -75,7 +94,7 @@ class SignupViewController: UIViewController {
         }
     }
     
-    // MARK : functions
+    // MARK : error handling
     
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
