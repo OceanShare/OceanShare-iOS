@@ -42,10 +42,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         mapView.addAnnotation(hello) // Add marker `hello` to the map.
         
         // icon menu implementation
-        actionButton.addItem(title: "Divers", image: UIImage(named: "diver")?.withRenderingMode(.alwaysTemplate)) { item in
+        actionButton.addItem(title: "Divers", image: UIImage(named: "map")?.withRenderingMode(.alwaysTemplate)) { item in
             Helper.showAlert(for: item)
         }
-        actionButton.addItem(title: "Dolphin", image: UIImage(named: "dolphin")?.withRenderingMode(.alwaysTemplate)) { item in
+        actionButton.addItem(title: "Dolphin", image: UIImage(named: "profile")?.withRenderingMode(.alwaysTemplate)) { item in
             Helper.showAlert(for: item)
         }
         actionButton.addItem(title: "Divers", image: UIImage(named: "settings")?.withRenderingMode(.alwaysTemplate)) { item in

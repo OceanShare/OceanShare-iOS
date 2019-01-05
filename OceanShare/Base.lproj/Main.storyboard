@@ -182,43 +182,22 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoNoText" translatesAutoresizingMaskIntoConstraints="NO" id="NMx-Hk-pql">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="NMx-Hk-pql">
                                 <rect key="frame" x="137.66666666666666" y="122" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="Bol-TC-Ukr"/>
                                     <constraint firstAttribute="height" constant="100" id="lzv-w8-TEr"/>
                                 </constraints>
                             </imageView>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="twitterLogo" translatesAutoresizingMaskIntoConstraints="NO" id="Yll-0h-cEF">
-                                <rect key="frame" x="252.66666666666663" y="552" width="73" height="80"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="E6t-JO-EnL"/>
-                                    <constraint firstAttribute="width" constant="73" id="m30-e2-9f6"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="googleLogo" translatesAutoresizingMaskIntoConstraints="NO" id="88K-4w-x4a">
-                                <rect key="frame" x="49.666666666666657" y="552" width="73" height="80"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="73" id="7Vb-bA-HRW"/>
-                                    <constraint firstAttribute="height" constant="80" id="v9m-O3-Hf8"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebookLogo" translatesAutoresizingMaskIntoConstraints="NO" id="CKp-gy-XeD">
-                                <rect key="frame" x="147.66666666666666" y="552" width="80" height="80"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="80" id="0x4-BL-U4f"/>
-                                    <constraint firstAttribute="height" constant="80" id="1Pg-iX-6mi"/>
-                                </constraints>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Cb-tu-SEp">
-                                <rect key="frame" x="147.66666666666666" y="552" width="80" height="80"/>
+                                <rect key="frame" x="152.66666666666666" y="557" width="70" height="70"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="F1E-fg-WMp"/>
-                                    <constraint firstAttribute="width" constant="80" id="ahi-KR-X6a"/>
+                                    <constraint firstAttribute="height" constant="70" id="F1E-fg-WMp"/>
+                                    <constraint firstAttribute="width" constant="70" id="ahi-KR-X6a"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
-                                <state key="normal">
+                                <state key="normal" backgroundImage="facebookLogo">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -231,13 +210,25 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LW0-xu-tVr">
-                                <rect key="frame" x="49.666666666666657" y="552" width="73" height="80"/>
+                                <rect key="frame" x="64.666666666666671" y="560" width="63" height="63"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="73" id="773-oh-KZY"/>
-                                    <constraint firstAttribute="height" constant="80" id="Wzv-Ca-Xb5"/>
+                                    <constraint firstAttribute="width" constant="63" id="DN0-1A-3P2"/>
+                                    <constraint firstAttribute="height" constant="63" id="PSh-mm-we4"/>
                                 </constraints>
+                                <state key="normal" backgroundImage="googleLogo"/>
                                 <connections>
                                     <action selector="googleLogin:" destination="ejb-pn-Tma" eventType="touchUpInside" id="X0E-BL-ZrT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G1i-Rp-RzD" userLabel="Twitter Login">
+                                <rect key="frame" x="247.66666666666663" y="560" width="63" height="63"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="63" id="CeC-xf-hin"/>
+                                    <constraint firstAttribute="height" constant="63" id="ceA-cF-tYE"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="twitterLogo"/>
+                                <connections>
+                                    <action selector="twitterLogin:" destination="ejb-pn-Tma" eventType="touchUpInside" id="gbB-cG-Aal"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -247,39 +238,35 @@
                             <constraint firstItem="YeP-hp-JvN" firstAttribute="centerX" secondItem="DGG-65-t0A" secondAttribute="centerX" id="0As-fJ-oxF"/>
                             <constraint firstAttribute="trailing" secondItem="PWu-YA-ZWm" secondAttribute="trailing" constant="30" id="2Tb-BT-h0A"/>
                             <constraint firstItem="PWu-YA-ZWm" firstAttribute="leading" secondItem="DGG-65-t0A" secondAttribute="leading" constant="30" id="2k2-fT-yj4"/>
-                            <constraint firstItem="iHj-dX-4gJ" firstAttribute="top" secondItem="88K-4w-x4a" secondAttribute="bottom" constant="20" id="5Hg-Sg-KY1"/>
                             <constraint firstItem="MoI-ji-Hz1" firstAttribute="centerX" secondItem="DGG-65-t0A" secondAttribute="centerX" id="5Lh-rX-12V"/>
                             <constraint firstItem="nL7-bw-ysa" firstAttribute="leading" secondItem="eAw-iE-6bn" secondAttribute="leading" constant="30" id="6j0-xn-X6r"/>
                             <constraint firstItem="nL7-bw-ysa" firstAttribute="top" secondItem="PWu-YA-ZWm" secondAttribute="bottom" constant="40" id="6s1-PN-pi8"/>
                             <constraint firstItem="Ts1-lW-8fa" firstAttribute="top" secondItem="MoI-ji-Hz1" secondAttribute="bottom" constant="8" id="7fW-6J-frx"/>
                             <constraint firstItem="eAw-iE-6bn" firstAttribute="trailing" secondItem="iHj-dX-4gJ" secondAttribute="trailing" constant="68" id="7wc-Ig-HSl"/>
+                            <constraint firstItem="iHj-dX-4gJ" firstAttribute="top" secondItem="G1i-Rp-RzD" secondAttribute="bottom" constant="29" id="8qc-Pr-qOX"/>
                             <constraint firstAttribute="bottom" secondItem="iHj-dX-4gJ" secondAttribute="bottom" constant="105" id="8tE-IJ-foY"/>
                             <constraint firstItem="mrM-vm-iMk" firstAttribute="leading" secondItem="eAw-iE-6bn" secondAttribute="leading" constant="30" id="A6v-B8-Wb3"/>
                             <constraint firstItem="wO7-2P-htt" firstAttribute="leading" secondItem="DGG-65-t0A" secondAttribute="leading" constant="30" id="C6c-e8-GT0"/>
-                            <constraint firstItem="CKp-gy-XeD" firstAttribute="centerX" secondItem="DGG-65-t0A" secondAttribute="centerX" id="DDi-hH-UZr"/>
                             <constraint firstItem="eAw-iE-6bn" firstAttribute="trailing" secondItem="YeP-hp-JvN" secondAttribute="trailing" constant="20" id="GcT-59-Yi7"/>
                             <constraint firstItem="NMx-Hk-pql" firstAttribute="centerX" secondItem="DGG-65-t0A" secondAttribute="centerX" id="Hdp-Np-gY9"/>
                             <constraint firstItem="wO7-2P-htt" firstAttribute="top" secondItem="iHj-dX-4gJ" secondAttribute="bottom" constant="50" id="I8z-bv-anX"/>
                             <constraint firstItem="YeP-hp-JvN" firstAttribute="leading" secondItem="eAw-iE-6bn" secondAttribute="leading" constant="20" id="JOR-ih-bv5"/>
-                            <constraint firstItem="CKp-gy-XeD" firstAttribute="leading" secondItem="LW0-xu-tVr" secondAttribute="trailing" constant="25" id="KqC-hc-RDW"/>
                             <constraint firstItem="wO7-2P-htt" firstAttribute="centerX" secondItem="DGG-65-t0A" secondAttribute="centerX" id="Lc8-zn-9RR"/>
-                            <constraint firstItem="Yll-0h-cEF" firstAttribute="leading" secondItem="CKp-gy-XeD" secondAttribute="trailing" constant="25" id="PR7-rb-pvF"/>
-                            <constraint firstItem="iHj-dX-4gJ" firstAttribute="top" secondItem="Yll-0h-cEF" secondAttribute="bottom" constant="20" id="Rqp-qh-4ws"/>
                             <constraint firstItem="8Cb-tu-SEp" firstAttribute="centerX" secondItem="DGG-65-t0A" secondAttribute="centerX" id="TE6-x0-HEL"/>
+                            <constraint firstItem="G1i-Rp-RzD" firstAttribute="leading" secondItem="8Cb-tu-SEp" secondAttribute="trailing" constant="25" id="TP8-ex-Moh"/>
                             <constraint firstItem="iHj-dX-4gJ" firstAttribute="centerX" secondItem="DGG-65-t0A" secondAttribute="centerX" id="Uyl-Av-YJN"/>
                             <constraint firstItem="gc9-tF-Ms2" firstAttribute="leading" secondItem="DGG-65-t0A" secondAttribute="leading" constant="20" id="WVG-d9-NJ9"/>
                             <constraint firstItem="iHj-dX-4gJ" firstAttribute="top" secondItem="YeP-hp-JvN" secondAttribute="bottom" constant="60" id="Wis-FO-XYk"/>
+                            <constraint firstItem="8Cb-tu-SEp" firstAttribute="leading" secondItem="LW0-xu-tVr" secondAttribute="trailing" constant="25" id="X3Q-rw-SzH"/>
                             <constraint firstItem="MoI-ji-Hz1" firstAttribute="top" secondItem="nL7-bw-ysa" secondAttribute="bottom" constant="8" id="aNX-W5-H0T"/>
                             <constraint firstItem="MoI-ji-Hz1" firstAttribute="leading" secondItem="eAw-iE-6bn" secondAttribute="leading" constant="30" id="akB-Xf-TSg"/>
                             <constraint firstItem="YeP-hp-JvN" firstAttribute="top" secondItem="gc9-tF-Ms2" secondAttribute="bottom" constant="8" id="bTs-bq-d8I"/>
                             <constraint firstItem="eAw-iE-6bn" firstAttribute="trailing" secondItem="MoI-ji-Hz1" secondAttribute="trailing" constant="30" id="bYN-Ca-pWq"/>
                             <constraint firstItem="eAw-iE-6bn" firstAttribute="trailing" secondItem="Ts1-lW-8fa" secondAttribute="trailing" constant="30" id="c9D-ty-zdA"/>
-                            <constraint firstItem="iHj-dX-4gJ" firstAttribute="top" secondItem="CKp-gy-XeD" secondAttribute="bottom" constant="20" id="dZJ-Pf-PSk"/>
-                            <constraint firstItem="CKp-gy-XeD" firstAttribute="leading" secondItem="88K-4w-x4a" secondAttribute="trailing" constant="25" id="eq9-Qi-MjC"/>
                             <constraint firstItem="YeP-hp-JvN" firstAttribute="top" secondItem="NMx-Hk-pql" secondAttribute="bottom" constant="20" id="ezO-i5-a1W"/>
                             <constraint firstItem="mrM-vm-iMk" firstAttribute="top" secondItem="gc9-tF-Ms2" secondAttribute="bottom" constant="40" id="gYE-Ee-rHL"/>
-                            <constraint firstItem="iHj-dX-4gJ" firstAttribute="top" secondItem="8Cb-tu-SEp" secondAttribute="bottom" constant="20" id="hZv-vZ-hVO"/>
-                            <constraint firstItem="iHj-dX-4gJ" firstAttribute="top" secondItem="LW0-xu-tVr" secondAttribute="bottom" constant="20" id="hrQ-6t-F4m"/>
+                            <constraint firstItem="iHj-dX-4gJ" firstAttribute="top" secondItem="8Cb-tu-SEp" secondAttribute="bottom" constant="25" id="hZv-vZ-hVO"/>
+                            <constraint firstItem="iHj-dX-4gJ" firstAttribute="top" secondItem="LW0-xu-tVr" secondAttribute="bottom" constant="29" id="m0A-BP-qbj"/>
                             <constraint firstItem="PWu-YA-ZWm" firstAttribute="centerX" secondItem="DGG-65-t0A" secondAttribute="centerX" id="pUd-tQ-Rdu"/>
                             <constraint firstItem="PWu-YA-ZWm" firstAttribute="top" secondItem="mrM-vm-iMk" secondAttribute="bottom" constant="8" id="wCW-IZ-7Lu"/>
                             <constraint firstItem="iHj-dX-4gJ" firstAttribute="leading" secondItem="eAw-iE-6bn" secondAttribute="leading" constant="68" id="wEc-fL-uHx"/>
@@ -290,9 +277,7 @@
                         <outlet property="EmailTextField" destination="PWu-YA-ZWm" id="COl-kq-21j"/>
                         <outlet property="FacebookLogin" destination="8Cb-tu-SEp" id="7zA-cP-dg4"/>
                         <outlet property="GoogleLogin" destination="LW0-xu-tVr" id="i2X-rd-aqg"/>
-                        <outlet property="GoogleLogo" destination="88K-4w-x4a" id="U8D-mF-JiN"/>
                         <outlet property="PasswordTextField" destination="MoI-ji-Hz1" id="X7I-uB-FSC"/>
-                        <outlet property="TwitterLogo" destination="Yll-0h-cEF" id="I5F-WQ-er7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EgX-vB-xGf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -638,7 +623,7 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoNoText" translatesAutoresizingMaskIntoConstraints="NO" id="mTA-hD-c0n">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="mTA-hD-c0n">
                                 <rect key="frame" x="137.66666666666666" y="122" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="Fbb-xe-ta5"/>
@@ -699,7 +684,7 @@
         <!--Root View Controller-->
         <scene sceneID="EDT-Pj-Jjp">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" doubleSided="YES" id="ibu-AM-oVI" customClass="RootViewController" customModule="OceanShare" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="ibu-AM-oVI" customClass="RootViewController" customModule="OceanShare" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lcR-ao-1JQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-4498" y="-931"/>
@@ -710,7 +695,6 @@
         <image name="facebookLogo" width="512" height="512"/>
         <image name="googleLogo" width="512" height="512"/>
         <image name="logo" width="1920" height="1920"/>
-        <image name="logoNoText" width="1320" height="1320"/>
         <image name="map" width="30" height="30"/>
         <image name="profile" width="30" height="30"/>
         <image name="settings" width="30" height="30"/>

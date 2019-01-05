@@ -34,7 +34,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         super.viewDidLoad()
         
         ref = Database.database().reference()
-        twitterLogin()
+        //twitterLogin()
     }
     
     // MARK: actions
@@ -63,6 +63,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         }
     }
     
+    // login with facebook
     @IBAction func facebookLogin(sender: AnyObject){
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self, handler:{(facebookResult, facebookError) -> Void in
             if facebookError != nil {
@@ -117,14 +118,21 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         })
     }
     
+    // login with google
     @IBAction func googleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().signIn()
     }
     
+    // login with twitter
+    @IBAction func twitterLogin(_ sender: UIButton) {
+        configureTwitter()
+    }
+    
+    
     // MARK: file private functions
     
-    fileprivate func twitterLogin() {
+    fileprivate func configureTwitter() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
             if (error != nil) {
                 print("Twitter authentication failed")
@@ -159,17 +167,10 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 })
             }
         })
-        //Todo: find a way to design the twitter button
         twitterSignInButton.frame = CGRect(x: 300, y: 200, width: 73, height: 65)
         view.addSubview(twitterSignInButton)
-        twitterSignInButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addConstraint(NSLayoutConstraint(item: twitterSignInButton, attribute: .trailing, relatedBy: .equal, toItem: self.TwitterLogo, attribute: .trailing, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: twitterSignInButton, attribute: .leading, relatedBy: .equal, toItem: self.TwitterLogo, attribute: .leading, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: twitterSignInButton, attribute: .bottom, relatedBy: .equal, toItem: self.TwitterLogo, attribute: .bottom, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: twitterSignInButton, attribute: .top, relatedBy: .equal, toItem: self.TwitterLogo, attribute: .top, multiplier: 1, constant: 0))
-        twitterSignInButton.layer.cornerRadius = 0.5 * twitterSignInButton.bounds.size.width
-        twitterSignInButton.clipsToBounds = true
-        twitterSignInButton.setImage(UIImage(named:"twitterLogo.png"), for: .normal)
+        twitterSignInButton.isHidden = true
+        twitterSignInButton.accessibilityActivate()
     }
     
 }
