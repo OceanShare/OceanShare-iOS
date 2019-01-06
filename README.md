@@ -1,5 +1,7 @@
 # OceanShare-iOS
 
+## Installation
+
 * Open 'OceanShare.xcworkspace' in Xcode.
 * Open 'OceanShare' in the 'Project Navigator'.
 * Define a Team name in the 'Signin' Part.
@@ -16,6 +18,15 @@
 * Don't remove '.gitignore' file.
 * All the used assets are located in 'Ressources/images.zip'.
 
+## Wiki
+* [Home](https://github.com/OceanShare/OceanShare-iOS/wiki)
+* [Pods](https://github.com/OceanShare/OceanShare-iOS/wiki/Pods)
+* [Firebase](https://github.com/OceanShare/OceanShare-iOS/wiki/Firebase)
+* [Facebook](https://github.com/OceanShare/OceanShare-iOS/wiki/Facebook)
+* [Twitter](https://github.com/OceanShare/OceanShare-iOS/wiki/Twitter)
+* [Google](https://github.com/OceanShare/OceanShare-iOS/wiki/Google)
+* [Mapbox](https://github.com/OceanShare/OceanShare-iOS/wiki/Mapbox)
+
 ## Useful tools & links
 * [Firebase Authentication Dashboard](https://console.firebase.google.com/u/2/project/oceanshare-1519985626980/authentication/users)
 * [Firebase Realtime Database](https://console.firebase.google.com/u/2/project/oceanshare-1519985626980/database/oceanshare-1519985626980/data)
@@ -25,25 +36,3 @@
 * [Unit Tests Tutorial](https://blog.eleven-labs.com/fr/test-unitaire-swift-xcode/)
 * [PageViewController issues](https://stackoverflow.com/questions/32299874/change-view-in-a-page-view-controller-when-button-is-pressed-in-one-of-the-contr)
 * [GidSignIn issues](https://stackoverflow.com/questions/31413937/initiate-google-signin-without-the-gidsigninbutton-but-programmatically)
-
-## Useful pod commands
-* Installation.
-```
->>> pod init
-```
-* Downloads all dependencies defined in Podfile and creates an Xcode Pods library project in ./Pods.
-```
->>> pod install
-```
-* Updates the Pods identified by the specified POD_NAMES, which is a space-delimited list of pod names. If no POD_NAMES are specified, it updates all the Pods, ignoring the contents of the Podfile.lock. This command is reserved for the update of dependencies; pod install should be used to install changes to the Podfile.
-```
->>> pod update [POD_NAMES ...]
-```
-* Shows the outdated pods in the current Podfile.lock, but only those from spec repos, not those from local/external sources.
-```
->>> pod outdated
-```
-* Deintegrate your project from CocoaPods. Removing all traces of CocoaPods from your Xcode project.
-```
->>> pod deintegrate
-```
