@@ -21,10 +21,15 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
     @IBOutlet weak var EmailTextField: UITextField!
     @IBOutlet weak var PasswordTextField: UITextField!
-    @IBOutlet weak var FacebookLogin: UIButton!
-    @IBOutlet weak var GoogleLogin: UIButton!
     @IBOutlet weak var email: UIImageView!
     @IBOutlet weak var password: UIImageView!
+    
+    @IBOutlet weak var GoogleIcon: UIButton!
+    @IBOutlet weak var FacebookIcon: UIButton!
+    @IBOutlet weak var TwitterIcon: UIButton!
+    @IBOutlet weak var BlueBackground: UIImageView!
+    @IBOutlet weak var ForgotButton: UIButton!
+    @IBOutlet weak var LoginButton: UIButton!
     
     // MARK: definitions
     
@@ -36,9 +41,42 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         ref = Database.database().reference()
         
         setupIcons()
+        setupShadows()
     }
     
     // MARK: setup
+    
+    func setupShadows() {
+        self.BlueBackground.layer.shadowColor = UIColor.black.cgColor
+        self.BlueBackground.layer.shadowOpacity = 0.3
+        self.BlueBackground.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        self.BlueBackground.layer.shadowRadius = 5.0
+        
+        self.ForgotButton.layer.shadowColor = UIColor.black.cgColor
+        self.ForgotButton.layer.shadowOpacity = 0.3
+        self.ForgotButton.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        self.ForgotButton.layer.shadowRadius = 5.0
+        
+        self.GoogleIcon.layer.shadowColor = UIColor.black.cgColor
+        self.GoogleIcon.layer.shadowOpacity = 0.3
+        self.GoogleIcon.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        self.GoogleIcon.layer.shadowRadius = 5.0
+        
+        self.FacebookIcon.layer.shadowColor = UIColor.black.cgColor
+        self.FacebookIcon.layer.shadowOpacity = 0.3
+        self.FacebookIcon.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        self.FacebookIcon.layer.shadowRadius = 5.0
+        
+        self.TwitterIcon.layer.shadowColor = UIColor.black.cgColor
+        self.TwitterIcon.layer.shadowOpacity = 0.3
+        self.TwitterIcon.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        self.TwitterIcon.layer.shadowRadius = 5.0
+        
+        self.LoginButton.layer.shadowColor = UIColor.black.cgColor
+        self.LoginButton.layer.shadowOpacity = 0.3
+        self.LoginButton.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        self.LoginButton.layer.shadowRadius = 5.0
+    }
     
     func setupIcons() {
         self.email.image = self.email.image!.withRenderingMode(.alwaysTemplate)
@@ -48,6 +86,12 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     }
     
     // MARK: actions
+    
+    
+    @IBAction func ForgotHandler(_ sender: UIButton) {
+        print("Todo")
+        return
+    }
     
     // login with email
     @IBAction func LoginButtonTapped(_ sender: UIButton) {
@@ -144,7 +188,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     fileprivate func configureTwitter() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
             if (error != nil) {
-                print("Twitter authentication failed")
+                print("Twitter authentication failed: ", error!.localizedDescription)
             } else {
                 // get the twitter credentials
                 guard let token = session?.authToken else {return}

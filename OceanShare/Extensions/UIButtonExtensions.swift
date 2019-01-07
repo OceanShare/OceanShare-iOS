@@ -9,6 +9,30 @@
 import Foundation
 import UIKit
 
+class CustomButton: UIButton {
+    
+    var shadowLayer: CAShapeLayer!
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        if shadowLayer == nil {
+            shadowLayer = CAShapeLayer()
+            shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 12).cgPath
+            shadowLayer.fillColor = UIColor.white.cgColor
+            
+            shadowLayer.shadowColor = UIColor.darkGray.cgColor
+            shadowLayer.shadowPath = shadowLayer.path
+            shadowLayer.shadowOffset = CGSize(width: 2.0, height: 2.0)
+            shadowLayer.shadowOpacity = 0.8
+            shadowLayer.shadowRadius = 2
+            
+            layer.insertSublayer(shadowLayer, at: 0)
+            //layer.insertSublayer(shadowLayer, below: nil) // also works
+        }
+    }
+}
+
 class GenericButton: UIButton {
     
     convenience init(Text: String, FontSize: CGFloat, BackgroundColor: UIColor, TitleColor: UIColor,CornerRadius: CGFloat) {
