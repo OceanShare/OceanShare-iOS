@@ -20,12 +20,6 @@
 
 ## Wiki
 * [Home](https://github.com/OceanShare/OceanShare-iOS/wiki)
-* [Pods](https://github.com/OceanShare/OceanShare-iOS/wiki/Pods)
-* [Firebase](https://github.com/OceanShare/OceanShare-iOS/wiki/Firebase)
-* [Facebook](https://github.com/OceanShare/OceanShare-iOS/wiki/Facebook)
-* [Twitter](https://github.com/OceanShare/OceanShare-iOS/wiki/Twitter)
-* [Google](https://github.com/OceanShare/OceanShare-iOS/wiki/Google)
-* [Mapbox](https://github.com/OceanShare/OceanShare-iOS/wiki/Mapbox)
 
 ## Useful tools & links
 * [Team Discussion](https://github.com/orgs/OceanShare/teams/ios)
