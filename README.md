@@ -28,7 +28,7 @@
 * [Mapbox](https://github.com/OceanShare/OceanShare-iOS/wiki/Mapbox)
 
 ## Useful tools & links
-+ [Team Discussion](https://github.com/orgs/OceanShare/teams/ios)
+* [Team Discussion](https://github.com/orgs/OceanShare/teams/ios)
 * [Firebase Authentication Dashboard](https://console.firebase.google.com/u/2/project/oceanshare-1519985626980/authentication/users)
 * [Firebase Realtime Database](https://console.firebase.google.com/u/2/project/oceanshare-1519985626980/database/oceanshare-1519985626980/data)
 * [Firebase Codelab](https://codelabs.developers.google.com/codelabs/firebase-ios-swift/#16)
