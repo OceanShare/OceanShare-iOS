@@ -17,8 +17,18 @@ class StartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
+        setupRadiant()
         setupShadows()
+    }
+    
+    // MARK: setup
+    
+    func setupRadiant() {
+        let color1 = UIColor(rgb: 0x57A1FF)
+        let color2 = UIColor(rgb: 0x6dd5ed)
+        self.StartButton.applyGradient(colours:[color1, color2])
+        self.StartButton.clipsToBounds = true
     }
     
     func setupShadows() {

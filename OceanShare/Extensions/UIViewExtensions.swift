@@ -9,18 +9,54 @@
 import Foundation
 import UIKit
 
-extension UIView {
+typealias GradientPoints = (startPoint: CGPoint, endPoint: CGPoint)
+
+enum GradientOrientation {
+    case topRightBottomLeft
+    case topLeftBottomRight
+    case horizontal
+    case vertical
     
-    func setGradientBackground(colorOne: UIColor, colorTwo: UIColor) {
-        
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = bounds
-        gradientLayer.colors = [colorOne.cgColor, colorTwo.cgColor]
-        gradientLayer.locations = [0.0, 1.0]
-        gradientLayer.startPoint = CGPoint(x: 1.0, y: 1.0)
-        gradientLayer.endPoint = CGPoint(x: 0.0, y: 0.0)
-        
-        layer.insertSublayer(gradientLayer, at: 0)
+    var startPoint : CGPoint {
+        return points.startPoint
     }
     
+    var endPoint : CGPoint {
+        return points.endPoint
+    }
+    
+    var points : GradientPoints {
+        switch self {
+        case .topRightBottomLeft:
+            return (CGPoint(x: 0.0,y: 1.0), CGPoint(x: 1.0,y: 0.0))
+        case .topLeftBottomRight:
+            return (CGPoint(x: 0.0,y: 0.0), CGPoint(x: 1,y: 1))
+        case .horizontal:
+            return (CGPoint(x: 0.0,y: 0.5), CGPoint(x: 1.0,y: 0.5))
+        case .vertical:
+            return (CGPoint(x: 0.0,y: 0.0), CGPoint(x: 0.0,y: 1.0))
+        }
+    }
+}
+
+extension UIView {
+    
+    func applyGradient(colours: [UIColor], locations: [NSNumber]? = nil) {
+        let gradient = CAGradientLayer()
+        gradient.frame = self.bounds
+        gradient.colors = colours.map { $0.cgColor }
+        gradient.locations = locations
+        self.layer.insertSublayer(gradient, at: 0)
+        self.layer.masksToBounds = false
+    }
+    
+    func applyGradient(colours: [UIColor], orientation: GradientOrientation) {
+        let gradient = CAGradientLayer()
+        gradient.frame = self.bounds
+        gradient.colors = colours.map { $0.cgColor }
+        gradient.startPoint = orientation.startPoint
+        gradient.endPoint = orientation.endPoint
+        self.layer.insertSublayer(gradient, at: 0)
+        self.layer.masksToBounds = false
+    }
 }

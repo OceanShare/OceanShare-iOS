@@ -44,11 +44,20 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         
         ref = Database.database().reference()
         
+        setupRadiant()
         setupIcons()
         setupShadows()
     }
     
     // MARK: setup
+    
+    func setupRadiant() {
+        let color1 = UIColor(rgb: 0x57A1FF)
+        let color2 = UIColor(rgb: 0x6dd5ed)
+        self.SignUpButton.applyGradient(colours:[color1, color2])
+        self.SignUpButton.clipsToBounds = true
+        self.BlueBackground.clipsToBounds = true
+    }
     
     func setupShadows() {
         self.BlueBackground.layer.shadowColor = UIColor.black.cgColor
