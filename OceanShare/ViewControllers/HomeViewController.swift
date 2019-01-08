@@ -42,11 +42,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         
         // TEST
         let hello = MGLPointAnnotation()
-        hello.coordinate = CLLocationCoordinate2D(latitude: 40.7326808, longitude: -73.9843407)
-        hello.title = "Dauphins"
-        hello.subtitle = "Présence de dauphins dans cette zone."
+        hello.coordinate = CLLocationCoordinate2D(latitude: 38.601042, longitude: 120.615990)
+        hello.title = "Storm in coming"
+        hello.subtitle = "updated : 5 minutes ago"
         mapView.addAnnotation(hello)
-        // END OF THE TEST
     }
     
     func setupIconMenu() {
@@ -79,6 +78,18 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             return CustomUserLocationAnnotationView()
         }
         return nil
+    }
+    
+    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+
+        //TEST
+        var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "hello")
+        if annotationImage == nil {
+            var image = UIImage(named: "lightning")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+            annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "hello")
+        }
+        return annotationImage
     }
     
 }
