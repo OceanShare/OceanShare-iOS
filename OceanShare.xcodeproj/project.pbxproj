@@ -11,7 +11,6 @@
 		3D7D8576AEC9FA7FBD012875 /* Pods_OceanShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 021AC87DA7218724C5919087 /* Pods_OceanShare.framework */; };
 		BF13F79E21DB512C0086F24B /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13F79D21DB512C0086F24B /* UIViewExtensions.swift */; };
 		BF3306FD21DF599000433264 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3306FC21DF599000433264 /* Helper.swift */; };
-		BF511A6A21E362F000BBF237 /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF511A6921E362F000BBF237 /* UIImageExtensions.swift */; };
 		BF56CDE621D5CB17003707A9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56CDE521D5CB17003707A9 /* HomeViewController.swift */; };
 		BF56CDEA21D5D3A7003707A9 /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56CDE921D5D3A7003707A9 /* AppUser.swift */; };
 		BF56CDEC21D5E9F7003707A9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF56CDEB21D5E9F7003707A9 /* GoogleService-Info.plist */; };
@@ -29,9 +28,6 @@
 		BF92737E21D1D57600BDCC16 /* OceanShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92737D21D1D57600BDCC16 /* OceanShareTests.swift */; };
 		BF92738921D1D57600BDCC16 /* OceanShareUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92738821D1D57600BDCC16 /* OceanShareUITests.swift */; };
 		BF92739D21D231BB00BDCC16 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */; };
-		BF92739E21D231BB00BDCC16 /* UILabelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92739A21D231BB00BDCC16 /* UILabelExtensions.swift */; };
-		BF92739F21D231BB00BDCC16 /* UIButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92739B21D231BB00BDCC16 /* UIButtonExtensions.swift */; };
-		BF9273A021D231BB00BDCC16 /* UITexFieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92739C21D231BB00BDCC16 /* UITexFieldExtensions.swift */; };
 		EA5ABE72D7963E2AEB820984 /* Pods_OceanShareUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A0292141E4382E098436B6 /* Pods_OceanShareUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -63,7 +59,6 @@
 		783A9ACB1D25FB8E05ADDA5C /* Pods-OceanShareTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareTests.debug.xcconfig"; path = "Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BF13F79D21DB512C0086F24B /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		BF3306FC21DF599000433264 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
-		BF511A6921E362F000BBF237 /* UIImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
 		BF56CDE521D5CB17003707A9 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		BF56CDE921D5D3A7003707A9 /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
 		BF56CDEB21D5E9F7003707A9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -87,9 +82,6 @@
 		BF92738821D1D57600BDCC16 /* OceanShareUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceanShareUITests.swift; sourceTree = "<group>"; };
 		BF92738A21D1D57600BDCC16 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
-		BF92739A21D231BB00BDCC16 /* UILabelExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabelExtensions.swift; sourceTree = "<group>"; };
-		BF92739B21D231BB00BDCC16 /* UIButtonExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonExtensions.swift; sourceTree = "<group>"; };
-		BF92739C21D231BB00BDCC16 /* UITexFieldExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITexFieldExtensions.swift; sourceTree = "<group>"; };
 		BFCF47C021DE4B3C00F18016 /* OceanShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OceanShare.entitlements; sourceTree = "<group>"; };
 		F3A46E28483D16D19D3A09C2 /* Pods-OceanShareUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareUITests.release.xcconfig"; path = "Target Support Files/Pods-OceanShareUITests/Pods-OceanShareUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -215,12 +207,8 @@
 		BF92739721D2302200BDCC16 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				BF92739B21D231BB00BDCC16 /* UIButtonExtensions.swift */,
 				BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */,
-				BF92739A21D231BB00BDCC16 /* UILabelExtensions.swift */,
-				BF92739C21D231BB00BDCC16 /* UITexFieldExtensions.swift */,
 				BF13F79D21DB512C0086F24B /* UIViewExtensions.swift */,
-				BF511A6921E362F000BBF237 /* UIImageExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -564,12 +552,9 @@
 				BF89D37521D32EE900E522AC /* LoginViewController.swift in Sources */,
 				BF13F79E21DB512C0086F24B /* UIViewExtensions.swift in Sources */,
 				BF89D37321D32EBC00E522AC /* SignupViewController.swift in Sources */,
-				BF9273A021D231BB00BDCC16 /* UITexFieldExtensions.swift in Sources */,
 				BF7563D821DA12E700F8166B /* SettingViewController.swift in Sources */,
 				BF56CDEA21D5D3A7003707A9 /* AppUser.swift in Sources */,
-				BF92739F21D231BB00BDCC16 /* UIButtonExtensions.swift in Sources */,
 				BF3306FD21DF599000433264 /* Helper.swift in Sources */,
-				BF92739E21D231BB00BDCC16 /* UILabelExtensions.swift in Sources */,
 				BF7563D621DA0BB300F8166B /* ProfileViewController.swift in Sources */,
 				BF56CDE621D5CB17003707A9 /* HomeViewController.swift in Sources */,
 				BF89D36F21D3152800E522AC /* RootViewController.swift in Sources */,
@@ -577,7 +562,6 @@
 				BF92739D21D231BB00BDCC16 /* UIColorExtensions.swift in Sources */,
 				BF92736B21D1D57500BDCC16 /* StartViewController.swift in Sources */,
 				BF92736921D1D57500BDCC16 /* AppDelegate.swift in Sources */,
-				BF511A6A21E362F000BBF237 /* UIImageExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

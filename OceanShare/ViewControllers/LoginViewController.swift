@@ -24,11 +24,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     @IBOutlet weak var email: UIImageView!
     @IBOutlet weak var password: UIImageView!
     
-    @IBOutlet weak var GoogleIcon: UIButton!
-    @IBOutlet weak var FacebookIcon: UIButton!
-    @IBOutlet weak var TwitterIcon: UIButton!
     @IBOutlet weak var BlueBackground: UIImageView!
-    @IBOutlet weak var ForgotButton: UIButton!
     @IBOutlet weak var LoginButton: UIButton!
     
     // MARK: definitions
@@ -60,31 +56,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         self.BlueBackground.layer.shadowOpacity = 0.3
         self.BlueBackground.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         self.BlueBackground.layer.shadowRadius = 5.0
-        
-        self.ForgotButton.layer.shadowColor = UIColor.black.cgColor
-        self.ForgotButton.layer.shadowOpacity = 0.3
-        self.ForgotButton.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
-        self.ForgotButton.layer.shadowRadius = 5.0
-        
-        self.GoogleIcon.layer.shadowColor = UIColor.black.cgColor
-        self.GoogleIcon.layer.shadowOpacity = 0.3
-        self.GoogleIcon.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        self.GoogleIcon.layer.shadowRadius = 5.0
-        
-        self.FacebookIcon.layer.shadowColor = UIColor.black.cgColor
-        self.FacebookIcon.layer.shadowOpacity = 0.3
-        self.FacebookIcon.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        self.FacebookIcon.layer.shadowRadius = 5.0
-        
-        self.TwitterIcon.layer.shadowColor = UIColor.black.cgColor
-        self.TwitterIcon.layer.shadowOpacity = 0.3
-        self.TwitterIcon.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        self.TwitterIcon.layer.shadowRadius = 5.0
-        
-        self.LoginButton.layer.shadowColor = UIColor.black.cgColor
-        self.LoginButton.layer.shadowOpacity = 0.3
-        self.LoginButton.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        self.LoginButton.layer.shadowRadius = 5.0
     }
     
     func setupIcons() {

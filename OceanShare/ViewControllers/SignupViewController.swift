@@ -30,10 +30,6 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     
     @IBOutlet weak var BlueBackground: UIImageView!
     @IBOutlet weak var SignUpButton: UIButton!
-    @IBOutlet weak var GoogleIcon: UIButton!
-    @IBOutlet weak var FacebookIcon: UIButton!
-    @IBOutlet weak var TwitterIcon: UIButton!
-    
     
     // MARK: definitions
     
@@ -64,26 +60,6 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         self.BlueBackground.layer.shadowOpacity = 0.3
         self.BlueBackground.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         self.BlueBackground.layer.shadowRadius = 5.0
-        
-        self.GoogleIcon.layer.shadowColor = UIColor.black.cgColor
-        self.GoogleIcon.layer.shadowOpacity = 0.3
-        self.GoogleIcon.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        self.GoogleIcon.layer.shadowRadius = 5.0
-        
-        self.FacebookIcon.layer.shadowColor = UIColor.black.cgColor
-        self.FacebookIcon.layer.shadowOpacity = 0.3
-        self.FacebookIcon.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        self.FacebookIcon.layer.shadowRadius = 5.0
-        
-        self.TwitterIcon.layer.shadowColor = UIColor.black.cgColor
-        self.TwitterIcon.layer.shadowOpacity = 0.3
-        self.TwitterIcon.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        self.TwitterIcon.layer.shadowRadius = 5.0
-        
-        self.SignUpButton.layer.shadowColor = UIColor.black.cgColor
-        self.SignUpButton.layer.shadowOpacity = 0.3
-        self.SignUpButton.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        self.SignUpButton.layer.shadowRadius = 5.0
     }
     
     func setupIcons() {
