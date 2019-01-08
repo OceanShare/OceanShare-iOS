@@ -1071,20 +1071,20 @@
         </scene>
     </scenes>
     <resources>
-        <image name="blueSquare" width="414" height="663"/>
-        <image name="double_chevron" width="30" height="30"/>
-        <image name="double_reverse_chevron" width="30" height="30"/>
-        <image name="facebookLogo" width="170" height="170"/>
-        <image name="googleLogo" width="170" height="170"/>
+        <image name="blueSquare" width="1242" height="1990"/>
+        <image name="double_chevron" width="90" height="90"/>
+        <image name="double_reverse_chevron" width="90" height="90"/>
+        <image name="facebookLogo" width="512" height="512"/>
+        <image name="googleLogo" width="512" height="512"/>
         <image name="key" width="30" height="30"/>
-        <image name="logo" width="2666" height="2666"/>
-        <image name="mail" width="30" height="30"/>
+        <image name="logo" width="1920" height="1920"/>
+        <image name="mail" width="90" height="90"/>
         <image name="map" width="30" height="30"/>
         <image name="profile" width="30" height="30"/>
         <image name="settings" width="30" height="30"/>
-        <image name="twitterLogo" width="170" height="170"/>
+        <image name="twitterLogo" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Kfs-l7-ZIh"/>
+        <segue reference="xi1-wM-fVC"/>
     </inferredMetricsTieBreakers>
 </document>

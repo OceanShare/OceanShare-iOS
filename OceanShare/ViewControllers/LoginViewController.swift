@@ -37,7 +37,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         // Dismiss Keyboard by clicking anywhere
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         
-        
         ref = Database.database().reference()
         
         setupView()
