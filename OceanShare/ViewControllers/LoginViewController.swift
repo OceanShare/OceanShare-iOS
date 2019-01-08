@@ -24,7 +24,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     @IBOutlet weak var email: UIImageView!
     @IBOutlet weak var password: UIImageView!
     
-    @IBOutlet weak var BlueBackground: UIImageView!
+    @IBOutlet weak var background: UIImageView!
     @IBOutlet weak var LoginButton: UIButton!
     
     // MARK: definitions
@@ -36,29 +36,19 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         
         ref = Database.database().reference()
         
-        setupRadiant()
-        setupIcons()
-        setupShadows()
+        setupView()
     }
     
     // MARK: setup
     
-    func setupRadiant() {
+    func setupView() {
         let color1 = UIColor(rgb: 0x57A1FF)
         let color2 = UIColor(rgb: 0x6dd5ed)
-        self.LoginButton.applyGradient(colours:[color1, color2])
-        self.LoginButton.clipsToBounds = true
-        self.BlueBackground.clipsToBounds = true
-    }
-    
-    func setupShadows() {
-        self.BlueBackground.layer.shadowColor = UIColor.black.cgColor
-        self.BlueBackground.layer.shadowOpacity = 0.3
-        self.BlueBackground.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        self.BlueBackground.layer.shadowRadius = 5.0
-    }
-    
-    func setupIcons() {
+        self.LoginButton.applyGradient(colours:[color1, color2], corner:27.5)
+        
+        self.background.layer.cornerRadius = 16
+        self.background.clipsToBounds = true
+        
         self.email.image = self.email.image!.withRenderingMode(.alwaysTemplate)
         self.email.tintColor = UIColor(rgb: 0xFFFFFF)
         self.password.image = self.password.image!.withRenderingMode(.alwaysTemplate)
@@ -66,7 +56,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     }
     
     // MARK: actions
-    
     
     @IBAction func ForgotHandler(_ sender: UIButton) {
         print("Todo")

@@ -147,21 +147,27 @@ extension UIView {
     
     // MARK: gradient functions
     
-    func applyGradient(colours: [UIColor], locations: [NSNumber]? = nil) {
+    func applyGradient(colours: [UIColor], corner: CGFloat? = nil, locations: [NSNumber]? = nil) {
         let gradient = CAGradientLayer()
         gradient.frame = self.bounds
         gradient.colors = colours.map { $0.cgColor }
         gradient.locations = locations
+        if corner != nil {
+            gradient.cornerRadius = corner!
+        }
         self.layer.insertSublayer(gradient, at: 0)
         self.layer.masksToBounds = false
     }
     
-    func applyGradient(colours: [UIColor], orientation: GradientOrientation) {
+    func applyGradient(colours: [UIColor], corner: CGFloat? = nil, orientation: GradientOrientation) {
         let gradient = CAGradientLayer()
         gradient.frame = self.bounds
         gradient.colors = colours.map { $0.cgColor }
         gradient.startPoint = orientation.startPoint
         gradient.endPoint = orientation.endPoint
+        if corner != nil {
+            gradient.cornerRadius = corner!
+        }
         self.layer.insertSublayer(gradient, at: 0)
         self.layer.masksToBounds = false
     }
