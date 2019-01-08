@@ -19,13 +19,14 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
     // MARK: outlets
     
-    @IBOutlet weak var EmailTextField: UITextField!
-    @IBOutlet weak var PasswordTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    
     @IBOutlet weak var email: UIImageView!
     @IBOutlet weak var password: UIImageView!
     
     @IBOutlet weak var background: UIImageView!
-    @IBOutlet weak var LoginButton: UIButton!
+    @IBOutlet weak var loginButton: UIButton!
     
     // MARK: definitions
     
@@ -34,7 +35,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Dismiss Keyboard by clicking anywhere
+        // dismiss Keyboard by clicking anywhere
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         
         ref = Database.database().reference()
@@ -47,7 +48,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     func setupView() {
         let color1 = UIColor(rgb: 0x57A1FF)
         let color2 = UIColor(rgb: 0x6dd5ed)
-        self.LoginButton.applyGradient(colours:[color1, color2], corner:27.5)
+        self.loginButton.applyGradient(colours:[color1, color2], corner:27.5)
         
         self.background.layer.cornerRadius = 16
         self.background.clipsToBounds = true
@@ -60,16 +61,16 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
     // MARK: actions
     
-    @IBAction func ForgotHandler(_ sender: UIButton) {
+    @IBAction func forgotHandler(_ sender: UIButton) {
         print("Todo")
         return
     }
     
     // login with email
-    @IBAction func LoginButtonTapped(_ sender: UIButton) {
+    @IBAction func loginButtonTapped(_ sender: UIButton) {
         
-        guard let email = EmailTextField.text else { return }
-        guard let password = PasswordTextField.text else { return }
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
         
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if let err = error {
@@ -192,6 +193,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 })
             }
         })
+        // hide the true and unconfigurable twitter button
         twitterSignInButton.frame = CGRect(x: 300, y: 200, width: 73, height: 65)
         view.addSubview(twitterSignInButton)
         twitterSignInButton.isHidden = true

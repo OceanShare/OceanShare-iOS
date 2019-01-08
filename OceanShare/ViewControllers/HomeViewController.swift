@@ -16,53 +16,65 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     // MARK: definitions
     
     let point = MGLPointAnnotation()
-    fileprivate let actionButton = JJFloatingActionButton()
+    let actionButton = JJFloatingActionButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        setupMapbox()
+        setupIconMenu()
+    }
+    
+    // MARK : setups
+    
+    func setupMapbox() {
         let mapView = MGLMapView(frame: view.bounds)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.delegate = self
         
-        // Enable heading tracking mode so that the arrow will appear.
+        // enable heading tracking mode (arrow will appear)
         mapView.userTrackingMode = .followWithHeading
         
-        // Enable the permanent heading indicator, which will appear when the tracking mode is not `.followWithHeading`.
+        // enable the permanent heading indicator which will appear when the tracking mode is not `.followWithHeading`.
         mapView.showsUserHeadingIndicator = true
         
         view.addSubview(mapView)
         
-        // Declare the marker and set its coordinates, title, and subtitle.
+        // TEST
         let hello = MGLPointAnnotation()
         hello.coordinate = CLLocationCoordinate2D(latitude: 40.7326808, longitude: -73.9843407)
         hello.title = "Dauphins"
         hello.subtitle = "Présence de dauphins dans cette zone."
+        mapView.addAnnotation(hello)
+        // END OF THE TEST
+    }
+    
+    func setupIconMenu() {
+        actionButton.buttonColor = UIColor(rgb: 0x57A1FF)
         
-        mapView.addAnnotation(hello) // Add marker `hello` to the map.
-        
-        // icon menu implementation
+        // list the icon buttons
         actionButton.addItem(title: "Immigrants", image: UIImage(named: "lifesaver")?.withRenderingMode(.alwaysTemplate)) { item in
             Helper.showAlert(for: item)
         }
-        actionButton.addItem(title: "Strom", image: UIImage(named: "cloud")?.withRenderingMode(.alwaysTemplate)) { item in
+        actionButton.addItem(title: "Strom", image: UIImage(named: "lightning")?.withRenderingMode(.alwaysTemplate)) { item in
             Helper.showAlert(for: item)
         }
         actionButton.addItem(title: "Destination", image: UIImage(named: "define_location")?.withRenderingMode(.alwaysTemplate)) { item in
             Helper.showAlert(for: item)
         }
+        
         actionButton.display(inViewController: self)
     }
     
-    // MARK : Functions
+    // MARK: mapbox annotation functions
     
-    // Allow callout view to appear when an annotation is tapped.
+    // allow callout view to appear when an annotation is tapped.
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
         return true
     }
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
-        // Substitute our custom view for the user location annotation. This custom view is defined below.
+        // substitute custom view for the user location annotation. This custom view is defined below.
         if annotation is MGLUserLocation && mapView.userLocation != nil {
             return CustomUserLocationAnnotationView()
         }
@@ -71,7 +83,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
 }
 
-// Create a subclass of MGLUserLocationAnnotationView.
+// create a subclass of MGLUserLocationAnnotationView.
 class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     let size: CGFloat = 48
     var dot: CALayer!
@@ -84,7 +96,7 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
             return setNeedsLayout()
         }
         
-        // Check whether we have the user’s location yet.
+        // check whether we have the user’s location yet.
         if CLLocationCoordinate2DIsValid(userLocation!.coordinate) {
             setupLayers()
             updateHeading()
@@ -92,16 +104,12 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     }
     
     private func updateHeading() {
-        // Show the heading arrow, if the heading of the user is available.
         if let heading = userLocation!.heading?.trueHeading {
             arrow.isHidden = false
-            
-            // Get the difference between the map’s current direction and the user’s heading, then convert it from degrees to radians.
+
             let rotation: CGFloat = -MGLRadiansFromDegrees(mapView!.direction - heading)
             
-            // If the difference would be perceptible, rotate the arrow.
             if abs(rotation) > 0.01 {
-                // Disable implicit animations of this rotation, which reduces lag between changes.
                 CATransaction.begin()
                 CATransaction.setDisableActions(true)
                 arrow.setAffineTransform(CGAffineTransform.identity.rotated(by: rotation))
