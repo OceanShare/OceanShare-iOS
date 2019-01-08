@@ -34,6 +34,10 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Dismiss Keyboard by clicking anywhere
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        
+        
         ref = Database.database().reference()
         
         setupView()
