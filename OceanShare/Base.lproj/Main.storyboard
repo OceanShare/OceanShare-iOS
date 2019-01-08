@@ -155,6 +155,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" textContentType="email"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="doneAccessory" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nL7-bw-ysa">
                                 <rect key="frame" x="30" y="313.33333333333331" width="88" height="27.333333333333314"/>
@@ -171,6 +174,9 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES" textContentType="password"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="doneAccessory" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ts1-lW-8fa" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
                                 <rect key="frame" x="244" y="413.66666666666669" width="140" height="30"/>
@@ -730,6 +736,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" textContentType="email"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="doneAccessory" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                             <textField opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8tq-jb-JCZ">
                                 <rect key="frame" x="30" y="213.33333333333334" width="354" height="40"/>
@@ -739,6 +748,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" textContentType="name"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="doneAccessory" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bOk-aN-6bg">
                                 <rect key="frame" x="30" y="364.66666666666669" width="90" height="27.333333333333314"/>
@@ -757,6 +769,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES" textContentType="password"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="doneAccessory" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                             <textField opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bQa-fG-H6k">
                                 <rect key="frame" x="30" y="493.33333333333326" width="354" height="40"/>
@@ -766,6 +781,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES" textContentType="password"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="doneAccessory" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBQ-zF-gbt" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
                                 <rect key="frame" x="107" y="576" width="200" height="55"/>
@@ -1053,20 +1071,20 @@
         </scene>
     </scenes>
     <resources>
-        <image name="blueSquare" width="1242" height="1990"/>
-        <image name="double_chevron" width="90" height="90"/>
-        <image name="double_reverse_chevron" width="90" height="90"/>
-        <image name="facebookLogo" width="512" height="512"/>
-        <image name="googleLogo" width="512" height="512"/>
+        <image name="blueSquare" width="414" height="663"/>
+        <image name="double_chevron" width="30" height="30"/>
+        <image name="double_reverse_chevron" width="30" height="30"/>
+        <image name="facebookLogo" width="170" height="170"/>
+        <image name="googleLogo" width="170" height="170"/>
         <image name="key" width="30" height="30"/>
-        <image name="logo" width="1920" height="1920"/>
-        <image name="mail" width="90" height="90"/>
+        <image name="logo" width="2666" height="2666"/>
+        <image name="mail" width="30" height="30"/>
         <image name="map" width="30" height="30"/>
         <image name="profile" width="30" height="30"/>
         <image name="settings" width="30" height="30"/>
-        <image name="twitterLogo" width="512" height="512"/>
+        <image name="twitterLogo" width="170" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xi1-wM-fVC"/>
+        <segue reference="Kfs-l7-ZIh"/>
     </inferredMetricsTieBreakers>
 </document>

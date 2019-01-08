@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		201E152B21E4C0E500050361 /* UITextFieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E152A21E4C0E500050361 /* UITextFieldExtensions.swift */; };
 		3498DFD13C988E4213C9BCE5 /* Pods_OceanShareTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 171220035AD7E9421089E428 /* Pods_OceanShareTests.framework */; };
 		3D7D8576AEC9FA7FBD012875 /* Pods_OceanShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 021AC87DA7218724C5919087 /* Pods_OceanShare.framework */; };
 		BF13F79E21DB512C0086F24B /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13F79D21DB512C0086F24B /* UIViewExtensions.swift */; };
@@ -53,10 +54,16 @@
 		0985869BCDEAEE7E3CBB2736 /* Pods-OceanShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShare.debug.xcconfig"; path = "Target Support Files/Pods-OceanShare/Pods-OceanShare.debug.xcconfig"; sourceTree = "<group>"; };
 		0FA63FB964274DCB0FB79200 /* Pods-OceanShareUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareUITests.debug.xcconfig"; path = "Target Support Files/Pods-OceanShareUITests/Pods-OceanShareUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		171220035AD7E9421089E428 /* Pods_OceanShareTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OceanShareTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		201E152A21E4C0E500050361 /* UITextFieldExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtensions.swift; sourceTree = "<group>"; };
+		239DA7E7CD38ECD4624B616E /* Pods-OceanShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OceanShare/Pods-OceanShare.debug.xcconfig"; sourceTree = "<group>"; };
+		402D65104966B6F9DD9BB56F /* Pods-OceanShareUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-OceanShareUITests/Pods-OceanShareUITests.release.xcconfig"; sourceTree = "<group>"; };
 		5B98B2C021BDD53E48470BE3 /* Pods-OceanShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShare.release.xcconfig"; path = "Target Support Files/Pods-OceanShare/Pods-OceanShare.release.xcconfig"; sourceTree = "<group>"; };
 		63A0292141E4382E098436B6 /* Pods_OceanShareUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OceanShareUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74C98D08BEE164993E9B1C50 /* Pods-OceanShareTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareTests.release.xcconfig"; path = "Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests.release.xcconfig"; sourceTree = "<group>"; };
 		783A9ACB1D25FB8E05ADDA5C /* Pods-OceanShareTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareTests.debug.xcconfig"; path = "Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8B215D977B3A5F9731F6C755 /* Pods-OceanShareUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OceanShareUITests/Pods-OceanShareUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		A235FBDF1316F4A5382A4E87 /* Pods-OceanShareTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B18E3662CF66F9CED73A4100 /* Pods-OceanShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShare.release.xcconfig"; path = "Pods/Target Support Files/Pods-OceanShare/Pods-OceanShare.release.xcconfig"; sourceTree = "<group>"; };
 		BF13F79D21DB512C0086F24B /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		BF3306FC21DF599000433264 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		BF56CDE521D5CB17003707A9 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -83,6 +90,7 @@
 		BF92738A21D1D57600BDCC16 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		BFCF47C021DE4B3C00F18016 /* OceanShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OceanShare.entitlements; sourceTree = "<group>"; };
+		E3BCBE1CA27A9FBC058526E4 /* Pods-OceanShareTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests.release.xcconfig"; sourceTree = "<group>"; };
 		F3A46E28483D16D19D3A09C2 /* Pods-OceanShareUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareUITests.release.xcconfig"; path = "Target Support Files/Pods-OceanShareUITests/Pods-OceanShareUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -209,6 +217,7 @@
 			children = (
 				BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */,
 				BF13F79D21DB512C0086F24B /* UIViewExtensions.swift */,
+				201E152A21E4C0E500050361 /* UITextFieldExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -231,6 +240,12 @@
 				74C98D08BEE164993E9B1C50 /* Pods-OceanShareTests.release.xcconfig */,
 				0FA63FB964274DCB0FB79200 /* Pods-OceanShareUITests.debug.xcconfig */,
 				F3A46E28483D16D19D3A09C2 /* Pods-OceanShareUITests.release.xcconfig */,
+				239DA7E7CD38ECD4624B616E /* Pods-OceanShare.debug.xcconfig */,
+				B18E3662CF66F9CED73A4100 /* Pods-OceanShare.release.xcconfig */,
+				A235FBDF1316F4A5382A4E87 /* Pods-OceanShareTests.debug.xcconfig */,
+				E3BCBE1CA27A9FBC058526E4 /* Pods-OceanShareTests.release.xcconfig */,
+				8B215D977B3A5F9731F6C755 /* Pods-OceanShareUITests.debug.xcconfig */,
+				402D65104966B6F9DD9BB56F /* Pods-OceanShareUITests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -382,7 +397,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OceanShare/Pods-OceanShare-resources.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-OceanShare/Pods-OceanShare-resources.sh",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterKitResources.bundle",
 			);
@@ -395,7 +410,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OceanShare/Pods-OceanShare-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OceanShare/Pods-OceanShare-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		49FFC76F69001DE8EE890864 /* [CP] Check Pods Manifest.lock */ = {
@@ -472,7 +487,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OceanShare/Pods-OceanShare-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-OceanShare/Pods-OceanShare-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
@@ -515,7 +530,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OceanShare/Pods-OceanShare-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OceanShare/Pods-OceanShare-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E9C6D9E7F1415C24CCCA787D /* [CP] Embed Pods Frameworks */ = {
@@ -526,7 +541,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -539,7 +554,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -554,6 +569,7 @@
 				BF89D37321D32EBC00E522AC /* SignupViewController.swift in Sources */,
 				BF7563D821DA12E700F8166B /* SettingViewController.swift in Sources */,
 				BF56CDEA21D5D3A7003707A9 /* AppUser.swift in Sources */,
+				201E152B21E4C0E500050361 /* UITextFieldExtensions.swift in Sources */,
 				BF3306FD21DF599000433264 /* Helper.swift in Sources */,
 				BF7563D621DA0BB300F8166B /* ProfileViewController.swift in Sources */,
 				BF56CDE621D5CB17003707A9 /* HomeViewController.swift in Sources */,
@@ -739,13 +755,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = OceanShare/OceanShare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = E9E8YC38ND;
+				DEVELOPMENT_TEAM = 296TH9R9KK;
 				INFOPLIST_FILE = OceanShare/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = OceanShare;
+				PRODUCT_BUNDLE_IDENTIFIER = OceanShareHugo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -754,18 +770,18 @@
 		};
 		BF92738F21D1D57600BDCC16 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B98B2C021BDD53E48470BE3 /* Pods-OceanShare.release.xcconfig */;
+			baseConfigurationReference = B18E3662CF66F9CED73A4100 /* Pods-OceanShare.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = OceanShare/OceanShare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = E9E8YC38ND;
+				DEVELOPMENT_TEAM = 296TH9R9KK;
 				INFOPLIST_FILE = OceanShare/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = OceanShare;
+				PRODUCT_BUNDLE_IDENTIFIER = OceanShareHugo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -774,7 +790,7 @@
 		};
 		BF92739121D1D57600BDCC16 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 783A9ACB1D25FB8E05ADDA5C /* Pods-OceanShareTests.debug.xcconfig */;
+			baseConfigurationReference = A235FBDF1316F4A5382A4E87 /* Pods-OceanShareTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -796,7 +812,7 @@
 		};
 		BF92739221D1D57600BDCC16 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 74C98D08BEE164993E9B1C50 /* Pods-OceanShareTests.release.xcconfig */;
+			baseConfigurationReference = E3BCBE1CA27A9FBC058526E4 /* Pods-OceanShareTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -818,7 +834,7 @@
 		};
 		BF92739421D1D57600BDCC16 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0FA63FB964274DCB0FB79200 /* Pods-OceanShareUITests.debug.xcconfig */;
+			baseConfigurationReference = 8B215D977B3A5F9731F6C755 /* Pods-OceanShareUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -839,7 +855,7 @@
 		};
 		BF92739521D1D57600BDCC16 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F3A46E28483D16D19D3A09C2 /* Pods-OceanShareUITests.release.xcconfig */;
+			baseConfigurationReference = 402D65104966B6F9DD9BB56F /* Pods-OceanShareUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
