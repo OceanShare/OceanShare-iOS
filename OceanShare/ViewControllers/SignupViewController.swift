@@ -32,9 +32,18 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     @IBOutlet weak var background: UIImageView!
     @IBOutlet weak var signUpButton: UIButton!
     
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+
     // MARK: definitions
     
     var ref: DatabaseReference!
+    
+    var currentTappedTextField : UITextField?
+    //use this method to get tapped textField
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        currentTappedTextField = textField
+        return true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,9 +51,21 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         // dismiss Keyboard by clicking anywhere
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         
+        // Listen To keyboardsEvent
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        
         ref = Database.database().reference()
         
         setupView()
+    }
+    
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     // MARK: setup
@@ -178,6 +199,20 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         configureTwitter()
     }
     
+    @objc func keyboardWillChange(notification: Notification) {
+        guard let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        
+        /*
+        if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification {
+            view.frame.origin.y = -keyboardRect.height
+        }
+        else
+        {
+            view.frame.origin.y = 0
+        }
+ */
+    }
+    
     // MARK: configuration
     
     fileprivate func configureTwitter() {
@@ -221,6 +256,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         twitterSignInButton.isHidden = true
         twitterSignInButton.accessibilityActivate()
     }
+    
     
     // MARK : error handling
     
