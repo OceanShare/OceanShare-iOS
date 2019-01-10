@@ -25,7 +25,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             guard let name = appUser?.name else { return }
             guard let emailAddress = appUser?.email else { return }
             
-            navigationItem.title = "Profile"
             titleLabel.text = "Hello " + name + " !"
             userName.text = name
             userEmailAddress.text = emailAddress
@@ -36,15 +35,17 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     // MARK: outlets
 
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var userImage: UIImageView!
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var userEmailAddress: UILabel!
     @IBOutlet weak var userShipName: UILabel!
+    @IBOutlet weak var profilePicture: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         ref = Database.database().reference()
+        
+        setupView()
         fetchUserInfo()
         
         
@@ -97,17 +98,23 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
     }
 
+    // MARK: setup function
+    
+    func setupView() {
+        self.profilePicture.layer.cornerRadius = 75
+        self.profilePicture.clipsToBounds = true
+    }
+    
     // MARK: actions
     
-    /*@IBAction func uploadImageButton(_ sender: UIButton) {
+    @IBAction func changeProfilePicture(_ sender: UIButton) {
         let picker = UIImagePickerController()
         
         picker.delegate = self
         picker.allowsEditing = true
         picker.sourceType = UIImagePickerController.SourceType.photoLibrary
         self.present(picker, animated: true, completion: nil)
-        
-    }*/
+    }
     
     @IBAction func handleLogout(_ sender: UIButton) {
         do {

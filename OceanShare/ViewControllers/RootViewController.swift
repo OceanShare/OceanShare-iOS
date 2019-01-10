@@ -38,31 +38,6 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         configurePageControl()
     }
     
-    /*
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        let pageVC = UIPageControl()
-        
-        for view in self.view.subviews {
-            if view is UIScrollView {
-                let pageControl = UIPageControl()
-                pageControl.pageIndicatorTintColor = UIColor.gray
-                pageControl.currentPageIndicatorTintColor = UIColor.blue
-                pageControl.backgroundColor = UIColor.darkGray
-                pageControl.numberOfPages = viewControllerList.count
-                pageControl.center = self.view.center
-                self.view.addSubview(pageControl)
-                pageControl.layer.position.y = self.view.frame.height - 100;
-            } else if view is UIPageControl {
-                view.backgroundColor = UIColor.clear
-                pageVC.numberOfPages = 3
-                pageVC.center = self.view.center
-                pageVC.layer.position.y = self.view.frame.height - 180 ;
-                
-            }
-        }
-    }*/
-    
     // MARK: data source functions
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {

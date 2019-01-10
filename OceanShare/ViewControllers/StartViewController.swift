@@ -27,7 +27,6 @@ class StartViewController: UIViewController {
         let color1 = UIColor(rgb: 0x57A1FF)
         let color2 = UIColor(rgb: 0x6dd5ed)
         self.StartButton.applyGradient(colours:[color1, color2], corner:27.5)
-        //self.StartButton.clipsToBounds = true
     }
     
 }

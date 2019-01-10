@@ -19,17 +19,18 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     
     // MARK: outlets
     
-    @IBOutlet weak var NameTextField: UITextField!
-    @IBOutlet weak var EmailTextField: UITextField!
-    @IBOutlet weak var PasswordTextField: UITextField!
-    @IBOutlet weak var ConfirmTextField: UITextField!
+    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var confirmTextField: UITextField!
+    
     @IBOutlet weak var name: UIImageView!
     @IBOutlet weak var email: UIImageView!
     @IBOutlet weak var password: UIImageView!
     @IBOutlet weak var confirm: UIImageView!
     
     @IBOutlet weak var background: UIImageView!
-    @IBOutlet weak var SignUpButton: UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
 
@@ -47,7 +48,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Dismiss Keyboard by clicking anywhere
+        // dismiss Keyboard by clicking anywhere
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         
         // Listen To keyboardsEvent
@@ -72,7 +73,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     func setupView() {
         let color1 = UIColor(rgb: 0x57A1FF)
         let color2 = UIColor(rgb: 0x6dd5ed)
-        self.SignUpButton.applyGradient(colours:[color1, color2], corner:27.5)
+        self.signUpButton.applyGradient(colours:[color1, color2], corner:27.5)
         
         self.background.layer.cornerRadius = 16
         self.background.clipsToBounds = true
@@ -89,11 +90,11 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
 
     // MARK: actions
     
-    @IBAction func RegisterButtonTapped(_ sender: UIButton) {
+    @IBAction func registerButtonTapped(_ sender: UIButton) {
         
-        let name = NameTextField.text
-        let email = EmailTextField.text
-        let password = PasswordTextField.text
+        let name = nameTextField.text
+        let email = emailTextField.text
+        let password = passwordTextField.text
         
         // define the database structure
         let userData: [String: Any] = [
@@ -101,11 +102,11 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
             "email": email as Any
         ]
         
-        if (email?.isEmpty)! || (password?.isEmpty)! || (ConfirmTextField.text?.isEmpty)! || (NameTextField.text?.isEmpty)! {
+        if (email?.isEmpty)! || (password?.isEmpty)! || (confirmTextField.text?.isEmpty)! || (nameTextField.text?.isEmpty)! {
             displayMessage(userMessage: "All Field are required")
             return
         }
-        if ((ConfirmTextField.text?.elementsEqual(password!))! != true) {
+        if ((confirmTextField.text?.elementsEqual(password!))! != true) {
             displayMessage(userMessage: "Please make sure that passwords match")
             return
         } else {
@@ -249,6 +250,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                 })
             }
         })
+        // hide the true and unconfigurable twitter button
         twitterSignInButton.frame = CGRect(x: 300, y: 200, width: 73, height: 65)
         view.addSubview(twitterSignInButton)
         twitterSignInButton.isHidden = true
@@ -262,7 +264,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         DispatchQueue.main.async {
                 let alertController = UIAlertController(title: "Alert", message: userMessage, preferredStyle: .alert)
                 let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
-                    // Code in this block will trigger when OK button tapped.
+                    // code in this block will trigger when 'ok' button tapped.
                     DispatchQueue.main.async {
                         self.dismiss(animated: true, completion: nil)
                     }
