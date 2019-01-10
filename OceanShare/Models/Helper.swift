@@ -13,6 +13,7 @@ import UIKit
 internal struct Helper {
     static func showAlert(for item: JJActionItem) {
         showAlert(title: item.titleLabel.text, message: "Item tapped!")
+        print("Item tapped")
     }
     
     static func showAlert(title: String?, message: String?) {
