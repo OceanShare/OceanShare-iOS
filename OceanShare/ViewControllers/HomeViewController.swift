@@ -21,13 +21,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupMapbox()
-        setupIconMenu()
+        setupMapBox()
     }
     
     // MARK : setups
     
-    func setupMapbox() {
+    func setupMapBox() {
         let mapView = MGLMapView(frame: view.bounds)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.delegate = self
@@ -40,15 +39,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         
         view.addSubview(mapView)
         
-        // TEST
-        let hello = MGLPointAnnotation()
-        hello.coordinate = CLLocationCoordinate2D(latitude: 38.601042, longitude: 120.615990)
-        hello.title = "Storm in coming"
-        hello.subtitle = "updated : 5 minutes ago"
-        mapView.addAnnotation(hello)
-    }
-    
-    func setupIconMenu() {
         actionButton.buttonColor = UIColor(rgb: 0x57A1FF)
         
         // list the icon buttons
@@ -79,6 +69,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             dest.coordinate = CLLocationCoordinate2D(latitude: 26.218915, longitude: 50.605185)
             dest.title = "Destination"
             dest.subtitle = "Oui"
+            
             mapView.addAnnotation(dest)
         }
         
@@ -87,13 +78,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     // MARK: mapbox annotation functions
     
-    // allow callout view to appear when an annotation is tapped.
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
         return true
     }
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
-        // substitute custom view for the user location annotation. This custom view is defined below.
         if annotation is MGLUserLocation && mapView.userLocation != nil {
             return CustomUserLocationAnnotationView()
         }
@@ -101,39 +90,37 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     }
 
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
-        // Try to reuse the existing ‘pisa’ annotation image, if it exists.
-     //   var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "Bouer")
         
+        // var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "Bouer")
         var test = MGLAnnotationImage()
         
-     //   if test == nil {
-            print("TEST")
-            if annotation.title == "Bouer" {
-                var image = UIImage(named: "lifesaver")!
-                image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-                test = MGLAnnotationImage(image: image, reuseIdentifier: "Bouer")
-            }
-            else if annotation.title == "Storm" {
-                var image = UIImage(named: "cloud")!
-                image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-                test = MGLAnnotationImage(image: image, reuseIdentifier: "storm")
-            }
-            else {
-                var image = UIImage(named: "define_location")!
-                image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-                test = MGLAnnotationImage(image: image, reuseIdentifier: "dest")
-        }
-      /*      var image = UIImage(named: "lifesaver")!
+        // if test == nil {
+        print("TEST")
+        if annotation.title == "Bouer" {
+            var image = UIImage(named: "lifesaver")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-            annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "Bouer") */
-       // }
+            test = MGLAnnotationImage(image: image, reuseIdentifier: "Bouer")
+        } else if annotation.title == "Storm" {
+            var image = UIImage(named: "lightning")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+            test = MGLAnnotationImage(image: image, reuseIdentifier: "storm")
+        } else {
+            var image = UIImage(named: "define_location")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+            test = MGLAnnotationImage(image: image, reuseIdentifier: "dest")
+        }
+        
+        /* var image = UIImage(named: "lifesaver")!
+        image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+        annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "Bouer")*/
         
         return test
     }
 
 }
 
-// create a subclass of MGLUserLocationAnnotationView.
+// MARK: custum class
+
 class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     let size: CGFloat = 48
     var dot: CALayer!

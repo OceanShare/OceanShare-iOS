@@ -48,9 +48,6 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // dismiss Keyboard by clicking anywhere
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-        
         // Listen To keyboardsEvent
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -61,7 +58,6 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         setupView()
     }
     
-    
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -71,6 +67,8 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     // MARK: setup
     
     func setupView() {
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        
         let color1 = UIColor(rgb: 0x57A1FF)
         let color2 = UIColor(rgb: 0x6dd5ed)
         self.signUpButton.applyGradient(colours:[color1, color2], corner:27.5)

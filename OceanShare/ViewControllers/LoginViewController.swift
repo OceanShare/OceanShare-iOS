@@ -35,9 +35,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // dismiss Keyboard by clicking anywhere
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-        
         ref = Database.database().reference()
         
         setupView()
@@ -46,6 +43,8 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     // MARK: setup
     
     func setupView() {
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        
         let color1 = UIColor(rgb: 0x57A1FF)
         let color2 = UIColor(rgb: 0x6dd5ed)
         self.loginButton.applyGradient(colours:[color1, color2], corner:27.5)

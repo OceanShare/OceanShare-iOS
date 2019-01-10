@@ -48,14 +48,18 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupView()
         fetchUserInfo()
         
+        setupProfilePicture()
+    }
+    
+    // MARK: image picker functions
+    
+    func setupProfilePicture() {
+        self.profilePicture.image = UIImage(named: "OceanShare_Profile_Pick")
+        self.profilePicture.translatesAutoresizingMaskIntoConstraints = false
+        self.profilePicture.contentMode = .scaleAspectFill
         
-        userImage.image = UIImage(named: "OceanShare_Profile_Pick")
-        userImage.translatesAutoresizingMaskIntoConstraints = false
-        userImage.contentMode = .scaleAspectFill
-        
-        userImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView)))
-        userImage.isUserInteractionEnabled = true
-        
+        self.profilePicture.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView)))
+        self.profilePicture.isUserInteractionEnabled = true
     }
     
     @objc func handleSelectProfileImageView() {
@@ -71,7 +75,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         // Local variable inserted by Swift 4.2 migrator.
         let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         
-        
         var selectedImageFromPicker: UIImage?
         
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
@@ -82,7 +85,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
         
         if let selectedImage = selectedImageFromPicker {
-            userImage.image = selectedImage
+            profilePicture.image = selectedImage
         }
         
         dismiss(animated: true, completion: nil)
@@ -129,61 +132,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
     
-    /*@IBAction func handleSave(_ sender: UIButton) {
-        
-        print("Saving changes.")
-        saveChanges()
-        
-    }*/
-    
-    // MARK: functions
-    
-    /*func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        var selectedImageFromPicker: UIImage?
-        
-        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
-            selectedImageFromPicker = editedImage
-        } else if let originalImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
-            selectedImageFromPicker = originalImage
-        }
-        if let selectedImage = selectedImageFromPicker {
-            profileImage.image = selectedImageFromPicker
-        }
-        dismiss(animated: true, completion: nil)
-    }*/
-    
-    /*func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }*/
-    
-    /*func saveChanges() {
-        let imageName = NSUUID().uuidString
-        let storedImage = storageRef.child("profileImage").child(imageName)
-        
-        if let uploadData = self.profileImage.image!.pngData() {
-            storedImage.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-                if error != nil {
-                    print(error!.localizedDescription)
-                    return
-                }
-                storedImage.downloadURL(completion: { (url, error) in
-                    if error != nil {
-                        print(error!.localizedDescription)
-                        return
-                    }
-                    if let urlText = url?.absoluteString{
-                        self.ref.child("users").child((Auth.auth().currentUser?.uid)!).updateChildValues(["pic": urlText], withCompletionBlock: { (error, ref) in
-                            if error != nil {
-                                print(error?.localizedDescription as Any)
-                                return
-                            }
-                        })
-                    }
-                })
-            })
-        }
-        
-    }*/
+    // MARK: fetch
     
     func fetchUserInfo() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
@@ -193,12 +142,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             guard let userName = data["name"] as? String else { return }
             guard let userEmail = data["email"] as? String else { return }
             
-            // self.profileImage.layer.cornerRadius = self.profileImage.frame.size.width/2
-            /*self.profileImage.clipsToBounds = true*/
-            
             self.appUser = AppUser(name: userName, uid: userId, email: userEmail)
             
-            if let dict = snapshot.value as? [String: AnyObject] {
+            /*if let dict = snapshot.value as? [String: AnyObject] {
                 if let profileImageUrl = dict["pic"] as? String {
                     let url = URL(string: profileImageUrl)
                     URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
@@ -206,12 +152,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                             print(error?.localizedDescription as Any)
                             return
                         }
-                        DispatchQueue.main.async {
-                            /*self.profileImage.image = UIImage(data: data!)*/
-                        }
                     }).resume()
                 }
-            }
+            }*/
         }
     }
 }
