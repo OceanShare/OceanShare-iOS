@@ -25,7 +25,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             guard let name = appUser?.name else { return }
             guard let emailAddress = appUser?.email else { return }
             
-            navigationItem.title = "Profile"
             titleLabel.text = "Hello " + name + " !"
             userName.text = name
             userEmailAddress.text = emailAddress
