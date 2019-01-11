@@ -16,7 +16,7 @@ import GoogleSignIn
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    // MARK: definitions
+    // MARK: database definition
     
     var ref: DatabaseReference!
     let storageRef = FirebaseStorage.Storage().reference()
@@ -47,57 +47,62 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         setupView()
         fetchUserInfo()
-        
-        setupProfilePicture()
     }
     
     // MARK: image picker functions
     
-    func setupProfilePicture() {
-        self.profilePicture.image = UIImage(named: "OceanShare_Profile_Pick")
-        self.profilePicture.translatesAutoresizingMaskIntoConstraints = false
-        self.profilePicture.contentMode = .scaleAspectFill
-        
-        self.profilePicture.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView)))
-        self.profilePicture.isUserInteractionEnabled = true
-    }
-    
-    @objc func handleSelectProfileImageView() {
-        let picker = UIImagePickerController()
-        
-        picker.delegate = self
-        picker.allowsEditing = true
-        
-        present(picker, animated: true, completion: nil)
-    }
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        // Local variable inserted by Swift 4.2 migrator.
-        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         
         var selectedImageFromPicker: UIImage?
+        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         
-        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+        if let editedImage = info ["UIImagePickerControllerEditedImage"] as? UIImage {
             selectedImageFromPicker = editedImage
         } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
-            
             selectedImageFromPicker = originalImage
         }
         
         if let selectedImage = selectedImageFromPicker {
             profilePicture.image = selectedImage
+            
+            // upload the profile picture after picking
+            /*uploadPicture(profilePicture.image!) { url in
+            
+                if url != nil {
+                    let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+                    changeRequest?.displayName = self.appUser?.name
+                    changeRequest?.photoURL = url
+                    
+                    changeRequest?.commitChanges { error in
+                        if error == nil {
+                            print("User display name changed!")
+                            
+                            self.saveProfile(username: (self.appUser?.name)!, profileImageURL: url!) { success in
+                                if success {
+                                    print("Success")
+                                }
+                            }
+                            
+                        } else {
+                            print (error!.localizedDescription)
+                        }
+                    }
+                } else {
+                    // error unable to upload profile image
+                }
+            }*/
         }
         
         dismiss(animated: true, completion: nil)
-        
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        print("canceled picker")
+        // dismiss the image picker if the cancel button is tapped
         dismiss(animated: true, completion: nil)
     }
     
-    fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+    func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+        // swift 4 function to convert value
         return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
     }
 
@@ -112,11 +117,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     @IBAction func changeProfilePicture(_ sender: UIButton) {
         let picker = UIImagePickerController()
-        
+        present(picker, animated: true, completion: nil)
         picker.delegate = self
         picker.allowsEditing = true
-        picker.sourceType = UIImagePickerController.SourceType.photoLibrary
-        self.present(picker, animated: true, completion: nil)
+        //picker.sourceType = UIImagePickerController.SourceType.photoLibrary
+        present(picker, animated: true, completion: nil)
     }
     
     @IBAction func handleLogout(_ sender: UIButton) {
@@ -132,6 +137,47 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
     
+    // MARK: upload
+    
+    func uploadPicture(_ image: UIImage, completion: @escaping ((_ url:URL?)->())) {
+        
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let storageRef = FirebaseStorage.Storage().reference().child("user/\(userId)")
+        
+        if let uploadData = self.profilePicture.image!.pngData() {
+            
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpg"
+            
+        storageRef.putData(uploadData, metadata: metaData) { metaData, error in
+            if error == nil, metaData != nil {
+                storageRef.downloadURL(completion: { (url, error) in
+                    if error != nil {
+                        print("Failed to download url:", error!)
+                        completion(nil)
+                    } else {
+                        completion(url)
+                    }
+                })
+            } else {
+                completion(nil)
+            }}
+        }
+    }
+    
+    func saveProfile(username: String, profileImageURL: URL, completion: @escaping ((_ success:Bool)->())) {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let databaseRef = Database.database().reference().child("users/profile/\(userId)")
+        
+        let userObject = [
+            "photoURL": profileImageURL
+        ] as [String:Any]
+        
+        databaseRef.setValue(userObject) { error, ref in
+            completion(error == nil)
+        }
+    }
+    
     // MARK: fetch
     
     func fetchUserInfo() {
@@ -144,17 +190,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             
             self.appUser = AppUser(name: userName, uid: userId, email: userEmail)
             
-            /*if let dict = snapshot.value as? [String: AnyObject] {
-                if let profileImageUrl = dict["pic"] as? String {
-                    let url = URL(string: profileImageUrl)
-                    URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-                        if error != nil {
-                            print(error?.localizedDescription as Any)
-                            return
-                        }
-                    }).resume()
-                }
-            }*/
         }
     }
 }
