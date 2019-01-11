@@ -46,7 +46,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         ref = Database.database().reference()
         
         setupView()
-        fetchUserInfo()
+        
+        setupProfile()
     }
     
     // MARK: image picker functions
@@ -65,9 +66,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         if let selectedImage = selectedImageFromPicker {
             profilePicture.image = selectedImage
             
-            // upload the profile picture after picking
+            // COMMENT THIS PART TO DEBUG
             /*uploadPicture(profilePicture.image!) { url in
-            
                 if url != nil {
                     let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
                     changeRequest?.displayName = self.appUser?.name
@@ -113,6 +113,33 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.profilePicture.clipsToBounds = true
     }
     
+    func setupProfile() {
+        
+        // retrieving user info like name, email and profile picture if there is one
+        if let userId = Auth.auth().currentUser?.uid {
+            ref.child("users").child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
+                if let dict = snapshot.value as? [String: AnyObject] {
+                    self.userEmailAddress.text = dict["email"] as? String
+                    self.userName.text = dict["name"] as? String
+                    if let profileImageURL = dict["pic"] as? String
+                    {
+                        let url = URL(string: profileImageURL)
+                        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+                            if error != nil {
+                                print(error!)
+                                return
+                            }
+                            DispatchQueue.main.async {
+                                self.profilePicture?.image = UIImage(data: data!)
+                            }
+                        }).resume()
+                    }
+                }
+            })
+            
+        }
+    }
+    
     // MARK: actions
     
     @IBAction func changeProfilePicture(_ sender: UIButton) {
@@ -120,7 +147,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         present(picker, animated: true, completion: nil)
         picker.delegate = self
         picker.allowsEditing = true
-        //picker.sourceType = UIImagePickerController.SourceType.photoLibrary
+        picker.sourceType = UIImagePickerController.SourceType.photoLibrary
         present(picker, animated: true, completion: nil)
     }
     
@@ -146,22 +173,22 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         if let uploadData = self.profilePicture.image!.pngData() {
             
-        let metaData = StorageMetadata()
-        metaData.contentType = "image/jpg"
+            let metaData = StorageMetadata()
+            metaData.contentType = "image/jpg"
             
-        storageRef.putData(uploadData, metadata: metaData) { metaData, error in
-            if error == nil, metaData != nil {
-                storageRef.downloadURL(completion: { (url, error) in
-                    if error != nil {
-                        print("Failed to download url:", error!)
-                        completion(nil)
-                    } else {
-                        completion(url)
-                    }
-                })
-            } else {
-                completion(nil)
-            }}
+            storageRef.putData(uploadData, metadata: metaData) { metaData, error in
+                if error == nil, metaData != nil {
+                    storageRef.downloadURL(completion: { (url, error) in
+                        if error != nil {
+                            print("Failed to download url:", error!)
+                            completion(nil)
+                        } else {
+                            completion(url)
+                        }
+                    })
+                } else {
+                    completion(nil)
+                }}
         }
     }
     
@@ -178,18 +205,81 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
     
-    // MARK: fetch
-    
-    func fetchUserInfo() {
-        guard let userId = Auth.auth().currentUser?.uid else { return }
-        
-        ref.child("users").child(userId).observeSingleEvent(of: .value) { (snapshot) in
-            guard let data = snapshot.value as? NSDictionary else { return }
-            guard let userName = data["name"] as? String else { return }
-            guard let userEmail = data["email"] as? String else { return }
+    // THE TWO FUNCTIONS BELOW ARE THE LATEST WRITEN BY DEVELOPERS USING FIREBASE
+    /*func createProfileChangeRequest(photoUrl: URL? = nil, name: String? = nil, _ callback: ((Error?) -> ())? = nil){
+        if let request = Auth.auth().currentUser?.createProfileChangeRequest(){
+            if let name = name{
+                request.displayName = name
+            }
+            if let url = photoUrl{
+                request.photoURL = url
+            }
             
-            self.appUser = AppUser(name: userName, uid: userId, email: userEmail)
-            
+            request.commitChanges(completion: { (error) in
+                callback?(error)
+            })
         }
     }
+    
+    func updateProfileInfo(withImage image: Data? = nil, name: String? = nil, _ callback: ((Error?) -> ())? = nil){
+        guard let user = Auth.auth().currentUser else {
+            callback?(nil)
+            return
+        }
+        
+        if let image = image {
+            let profileImgReference = Storage.storage().reference().child("profile_pictures").child("\(user.uid).png")
+            
+            _ = profileImgReference.putData(image, metadata: nil) { (metadata, error) in
+                if let error = error {
+                    callback?(error)
+                } else {
+                    profileImgReference.downloadURL(completion: { (url, error) in
+                        if let url = url{
+                            self.createProfileChangeRequest(photoUrl: url, name: name, { (error) in
+                                callback?(error)
+                            })
+                        }else{
+                            callback?(error)
+                        }
+                    })
+                }
+            }
+        } else if let name = name {
+            self.createProfileChangeRequest(name: name, { (error) in
+                callback?(error)
+            })
+        }else{
+            callback?(nil)
+        }
+    }*/
+    
+    // EXEMPLE OF A SAVE FUNCTION
+    /*func saveChanges() {
+        
+        let imageName = NSUUID().uuidString
+        let storedImage = storageRef.child("profile_images").child(imageName)
+        if let uploadData = self.profilePicture.image!.pngData()
+        {
+            storedImage.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                if error != nil{
+                    print(error!)
+                    return
+                }
+                storedImage.downloadURL(completion: { (url, error) in
+                    if error != nil{
+                        print(error!)
+                        return
+                    }
+                    if let urlText = url?.absoluteString {
+                        self.ref.child("users").child((Auth.auth().currentUser?.uid)!).updateChildValues(["pic" : urlText], withCompletionBlock: { (error, ref) in
+                            if error != nil{
+                                print(error!)
+                                return
+                            }
+                        })                    }
+                })
+            })
+        }
+    }*/
 }
