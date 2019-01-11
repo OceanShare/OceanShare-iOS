@@ -13,4 +13,5 @@ struct AppUser {
     var name: String?
     var uid: String?
     var email: String?
+    //var picture: UIImageView?
 }
