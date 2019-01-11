@@ -22,8 +22,6 @@ xcuserdata/
 *.xccheckout
 *.xcscmblueprint
 
-.DS_Store
-
 ## Google API KEY
 OceanShare/GoogleService-Info.plist
 
