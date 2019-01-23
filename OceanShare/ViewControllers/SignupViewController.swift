@@ -126,6 +126,9 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                     let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                     mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
                     self.present(mainTabBarController, animated: true,completion: nil)
+                    
+                    // send an email to the email address mentioned
+                    self.sendEmailVerification()
                 }
             }
         }
@@ -151,7 +154,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                         return
                     }
                     
-                    // DO NOT DELETE -> Retrieve user profile picture
+                    // DO NOT DELETE -> Retrieve user profile picture from facebook
                     /*let response = result.unsafelyUnwrapped as! Dictionary<String,AnyObject>
                      let userData: [String: Any] = [
                      "name": response["name"] as? String,
@@ -208,7 +211,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         {
             view.frame.origin.y = 0
         }
- */
+         */
     }
     
     // MARK: configuration
@@ -256,7 +259,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     }
     
     
-    // MARK : error handling
+    // MARK: error handling
     
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
@@ -270,6 +273,14 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                 alertController.addAction(OKAction)
                 self.present(alertController, animated: true, completion:nil)
         }
+    }
+    
+    // MARK: checks user email
+    
+    func sendEmailVerification(_ callback: ((Error?) -> ())? = nil){
+        Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
+            callback?(error)
+        })
     }
     
 }

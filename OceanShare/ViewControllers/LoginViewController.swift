@@ -61,7 +61,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     // MARK: actions
     
     @IBAction func forgotHandler(_ sender: UIButton) {
-        print("Todo")
+        //sendPasswordReset(withEmail: <#T##String#>)
         return
     }
     
@@ -81,10 +81,20 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 alertController.addAction(defaultAction)
                 self.present(alertController, animated: true, completion: nil)
             } else {
-                // access to the homeviewcontroller
-                let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
-                self.present(mainTabBarController, animated: true,completion: nil)
+                // check if the user has confirmed its email address
+                if (Auth.auth().currentUser?.isEmailVerified == true) {
+                    // access to the homeviewcontroller
+                    let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+                    mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+                    self.present(mainTabBarController, animated: true,completion: nil)
+                    
+                } else {
+                    let alertController = UIAlertController(title: "Confirm your email", message: error?.localizedDescription, preferredStyle: .alert)
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(defaultAction)
+                    self.present(alertController, animated: true, completion: nil)
+                    
+                }
             }
         }
     }
@@ -197,6 +207,14 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         view.addSubview(twitterSignInButton)
         twitterSignInButton.isHidden = true
         twitterSignInButton.accessibilityActivate()
+    }
+    
+    // Mark: password handler
+    
+    func sendPasswordReset(withEmail email: String, _ callback: ((Error?) -> ())? = nil){
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            callback?(error)
+        }
     }
     
 }

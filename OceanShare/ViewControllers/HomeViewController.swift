@@ -42,13 +42,13 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         actionButton.buttonColor = UIColor(rgb: 0x57A1FF)
         
         // list the icon buttons
-        actionButton.addItem(title: "Immigrants", image: UIImage(named: "lifesaver")?.withRenderingMode(.alwaysTemplate)) { item in
+        actionButton.addItem(title: "Lifesaver", image: UIImage(named: "lifesaver")?.withRenderingMode(.alwaysTemplate)) { item in
             Helper.showAlert(for: item)
             
             let Bouer = MGLPointAnnotation()
             Bouer.coordinate = CLLocationCoordinate2D(latitude: 26.212596, longitude: 50.611647)
-            Bouer.title = "Bouer"
-            Bouer.subtitle = "Présence de boué dans cette zone."
+            Bouer.title = "Lifesaver"
+            Bouer.subtitle = "Someone needs help."
             
             mapView.addAnnotation(Bouer)
         }
@@ -58,7 +58,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             let storm = MGLPointAnnotation()
             storm.coordinate = CLLocationCoordinate2D(latitude: 26.217606, longitude: 50.611365)
             storm.title = "Storm"
-            storm.subtitle = "Présence de storm dans cette zone."
+            storm.subtitle = "Potential futur storm."
             
             mapView.addAnnotation(storm)
         }
@@ -68,7 +68,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             let dest = MGLPointAnnotation()
             dest.coordinate = CLLocationCoordinate2D(latitude: 26.218915, longitude: 50.605185)
             dest.title = "Destination"
-            dest.subtitle = "Oui"
+            dest.subtitle = "The place you want to reach."
             
             mapView.addAnnotation(dest)
         }
@@ -96,10 +96,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         
         // if test == nil {
         print("TEST")
-        if annotation.title == "Bouer" {
+        if annotation.title == "Lifesaver" {
             var image = UIImage(named: "lifesaver")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-            test = MGLAnnotationImage(image: image, reuseIdentifier: "Bouer")
+            test = MGLAnnotationImage(image: image, reuseIdentifier: "Lifesaver")
         } else if annotation.title == "Storm" {
             var image = UIImage(named: "lightning")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
@@ -109,10 +109,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             test = MGLAnnotationImage(image: image, reuseIdentifier: "dest")
         }
-        
-        /* var image = UIImage(named: "lifesaver")!
-        image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-        annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "Bouer")*/
         
         return test
     }

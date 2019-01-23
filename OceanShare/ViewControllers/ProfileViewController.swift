@@ -48,7 +48,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupView()
         
         fetchUserInfo()
-        //setupProfile()
     }
     
     // MARK: image picker functions
@@ -99,37 +98,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             guard let userName = data["name"] as? String else { return }
             guard let userEmail = data["email"] as? String else { return }
             
+            
+            
             self.appUser = AppUser(name: userName, uid: userId, email: userEmail)
         }
     }
-    
-    /*func setupProfile() {
-        
-        // retrieving user info like name, email and profile picture if there is one
-        if let userId = Auth.auth().currentUser?.uid {
-            ref.child("users").child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
-                if let dict = snapshot.value as? [String: AnyObject] {
-                    self.userEmailAddress.text = dict["email"] as? String
-                    self.userName.text = dict["name"] as? String
-                    
-                    if let profileImageURL = dict["pic"] as? String
-                    {
-                        let url = URL(string: profileImageURL)
-                        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-                            if error != nil {
-                                print(error!)
-                                return
-                            }
-                            DispatchQueue.main.async {
-                                self.profilePicture?.image = UIImage(data: data!)
-                            }
-                        }).resume()
-                    }
-                }
-            })
-            
-        }
-    }*/
     
     // MARK: actions
     
@@ -150,8 +123,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             let appDelegate = UIApplication.shared.delegate
             appDelegate?.window??.rootViewController = signInPage
             print("User has correctly logged out.")
+            return
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
+            return
         }
     }
     
