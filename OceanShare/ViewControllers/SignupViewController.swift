@@ -100,11 +100,11 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         let password = passwordTextField.text
         
         if (email?.isEmpty)! || (password?.isEmpty)! || (confirmTextField.text?.isEmpty)! || (nameTextField.text?.isEmpty)! {
-            displayMessage(userMessage: "All Field are required")
+            displayMessage(userMessage: "All Fields are required.")
             return
         }
         if ((confirmTextField.text?.elementsEqual(password!))! != true) {
-            displayMessage(userMessage: "Please make sure that passwords match")
+            displayMessage(userMessage: "Please make sure that passwords match.")
             return
         } else {
             Auth.auth().createUserAndRetrieveData(withEmail: email!, password: password!) { (authResult, err) in
@@ -112,10 +112,11 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                     print(err.localizedDescription)
                     
                     // error handling
-                    let alertController = UIAlertController(title: "Error", message: err.localizedDescription, preferredStyle: .alert)
-                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                    alertController.addAction(defaultAction)
-                    self.present(alertController, animated: true, completion: nil)
+                    let alert = UIAlertController(title: "Error.", message: err.localizedDescription, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                        print("OK pressed.")
+                    }))
+                    self.present(alert, animated: true, completion: nil)
                 } else {
                     // define the database structure
                     let userData: [String: Any] = [
@@ -267,9 +268,8 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
-                let alertController = UIAlertController(title: "Alert", message: userMessage, preferredStyle: .alert)
+                let alertController = UIAlertController(title: "Fill The Fields Correctly.", message: userMessage, preferredStyle: .alert)
                 let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
-                    // code in this block will trigger when 'ok' button tapped.
                     DispatchQueue.main.async {
                         self.dismiss(animated: true, completion: nil)
                     }
