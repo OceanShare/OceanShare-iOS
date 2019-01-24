@@ -9,6 +9,8 @@
 import UIKit
 import UIKit.UIGestureRecognizerSubclass
 import FirebaseAuth
+import FirebaseStorage
+import FirebaseCore
 import FirebaseDatabase
 import GoogleSignIn
 import FBSDKLoginKit
@@ -37,6 +39,9 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     // MARK: definitions
     
     var ref: DatabaseReference!
+    let storageRef = FirebaseStorage.Storage().reference()
+
+    var imageURL: String?
     
     var currentTappedTextField : UITextField?
     //use this method to get tapped textField
@@ -48,15 +53,12 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Listen To keyboardsEvent
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-        
         ref = Database.database().reference()
         
         setupView()
     }
+    
+    // MARK: setup
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -64,9 +66,12 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
-    // MARK: setup
-    
     func setupView() {
+        // Listen To keyboardsEvent
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         
         let color1 = UIColor(rgb: 0x57A1FF)
@@ -94,12 +99,6 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         let email = emailTextField.text
         let password = passwordTextField.text
         
-        // define the database structure
-        let userData: [String: Any] = [
-            "name": name as Any,
-            "email": email as Any
-        ]
-        
         if (email?.isEmpty)! || (password?.isEmpty)! || (confirmTextField.text?.isEmpty)! || (nameTextField.text?.isEmpty)! {
             displayMessage(userMessage: "All Field are required")
             return
@@ -118,6 +117,12 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                     alertController.addAction(defaultAction)
                     self.present(alertController, animated: true, completion: nil)
                 } else {
+                    // define the database structure
+                    let userData: [String: Any] = [
+                        "name": name as Any,
+                        "email": email as Any
+                        ]
+                    
                     // push the user datas on the database
                     guard let uid = authResult?.user.uid else { return }
                     self.ref.child("users/\(uid)").setValue(userData)
@@ -154,13 +159,12 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                         return
                     }
                     
-                    // DO NOT DELETE -> Retrieve user profile picture from facebook
-                    /*let response = result.unsafelyUnwrapped as! Dictionary<String,AnyObject>
-                     let userData: [String: Any] = [
-                     "name": response["name"] as? String,
-                     "email": response["email"] as? String
-                     //"picture": response["picture"]["data"]["url"] as? String
-                     ]*/
+                    // retrieve user profile picture
+                    let field = result! as? [String: Any]
+                    if let retrievedURL = ((field!["picture"] as? [String: Any])?["data"] as? [String: Any])?["url"] as? String {
+                        // set the value of the retrieved picture
+                        self.imageURL = retrievedURL
+                    }
                     
                     Auth.auth().signInAndRetrieveData(with: credentials, completion: { (authResult, err) in
                         if let err = err {
@@ -172,8 +176,8 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                         // define the database structure
                         let userData: [String: Any] = [
                             "name": user?.displayName as Any,
-                            "email": user?.email as Any
-                            
+                            "email": user?.email as Any,
+                            "picture": self.imageURL as Any
                         ]
                         
                         // push the user datas on the database

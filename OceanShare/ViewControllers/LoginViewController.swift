@@ -10,6 +10,8 @@ import UIKit
 import UIKit.UIGestureRecognizerSubclass
 import FirebaseAuth
 import FirebaseDatabase
+import FirebaseStorage
+import FirebaseCore
 import GoogleSignIn
 import FBSDKLoginKit
 import TwitterKit
@@ -31,6 +33,9 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     // MARK: definitions
     
     var ref: DatabaseReference!
+    let storageRef = FirebaseStorage.Storage().reference()
+    
+    var imageURL: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +66,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     // MARK: actions
     
     @IBAction func forgotHandler(_ sender: UIButton) {
-        //sendPasswordReset(withEmail: <#T##String#>)
         return
     }
     
@@ -119,13 +123,12 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                         return
                     }
                     
-                    // DO NOT DELETE -> Retrieve user profile picture
-                    /*let response = result.unsafelyUnwrapped as! Dictionary<String,AnyObject>
-                    let userData: [String: Any] = [
-                        "name": response["name"] as? String,
-                        "email": response["email"] as? String
-                        //"picture": response["picture"]["data"]["url"] as? String
-                    ]*/
+                    // retrieve user profile picture from facebook
+                    let field = result! as? [String: Any]
+                    if let retrievedURL = ((field!["picture"] as? [String: Any])?["data"] as? [String: Any])?["url"] as? String {
+                        // set the value of the retrieved picture
+                        self.imageURL = retrievedURL
+                    }
                     
                     Auth.auth().signInAndRetrieveData(with: credentials, completion: { (authResult, err) in
                         if let err = err {
@@ -134,11 +137,22 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                         }
                         let user = Auth.auth().currentUser
                         
+                        // check if a custom profile picture exist
+                        /*if let user = user {
+                            _ = Storage.storage().reference().child("profile_pictures").child("\(String(describing: user.uid)).png").downloadURL(completion: { (url, error) in
+                                if error != nil {
+                                    print(error!)
+                                    return
+                                } else {
+                                    self.imageURL = String(describing: url)
+                                }})
+                        } else { return }*/
+                        
                         // define the database structure
                         let userData: [String: Any] = [
                             "name": user?.displayName as Any,
-                            "email": user?.email as Any
-                            
+                            "email": user?.email as Any,
+                            "picture": self.imageURL as Any
                         ]
                         
                         // push the user datas on the database
@@ -207,14 +221,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         view.addSubview(twitterSignInButton)
         twitterSignInButton.isHidden = true
         twitterSignInButton.accessibilityActivate()
-    }
-    
-    // Mark: password handler
-    
-    func sendPasswordReset(withEmail email: String, _ callback: ((Error?) -> ())? = nil){
-        Auth.auth().sendPasswordReset(withEmail: email) { error in
-            callback?(error)
-        }
     }
     
 }

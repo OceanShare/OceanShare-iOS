@@ -12,6 +12,7 @@ import GoogleSignIn
 import FBSDKCoreKit
 import TwitterKit
 import FirebaseDatabase
+import Alamofire
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
@@ -54,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        FBSDKAppEvents.activateApp()
+        //FBSDKAppEvents.activateApp()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -81,10 +82,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 let userData: [String: Any] = [
                     "name": user?.displayName as Any,
                     "email": user?.email as Any
-                    
                 ]
                 
-                self.ref = Database.database().reference() // not safe
+                self.ref = Database.database().reference()
                 // push the user datas on the database
                 guard let uid = authResult?.user.uid else { return }
                 self.ref.child("users/\(uid)").setValue(userData)

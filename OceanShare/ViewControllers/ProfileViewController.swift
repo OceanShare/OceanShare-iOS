@@ -24,7 +24,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         didSet {
             guard let name = appUser?.name else { return }
             guard let emailAddress = appUser?.email else { return }
+            guard let picture = appUser?.picture else { return }
             
+            profilePicture.image = picture
             titleLabel.text = "Hello " + name + " !"
             userName.text = name
             userEmailAddress.text = emailAddress
@@ -98,9 +100,21 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             guard let userName = data["name"] as? String else { return }
             guard let userEmail = data["email"] as? String else { return }
             
-            
-            
-            self.appUser = AppUser(name: userName, uid: userId, email: userEmail)
+            // check if the user has a default social network avatar or a custom avatar or doesnt have one
+            if let userPicture = data["picture"] as? String {
+                let pictureURL = URL(string: userPicture)
+                let pictureData = NSData(contentsOf: pictureURL!)
+                let finalPicture = UIImage(data: pictureData! as Data)
+                
+                self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture)
+            } else {
+                // if it doesnt, set a default avatar
+                let pictureURL = URL(string: "https://scontent-nrt1-1.xx.fbcdn.net/v/t1.0-1/p480x480/29187034_1467064540082381_56763327166021632_n.jpg?_nc_cat=107&_nc_ht=scontent-nrt1-1.xx&oh=653531d780436b9288e94f8ca0847275&oe=5CBD03CC")
+                let pictureData = NSData(contentsOf: pictureURL!)
+                let finalPicture = UIImage(data: pictureData! as Data)
+                
+                self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture)
+            }
         }
     }
     
@@ -123,10 +137,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             let appDelegate = UIApplication.shared.delegate
             appDelegate?.window??.rootViewController = signInPage
             print("User has correctly logged out.")
-            return
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
-            return
         }
     }
     
