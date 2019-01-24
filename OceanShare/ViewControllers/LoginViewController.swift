@@ -137,17 +137,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                         }
                         let user = Auth.auth().currentUser
                         
-                        // check if a custom profile picture exist
-                        /*if let user = user {
-                            _ = Storage.storage().reference().child("profile_pictures").child("\(String(describing: user.uid)).png").downloadURL(completion: { (url, error) in
-                                if error != nil {
-                                    print(error!)
-                                    return
-                                } else {
-                                    self.imageURL = String(describing: url)
-                                }})
-                        } else { return }*/
-                        
                         // define the database structure
                         let userData: [String: Any] = [
                             "name": user?.displayName as Any,

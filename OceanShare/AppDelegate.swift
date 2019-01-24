@@ -12,7 +12,6 @@ import GoogleSignIn
 import FBSDKCoreKit
 import TwitterKit
 import FirebaseDatabase
-import Alamofire
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
