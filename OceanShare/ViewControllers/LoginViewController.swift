@@ -93,11 +93,16 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                     self.present(mainTabBarController, animated: true,completion: nil)
                     
                 } else {
-                    let alertController = UIAlertController(title: "Confirm your email", message: error?.localizedDescription, preferredStyle: .alert)
-                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                    alertController.addAction(defaultAction)
-                    self.present(alertController, animated: true, completion: nil)
-                    
+                    // handle the email confirmation
+                    let alert = UIAlertController(title: "Please Confirm Your Email.", message: "You need to confirm your email address to finish your inscription and access to your profile.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Send me an other mail.", style: .default, handler: { action in
+                        self.sendEmailVerification()
+                        print("An other mail has been sent")
+                    }))
+                    alert.addAction(UIAlertAction(title: "I'll check my emails", style: .default, handler: { action in
+                        print("Ok pressed.")
+                    }))
+                    self.present(alert, animated: true, completion: nil)
                 }
             }
         }
@@ -210,6 +215,14 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         view.addSubview(twitterSignInButton)
         twitterSignInButton.isHidden = true
         twitterSignInButton.accessibilityActivate()
+    }
+    
+    // MARK: checks user email
+    
+    func sendEmailVerification(_ callback: ((Error?) -> ())? = nil){
+        Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
+            callback?(error)
+        })
     }
     
 }

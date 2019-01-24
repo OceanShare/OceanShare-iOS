@@ -207,7 +207,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     @objc func keyboardWillChange(notification: Notification) {
         guard let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         
-        /*
+        
         if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification {
             view.frame.origin.y = -keyboardRect.height
         }
@@ -215,7 +215,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         {
             view.frame.origin.y = 0
         }
-         */
+        
     }
     
     // MARK: configuration
