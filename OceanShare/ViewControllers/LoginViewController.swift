@@ -137,7 +137,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                         }
                         let user = Auth.auth().currentUser
                         
-                        // define the database structure
+                        // define the database structure and upload the profile picture from facebook
                         let userData: [String: Any] = [
                             "name": user?.displayName as Any,
                             "email": user?.email as Any,
