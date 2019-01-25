@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if (error) != nil {
-            print("An error occured during Google Authentication")
+            print("X Google Authentification Failed: ", error)
             return
         }
         
@@ -71,9 +71,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
             if (error) != nil {
-                print("Google Authentification Fail")
+                print("X Google Authentification Failed: ", error as Any)
             } else {
-                print("Google Authentification Success")
                 let user = Auth.auth().currentUser
                 
                 // define the database structure
@@ -88,6 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 self.ref.child("users/\(uid)").setValue(userData)
                 
                 // access to the homeviewcontroller
+                print("-> Google Authentication Success.")
                 let mainStoryBoard: UIStoryboard = UIStoryboard(name:"Main", bundle:nil)
                 let protectedPage = mainStoryBoard.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                 protectedPage.selectedViewController = protectedPage.viewControllers?[1]
@@ -102,7 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         do {
             try firebaseAuth.signOut()
         } catch let signOutError as NSError {
-            print ("Error signing out: %@", signOutError)
+            print ("X Error While Signing Out: %@", signOutError)
         }
     }
     

@@ -128,7 +128,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                         
                         self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture)
                     }})
-            } else { return }
+            } else {
+                print("X Error User Not Found.")
+                return
+            }
         }
     }
     
@@ -150,9 +153,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             let signInPage = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
             let appDelegate = UIApplication.shared.delegate
             appDelegate?.window??.rootViewController = signInPage
-            print("User has correctly logged out.")
+            print("-> User has correctly logged out.")
         } catch let signOutError as NSError {
-            print ("Error signing out: %@", signOutError)
+            print ("X Error signing out: %@", signOutError)
         }
     }
     

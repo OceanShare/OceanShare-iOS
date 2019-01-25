@@ -77,7 +77,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if let err = error {
-                print(err.localizedDescription)
+                print("X Email Authentication Failed: ", err.localizedDescription)
                 
                 // error handling
                 let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
@@ -88,6 +88,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 // check if the user has confirmed its email address
                 if (Auth.auth().currentUser?.isEmailVerified == true) {
                     // access to the homeviewcontroller
+                    print("-> Email Authentication Success.")
                     let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                     mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
                     self.present(mainTabBarController, animated: true,completion: nil)
@@ -97,10 +98,10 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                     let alert = UIAlertController(title: "Please Confirm Your Email.", message: "You need to confirm your email address to finish your inscription and access to your profile.", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "Send me an other mail.", style: .default, handler: { action in
                         self.sendEmailVerification()
-                        print("An other mail has been sent")
+                        print("~ Action Informations: An Other Mail Has Been Sent.")
                     }))
                     alert.addAction(UIAlertAction(title: "I'll check my emails", style: .default, handler: { action in
-                        print("Ok pressed.")
+                        print("~ Action Information: OK Pressed.")
                     }))
                     self.present(alert, animated: true, completion: nil)
                 }
@@ -112,9 +113,9 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     @IBAction func facebookLogin(sender: AnyObject){
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self, handler:{(facebookResult, facebookError) -> Void in
             if facebookError != nil {
-                print("Facebook login failed. Error \(String(describing: facebookError))")
+                print("X Facebook login failed : \(String(describing: facebookError)).")
             } else if facebookResult!.isCancelled {
-                print("Facebook login was cancelled.")
+                print("X Facebook login was cancelled.")
             } else {
                 // get the credentials
                 let accessToken = FBSDKAccessToken.current()
@@ -124,7 +125,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 // get user datas from the facebook account as the profile picture
                 FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
                     if err != nil {
-                        print("Failed to start graph request.")
+                        print("X Facebook Authentication Failed: ", err)
                         return
                     }
                     
@@ -137,7 +138,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                     
                     Auth.auth().signInAndRetrieveData(with: credentials, completion: { (authResult, err) in
                         if let err = err {
-                            print("Something wrong happened with the FB user: ", err)
+                            print("X Facebook Authentication Failed: ", err)
                             return
                         }
                         let user = Auth.auth().currentUser
@@ -154,6 +155,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                         self.ref.child("users/\(uid)").setValue(userData)
                     })
                 })
+                print("-> Facebook Authentication Success.")
                 // access to the homeviewcontroller
                 let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                 mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
@@ -178,7 +180,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     fileprivate func configureTwitter() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
             if (error != nil) {
-                print("Twitter authentication failed: ", error!.localizedDescription)
+                print("X Twitter Authentication Failed: ", error!.localizedDescription)
             } else {
                 // get the twitter credentials
                 guard let token = session?.authToken else {return}
@@ -187,7 +189,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 
                 Auth.auth().signInAndRetrieveData(with: credential, completion: { (authResult, err) in
                     if let err = err {
-                        print(err.localizedDescription)
+                        print("X Twitter Authentication Failed: ", err.localizedDescription)
                     } else {
                         let user = Auth.auth().currentUser
                         
@@ -203,6 +205,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                         self.ref.child("users/\(uid)").setValue(userData)
                         
                         // access to the homeviewcontroller
+                        print("-> Twitter Authentication Success.")
                         let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                         mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
                         self.present(mainTabBarController, animated: true,completion: nil)

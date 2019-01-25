@@ -109,12 +109,12 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         } else {
             Auth.auth().createUserAndRetrieveData(withEmail: email!, password: password!) { (authResult, err) in
                 if let err = err {
-                    print(err.localizedDescription)
+                    print("X Registration Failed: ", err.localizedDescription)
                     
                     // error handling
                     let alert = UIAlertController(title: "Error.", message: err.localizedDescription, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                        print("OK pressed.")
+                        print("~ Actions Informations: OK pressed.")
                     }))
                     self.present(alert, animated: true, completion: nil)
                 } else {
@@ -129,6 +129,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                     self.ref.child("users/\(uid)").setValue(userData)
                     
                     // access to the homeviewcontroller
+                    print("-> Registration Success.")
                     let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                     mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
                     self.present(mainTabBarController, animated: true,completion: nil)
@@ -144,9 +145,9 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     @IBAction func facebookLogin(sender: AnyObject){
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self, handler:{(facebookResult, facebookError) -> Void in
             if facebookError != nil {
-                print("Facebook login failed. Error \(String(describing: facebookError))")
+                print("X Facebook Authentication Failed: \(String(describing: facebookError)).")
             } else if facebookResult!.isCancelled {
-                print("Facebook login was cancelled.")
+                print("X Facebook Authentication Was Cancelled.")
             } else {
                 // get the credentials
                 let accessToken = FBSDKAccessToken.current()
@@ -156,7 +157,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                 // get user datas from the facebook account as the profile picture
                 FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
                     if err != nil {
-                        print("Failed to start graph request.")
+                        print("X Facebook Authentication Failed: ", err as Any)
                         return
                     }
                     
@@ -169,7 +170,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                     
                     Auth.auth().signInAndRetrieveData(with: credentials, completion: { (authResult, err) in
                         if let err = err {
-                            print("Something wrong happened with the FB user: ", err)
+                            print("X Facebook Authentication Failed: ", err)
                             return
                         }
                         let user = Auth.auth().currentUser
@@ -187,6 +188,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                     })
                 })
                 // access to the homeviewcontroller
+                print("-> Facebook Authentication Success.")
                 let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                 mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
                 self.present(mainTabBarController, animated: true,completion: nil)
@@ -208,7 +210,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     @objc func keyboardWillChange(notification: Notification) {
         guard let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         
-        
+        /*
         if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification {
             view.frame.origin.y = -keyboardRect.height
         }
@@ -216,7 +218,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         {
             view.frame.origin.y = 0
         }
-        
+        */
     }
     
     // MARK: configuration
@@ -224,7 +226,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     fileprivate func configureTwitter() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
             if (error != nil) {
-                print("Twitter authentication failed: ", error!.localizedDescription)
+                print("X Twitter authentication failed: ", error!.localizedDescription)
             } else {
                 // get the twitter credentials
                 guard let token = session?.authToken else {return}
@@ -233,7 +235,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                 
                 Auth.auth().signInAndRetrieveData(with: credential, completion: { (authResult, err) in
                     if let err = err {
-                        print(err.localizedDescription)
+                        print("X Twitter authentication failed: ", err.localizedDescription)
                     } else {
                         let user = Auth.auth().currentUser
                         
@@ -249,6 +251,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                         self.ref.child("users/\(uid)").setValue(userData)
                         
                         // access to the homeviewcontroller
+                        print("-> Twitter Authentication Success.")
                         let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                         mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
                         self.present(mainTabBarController, animated: true,completion: nil)
@@ -268,11 +271,12 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
-                let alertController = UIAlertController(title: "Fill The Fields Correctly.", message: userMessage, preferredStyle: .alert)
+                let alertController = UIAlertController(title: "Please Fill The Fields Correctly.", message: userMessage, preferredStyle: .alert)
                 let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
-                    DispatchQueue.main.async {
+                    /*DispatchQueue.main.async {
                         self.dismiss(animated: true, completion: nil)
-                    }
+                    }*/
+                    print("~ Actions Information: OK Pressed.")
                 }
                 alertController.addAction(OKAction)
                 self.present(alertController, animated: true, completion:nil)
