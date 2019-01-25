@@ -48,29 +48,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         setupView()
     }
     
-    // MARK: keyboard handler
-    
-    fileprivate func observeKeyboardNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    @objc func keyboardShow() {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            
-            self.view.frame = CGRect(x: 0, y: -100, width: self.view.frame.width, height: self.view.frame.height)
-            
-        }, completion: nil)
-    }
-    
-    @objc func keyboardHide() {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            
-            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-            
-        }, completion: nil)
-    }
-    
     // MARK: setup
     
     func setupView() {
@@ -90,7 +67,23 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     // MARK: actions
     
     @IBAction func forgotHandler(_ sender: UIButton) {
-        return
+        
+        let email = emailTextField.text
+        
+        if (email?.isEmpty)! {
+            displayMessage(userMessage: "You need to fill the email field.")
+            return
+        }
+        sendPasswordReset(withEmail: email!)
+        let alert = UIAlertController(title: "Please Check Your Emails.", message: "You probably recieved a mail from us to help you finding a new password.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Send me an other mail.", style: .default, handler: { action in
+            self.sendPasswordReset(withEmail: email!)
+            print("~ Action Informations: An Other Mail Has Been Sent.")
+        }))
+        alert.addAction(UIAlertAction(title: "I'll check my emails", style: .default, handler: { action in
+            print("~ Action Information: OK Pressed.")
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     // login with email
@@ -242,12 +235,57 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         twitterSignInButton.accessibilityActivate()
     }
     
-    // MARK: email checking
+    // MARK: error handling
+    
+    func displayMessage(userMessage:String) -> Void {
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: "Please Fill The Fields Correctly.", message: userMessage, preferredStyle: .alert)
+            let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
+                /*DispatchQueue.main.async {
+                 self.dismiss(animated: true, completion: nil)
+                 }*/
+                print("~ Actions Information: OK Pressed.")
+            }
+            alertController.addAction(OKAction)
+            self.present(alertController, animated: true, completion:nil)
+        }
+    }
+    
+    // MARK: email handling
     
     func sendEmailVerification(_ callback: ((Error?) -> ())? = nil){
         Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
             callback?(error)
         })
+    }
+    
+    func sendPasswordReset(withEmail email: String, _ callback: ((Error?) -> ())? = nil){
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            callback?(error)
+        }
+    }
+    
+    // MARK: keyboard handling
+    
+    fileprivate func observeKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardShow() {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            
+            self.view.frame = CGRect(x: 0, y: -100, width: self.view.frame.width, height: self.view.frame.height)
+            
+        }, completion: nil)
+    }
+    
+    @objc func keyboardHide() {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            
+            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+            
+        }, completion: nil)
     }
     
 }
