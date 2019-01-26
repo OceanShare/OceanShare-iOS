@@ -1,3 +1,4 @@
+![img](https://github.com/richardbmx/OceanShare-iOS/blob/master/logo124.png?raw=true)
 # OceanShare-iOS
 
 ## Installation
