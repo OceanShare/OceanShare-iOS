@@ -27,7 +27,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             guard let picture = appUser?.picture else { return }
             
             profilePicture.image = picture
-            titleLabel.text = "Hello " + name + " !"
+            titleLabel.text = "Ahoy " + name + " !"
             userName.text = name
             userEmailAddress.text = emailAddress
             userShipName.text = "Axe Boat"
