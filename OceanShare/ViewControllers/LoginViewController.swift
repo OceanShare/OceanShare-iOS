@@ -15,6 +15,7 @@ import FirebaseCore
 import GoogleSignIn
 import FBSDKLoginKit
 import TwitterKit
+import TwitterCore_Private
 import Alamofire
 
 class LoginViewController: UIViewController, GIDSignInUIDelegate {
@@ -195,7 +196,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     fileprivate func configureTwitter() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
             if (error != nil) {
-                print("(1) Twitter Authentication Failed: ", error!.localizedDescription, error)
+                print("(1) Twitter Authentication Failed: ", error!.localizedDescription)
             } else {
                 // get the twitter credentials
                 guard let token = session?.authToken else {return}
