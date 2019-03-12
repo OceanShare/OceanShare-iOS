@@ -94,7 +94,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if let err = error {
-                print("X Email Authentication Failed: ", err.localizedDescription)
+                print("(1) Email Authentication Failed: ", err.localizedDescription)
                 
                 // error handling
                 let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
@@ -130,9 +130,9 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     @IBAction func facebookLogin(sender: AnyObject){
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self, handler:{(facebookResult, facebookError) -> Void in
             if facebookError != nil {
-                print("X Facebook login failed : \(String(describing: facebookError)).")
+                print("(1) Facebook login failed : \(String(describing: facebookError)).")
             } else if facebookResult!.isCancelled {
-                print("X Facebook login was cancelled.")
+                print("(0) Facebook login was cancelled.")
             } else {
                 // get the credentials
                 let accessToken = FBSDKAccessToken.current()
@@ -142,7 +142,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 // get user datas from the facebook account as the profile picture
                 FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
                     if err != nil {
-                        print("X Facebook Authentication Failed: ", err as Any)
+                        print("(2) Facebook Authentication Failed: ", err as Any)
                         return
                     }
                     
@@ -155,7 +155,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                     
                     Auth.auth().signInAndRetrieveData(with: credentials, completion: { (authResult, err) in
                         if let err = err {
-                            print("X Facebook Authentication Failed: ", err)
+                            print("(3) Facebook Authentication Failed: ", err)
                             return
                         }
                         let user = Auth.auth().currentUser
@@ -195,7 +195,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     fileprivate func configureTwitter() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
             if (error != nil) {
-                print("X Twitter Authentication Failed: ", error!.localizedDescription)
+                print("(1) Twitter Authentication Failed: ", error!.localizedDescription, error)
             } else {
                 // get the twitter credentials
                 guard let token = session?.authToken else {return}
@@ -204,7 +204,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 
                 Auth.auth().signInAndRetrieveData(with: credential, completion: { (authResult, err) in
                     if let err = err {
-                        print("X Twitter Authentication Failed: ", err.localizedDescription)
+                        print("(2) Twitter Authentication Failed: ", err.localizedDescription)
                     } else {
                         let user = Auth.auth().currentUser
                         

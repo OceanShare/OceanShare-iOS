@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
         
-        TWTRTwitter.sharedInstance().start(withConsumerKey: "sANCETJynukAwPblwMice7q3n", consumerSecret: "xX1c1rgay55DSUoAYooBBCvRznhBpri7SwzAKxl3W6VP2sZ6FV")
+        TWTRTwitter.sharedInstance().start(withConsumerKey: "jYXRAPhB2S1GDVtZbs57uOtcl", consumerSecret: "nuhpnL3cSEWHIN4ydwjl6nXp9OHu9sWyA5wHxCcpbcYDo0q2Lj")
         
         return true
     }
@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if (error) != nil {
-            print("X Google Authentification Failed: ", error)
+            print("(1) Google Authentification Failed: ", error)
             return
         }
         
@@ -71,7 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
             if (error) != nil {
-                print("X Google Authentification Failed: ", error as Any)
+                print("(2) Google Authentification Failed: ", error as Any)
             } else {
                 let user = Auth.auth().currentUser
                 
@@ -102,7 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         do {
             try firebaseAuth.signOut()
         } catch let signOutError as NSError {
-            print ("X Error While Signing Out: %@", signOutError)
+            print ("(1) Error While Signing Out: %@", signOutError)
         }
     }
     
