@@ -150,10 +150,17 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         do {
             try Auth.auth().signOut()
             //Todo: find a way to return to pageviewcontroller -> startviewcontroller
-            let signInPage = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
-            let appDelegate = UIApplication.shared.delegate
-            appDelegate?.window??.rootViewController = signInPage
-            print("-> User has correctly logged out.")
+            
+            if Auth.auth().currentUser == nil {
+                
+                // Remove User Session from device
+                UserDefaults.standard.removeObject(forKey: "user_uid_key")
+                UserDefaults.standard.synchronize()
+                let signInPage = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
+                let appDelegate = UIApplication.shared.delegate
+                appDelegate?.window??.rootViewController = signInPage
+                print("-> User has correctly logged out.")
+            }
         } catch let signOutError as NSError {
             print ("X Error signing out: %@", signOutError)
         }

@@ -38,6 +38,18 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         configurePageControl()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+        super.viewDidAppear(animated)
+        
+        // check if the user is already logged in
+        if UserDefaults.standard.object(forKey: "user_uid_key") != nil {
+            let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+            mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+            self.present(mainTabBarController, animated: true,completion: nil)
+        }
+    }
+    
     // MARK: data source functions
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {

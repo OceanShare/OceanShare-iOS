@@ -105,8 +105,11 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
             } else {
                 // check if the user has confirmed its email address
                 if (Auth.auth().currentUser?.isEmailVerified == true) {
-                    // access to the homeviewcontroller
                     print("-> Email Authentication Success.")
+                    // set the userdefaults data
+                    UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
+                    UserDefaults.standard.synchronize()
+                    // access to the homeviewcontroller
                     let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                     mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
                     self.present(mainTabBarController, animated: true,completion: nil)
@@ -174,6 +177,9 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                     })
                 })
                 print("-> Facebook Authentication Success.")
+                // set the userdefaults data
+                UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
+                UserDefaults.standard.synchronize()
                 // access to the homeviewcontroller
                 let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                 mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
@@ -220,8 +226,11 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                         guard let uid = authResult?.user.uid else { return }
                         self.ref.child("users/\(uid)").setValue(userData)
                         
-                        // access to the homeviewcontroller
                         print("-> Twitter Authentication Success.")
+                        // set the userdefaults data
+                        UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
+                        UserDefaults.standard.synchronize()
+                        // access to the homeviewcontroller
                         let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                         mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
                         self.present(mainTabBarController, animated: true,completion: nil)

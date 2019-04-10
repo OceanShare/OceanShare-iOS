@@ -86,8 +86,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 guard let uid = authResult?.user.uid else { return }
                 self.ref.child("users/\(uid)").setValue(userData)
                 
-                // access to the homeviewcontroller
                 print("-> Google Authentication Success.")
+                // set the userdefaults data
+                UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
+                UserDefaults.standard.synchronize()
+                // access to the homeviewcontroller
                 let mainStoryBoard: UIStoryboard = UIStoryboard(name:"Main", bundle:nil)
                 let protectedPage = mainStoryBoard.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                 protectedPage.selectedViewController = protectedPage.viewControllers?[1]
@@ -101,6 +104,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
+            if Auth.auth().currentUser == nil {
+                UserDefaults.standard.removeObject(forKey: "user_uid_key")
+                UserDefaults.standard.synchronize()
+            }
         } catch let signOutError as NSError {
             print ("(1) Error While Signing Out: %@", signOutError)
         }

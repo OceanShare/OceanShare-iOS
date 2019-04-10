@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ibu-AM-oVI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ibu-AM-oVI">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -481,7 +481,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profileBackground" translatesAutoresizingMaskIntoConstraints="NO" id="IDt-pz-YTc">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="259"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="16"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ahoy!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oVO-u3-elw">
                                 <rect key="frame" x="170.33333333333334" y="250.00000000000003" width="73.666666666666657" height="34.333333333333343"/>
@@ -1109,20 +1109,20 @@
         </scene>
     </scenes>
     <resources>
-        <image name="blueSquare" width="1242" height="1990"/>
-        <image name="defaultProfile" width="409.60000610351562" height="409.60000610351562"/>
-        <image name="double_chevron" width="90" height="90"/>
-        <image name="double_reverse_chevron" width="90" height="90"/>
-        <image name="facebookLogo" width="512" height="512"/>
-        <image name="googleLogo" width="512" height="512"/>
+        <image name="blueSquare" width="414" height="663.33331298828125"/>
+        <image name="defaultProfile" width="170.66667175292969" height="170.66667175292969"/>
+        <image name="double_chevron" width="30" height="30"/>
+        <image name="double_reverse_chevron" width="30" height="30"/>
+        <image name="facebookLogo" width="170.66667175292969" height="170.66667175292969"/>
+        <image name="googleLogo" width="170.66667175292969" height="170.66667175292969"/>
         <image name="key" width="30" height="30"/>
-        <image name="logo" width="661.91998291015625" height="242.39999389648438"/>
-        <image name="mail" width="90" height="90"/>
+        <image name="logo" width="459.66665649414062" height="168.33332824707031"/>
+        <image name="mail" width="30" height="30"/>
         <image name="map" width="30" height="30"/>
         <image name="profile" width="30" height="30"/>
-        <image name="profileBackground" width="408.48001098632812" height="259.67999267578125"/>
+        <image name="profileBackground" width="283.66665649414062" height="180.33332824707031"/>
         <image name="settings" width="30" height="30"/>
-        <image name="twitterLogo" width="512" height="512"/>
+        <image name="twitterLogo" width="170.66667175292969" height="170.66667175292969"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="xi1-wM-fVC"/>

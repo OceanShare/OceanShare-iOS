@@ -19,6 +19,7 @@ class StartViewController: UIViewController {
         super.viewDidLoad()
         
         setupRadiant()
+        
     }
     
     // MARK: setup
