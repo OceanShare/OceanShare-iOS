@@ -171,6 +171,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     @IBAction func openChangeName(_ sender: Any) {
+        self.nameModifierPic.tintColor = UIColor(rgb: 0xFB6060)
         let alert = UIAlertController(title: "Tap a new name.", message: "Write a new name in the field below the naccept to change your user name.", preferredStyle: .alert)
         alert.addTextField { (newNameField : UITextField!) -> Void in
             newNameField.placeholder = "Enter New Name"
@@ -178,17 +179,20 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
             print("~ Action Information: Cancel Pressed.")
+            self.nameModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
         }))
         alert.addAction(UIAlertAction(title: "Validate", style: .default, handler: { action in
             let newNameField = alert.textFields![0] as UITextField
             self.changeName(name: newNameField.text!)
             print("~ Action Informations: Name has been changed.")
+            self.nameModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
         }))
         
         self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func openChangeEmail(_ sender: Any) {
+        self.emailModifierPic.tintColor = UIColor(rgb: 0xFB6060)
         let alert = UIAlertController(title: "Tap a new email.", message: "Write a new name in the field below the naccept to change your email.", preferredStyle: .alert)
         alert.addTextField { (newEmailField : UITextField!) -> Void in
             newEmailField.placeholder = "Enter New Email"
@@ -196,17 +200,20 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
             print("~ Action Information: Cancel Pressed.")
+            self.emailModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
         }))
         alert.addAction(UIAlertAction(title: "Validate", style: .default, handler: { action in
             let newEmailField = alert.textFields![0] as UITextField
             self.changeEmail(email: newEmailField.text!)
             print("~ Action Informations: Email has been changed.")
+            self.emailModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
         }))
         
         self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func openChangeShip(_ sender: Any) {
+        self.shipModifierPic.tintColor = UIColor(rgb: 0xFB6060)
         let alert = UIAlertController(title: "Tap a new name.", message: "Write a new name in the field below the naccept to change your ship name.", preferredStyle: .alert)
         alert.addTextField { (newShipField : UITextField!) -> Void in
             newShipField.placeholder = "Enter Your Ship Name"
@@ -214,11 +221,13 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
             print("~ Action Information: Cancel Pressed.")
+            self.shipModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
         }))
         alert.addAction(UIAlertAction(title: "Validate", style: .default, handler: { action in
             let newShipField = alert.textFields![0] as UITextField
             self.changeShipName(ship: newShipField.text!)
             print("~ Action Informations: Ship name has been changed.")
+            self.shipModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
         }))
         
         self.present(alert, animated: true, completion: nil)
