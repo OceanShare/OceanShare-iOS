@@ -16,49 +16,48 @@ import GoogleSignIn
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    // MARK: database definition
+    // MARK: Database
     
     var ref: DatabaseReference!
     let storageRef = FirebaseStorage.Storage().reference()
     var appUser: AppUser? {
         didSet {
             guard let name = appUser?.name else { return }
-            guard let emailAddress = appUser?.email else { return }
             guard let picture = appUser?.picture else { return }
-            guard let shipName = appUser?.ship_name else { return }
+            guard let ship = appUser?.ship_name else { return }
             
             profilePicture.image = picture
             titleLabel.text = "Ahoy " + name + " !"
-            userName.text = name
-            userEmailAddress.text = emailAddress
-            userShipName.text = shipName
+            shipName.text = "\" " + ship + " \""
         }
     }
     
-    // MARK: outlets
-
-    @IBOutlet weak var nameModifierPic: UIImageView!
-    @IBOutlet weak var emailModifierPic: UIImageView!
-    @IBOutlet weak var shipModifierPic: UIImageView!
+    // MARK: Outlets
     
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var userName: UILabel!
-    @IBOutlet weak var userEmailAddress: UILabel!
-    @IBOutlet weak var userShipName: UILabel!
     @IBOutlet weak var profilePicture: UIImageView!
+    @IBOutlet weak var shipName: UILabel!
+    
+    @IBOutlet weak var pictureIcon: UIImageView!
+    @IBOutlet weak var settingsIcon: UIImageView!
+    @IBOutlet weak var editIcon: UIImageView!
+    @IBOutlet weak var addEditIcon: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         ref = Database.database().reference()
         
+        // apply the design stuff to the view
         setupView()
         
+        // get the profile picture and the user name
         fetchUserInfo()
     }
     
-    // MARK: image picker functions
+    // MARK: Functions
     
+    // handle the image picker when the user wants to change his profile picture
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         var selectedImageFromPicker: UIImage?
@@ -89,21 +88,23 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         // swift 4 function to convert value
         return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
     }
-
-    // MARK: setup function
     
+    // apply the design stuff to the view
     func setupView() {
-        self.profilePicture.layer.cornerRadius = 75
+        self.profilePicture.layer.cornerRadius = 95
         self.profilePicture.clipsToBounds = true
         
-        self.nameModifierPic.image = self.nameModifierPic.image!.withRenderingMode(.alwaysTemplate)
-        self.nameModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
-        self.emailModifierPic.image = self.emailModifierPic.image!.withRenderingMode(.alwaysTemplate)
-        self.emailModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
-        self.shipModifierPic.image = self.shipModifierPic.image!.withRenderingMode(.alwaysTemplate)
-        self.shipModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
+        self.settingsIcon.image = self.settingsIcon.image!.withRenderingMode(.alwaysTemplate)
+        self.settingsIcon.tintColor = UIColor(rgb: 0xC5C7D2)
+        self.editIcon.image = self.editIcon.image!.withRenderingMode(.alwaysTemplate)
+        self.editIcon.tintColor = UIColor(rgb: 0xC5C7D2)
+        self.pictureIcon.image = self.pictureIcon.image!.withRenderingMode(.alwaysTemplate)
+        self.pictureIcon.tintColor = UIColor(rgb: 0xFFFFFF)
+        self.addEditIcon.image = self.addEditIcon.image!.withRenderingMode(.alwaysTemplate)
+        self.addEditIcon.tintColor = UIColor(rgb: 0x57A1FF)
     }
     
+    // get the profile picture and the user name
     func fetchUserInfo() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         
@@ -114,12 +115,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             guard let userShipName = data["ship_name"] as? String else {
                 
                 let user = Auth.auth().currentUser
-                let defaultShipName = "Unkown"
+                let defaultShipName = "My Boat"
                 let userData: [String: Any] = ["ship_name": defaultShipName as Any]
                 // update the user data on the database
                 guard let uid = user?.uid else { return }
                 self.ref.child("users/\(uid)").updateChildValues(userData)
-                self.userShipName.text = defaultShipName
+                self.shipName.text = defaultShipName
                 self.fetchUserInfo()
                 return
             }
@@ -159,7 +160,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
     
-    // MARK: actions
+    // MARK: Actions
     
     @IBAction func changeProfilePicture(_ sender: UIButton) {
         let picker = UIImagePickerController()
@@ -168,69 +169,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         picker.allowsEditing = true
         picker.sourceType = UIImagePickerController.SourceType.photoLibrary
         present(picker, animated: true, completion: nil)
-    }
-    
-    @IBAction func openChangeName(_ sender: Any) {
-        self.nameModifierPic.tintColor = UIColor(rgb: 0xFB6060)
-        let alert = UIAlertController(title: "Tap a new name.", message: "Write a new name in the field below the naccept to change your user name.", preferredStyle: .alert)
-        alert.addTextField { (newNameField : UITextField!) -> Void in
-            newNameField.placeholder = "Enter New Name"
-        }
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
-            print("~ Action Information: Cancel Pressed.")
-            self.nameModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
-        }))
-        alert.addAction(UIAlertAction(title: "Validate", style: .default, handler: { action in
-            let newNameField = alert.textFields![0] as UITextField
-            self.changeName(name: newNameField.text!)
-            print("~ Action Informations: Name has been changed.")
-            self.nameModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    @IBAction func openChangeEmail(_ sender: Any) {
-        self.emailModifierPic.tintColor = UIColor(rgb: 0xFB6060)
-        let alert = UIAlertController(title: "Tap a new email.", message: "Write a new name in the field below the naccept to change your email.", preferredStyle: .alert)
-        alert.addTextField { (newEmailField : UITextField!) -> Void in
-            newEmailField.placeholder = "Enter New Email"
-        }
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
-            print("~ Action Information: Cancel Pressed.")
-            self.emailModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
-        }))
-        alert.addAction(UIAlertAction(title: "Validate", style: .default, handler: { action in
-            let newEmailField = alert.textFields![0] as UITextField
-            self.changeEmail(email: newEmailField.text!)
-            print("~ Action Informations: Email has been changed.")
-            self.emailModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    @IBAction func openChangeShip(_ sender: Any) {
-        self.shipModifierPic.tintColor = UIColor(rgb: 0xFB6060)
-        let alert = UIAlertController(title: "Tap a new name.", message: "Write a new name in the field below the naccept to change your ship name.", preferredStyle: .alert)
-        alert.addTextField { (newShipField : UITextField!) -> Void in
-            newShipField.placeholder = "Enter Your Ship Name"
-        }
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
-            print("~ Action Information: Cancel Pressed.")
-            self.shipModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
-        }))
-        alert.addAction(UIAlertAction(title: "Validate", style: .default, handler: { action in
-            let newShipField = alert.textFields![0] as UITextField
-            self.changeShipName(ship: newShipField.text!)
-            print("~ Action Informations: Ship name has been changed.")
-            self.shipModifierPic.tintColor = UIColor(rgb: 0x57A1FF)
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func handleLogout(_ sender: UIButton) {
@@ -253,48 +191,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
     
-    // MARK: profile information updaters
-    
-    // handle the email changes
-    func changeEmail(email: String) {
-        let user = Auth.auth().currentUser
-        
-        // define the database structure and upload the profile picture from facebook
-        let userData: [String: Any] = ["email": email as Any]
-        
-        // update the user data on the database
-        guard let uid = user?.uid else { return }
-        self.ref.child("users/\(uid)").updateChildValues(userData)
-        self.userEmailAddress.text = email
-    }
-    
-    // handle the name changes
-    func changeName(name: String) {
-        let user = Auth.auth().currentUser
-        
-        // define the database structure and upload the profile picture from facebook
-        let userData: [String: Any] = ["name": name as Any]
-        
-        // update the user data on the database
-        guard let uid = user?.uid else { return }
-        self.ref.child("users/\(uid)").updateChildValues(userData)
-        self.userName.text = name
-    }
-    
-    // handle the ship name changes
-    func changeShipName(ship: String) {
-        let user = Auth.auth().currentUser
-        
-        // define the database structure and upload the profile picture from facebook
-        let userData: [String: Any] = ["ship_name": ship as Any]
-        
-        // update the user data on the database
-        guard let uid = user?.uid else { return }
-        self.ref.child("users/\(uid)").updateChildValues(userData)
-        self.userShipName.text = ship
-    }
-    
-    // MARK: storage functions
+    // MARK: Storage
     
     func createProfileChangeRequest(photoUrl: URL? = nil, name: String? = nil, _ callback: ((Error?) -> ())? = nil){
         if let request = Auth.auth().currentUser?.createProfileChangeRequest(){

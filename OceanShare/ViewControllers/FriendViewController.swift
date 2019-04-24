@@ -1,5 +1,5 @@
 //
-//  SettingViewController.swift
+//  FriendViewController.swift
 //  OceanShare
 //
 //  Created by Joseph Pereniguez on 31/12/2018.
@@ -8,12 +8,12 @@
 
 import UIKit
 
-class SettingViewController: UIViewController {
+class FriendViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
-    //Todo: add setting stuff
+    //Todo: add friend list etc
     
 }
