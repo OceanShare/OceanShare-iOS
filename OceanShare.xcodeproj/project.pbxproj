@@ -533,7 +533,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OceanShare/Pods-OceanShare-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OceanShare/Pods-OceanShare-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E9C6D9E7F1415C24CCCA787D /* [CP] Embed Pods Frameworks */ = {
