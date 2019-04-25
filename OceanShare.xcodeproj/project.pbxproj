@@ -413,7 +413,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OceanShare/Pods-OceanShare-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OceanShare/Pods-OceanShare-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		49FFC76F69001DE8EE890864 /* [CP] Check Pods Manifest.lock */ = {
