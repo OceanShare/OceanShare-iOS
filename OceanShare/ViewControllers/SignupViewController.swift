@@ -15,7 +15,7 @@ import FirebaseDatabase
 import GoogleSignIn
 import FBSDKLoginKit
 import TwitterKit
-// import TwitterCore_Private
+import TwitterCore_Private
 import Alamofire
 
 class SignupViewController: UIViewController, GIDSignInUIDelegate {
