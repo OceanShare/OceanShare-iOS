@@ -24,6 +24,7 @@
 		BF89D36F21D3152800E522AC /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D36E21D3152800E522AC /* RootViewController.swift */; };
 		BF89D37321D32EBC00E522AC /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D37221D32EBC00E522AC /* SignupViewController.swift */; };
 		BF89D37521D32EE900E522AC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D37421D32EE900E522AC /* LoginViewController.swift */; };
+		BF8CCE3B2274729B000863AC /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8CCE3A2274729B000863AC /* Tag.swift */; };
 		BF92736921D1D57500BDCC16 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92736821D1D57500BDCC16 /* AppDelegate.swift */; };
 		BF92736B21D1D57500BDCC16 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92736A21D1D57500BDCC16 /* StartViewController.swift */; };
 		BF92736E21D1D57500BDCC16 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF92736C21D1D57500BDCC16 /* Main.storyboard */; };
@@ -80,6 +81,7 @@
 		BF89D36E21D3152800E522AC /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		BF89D37221D32EBC00E522AC /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		BF89D37421D32EE900E522AC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		BF8CCE3A2274729B000863AC /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		BF92736521D1D57500BDCC16 /* OceanShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OceanShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF92736821D1D57500BDCC16 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF92736A21D1D57500BDCC16 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 			children = (
 				BF56CDE921D5D3A7003707A9 /* AppUser.swift */,
 				BF3306FC21DF599000433264 /* Helper.swift */,
+				BF8CCE3A2274729B000863AC /* Tag.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -570,6 +573,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF8CCE3B2274729B000863AC /* Tag.swift in Sources */,
 				BF89D37521D32EE900E522AC /* LoginViewController.swift in Sources */,
 				BF13F79E21DB512C0086F24B /* UIViewExtensions.swift in Sources */,
 				BF89D37321D32EBC00E522AC /* SignupViewController.swift in Sources */,

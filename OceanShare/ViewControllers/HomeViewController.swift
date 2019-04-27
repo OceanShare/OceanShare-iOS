@@ -9,25 +9,58 @@
 import UIKit
 import Mapbox
 import FirebaseAuth
+import FirebaseDatabase
+import FirebaseCore
+import FirebaseStorage
 import JJFloatingActionButton
 
 class HomeViewController: UIViewController, MGLMapViewDelegate {
+    
+    // MARK: database definition
+    var ref: DatabaseReference!
+    let storageRef = FirebaseStorage.Storage().reference()
     
     // MARK: definitions
     
     let point = MGLPointAnnotation()
     let actionButton = JJFloatingActionButton()
     
+    var id_tag = 0
+    var description_tag = "."
+    var x_tag = 0.0
+    var y_tag = 0.0
+    var cordinate: CLLocationCoordinate2D!
+    
+    var mapView: MGLMapView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        ref = Database.database().reference().child("Tag")
+        print("oui")
         setupMapBox()
+        showTags(mapView: mapView)
     }
     
     // MARK : setups
     
+    func Activate() {
+        let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
+        print(actionButton.buttonState.rawValue)
+        if (actionButton.buttonState.rawValue == 3){
+            print("Inside")
+            self.mapView.addGestureRecognizer(PressRecognizer)
+            
+        }
+        else {
+            print("outside")
+            
+            // mapView.gestureRecognizers?.forEach(mapView.removeGestureRecognizer)
+            self.mapView.removeGestureRecognizer(PressRecognizer)
+        }
+    }
+    
     func setupMapBox() {
-        let mapView = MGLMapView(frame: view.bounds)
+        /* let */ mapView = MGLMapView(frame: view.bounds)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.delegate = self
         
@@ -37,43 +70,207 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         // enable the permanent heading indicator which will appear when the tracking mode is not `.followWithHeading`.
         mapView.showsUserHeadingIndicator = true
         
-        view.addSubview(mapView)
+        // add Marker with click on the map
+        
+        
+        
+        //    view.addSubview(mapView)
         
         actionButton.buttonColor = UIColor(rgb: 0x57A1FF)
         
         // list the icon buttons
-        actionButton.addItem(title: "Lifesaver", image: UIImage(named: "lifesaver")?.withRenderingMode(.alwaysTemplate)) { item in
+        actionButton.addItem(title: "Dauphin", image: UIImage(named: "dauphin")?.withRenderingMode(.alwaysTemplate)) { item in
             Helper.showAlert(for: item)
-            
-            let Bouer = MGLPointAnnotation()
-            Bouer.coordinate = CLLocationCoordinate2D(latitude: 26.212596, longitude: 50.611647)
-            Bouer.title = "Lifesaver"
-            Bouer.subtitle = "Someone needs help."
-            
-            mapView.addAnnotation(Bouer)
+            self.id_tag = 1
+            self.description_tag = "Dauphin"
+            self.Activate()
         }
-        actionButton.addItem(title: "Strom", image: UIImage(named: "lightning")?.withRenderingMode(.alwaysTemplate)) { item in
+        actionButton.addItem(title: "Meduse", image: UIImage(named: "meduse")?.withRenderingMode(.alwaysTemplate)) { item in
             Helper.showAlert(for: item)
-            
-            let storm = MGLPointAnnotation()
-            storm.coordinate = CLLocationCoordinate2D(latitude: 26.217606, longitude: 50.611365)
-            storm.title = "Storm"
-            storm.subtitle = "Potential futur storm."
-            
-            mapView.addAnnotation(storm)
+            self.id_tag = 2
+            self.description_tag = "Meduse"
+            self.Activate()
         }
-        actionButton.addItem(title: "Destination", image: UIImage(named: "define_location")?.withRenderingMode(.alwaysTemplate)) { item in
+        actionButton.addItem(title: "Plongeur", image: UIImage(named: "plongeur")?.withRenderingMode(.alwaysTemplate)) { item in
             Helper.showAlert(for: item)
-            
-            let dest = MGLPointAnnotation()
-            dest.coordinate = CLLocationCoordinate2D(latitude: 26.218915, longitude: 50.605185)
-            dest.title = "Destination"
-            dest.subtitle = "The place you want to reach."
-            
-            mapView.addAnnotation(dest)
+            self.id_tag = 3
+            self.description_tag = "Plongeur"
+            self.Activate()
         }
-        
+        actionButton.addItem(title: "Posititon", image: UIImage(named: "Posititon")?.withRenderingMode(.alwaysTemplate)) { item in
+            Helper.showAlert(for: item)
+            self.id_tag = 4
+            self.description_tag = "Posititon"
+            self.Activate()
+        }
+        actionButton.addItem(title: "Warning", image: UIImage(named: "warnongBW")?.withRenderingMode(.alwaysTemplate)) { item in
+            Helper.showAlert(for: item)
+            self.id_tag = 5
+            self.description_tag = "Warning"
+            self.Activate()
+        }
+        actionButton.addItem(title: "Waste", image: UIImage(named: "wasteP")?.withRenderingMode(.alwaysTemplate)) { item in
+            Helper.showAlert(for: item)
+            self.id_tag = 6
+            self.description_tag = "Waste"
+            self.Activate()
+        }
+        print("SETUP Fin")
+        view.addSubview(mapView)
         actionButton.display(inViewController: self)
+    }
+    
+    
+    func putTag(mapView: MGLMapView, id: Int, description: String, cordinate: CLLocationCoordinate2D){
+        
+        print("PutTag Debut")
+        
+        switch id {
+        case 1:
+            print("id tag = 1")
+            let marker = MGLPointAnnotation()
+            marker.coordinate = cordinate
+            marker.title = "Dauphin"
+            marker.subtitle = description
+            mapView.addAnnotation(marker)
+        case 2:
+            print("id tag = 2")
+            let marker = MGLPointAnnotation()
+            marker.coordinate = cordinate
+            marker.title = "Meduse"
+            marker.subtitle = description
+            mapView.addAnnotation(marker)
+        case 3:
+            print("id tag = 3")
+            let marker = MGLPointAnnotation()
+            marker.coordinate = cordinate
+            marker.title = "Plongeur"
+            marker.subtitle = description
+            mapView.addAnnotation(marker)
+        case 4:
+            print("id tag = 4")
+            let marker = MGLPointAnnotation()
+            marker.coordinate = cordinate
+            marker.title = "Posititon"
+            marker.subtitle = description
+            mapView.addAnnotation(marker)
+        case 5:
+            print("id tag = 5")
+            let marker = MGLPointAnnotation()
+            marker.coordinate = cordinate
+            marker.title = "Warning"
+            marker.subtitle = description
+            mapView.addAnnotation(marker)
+        case 6:
+            print("id tag = 6")
+            let marker = MGLPointAnnotation()
+            marker.coordinate = cordinate
+            marker.title = "Waste"
+            marker.subtitle = description
+            mapView.addAnnotation(marker)
+        default:
+            print("Error in func putTag")
+        }
+        print("PutTag Fin")
+    }
+    
+    func putTagfromServer(mapView: MGLMapView, Tag: Tag){
+        switch Tag.id {
+        case 1:
+            print("id tag = 1")
+            let marker = MGLPointAnnotation()
+            marker.coordinate = CLLocationCoordinate2D(latitude: Tag.x ?? 0, longitude: Tag.y ?? 0)
+            marker.title = "Dauphin"
+            marker.subtitle = Tag.description
+            mapView.addAnnotation(marker)
+        case 2:
+            print("id tag = 2")
+            let marker = MGLPointAnnotation()
+            marker.coordinate = CLLocationCoordinate2D(latitude: Tag.x ?? 0, longitude: Tag.y ?? 0)
+            marker.title = "Meduse"
+            marker.subtitle = Tag.description
+            mapView.addAnnotation(marker)
+        case 3:
+            print("id tag = 3")
+            let marker = MGLPointAnnotation()
+            marker.coordinate = CLLocationCoordinate2D(latitude: Tag.x ?? 0, longitude: Tag.y ?? 0)
+            marker.title = "Plongeur"
+            marker.subtitle = Tag.description
+            mapView.addAnnotation(marker)
+        case 4:
+            print("id tag = 4")
+            let marker = MGLPointAnnotation()
+            marker.coordinate = CLLocationCoordinate2D(latitude: Tag.x ?? 0, longitude: Tag.y ?? 0)
+            marker.title = "Posititon"
+            marker.subtitle = Tag.description
+            mapView.addAnnotation(marker)
+        case 5:
+            print("id tag = 5")
+            let marker = MGLPointAnnotation()
+            marker.coordinate = CLLocationCoordinate2D(latitude: Tag.x ?? 0, longitude: Tag.y ?? 0)
+            marker.title = "Warning"
+            marker.subtitle = Tag.description
+            mapView.addAnnotation(marker)
+        case 6:
+            print("id tag = 6")
+            let marker = MGLPointAnnotation()
+            marker.coordinate = CLLocationCoordinate2D(latitude: Tag.x ?? 0, longitude: Tag.y ?? 0)
+            marker.title = "Waste"
+            marker.subtitle = Tag.description
+            mapView.addAnnotation(marker)
+        default:
+            print("Error in func putTag")
+        }
+    }
+    
+    func showTags(mapView: MGLMapView) {
+        //   guard let userId = Auth.auth().currentUser?.uid else { return }
+        print("SHOW")
+        print(ref)
+        ref.observe(DataEventType.value, with: { (snapshot) in
+            print(snapshot.childrenCount)
+            if snapshot.childrenCount > 0 {
+                print("SHOWOOO")
+                
+                
+                for tag in snapshot.children.allObjects as! [DataSnapshot] {
+                    //getting values
+                    let data = tag.value as? NSDictionary
+                    let description  = data?["description"] as? String
+                    let id  = data?["id"] as? Int
+                    let x = data?["x"] as? Double
+                    let y = data?["y"] as? Double
+                    self.putTagfromServer(mapView: mapView, Tag: Tag(id: id, description: description, x: x, y: y))
+                }
+                /*
+                 guard let data = snapshot.value as? NSDictionary else { return }
+                 guard let description = data["description"] as? String else { return }
+                 guard let id = data["id"] as? Int else { return }
+                 guard let x = data["x"] as? Double else { return }
+                 guard let y = data["y"] as? Double else { return }
+                 */
+                // var tag = Tag(id: id, description: description, x: x, y: y)
+                //      self.putTag(mapView: mapView, Tag: Tag(id: id, description: description, x: x, y: y))
+                print("oui")
+            }
+            
+        })
+    }
+    
+    func saveTags(id: Int, description: String, cordinate: CLLocationCoordinate2D) {
+        
+        print("SAVE TAGS DEBUT")
+        
+        let Tag: [String: Any] = [
+            "id": id as Any,
+            "description": description as Any,
+            "x": cordinate.latitude as Any,
+            "y": cordinate.longitude as Any
+        ]
+        
+        let key = self.ref.childByAutoId().key
+        self.ref.child(key!).setValue(Tag)
+        print("SAVE TAGS FIN")
     }
     
     // MARK: mapbox annotation functions
@@ -88,35 +285,73 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         }
         return nil
     }
-
+    
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
         // var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "Bouer")
         var test = MGLAnnotationImage()
         
-        // if test == nil {
-        print("TEST")
-        if annotation.title == "Lifesaver" {
-            var image = UIImage(named: "lifesaver")!
+        
+        print("MapViewDebut")
+        if annotation.title == "Dauphin" {
+            var image = UIImage(named: "dauphin")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-            test = MGLAnnotationImage(image: image, reuseIdentifier: "Lifesaver")
-        } else if annotation.title == "Storm" {
-            var image = UIImage(named: "lightning")!
+            test = MGLAnnotationImage(image: image, reuseIdentifier: "Dauphin")
+        } else if annotation.title == "Meduse" {
+            var image = UIImage(named: "meduse")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-            test = MGLAnnotationImage(image: image, reuseIdentifier: "storm")
+            test = MGLAnnotationImage(image: image, reuseIdentifier: "Meduse")
+        } else if annotation.title == "Plongeur" {
+            var image = UIImage(named: "plongeur")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+            test = MGLAnnotationImage(image: image, reuseIdentifier: "Plongeur")
+        } else if annotation.title == "Posititon" {
+            var image = UIImage(named: "Posititon")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+            test = MGLAnnotationImage(image: image, reuseIdentifier: "Posititon")
+        } else if annotation.title == "Warning" {
+            var image = UIImage(named: "warnongBW")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+            test = MGLAnnotationImage(image: image, reuseIdentifier: "Warning")
         } else {
-            var image = UIImage(named: "define_location")!
+            var image = UIImage(named: "wasteP")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-            test = MGLAnnotationImage(image: image, reuseIdentifier: "dest")
+            test = MGLAnnotationImage(image: image, reuseIdentifier: "Waste")
         }
+        print("MapViewDebutFin")
         
         return test
     }
-
+    
+    
+    
+    /*  func addNewAnnotation(cordinate: CLLocationCoordinate2D) {
+     let annotation = MGLPointAnnotation()
+     annotation.coordinate = cordinate
+     annotation.title = "Dest"
+     annotation.subtitle = "01"
+     
+     mapView.addAnnotation(annotation)
+     }
+     */
+    @objc func PressOnMap(_ recognizer: UITapGestureRecognizer) {
+        print("PRESSMapDebut")
+        let PressScreenCoordinates = recognizer.location(in: mapView)
+        let PressMapCoordinates = mapView.convert(PressScreenCoordinates, toCoordinateFrom: mapView)
+        cordinate = PressMapCoordinates
+        
+        self.putTag(mapView: self.mapView, id: self.id_tag, description: self.description_tag, cordinate: self.cordinate)
+        self.saveTags(id: self.id_tag, description: self.description_tag, cordinate: self.cordinate)
+        //  showTags(mapView: mapView)
+        Activate()
+        print("PRESSMapFin")
+        //   actionButton.open(animated: true, completion: nil)
+    }
+    
 }
 
-// MARK: custum class
 
+// MARK: custum class
 class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     let size: CGFloat = 48
     var dot: CALayer!
@@ -139,7 +374,7 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     private func updateHeading() {
         if let heading = userLocation!.heading?.trueHeading {
             arrow.isHidden = false
-
+            
             let rotation: CGFloat = -MGLRadiansFromDegrees(mapView!.direction - heading)
             
             if abs(rotation) > 0.01 {
