@@ -861,6 +861,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="maintenance" translatesAutoresizingMaskIntoConstraints="NO" id="map-RI-jPh">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bHD-d1-86v" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
                                 <rect key="frame" x="57" y="203" width="300" height="350"/>
                                 <subviews>
@@ -950,7 +953,11 @@
                         </subviews>
                         <color key="backgroundColor" red="0.95686274509803915" green="0.97254901960784312" blue="0.98431372549019602" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="map-RI-jPh" firstAttribute="leading" secondItem="vjM-07-0BP" secondAttribute="leading" id="9Hx-K8-eIv"/>
+                            <constraint firstAttribute="trailing" secondItem="map-RI-jPh" secondAttribute="trailing" id="BrO-ju-SyY"/>
                             <constraint firstItem="kbi-zx-9sO" firstAttribute="top" secondItem="bHD-d1-86v" secondAttribute="bottom" constant="8" id="CMA-tH-zXY"/>
+                            <constraint firstItem="map-RI-jPh" firstAttribute="top" secondItem="vjM-07-0BP" secondAttribute="top" id="Y6M-aG-b0Q"/>
+                            <constraint firstAttribute="bottom" secondItem="map-RI-jPh" secondAttribute="bottom" id="biM-UD-pI9"/>
                             <constraint firstItem="bHD-d1-86v" firstAttribute="centerY" secondItem="7OY-8C-Icp" secondAttribute="centerY" id="dqf-9G-vWz"/>
                             <constraint firstItem="bHD-d1-86v" firstAttribute="centerX" secondItem="7OY-8C-Icp" secondAttribute="centerX" id="eBT-i0-24H"/>
                             <constraint firstItem="kbi-zx-9sO" firstAttribute="centerX" secondItem="7OY-8C-Icp" secondAttribute="centerX" id="kgx-jr-dDb"/>
@@ -1207,6 +1214,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="maintenance" translatesAutoresizingMaskIntoConstraints="NO" id="qLa-Ou-0YU">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zMm-eb-U2M" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
                                 <rect key="frame" x="57" y="193" width="300" height="350"/>
                                 <subviews>
@@ -1264,8 +1274,12 @@
                         </subviews>
                         <color key="backgroundColor" red="0.95686274510000002" green="0.97254901959999995" blue="0.98431372549999996" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="qLa-Ou-0YU" secondAttribute="bottom" id="AZc-Nn-ooU"/>
+                            <constraint firstItem="qLa-Ou-0YU" firstAttribute="top" secondItem="KX2-Ko-Iyg" secondAttribute="top" id="M7T-vJ-vK6"/>
                             <constraint firstItem="zMm-eb-U2M" firstAttribute="centerX" secondItem="KX2-Ko-Iyg" secondAttribute="centerX" id="T5D-N9-QTD"/>
                             <constraint firstItem="zMm-eb-U2M" firstAttribute="centerY" secondItem="KX2-Ko-Iyg" secondAttribute="centerY" id="hx7-5g-TmO"/>
+                            <constraint firstItem="qLa-Ou-0YU" firstAttribute="leading" secondItem="KX2-Ko-Iyg" secondAttribute="leading" id="iaT-OL-zfV"/>
+                            <constraint firstAttribute="trailing" secondItem="qLa-Ou-0YU" secondAttribute="trailing" id="qI3-3f-ZKB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6JB-iU-29R"/>
                     </view>
@@ -1275,7 +1289,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ke6-q7-Z6z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2297" y="132"/>
+            <point key="canvasLocation" x="-2297.1014492753625" y="131.25"/>
         </scene>
         <!--Main Tab Bar Controller-->
         <scene sceneID="QMU-Np-6pR">
@@ -1722,6 +1736,7 @@
         <image name="logo" width="459.66665649414062" height="168.33332824707031"/>
         <image name="logoBlack" width="459.66665649414062" height="168.33332824707031"/>
         <image name="mail" width="30" height="30"/>
+        <image name="maintenance" width="633.33331298828125" height="633.33331298828125"/>
         <image name="map" width="30" height="30"/>
         <image name="modify" width="30" height="30"/>
         <image name="profile" width="30" height="30"/>
@@ -1730,7 +1745,6 @@
         <image name="twitterLogo" width="170.66667175292969" height="170.66667175292969"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Ibs-Mm-tut"/>
         <segue reference="Kfs-l7-ZIh"/>
     </inferredMetricsTieBreakers>
 </document>
