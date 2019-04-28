@@ -36,7 +36,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference().child("Tag")
-        print("oui")
         setupMapBox()
         showTags(mapView: mapView)
     }
@@ -225,7 +224,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     func showTags(mapView: MGLMapView) {
         //   guard let userId = Auth.auth().currentUser?.uid else { return }
-        print("SHOW")
         print(ref)
         ref.observe(DataEventType.value, with: { (snapshot) in
             print(snapshot.childrenCount)

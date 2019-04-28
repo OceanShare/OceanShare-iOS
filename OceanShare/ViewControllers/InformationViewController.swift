@@ -44,9 +44,8 @@ class InformationViewController: UIViewController {
         super.viewDidLoad()
         
         ref = Database.database().reference()
-
+        // apply the design stuff to the view
         setupView()
-        
         // get the profile picture and the user name
         self.fetchUserInfo()
     }
@@ -121,7 +120,7 @@ class InformationViewController: UIViewController {
         dismiss(animated: false, completion: nil)
     }
     
-    // MARK: Functions
+    // MARK: Setup
     
     func setupView() {
         self.nameModifierPic.image = self.nameModifierPic.image!.withRenderingMode(.alwaysTemplate)
@@ -131,6 +130,8 @@ class InformationViewController: UIViewController {
         self.shipModifierPic.image = self.shipModifierPic.image!.withRenderingMode(.alwaysTemplate)
         self.shipModifierPic.tintColor = UIColor(rgb: 0xC5C7D2)
     }
+    
+    // MARK: Updater
     
     func fetchUserInfo() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
@@ -166,7 +167,7 @@ class InformationViewController: UIViewController {
                             self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
                         } else {
                             // set a default avatar
-                            let pictureURL = URL(string: "https://scontent-nrt1-1.xx.fbcdn.net/v/t1.0-1/p480x480/29187034_1467064540082381_56763327166021632_n.jpg?_nc_cat=107&_nc_ht=scontent-nrt1-1.xx&oh=653531d780436b9288e94f8ca0847275&oe=5CBD03CC")
+                            let pictureURL = URL(string: "https://image.flaticon.com/icons/png/512/320/320359.png")
                             // todo, find a better default user profile picture
                             let pictureData = NSData(contentsOf: pictureURL!)
                             let finalPicture = UIImage(data: pictureData! as Data)
@@ -187,15 +188,13 @@ class InformationViewController: UIViewController {
         }
     }
     
-    // MARK: Updaters setters
+    // MARK: Setters
     
     // handle the email changes
     func changeEmail(email: String) {
         let user = Auth.auth().currentUser
-        
         // define the database structure
         let userData: [String: Any] = ["email": email as Any]
-        
         // update the user data on the database
         guard let uid = user?.uid else { return }
         self.ref.child("users/\(uid)").updateChildValues(userData)
@@ -205,10 +204,8 @@ class InformationViewController: UIViewController {
     // handle the name changes
     func changeName(name: String) {
         let user = Auth.auth().currentUser
-        
         // define the database structure
         let userData: [String: Any] = ["name": name as Any]
-        
         // update the user data on the database
         guard let uid = user?.uid else { return }
         self.ref.child("users/\(uid)").updateChildValues(userData)
@@ -218,9 +215,7 @@ class InformationViewController: UIViewController {
     // handle the ship name changes
     func changeShipName(ship: String) {
         let user = Auth.auth().currentUser
-        
         let userData: [String: Any] = ["ship_name": ship as Any]
-        
         // update the user data on the database
         guard let uid = user?.uid else { return }
         self.ref.child("users/\(uid)").updateChildValues(userData)

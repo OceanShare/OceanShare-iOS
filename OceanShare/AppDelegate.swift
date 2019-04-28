@@ -75,17 +75,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             } else {
                 let user = Auth.auth().currentUser
                 
-                // define the database structure
-                let userData: [String: Any] = [
-                    "name": user?.displayName as Any,
-                    "email": user?.email as Any
-                ]
+                let refToCheck = Database.database().reference().child("users")
                 
-                self.ref = Database.database().reference()
-                // push the user datas on the database
-                guard let uid = authResult?.user.uid else { return }
-                self.ref.child("users/\(uid)").setValue(userData)
-                
+                refToCheck.child(user!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                    if snapshot.hasChild("name") {
+                        print("-> Google user has already set its data.")
+                    } else {
+                        // define the database structure
+                        let userData: [String: Any] = [
+                            "name": user?.displayName as Any,
+                            "email": user?.email as Any
+                        ]
+                        
+                        self.ref = Database.database().reference()
+                        // push the user datas on the database
+                        guard let uid = authResult?.user.uid else { return }
+                        self.ref.child("users/\(uid)").setValue(userData)
+                    }
+                })
+
                 print("-> Google Authentication Success.")
                 // set the userdefaults data
                 UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")

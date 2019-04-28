@@ -162,18 +162,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                             print("(3) Facebook Authentication Failed: ", err)
                             return
                         }
-                        let user = Auth.auth().currentUser
-                        
-                        // define the database structure and upload the profile picture from facebook
-                        let userData: [String: Any] = [
-                            "name": user?.displayName as Any,
-                            "email": user?.email as Any,
-                            "picture": self.imageURL as Any
-                        ]
-                        
-                        // push the user datas on the database
-                        guard let uid = authResult?.user.uid else { return }
-                        self.ref.child("users/\(uid)").setValue(userData)
                     })
                 })
                 print("-> Facebook Authentication Success.")
@@ -191,7 +179,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     // login with google
     @IBAction func googleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().signIn()
+        GIDSignIn.sharedInstance()?.signIn()
     }
     
     // login with twitter
@@ -213,18 +201,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                     if let err = err {
                         print("(2) Twitter Authentication Failed: ", err.localizedDescription)
                     } else {
-                        let user = Auth.auth().currentUser
-                        
-                        // define the database structure
-                        let userData: [String: Any] = [
-                            "name": user?.displayName as Any,
-                            "email": user?.email as Any
-                            
-                        ]
-                        
-                        // push the user datas on the database
-                        guard let uid = authResult?.user.uid else { return }
-                        self.ref.child("users/\(uid)").setValue(userData)
                         
                         print("-> Twitter Authentication Success.")
                         // set the userdefaults data

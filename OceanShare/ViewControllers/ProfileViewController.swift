@@ -47,17 +47,14 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         super.viewDidLoad()
 
         ref = Database.database().reference()
-        
         // apply the design stuff to the view
         setupView()
-        
         // get the profile picture and the user name
         fetchUserInfo()
     }
     
-    // MARK: Functions
+    // MARK: Picker
     
-    // handle the image picker when the user wants to change his profile picture
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         var selectedImageFromPicker: UIImage?
@@ -89,7 +86,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
     }
     
-    // apply the design stuff to the view
+    // MARK: Setup
+    
     func setupView() {
         self.profilePicture.layer.cornerRadius = 95
         self.profilePicture.clipsToBounds = true
@@ -104,7 +102,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.addEditIcon.tintColor = UIColor(rgb: 0x57A1FF)
     }
     
-    // get the profile picture and the user name
+    // MARK: Updater
+    
     func fetchUserInfo() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         
@@ -120,7 +119,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                 // update the user data on the database
                 guard let uid = user?.uid else { return }
                 self.ref.child("users/\(uid)").updateChildValues(userData)
-                self.shipName.text = defaultShipName
+                self.shipName.text = "\" " + defaultShipName + " \""
                 self.fetchUserInfo()
                 return
             }
@@ -139,7 +138,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                             self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
                         } else {
                             // set a default avatar
-                            let pictureURL = URL(string: "https://scontent-nrt1-1.xx.fbcdn.net/v/t1.0-1/p480x480/29187034_1467064540082381_56763327166021632_n.jpg?_nc_cat=107&_nc_ht=scontent-nrt1-1.xx&oh=653531d780436b9288e94f8ca0847275&oe=5CBD03CC")
+                            let pictureURL = URL(string: "https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-1/p480x480/29187034_1467064540082381_56763327166021632_n.jpg?_nc_cat=107&_nc_ht=scontent-lax3-2.xx&oh=7c2e6e423e8bd35727d754d1c47059d6&oe=5D33AACC")
                             // todo, find a better default user profile picture
                             let pictureData = NSData(contentsOf: pictureURL!)
                             let finalPicture = UIImage(data: pictureData! as Data)
@@ -175,9 +174,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         do {
             try Auth.auth().signOut()
             //Todo: find a way to return to pageviewcontroller -> startviewcontroller
-            
             if Auth.auth().currentUser == nil {
-                
                 // Remove User Session from device
                 UserDefaults.standard.removeObject(forKey: "user_uid_key")
                 UserDefaults.standard.synchronize()
