@@ -78,7 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 let refToCheck = Database.database().reference().child("users")
                 
                 refToCheck.child(user!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                    if snapshot.hasChild("name") {
+                    if snapshot.hasChild("email") {
                         print("-> Google user has already set its data.")
                     } else {
                         // define the database structure
