@@ -987,7 +987,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="modify" translatesAutoresizingMaskIntoConstraints="NO" id="8vi-rG-oRG">
-                                        <rect key="frame" x="364" y="10" width="30" height="30"/>
+                                        <rect key="frame" x="378" y="17" width="16" height="16"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Ww-Iy-EgW">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
@@ -1025,7 +1025,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="modify" translatesAutoresizingMaskIntoConstraints="NO" id="qcA-Bj-GC6">
-                                        <rect key="frame" x="364" y="10" width="30" height="30"/>
+                                        <rect key="frame" x="378" y="17" width="16" height="16"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X3F-qO-XW6">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
@@ -1064,7 +1064,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="modify" translatesAutoresizingMaskIntoConstraints="NO" id="uB4-hL-jUl">
-                                        <rect key="frame" x="364" y="10" width="30" height="30"/>
+                                        <rect key="frame" x="378" y="17" width="16" height="16"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6I6-gk-ZKu">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
@@ -1119,6 +1119,9 @@
                                         <state key="normal" title="Delete My Account">
                                             <color key="titleColor" red="0.98431372549999996" green="0.37647058820000001" blue="0.37647058820000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="deleteHandler:" destination="cIM-eW-Aei" eventType="touchUpInside" id="bEI-Ad-aM0"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -37,7 +37,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
 
-    // MARK: definitions
+    // MARK: Definitions
     
     var ref: DatabaseReference!
     let storageRef = FirebaseStorage.Storage().reference()
@@ -45,48 +45,20 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     var imageURL: String?
     
     var currentTappedTextField : UITextField?
-    //use this method to get tapped textField
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        currentTappedTextField = textField
-        return true
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
+        // keybord handler
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         observeKeyboardNotification()
-        
-        ref = Database.database().reference()
-        
+        // apply the design stuff to the view
         setupView()
     }
     
-    // MARK: keyboard handler
+    // MARK: Setup
     
-    fileprivate func observeKeyboardNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    @objc func keyboardShow() {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            
-            self.view.frame = CGRect(x: 0, y: -200, width: self.view.frame.width, height: self.view.frame.height)
-            
-        }, completion: nil)
-    }
-    
-    @objc func keyboardHide() {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            
-            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-            
-        }, completion: nil)
-    }
-    
-    // MARK: setup
-
     func setupView() {
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         
@@ -107,7 +79,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         self.confirm.tintColor = UIColor(rgb: 0xFFFFFF)
     }
 
-    // MARK: actions
+    // MARK: Actions
     
     @IBAction func registerButtonTapped(_ sender: UIButton) {
         
@@ -123,7 +95,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
             displayMessage(userMessage: "Please make sure that passwords match.")
             return
         } else {
-            // Do not care about the warning
+            // do not care about the warning
             Auth.auth().createUserAndRetrieveData(withEmail: email!, password: password!) { (authResult, err) in
                 if let err = err {
                     print("(1) Registration Failed: ", err.localizedDescription)
@@ -230,7 +202,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         configureTwitter()
     }
     
-    // MARK: configuration
+    // MARK: Configuration
     
     fileprivate func configureTwitter() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
@@ -278,16 +250,41 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         twitterSignInButton.accessibilityActivate()
     }
     
+    // MARK: Keyboard Handling
     
-    // MARK: error handling
+    fileprivate func observeKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardShow() {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            
+            self.view.frame = CGRect(x: 0, y: -200, width: self.view.frame.width, height: self.view.frame.height)
+            
+        }, completion: nil)
+    }
+    
+    @objc func keyboardHide() {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            
+            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+            
+        }, completion: nil)
+    }
+    
+    // use this method to get tapped textField
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        currentTappedTextField = textField
+        return true
+    }
+    
+    // MARK: Error Handling
     
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
                 let alertController = UIAlertController(title: "Please Fill The Fields Correctly.", message: userMessage, preferredStyle: .alert)
                 let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
-                    /*DispatchQueue.main.async {
-                        self.dismiss(animated: true, completion: nil)
-                    }*/
                     print("~ Actions Information: OK Pressed.")
                 }
                 alertController.addAction(OKAction)
@@ -295,7 +292,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         }
     }
     
-    // MARK: checks user email
+    // MARK: Email Handling
     
     func sendEmailVerification(_ callback: ((Error?) -> ())? = nil){
         Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in

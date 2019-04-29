@@ -15,7 +15,7 @@ import FirebaseStorage
 import GoogleSignIn
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    
     // MARK: Database
     
     var ref: DatabaseReference!
@@ -53,37 +53,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         fetchUserInfo()
     }
     
-    // MARK: Picker
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-        var selectedImageFromPicker: UIImage?
-        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
-        
-        if let editedImage = info ["UIImagePickerControllerEditedImage"] as? UIImage {
-            selectedImageFromPicker = editedImage
-        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
-            selectedImageFromPicker = originalImage
-        }
-        
-        if let selectedImage = selectedImageFromPicker {
-            profilePicture.image = selectedImage
-            
-            let uploadImage = selectedImage.jpegData(compressionQuality: 0.6)
-            updateProfileInfo(withImage: uploadImage, name: appUser!.name)
-        }
-        
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        // dismiss the image picker if the cancel button is tapped
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
-        // swift 4 function to convert value
-        return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+    override func viewDidAppear(_ animated: Bool) {
+        fetchUserInfo()
     }
     
     // MARK: Setup
@@ -100,6 +71,35 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.pictureIcon.tintColor = UIColor(rgb: 0xFFFFFF)
         self.addEditIcon.image = self.addEditIcon.image!.withRenderingMode(.alwaysTemplate)
         self.addEditIcon.tintColor = UIColor(rgb: 0x57A1FF)
+    }
+    
+    // MARK: Actions
+    
+    @IBAction func changeProfilePicture(_ sender: UIButton) {
+        let picker = UIImagePickerController()
+        present(picker, animated: true, completion: nil)
+        picker.delegate = self
+        picker.allowsEditing = true
+        picker.sourceType = UIImagePickerController.SourceType.photoLibrary
+        present(picker, animated: true, completion: nil)
+    }
+    
+    @IBAction func handleLogout(_ sender: UIButton) {
+        do {
+            try Auth.auth().signOut()
+            //Todo: find a way to return to pageviewcontroller -> startviewcontroller
+            if Auth.auth().currentUser == nil {
+                // Remove User Session from device
+                UserDefaults.standard.removeObject(forKey: "user_uid_key")
+                UserDefaults.standard.synchronize()
+                let signInPage = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
+                let appDelegate = UIApplication.shared.delegate
+                appDelegate?.window??.rootViewController = signInPage
+                print("-> User has correctly logged out.")
+            }
+        } catch let signOutError as NSError {
+            print ("X Error signing out: %@", signOutError)
+        }
     }
     
     // MARK: Updater
@@ -159,33 +159,37 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
     
-    // MARK: Actions
+    // MARK: Picker
     
-    @IBAction func changeProfilePicture(_ sender: UIButton) {
-        let picker = UIImagePickerController()
-        present(picker, animated: true, completion: nil)
-        picker.delegate = self
-        picker.allowsEditing = true
-        picker.sourceType = UIImagePickerController.SourceType.photoLibrary
-        present(picker, animated: true, completion: nil)
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        var selectedImageFromPicker: UIImage?
+        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+        
+        if let editedImage = info ["UIImagePickerControllerEditedImage"] as? UIImage {
+            selectedImageFromPicker = editedImage
+        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            selectedImageFromPicker = originalImage
+        }
+        
+        if let selectedImage = selectedImageFromPicker {
+            profilePicture.image = selectedImage
+            
+            let uploadImage = selectedImage.jpegData(compressionQuality: 0.6)
+            updateProfileInfo(withImage: uploadImage, name: appUser!.name)
+        }
+        
+        dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func handleLogout(_ sender: UIButton) {
-        do {
-            try Auth.auth().signOut()
-            //Todo: find a way to return to pageviewcontroller -> startviewcontroller
-            if Auth.auth().currentUser == nil {
-                // Remove User Session from device
-                UserDefaults.standard.removeObject(forKey: "user_uid_key")
-                UserDefaults.standard.synchronize()
-                let signInPage = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
-                let appDelegate = UIApplication.shared.delegate
-                appDelegate?.window??.rootViewController = signInPage
-                print("-> User has correctly logged out.")
-            }
-        } catch let signOutError as NSError {
-            print ("X Error signing out: %@", signOutError)
-        }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        // dismiss the image picker if the cancel button is tapped
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+        // swift 4 function to convert value
+        return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
     }
     
     // MARK: Storage
@@ -237,5 +241,5 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             callback?(nil)
         }
     }
-
+    
 }

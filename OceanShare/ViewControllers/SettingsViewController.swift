@@ -21,6 +21,6 @@ class SettingsViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    //Todo: add settings stuff
+    // Todo: add settings stuff
     
 }

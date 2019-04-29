@@ -28,18 +28,18 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // define the Firebase variable
         self.dataSource = self
         self.delegate = self
-        
+        // define the first view of the RootViewController
         if let firstViewController = viewControllerList.first {
             self.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
         }
-        
+        // apply the design stuff to the view
         configurePageControl()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
         super.viewDidAppear(animated)
         
         // check if the user is already logged in
@@ -50,7 +50,23 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         }
     }
     
-    // MARK: data source functions
+    // MARK: Setup
+    
+    func configurePageControl() {
+        // The total number of pages that are available is based on how many available colors we have.
+        pageControl = UIPageControl(frame: CGRect(x: 0,y: UIScreen.main.bounds.maxY - 50,width: UIScreen.main.bounds.width,height: 50))
+        
+        self.pageControl.numberOfPages = viewControllerList.count
+        self.pageControl.currentPage = 0
+        self.pageControl.tintColor = UIColor.black
+        self.pageControl.pageIndicatorTintColor = UIColor.gray
+        self.pageControl.currentPageIndicatorTintColor = UIColor(rgb: 0x57A1FF)
+        self.pageControl.layer.position.y = self.view.frame.height - 75
+        
+        self.view.addSubview(pageControl)
+    }
+    
+    // MARK: Datasource Functions
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
@@ -74,27 +90,13 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         return viewControllerList[nextIndex]
     }
     
-    // MARK: delegate methods
-    
+    // MARK: Delegate Methods
+
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         let pageContentViewController = pageViewController.viewControllers![0]
         self.pageControl.currentPage = viewControllerList.index(of: pageContentViewController)!
     }
     
-    // MARK: setup
     
-    func configurePageControl() {
-        // The total number of pages that are available is based on how many available colors we have.
-        pageControl = UIPageControl(frame: CGRect(x: 0,y: UIScreen.main.bounds.maxY - 50,width: UIScreen.main.bounds.width,height: 50))
-        
-        self.pageControl.numberOfPages = viewControllerList.count
-        self.pageControl.currentPage = 0
-        self.pageControl.tintColor = UIColor.black
-        self.pageControl.pageIndicatorTintColor = UIColor.gray
-        self.pageControl.currentPageIndicatorTintColor = UIColor(rgb: 0x57A1FF)
-        self.pageControl.layer.position.y = self.view.frame.height - 75
-
-        self.view.addSubview(pageControl)
-    }
     
 }

@@ -20,7 +20,7 @@ import Alamofire
 
 class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
-    // MARK: outlets
+    // MARK: Outlets
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -31,7 +31,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     @IBOutlet weak var background: UIImageView!
     @IBOutlet weak var loginButton: UIButton!
     
-    // MARK: definitions
+    // MARK: Definitions
     
     var ref: DatabaseReference!
     let storageRef = FirebaseStorage.Storage().reference()
@@ -40,16 +40,16 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        ref = Database.database().reference()
+        // keybord handler
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         observeKeyboardNotification()
-        
-        ref = Database.database().reference()
-        
+        // apply the design stuff to the view
         setupView()
     }
     
-    // MARK: setup
+    // MARK: Setup
     
     func setupView() {
         let color1 = UIColor(rgb: 0x57A1FF)
@@ -65,7 +65,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         self.password.tintColor = UIColor(rgb: 0xFFFFFF)
     }
     
-    // MARK: actions
+    // MARK: Actions
     
     @IBAction func forgotHandler(_ sender: UIButton) {
         
@@ -206,6 +206,8 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         configureTwitter()
     }
     
+    // MARK: Configuration
+    
     fileprivate func configureTwitter() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
             if (error != nil) {
@@ -259,15 +261,12 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         twitterSignInButton.accessibilityActivate()
     }
     
-    // MARK: error handling
+    // MARK: Error Handling
     
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
             let alertController = UIAlertController(title: "Please Fill The Fields Correctly.", message: userMessage, preferredStyle: .alert)
             let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
-                /*DispatchQueue.main.async {
-                 self.dismiss(animated: true, completion: nil)
-                 }*/
                 print("~ Actions Information: OK Pressed.")
             }
             alertController.addAction(OKAction)
@@ -275,7 +274,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         }
     }
     
-    // MARK: email handling
+    // MARK: Email Handling
     
     func sendEmailVerification(_ callback: ((Error?) -> ())? = nil){
         Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
@@ -289,7 +288,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         }
     }
     
-    // MARK: keyboard handling
+    // MARK: Keyboard Handling
     
     fileprivate func observeKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)

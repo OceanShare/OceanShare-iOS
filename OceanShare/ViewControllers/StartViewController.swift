@@ -18,11 +18,11 @@ class StartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // apply the design stuff to the view
         setupRadiant()
-        
     }
     
-    // MARK: setup
+    // MARK: Setup
     
     func setupRadiant() {
         let color1 = UIColor(rgb: 0x57A1FF)

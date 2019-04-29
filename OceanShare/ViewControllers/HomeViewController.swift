@@ -16,11 +16,12 @@ import JJFloatingActionButton
 
 class HomeViewController: UIViewController, MGLMapViewDelegate {
     
-    // MARK: database definition
+    // MARK: Database
+    
     var ref: DatabaseReference!
     let storageRef = FirebaseStorage.Storage().reference()
     
-    // MARK: definitions
+    // MARK: Definitions
     
     let point = MGLPointAnnotation()
     let actionButton = JJFloatingActionButton()
@@ -35,12 +36,14 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         ref = Database.database().reference().child("Tag")
+        // define the MLG map view and the user on this map
         setupMapBox()
         showTags(mapView: mapView)
     }
     
-    // MARK : setups
+    // MARK : Setup
     
     func Activate() {
         let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
@@ -49,32 +52,25 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             print("Inside")
             self.mapView.addGestureRecognizer(PressRecognizer)
             
-        }
-        else {
+        } else {
             print("outside")
-            
             // mapView.gestureRecognizers?.forEach(mapView.removeGestureRecognizer)
             self.mapView.removeGestureRecognizer(PressRecognizer)
+            
         }
     }
     
     func setupMapBox() {
-        /* let */ mapView = MGLMapView(frame: view.bounds)
+        mapView = MGLMapView(frame: view.bounds)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.delegate = self
         
         // enable heading tracking mode (arrow will appear)
         mapView.userTrackingMode = .followWithHeading
-        
         // enable the permanent heading indicator which will appear when the tracking mode is not `.followWithHeading`.
         mapView.showsUserHeadingIndicator = true
-        
         // add Marker with click on the map
-        
-        
-        
-        //    view.addSubview(mapView)
-        
+        //view.addSubview(mapView)
         actionButton.buttonColor = UIColor(rgb: 0x57A1FF)
         
         // list the icon buttons
@@ -114,11 +110,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             self.description_tag = "Waste"
             self.Activate()
         }
-        print("SETUP Fin")
         view.addSubview(mapView)
         actionButton.display(inViewController: self)
     }
     
+    // MARK: Mapbox Handling
     
     func putTag(mapView: MGLMapView, id: Int, description: String, cordinate: CLLocationCoordinate2D){
         
@@ -223,16 +219,15 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     }
     
     func showTags(mapView: MGLMapView) {
-        //   guard let userId = Auth.auth().currentUser?.uid else { return }
+        //guard let userId = Auth.auth().currentUser?.uid else { return }
         print(ref)
         ref.observe(DataEventType.value, with: { (snapshot) in
             print(snapshot.childrenCount)
             if snapshot.childrenCount > 0 {
                 print("SHOWOOO")
                 
-                
                 for tag in snapshot.children.allObjects as! [DataSnapshot] {
-                    //getting values
+                    // getting values
                     let data = tag.value as? NSDictionary
                     let description  = data?["description"] as? String
                     let id  = data?["id"] as? Int
@@ -247,8 +242,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
                  guard let x = data["x"] as? Double else { return }
                  guard let y = data["y"] as? Double else { return }
                  */
-                // var tag = Tag(id: id, description: description, x: x, y: y)
-                //      self.putTag(mapView: mapView, Tag: Tag(id: id, description: description, x: x, y: y))
+                //var tag = Tag(id: id, description: description, x: x, y: y)
+                //self.putTag(mapView: mapView, Tag: Tag(id: id, description: description, x: x, y: y))
                 print("oui")
             }
             
@@ -271,7 +266,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         print("SAVE TAGS FIN")
     }
     
-    // MARK: mapbox annotation functions
+    // MARK: Annotation
     
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
         return true
@@ -286,9 +281,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
-        // var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "Bouer")
+        //var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "Bouer")
         var test = MGLAnnotationImage()
-        
         
         print("MapViewDebut")
         if annotation.title == "Dauphin" {
@@ -321,8 +315,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         return test
     }
     
-    
-    
     /*  func addNewAnnotation(cordinate: CLLocationCoordinate2D) {
      let annotation = MGLPointAnnotation()
      annotation.coordinate = cordinate
@@ -332,6 +324,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
      mapView.addAnnotation(annotation)
      }
      */
+    
     @objc func PressOnMap(_ recognizer: UITapGestureRecognizer) {
         print("PRESSMapDebut")
         let PressScreenCoordinates = recognizer.location(in: mapView)
@@ -340,16 +333,16 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         
         self.putTag(mapView: self.mapView, id: self.id_tag, description: self.description_tag, cordinate: self.cordinate)
         self.saveTags(id: self.id_tag, description: self.description_tag, cordinate: self.cordinate)
-        //  showTags(mapView: mapView)
+        //showTags(mapView: mapView)
         Activate()
         print("PRESSMapFin")
-        //   actionButton.open(animated: true, completion: nil)
+        //actionButton.open(animated: true, completion: nil)
     }
-    
 }
 
 
-// MARK: custum class
+// MARK: Custom Class
+
 class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     let size: CGFloat = 48
     var dot: CALayer!
@@ -391,7 +384,6 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
         if dot == nil {
             dot = CALayer()
             dot.bounds = CGRect(x: 0, y: 0, width: size, height: size)
-            
             // Use CALayer’s corner radius to turn this layer into a circle.
             dot.cornerRadius = size / 2
             dot.backgroundColor = super.tintColor.cgColor

@@ -14,6 +14,6 @@ class FriendViewController: UIViewController {
         super.viewDidLoad()
     }
 
-    //Todo: add friend list etc
+    // Todo: add friend list etc
     
 }
