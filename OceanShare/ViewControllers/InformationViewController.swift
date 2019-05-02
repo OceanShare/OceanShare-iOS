@@ -77,6 +77,10 @@ class InformationViewController: UIViewController {
     @IBOutlet var shipPopUp: DesignableButton!
     @IBOutlet weak var shipFieldShipModifier: UITextField!
     
+    // deletion pop up outlets
+    @IBOutlet var deletionPopUp: DesignableButton!
+    @IBOutlet weak var passwordFieldDeleteModifier: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -158,10 +162,14 @@ class InformationViewController: UIViewController {
         animateIn(view: passwordPopUp)
     }
     
-    // open the pop up that handle the ship name changes
     @IBAction func openChangeShip(_ sender: Any) {
         self.viewStacked = shipPopUp
         animateIn(view: shipPopUp)
+    }
+    
+    @IBAction func deleteHandler(_ sender: Any) {
+        self.viewStacked = deletionPopUp
+        animateIn(view: deletionPopUp)
     }
     
     // MARK: - Setter Actions
@@ -303,31 +311,58 @@ class InformationViewController: UIViewController {
         }
     }
     
-    // change the view from information view to profile view
+    @IBAction func acceptDeletion(_ sender: Any) {
+        let password = self.passwordFieldDeleteModifier.text
+        let email = self.appUser?.email!
+        
+        if (password?.isEmpty)! {
+            displayMessage(userMessage: "New Ship Name Field is required.")
+            return
+        } else {
+            let user = Auth.auth().currentUser
+            let credential = EmailAuthProvider.credential(withEmail: email!, password: password!)
+            
+            // prompt the user to re-provide their sign-in credentials
+            user?.reauthenticateAndRetrieveData(with: credential) { authResult, error in
+                if let error = error {
+                    print("X", error)
+                    self.displayMessage(userMessage: "Unable to authenticate you.")
+                    return
+                } else {
+                    // delete the user data in the Database table
+                    self.ref.child("users").child(user!.uid).removeValue()
+                    
+                    // empty the UserDefault
+                    let domain = Bundle.main.bundleIdentifier!
+                    UserDefaults.standard.removePersistentDomain(forName: domain)
+                    UserDefaults.standard.synchronize()
+                    print(Array(UserDefaults.standard.dictionaryRepresentation().keys).count)
+                    
+                    // delete the user data in the Authentication table
+                    user?.delete { error in
+                        if let error = error {
+                            print("X", error)
+                        } else {
+                            print("~ Action Informations: User Deleted.")
+                            let loginViewController = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+                            self.present(loginViewController, animated: true ,completion: nil)
+                        }
+                    }
+                    
+                }
+            }
+        }
+        
+    }
+    
+    // MARK: - Navigation Actions
+    
     @IBAction func handleBack(_ sender: Any) {
         navigationController?.popViewController(animated: true)
         dismiss(animated: false, completion: nil)
         
     }
-    
-    @IBAction func deleteHandler(_ sender: Any) {
-        let alert = UIAlertController(title: "Warning", message: "You are going to delete your account, write your password then tap 'Delete' to confim.", preferredStyle: .alert)
-        alert.addTextField { (newShipField : UITextField!) -> Void in
-            newShipField.placeholder = "Password"
-        }
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
-            print("~ Action Informations: Cancel Pressed.")
-        }))
-        alert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { action in
-            let password = alert.textFields![0] as UITextField
-            self.deleteAccount(password: password.text!)
-            print("~ Action Informations: Account is going to be deleted.")
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
-        
-    }
-    
+
     // MARK: - Updater
     
     func fetchUserInfo() {
@@ -390,53 +425,6 @@ class InformationViewController: UIViewController {
                 
             }
         }
-    }
-    
-    // handle the account deletion
-    func deleteAccount(password: String) {
-        let user = Auth.auth().currentUser
-        let credential = EmailAuthProvider.credential(withEmail: self.emailStacked!, password: password)
-        
-        // prompt the user to re-provide their sign-in credentials
-        user?.reauthenticateAndRetrieveData(with: credential) { authResult, error in
-            if let error = error {
-                print("X", error)
-                
-                // define the alter to show in case of the user tapped a wrong password
-                let alert = UIAlertController(title: "Wrong Password", message: "Please fill the field with your password if you want to delete your account.", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Close", style: .default, handler: { action in
-                    print("~ Action Informations: Close Pressed.")
-                }))
-                alert.addAction(UIAlertAction(title: "Try Again", style: .default, handler: { action in
-                    print("~ Action Informations: Try Again Pressed.")
-                    self.deleteHandler(self)
-                }))
-                self.present(alert, animated: true, completion: nil)
-                
-            } else {
-                // delete the user data in the Database table
-                self.ref.child("users").child(user!.uid).removeValue()
-                
-                // empty the UserDefault
-                let domain = Bundle.main.bundleIdentifier!
-                UserDefaults.standard.removePersistentDomain(forName: domain)
-                UserDefaults.standard.synchronize()
-                print(Array(UserDefaults.standard.dictionaryRepresentation().keys).count)
-                
-                // delete the user data in the Authentication table
-                user?.delete { error in
-                    if let error = error {
-                        print("X", error)
-                    } else {
-                        print("~ Action Informations: User Deleted.")
-                        let loginViewController = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-                        self.present(loginViewController, animated: true ,completion: nil)
-                    }
-                }
-                
-            }
-        }
-        
     }
     
     // MARK: - Error Handling
