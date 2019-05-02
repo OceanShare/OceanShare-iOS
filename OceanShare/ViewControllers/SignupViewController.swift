@@ -35,7 +35,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     @IBOutlet weak var background: UIImageView!
     @IBOutlet weak var signUpButton: UIButton!
     
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint! // to check
 
     // MARK: Definitions
     

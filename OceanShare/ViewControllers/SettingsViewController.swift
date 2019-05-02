@@ -21,6 +21,11 @@ class SettingsViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func learnMore(_ sender: Any) {
+        guard let url = URL(string: "http://www.oceanshare.info") else { return }
+        UIApplication.shared.open(url)
+    }
+    
     // Todo: add settings stuff
     
 }
