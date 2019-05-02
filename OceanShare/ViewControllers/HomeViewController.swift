@@ -16,12 +16,12 @@ import JJFloatingActionButton
 
 class HomeViewController: UIViewController, MGLMapViewDelegate {
     
-    // MARK: Database
+    // MARK: - Firebase
     
     var ref: DatabaseReference!
     let storageRef = FirebaseStorage.Storage().reference()
     
-    // MARK: Definitions
+    // MARK: - Variables
     
     let point = MGLPointAnnotation()
     let actionButton = JJFloatingActionButton()
@@ -43,7 +43,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         showTags(mapView: mapView)
     }
     
-    // MARK : Setup
+    // MARK : - Setup
     
     func Activate() {
         let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
@@ -114,7 +114,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         actionButton.display(inViewController: self)
     }
     
-    // MARK: Mapbox Handling
+    // MARK: - Mapbox Handling
     
     func putTag(mapView: MGLMapView, id: Int, description: String, cordinate: CLLocationCoordinate2D){
         
@@ -220,7 +220,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     func showTags(mapView: MGLMapView) {
         //guard let userId = Auth.auth().currentUser?.uid else { return }
-        print(ref)
+        print(ref!)
         ref.observe(DataEventType.value, with: { (snapshot) in
             print(snapshot.childrenCount)
             if snapshot.childrenCount > 0 {
@@ -266,7 +266,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         print("SAVE TAGS FIN")
     }
     
-    // MARK: Annotation
+    // MARK: - Annotation
     
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
         return true
@@ -340,8 +340,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     }
 }
 
-
-// MARK: Custom Class
+// MARK: - Custom Class
 
 class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     let size: CGFloat = 48

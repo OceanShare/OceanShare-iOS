@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if (error) != nil {
-            print("(1) Google Authentification Failed: ", error)
+            print("(1) Google Authentification Failed: ", error!)
             return
         }
         

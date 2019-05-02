@@ -333,6 +333,7 @@
 				TargetAttributes = {
 					BF92736421D1D57500BDCC16 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -341,10 +342,12 @@
 					};
 					BF92737821D1D57600BDCC16 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = BF92736421D1D57500BDCC16;
 					};
 					BF92738321D1D57600BDCC16 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = BF92736421D1D57500BDCC16;
 					};
 				};
@@ -776,7 +779,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = eip.OceanShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "2020 OceanShare";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -797,7 +800,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = eip.OceanShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "2020 OceanShare";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -818,7 +821,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = OceanShare.OceanShareTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OceanShare.app/OceanShare";
 			};
@@ -840,7 +843,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = OceanShare.OceanShareTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OceanShare.app/OceanShare";
 			};
@@ -861,7 +864,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = OceanShare.OceanShareUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = OceanShare;
 			};
@@ -882,7 +885,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = OceanShare.OceanShareUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = OceanShare;
 			};

@@ -28,18 +28,20 @@ class InformationViewController: UIViewController {
     
     var ref: DatabaseReference!
     let storageRef = FirebaseStorage.Storage().reference()
+    let currentUser = Auth.auth().currentUser
+    // get the user information from the AppUser
     var appUser: AppUser? {
         didSet {
             guard let name = appUser?.name else { return }
             guard let emailAddress = appUser?.email else { return }
             guard let shipName = appUser?.ship_name else { return }
-            
+            // set the displayed information
             userName.text = name
             userEmailAddress.text = emailAddress
             userShipName.text = shipName
-            
+            userPassword.text = "********"
+            // set the email stacked used by popups
             self.emailStacked = emailAddress
-            
         }
     }
     
@@ -55,6 +57,7 @@ class InformationViewController: UIViewController {
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var userEmailAddress: UILabel!
     @IBOutlet weak var userShipName: UILabel!
+    @IBOutlet weak var userPassword: UILabel!
     
     // blur effect view
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
@@ -81,6 +84,8 @@ class InformationViewController: UIViewController {
     @IBOutlet var deletionPopUp: DesignableButton!
     @IBOutlet weak var passwordFieldDeleteModifier: UITextField!
     
+    // MARK: - ViewDidLoad
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -96,7 +101,6 @@ class InformationViewController: UIViewController {
         visualEffectView.isHidden = true
         // get the profile picture and the user name
         self.fetchUserInfo()
-        
     }
     
     // MARK: - Setup
@@ -110,7 +114,6 @@ class InformationViewController: UIViewController {
         self.shipModifierPic.tintColor = UIColor(rgb: 0xC5C7D2)
         self.passwordModifierPic.image = self.passwordModifierPic.image!.withRenderingMode(.alwaysTemplate)
         self.passwordModifierPic.tintColor = UIColor(rgb: 0xC5C7D2)
-        
     }
     
     // MARK: - Popup Animations
@@ -175,181 +178,168 @@ class InformationViewController: UIViewController {
     // MARK: - Setter Actions
     
     @IBAction func acceptChangeName(_ sender: Any) {
-        
         let name = nameFieldNameModifier.text
         let currentName = self.appUser?.name
-        
+        // error checking
         if (name?.isEmpty)! {
-            displayMessage(userMessage: "New Name Field is required.")
+            displayMessage(userMessage: "The new name field is required if you want to change yours Matey!")
             return
         }
-        
         if currentName == name {
-            displayMessage(userMessage: "Please check that the new name you choosed is different from the last one.")
+            displayMessage(userMessage: "The new name should be different from the previous one Matey!")
             return
         } else {
-            let user = Auth.auth().currentUser
-            
             // define the database structure
             let userData: [String: Any] = ["name": name as Any]
-            
             // update the user data on the database
-            guard let uid = user?.uid else { return }
+            guard let uid = self.currentUser?.uid else { return }
             self.ref.child("users/\(uid)").updateChildValues(userData)
             self.userName.text = name
             self.animateOut()
+            print("~ Action Information: Name correclty updated.")
         }
         
     }
     
     @IBAction func acceptChangeEmail(_ sender: Any) {
-        
-        let currentEmail = self.appUser?.email
+        let currentEmail = self.emailStacked
         let password = self.passwordFieldEmailModifier.text
         let newEmail = self.emailFieldEmailModifier.text
-        
+        // error checking
         if (password?.isEmpty)! || (newEmail?.isEmpty)! {
-            displayMessage(userMessage: "New Email Field and Password Field are required.")
+            displayMessage(userMessage: "The new email field and password field are required if you want to change yours Matey!")
             return
         }
-        
         if newEmail == currentEmail {
-            displayMessage(userMessage: "New Email should be different than previous one.")
+            displayMessage(userMessage: "The new email should be different from previous one Matey!")
             return
         } else {
-                let user = Auth.auth().currentUser
             let credential = EmailAuthProvider.credential(withEmail: currentEmail!, password: password!)
-                
-                // prompt the user to re-provide their sign-in credentials
-                user?.reauthenticateAndRetrieveData(with: credential) { authResult, error in
-                    if let error = error {
-                        print("X", error)
-                        return
-                    } else {
-                        // update the user email
-                        user?.updateEmail(to: newEmail!) { (error) in
-                            if error != nil {
-                                print("X", error!)
-                            } else {
-                                // define the database structure
-                                let userData: [String: Any] = ["email": newEmail as Any]
-                                
-                                // update the user data on the database
-                                guard let uid = user?.uid else { return }
-                                self.ref.child("users/\(uid)").updateChildValues(userData)
-                                self.userEmailAddress.text = newEmail
-                                print("~ Action Informations: Email updated.")
-                                self.animateOut()
-                            }
-                        }
-                    }
-                }
-        }
-    }
-    
-    @IBAction func acceptChangePassword(_ sender: Any) {
-        let currentEmail = self.appUser?.email
-        let currentPassword = self.currentPasswordFieldPasswordMofidier.text
-        let newPassword = self.passwordFieldPasswordModifier.text
-        
-        if (currentPassword?.isEmpty)! || (newPassword?.isEmpty)! {
-            displayMessage(userMessage: "Current Password Field and New Password Field are required.")
-            return
-        }
-        
-        if currentPassword == newPassword {
-            displayMessage(userMessage: "New Password should be different than previous one.")
-            return
-        } else {
-            let user = Auth.auth().currentUser
-            let credential = EmailAuthProvider.credential(withEmail: currentEmail!, password: currentPassword!)
-            
             // prompt the user to re-provide their sign-in credentials
-            user?.reauthenticateAndRetrieveData(with: credential) { authResult, error in
+            self.currentUser?.reauthenticateAndRetrieveData(with: credential) { authResult, error in
                 if let error = error {
-                    print ("X", error)
+                    print("X", error)
+                    self.displayMessage(userMessage: "We are unable to check if you really are the captain.")
                     return
                 } else {
-                    // update the user password
-                    user?.updatePassword(to: newPassword!) { (error) in
+                    // update the user email
+                    self.currentUser?.updateEmail(to: newEmail!) { (error) in
                         if error != nil {
                             print("X", error!)
+                            self.displayMessage(userMessage: "We are unable to update your email now Captain, please try later.")
                         } else {
-                            print("~ Action Informations: Password updated.")
+                            // define the database structure
+                            let userData: [String: Any] = ["email": newEmail as Any]
+                            // update the user data on the database
+                            guard let uid = self.currentUser?.uid else { return }
+                            self.ref.child("users/\(uid)").updateChildValues(userData)
+                            self.userEmailAddress.text = newEmail
                             self.animateOut()
+                            print("~ Action Information: Email correclty updated.")
                         }
                     }
                 }
             }
         }
+        
+    }
+    
+    @IBAction func acceptChangePassword(_ sender: Any) {
+        let currentEmail = self.emailStacked
+        let currentPassword = self.currentPasswordFieldPasswordMofidier.text
+        let newPassword = self.passwordFieldPasswordModifier.text
+        // error checking
+        if (currentPassword?.isEmpty)! || (newPassword?.isEmpty)! {
+            displayMessage(userMessage: "The current password field and new password field are required if you want to change yours Matey!")
+            return
+        }
+        if currentPassword == newPassword {
+            displayMessage(userMessage: "The new password should be different than previous one Matey!")
+            return
+        } else {
+            let credential = EmailAuthProvider.credential(withEmail: currentEmail!, password: currentPassword!)
+            // prompt the user to re-provide their sign-in credentials
+            self.currentUser?.reauthenticateAndRetrieveData(with: credential) { authResult, error in
+                if let error = error {
+                    print ("X", error)
+                    self.displayMessage(userMessage: "We are unable to check if you really are the captain.")
+                    return
+                } else {
+                    // update the user password
+                    self.currentUser?.updatePassword(to: newPassword!) { (error) in
+                        if error != nil {
+                            print("X", error!)
+                            self.displayMessage(userMessage: "We are unable to update your password now Captain, please try later.")
+                        } else {
+                            self.animateOut()
+                            print("~ Action Information: Password  correctly updated.")
+                        }
+                    }
+                }
+            }
+        }
+        
     }
 
     @IBAction func acceptChangeShipName(_ sender: Any) {
         let currentShipName = self.appUser?.ship_name!
         let shipName = self.shipFieldShipModifier.text
-        
+        // error checking
         if (shipName?.isEmpty)! {
-            displayMessage(userMessage: "New Ship Name Field is required.")
+            displayMessage(userMessage: "The new ship name field is required if you want to change yours Matey!")
             return
         }
-        
         if shipName == currentShipName {
-            displayMessage(userMessage: "New Ship Name Field should be different than previous one.")
+            displayMessage(userMessage: "The new ship name field should be different than the previous one Matey!")
             return
         } else {
-            let user = Auth.auth().currentUser
-            
             // define the database structure
             let userData: [String: Any] = ["ship_name": shipName as Any]
-            
             // update the user data on the database
-            guard let uid = user?.uid else { return }
+            guard let uid = self.currentUser?.uid else { return }
             self.ref.child("users/\(uid)").updateChildValues(userData)
             self.userShipName.text = shipName!
-            print("~ Action Informations: Ship Name updated.")
             self.animateOut()
+            print("~ Action Informations: Ship name correctly updated.")
         }
     }
     
     @IBAction func acceptDeletion(_ sender: Any) {
         let password = self.passwordFieldDeleteModifier.text
-        let email = self.appUser?.email!
-        
+        let email = self.emailStacked
+        // error checking
         if (password?.isEmpty)! {
-            displayMessage(userMessage: "New Ship Name Field is required.")
+            displayMessage(userMessage: "Yo ho ho, if you really want to leave us, you will need to fill your password field Matey!")
             return
         } else {
-            let user = Auth.auth().currentUser
             let credential = EmailAuthProvider.credential(withEmail: email!, password: password!)
-            
             // prompt the user to re-provide their sign-in credentials
-            user?.reauthenticateAndRetrieveData(with: credential) { authResult, error in
+            self.currentUser?.reauthenticateAndRetrieveData(with: credential) { authResult, error in
                 if let error = error {
                     print("X", error)
-                    self.displayMessage(userMessage: "Unable to authenticate you.")
+                    self.displayMessage(userMessage: "We are unable to check if you really are the captain.")
                     return
                 } else {
                     // delete the user data in the Database table
-                    self.ref.child("users").child(user!.uid).removeValue()
-                    
+                    self.ref.child("users").child(self.currentUser!.uid).removeValue()
                     // empty the UserDefault
                     let domain = Bundle.main.bundleIdentifier!
                     UserDefaults.standard.removePersistentDomain(forName: domain)
                     UserDefaults.standard.synchronize()
                     print(Array(UserDefaults.standard.dictionaryRepresentation().keys).count)
-                    
                     // delete the user data in the Authentication table
-                    user?.delete { error in
+                    self.currentUser?.delete { error in
                         if let error = error {
                             print("X", error)
+                            self.displayMessage(userMessage: "We are unable to delete your account now Captain, please try later.")
                         } else {
-                            print("~ Action Informations: User Deleted.")
                             let loginViewController = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
                             self.present(loginViewController, animated: true ,completion: nil)
+                            print("~ Action Information: User corretly deleted.")
                         }
                     }
-                    
                 }
+                
             }
         }
         
@@ -377,7 +367,6 @@ class InformationViewController: UIViewController {
                 let user = Auth.auth().currentUser
                 let defaultShipName = "My Boat"
                 let userData: [String: Any] = ["ship_name": defaultShipName as Any]
-                
                 // update the user data on the database
                 guard let uid = user?.uid else { return }
                 self.ref.child("users/\(uid)").updateChildValues(userData)
@@ -402,8 +391,7 @@ class InformationViewController: UIViewController {
                             
                         } else {
                             // set a default avatar
-                            let pictureURL = URL(string: "https://image.flaticon.com/icons/png/512/320/320359.png")
-                            
+                            let pictureURL = URL(string: "https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-1/p480x480/29187034_1467064540082381_56763327166021632_n.jpg?_nc_cat=107&_nc_ht=scontent-lax3-2.xx&oh=7c2e6e423e8bd35727d754d1c47059d6&oe=5D33AACC")
                             // todo, find a better default user profile picture
                             let pictureData = NSData(contentsOf: pictureURL!)
                             let finalPicture = UIImage(data: pictureData! as Data)
@@ -431,9 +419,9 @@ class InformationViewController: UIViewController {
     
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
-            let alertController = UIAlertController(title: "Please Fill The Fields Correctly.", message: userMessage, preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Blimey!", message: userMessage, preferredStyle: .alert)
             let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
-                print("~ Actions Information: OK Pressed.")
+                print("~ Action Information: OK pressed.")
             }
             alertController.addAction(OKAction)
             self.present(alertController, animated: true, completion:nil)
@@ -450,7 +438,7 @@ class InformationViewController: UIViewController {
     @objc func keyboardShow() {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             
-            self.view.frame = CGRect(x: 0, y: -200, width: self.view.frame.width, height: self.view.frame.height)
+            self.view.frame = CGRect(x: 0, y: -150, width: self.view.frame.width, height: self.view.frame.height)
             
         }, completion: nil)
     }

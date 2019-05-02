@@ -16,7 +16,7 @@ import GoogleSignIn
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    // MARK: Database
+    // MARK: - Database
     
     var ref: DatabaseReference!
     let storageRef = FirebaseStorage.Storage().reference()
@@ -32,12 +32,14 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
     
-    // MARK: Outlets
+    // MARK: - Outlets
     
+    // user information outlets
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var profilePicture: UIImageView!
     @IBOutlet weak var shipName: UILabel!
     
+    // icon outlets
     @IBOutlet weak var pictureIcon: UIImageView!
     @IBOutlet weak var settingsIcon: UIImageView!
     @IBOutlet weak var editIcon: UIImageView!
@@ -53,11 +55,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         fetchUserInfo()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    /*override func viewDidAppear(_ animated: Bool) {
         fetchUserInfo()
-    }
+    }*/
     
-    // MARK: Setup
+    // MARK: - Setup
     
     func setupView() {
         self.profilePicture.layer.cornerRadius = 95
@@ -73,7 +75,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.addEditIcon.tintColor = UIColor(rgb: 0x57A1FF)
     }
     
-    // MARK: Actions
+    // MARK: - Actions
     
     @IBAction func changeProfilePicture(_ sender: UIButton) {
         let picker = UIImagePickerController()
@@ -102,7 +104,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
     
-    // MARK: Updater
+    // MARK: - Updater
     
     func fetchUserInfo() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
@@ -159,7 +161,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
     
-    // MARK: Picker
+    // MARK: - Picker
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
@@ -192,7 +194,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
     }
     
-    // MARK: Storage
+    // MARK: - Storage
     
     func createProfileChangeRequest(photoUrl: URL? = nil, name: String? = nil, _ callback: ((Error?) -> ())? = nil){
         if let request = Auth.auth().currentUser?.createProfileChangeRequest(){
