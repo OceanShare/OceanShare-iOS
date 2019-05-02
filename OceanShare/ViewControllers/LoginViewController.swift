@@ -20,23 +20,26 @@ import Alamofire
 
 class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
-    // MARK: Outlets
-    
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    
-    @IBOutlet weak var email: UIImageView!
-    @IBOutlet weak var password: UIImageView!
+    // MARK: - Outlets
     
     @IBOutlet weak var background: UIImageView!
     @IBOutlet weak var loginButton: UIButton!
     
-    // MARK: Definitions
+    // text field outlets
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    
+    // icon outlets
+    @IBOutlet weak var email: UIImageView!
+    @IBOutlet weak var password: UIImageView!
+    
+    // MARK: - Variables
     
     var ref: DatabaseReference!
     let storageRef = FirebaseStorage.Storage().reference()
-    
     var imageURL: String?
+    
+    // MARK: - ViewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,23 +52,23 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         setupView()
     }
     
-    // MARK: Setup
+    // MARK: - Setup
     
     func setupView() {
         let color1 = UIColor(rgb: 0x57A1FF)
         let color2 = UIColor(rgb: 0x6dd5ed)
         self.loginButton.applyGradient(colours:[color1, color2], corner:27.5)
-        
+        // background setup
         self.background.layer.cornerRadius = 16
         self.background.clipsToBounds = true
-        
+        // icon setup
         self.email.image = self.email.image!.withRenderingMode(.alwaysTemplate)
         self.email.tintColor = UIColor(rgb: 0xFFFFFF)
         self.password.image = self.password.image!.withRenderingMode(.alwaysTemplate)
         self.password.tintColor = UIColor(rgb: 0xFFFFFF)
     }
     
-    // MARK: Actions
+    // MARK: Email Login
     
     @IBAction func forgotHandler(_ sender: UIButton) {
         
@@ -87,7 +90,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    // login with email
     @IBAction func loginButtonTapped(_ sender: UIButton) {
         
         guard let email = emailTextField.text else { return }
@@ -96,7 +98,6 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if let err = error {
                 print("(1) Email Authentication Failed: ", err.localizedDescription)
-                
                 // error handling
                 let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
                 let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -130,7 +131,8 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         }
     }
     
-    // login with facebook
+    // MARK: - Facebook Login
+    
     @IBAction func facebookLogin(sender: AnyObject){
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self, handler:{(facebookResult, facebookError) -> Void in
             if facebookError != nil {
@@ -142,25 +144,25 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 let accessToken = FBSDKAccessToken.current()
                 guard let accessTokenString = accessToken?.tokenString else { return }
                 let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
-                
                 // get user datas from the facebook account as the profile picture
                 FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
                     if err != nil {
                         print("(2) Facebook Authentication Failed: ", err as Any)
                         return
+                        
                     }
-                    
                     // retrieve user profile picture from facebook
                     let field = result! as? [String: Any]
                     if let retrievedURL = ((field!["picture"] as? [String: Any])?["data"] as? [String: Any])?["url"] as? String {
                         // set the value of the retrieved picture
                         self.imageURL = retrievedURL
+                        
                     }
-                    
                     Auth.auth().signInAndRetrieveData(with: credentials, completion: { (authResult, err) in
                         if let err = err {
                             print("(3) Facebook Authentication Failed: ", err)
                             return
+                        
                         }
                         let user = Auth.auth().currentUser
                         let refToCheck = Database.database().reference().child("users")
@@ -195,18 +197,18 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         })
     }
     
-    // login with google
+    // MARK: - Google Login
+
     @IBAction func googleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance()?.signIn()
     }
     
-    // login with twitter
+    // MARK: - Twitter Login
+    
     @IBAction func twitterLogin(_ sender: UIButton) {
         configureTwitter()
     }
-    
-    // MARK: Configuration
     
     fileprivate func configureTwitter() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
@@ -261,7 +263,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         twitterSignInButton.accessibilityActivate()
     }
     
-    // MARK: Error Handling
+    // MARK: - Error Handling
     
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
@@ -274,7 +276,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         }
     }
     
-    // MARK: Email Handling
+    // MARK: - Email Verification
     
     func sendEmailVerification(_ callback: ((Error?) -> ())? = nil){
         Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
@@ -288,7 +290,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         }
     }
     
-    // MARK: Keyboard Handling
+    // MARK: - Keyboard Handling
     
     fileprivate func observeKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)

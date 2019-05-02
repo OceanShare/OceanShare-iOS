@@ -10,6 +10,8 @@ import UIKit
 
 class FriendViewController: UIViewController {
 
+    // MARK: - ViewDidLoad
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }

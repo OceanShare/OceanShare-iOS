@@ -20,32 +20,32 @@ import Alamofire
 
 class SignupViewController: UIViewController, GIDSignInUIDelegate {
     
-    // MARK: outlets
+    // MARK: - Outlets
     
+    @IBOutlet weak var background: UIImageView!
+    @IBOutlet weak var signUpButton: UIButton!
+    
+    // text field outlets
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmTextField: UITextField!
     
+    // icon outlets
     @IBOutlet weak var name: UIImageView!
     @IBOutlet weak var email: UIImageView!
     @IBOutlet weak var password: UIImageView!
     @IBOutlet weak var confirm: UIImageView!
-    
-    @IBOutlet weak var background: UIImageView!
-    @IBOutlet weak var signUpButton: UIButton!
-    
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
 
-    // MARK: Definitions
+    // MARK: - Variables
     
     var ref: DatabaseReference!
     let storageRef = FirebaseStorage.Storage().reference()
-
     var imageURL: String?
-    
     var currentTappedTextField : UITextField?
 
+    // MARK: - ViewDidLoad
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,18 +57,18 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         setupView()
     }
     
-    // MARK: Setup
+    // MARK: - Setup
     
     func setupView() {
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-        
+        // gradient setup
         let color1 = UIColor(rgb: 0x57A1FF)
         let color2 = UIColor(rgb: 0x6dd5ed)
         self.signUpButton.applyGradient(colours:[color1, color2], corner:27.5)
-        
+        // background setup
         self.background.layer.cornerRadius = 16
         self.background.clipsToBounds = true
-        
+        // icon setup
         self.name.image = self.name.image!.withRenderingMode(.alwaysTemplate)
         self.name.tintColor = UIColor(rgb: 0xFFFFFF)
         self.email.image = self.email.image!.withRenderingMode(.alwaysTemplate)
@@ -79,7 +79,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         self.confirm.tintColor = UIColor(rgb: 0xFFFFFF)
     }
 
-    // MARK: Actions
+    // MARK: - Email Registration
     
     @IBAction func registerButtonTapped(_ sender: UIButton) {
         
@@ -133,7 +133,8 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         }
     }
     
-    // login with facebook
+    // MARK: - Facebook Registration
+
     @IBAction func facebookLogin(sender: AnyObject){
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self, handler:{(facebookResult, facebookError) -> Void in
             if facebookError != nil {
@@ -191,18 +192,18 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         })
     }
     
-    // login with google
+    // MARK: - Google Registration
+    
     @IBAction func googleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().signIn()
     }
     
-    // login with twitter
+    // MARK: - Twitter Registration
+    
     @IBAction func twitterLogin(_ sender: UIButton) {
         configureTwitter()
     }
-    
-    // MARK: Configuration
     
     fileprivate func configureTwitter() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
@@ -250,7 +251,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         twitterSignInButton.accessibilityActivate()
     }
     
-    // MARK: Keyboard Handling
+    // MARK: - Keyboard Handling
     
     fileprivate func observeKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -279,7 +280,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         return true
     }
     
-    // MARK: Error Handling
+    // MARK: - Error Handling
     
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
@@ -292,7 +293,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         }
     }
     
-    // MARK: Email Handling
+    // MARK: - Email Verification
     
     func sendEmailVerification(_ callback: ((Error?) -> ())? = nil){
         Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in

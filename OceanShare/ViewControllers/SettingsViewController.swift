@@ -10,6 +10,8 @@ import UIKit
 
 class SettingsViewController: UIViewController {
     
+    // MARK: - ViewDidLoad
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -19,6 +21,11 @@ class SettingsViewController: UIViewController {
     @IBAction func handleBack(_ sender: Any) {
         navigationController?.popViewController(animated: true)
         dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func learnMore(_ sender: Any) {
+        guard let url = URL(string: "http://www.oceanshare.info") else { return }
+        UIApplication.shared.open(url)
     }
     
     // Todo: add settings stuff

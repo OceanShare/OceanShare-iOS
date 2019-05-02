@@ -11,9 +11,11 @@ import Foundation
 
 class StartViewController: UIViewController {
     
-    // MARK: outlets
+    // MARK: - outlets
     
     @IBOutlet weak var StartButton: UIButton!
+    
+    // MARK: - ViewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +24,7 @@ class StartViewController: UIViewController {
         setupRadiant()
     }
     
-    // MARK: Setup
+    // MARK: - Setup
     
     func setupRadiant() {
         let color1 = UIColor(rgb: 0x57A1FF)
