@@ -106,6 +106,9 @@ class InformationViewController: UIViewController {
     // MARK: - Setup
     
     func setupView() {
+        // setup alpha blur effect
+        self.visualEffectView.alpha = 0.8
+        // setup icons
         self.nameModifierPic.image = self.nameModifierPic.image!.withRenderingMode(.alwaysTemplate)
         self.nameModifierPic.tintColor = UIColor(rgb: 0xC5C7D2)
         self.emailModifierPic.image = self.emailModifierPic.image!.withRenderingMode(.alwaysTemplate)

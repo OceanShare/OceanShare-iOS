@@ -2476,7 +2476,6 @@
         <image name="twitterLogo" width="170.66667175292969" height="170.66667175292969"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Ibs-Mm-tut"/>
         <segue reference="Kfs-l7-ZIh"/>
     </inferredMetricsTieBreakers>
 </document>
