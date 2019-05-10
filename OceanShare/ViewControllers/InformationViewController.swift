@@ -351,9 +351,9 @@ class InformationViewController: UIViewController {
     // MARK: - Navigation Actions
     
     @IBAction func handleBack(_ sender: Any) {
-        navigationController?.popViewController(animated: true)
-        dismiss(animated: false, completion: nil)
-        
+        let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
+        self.show(mainTabBarController, sender: self)
     }
 
     // MARK: - Updater

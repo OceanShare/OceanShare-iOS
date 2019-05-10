@@ -454,7 +454,7 @@
             </objects>
             <point key="canvasLocation" x="-4498.3999999999996" y="-255.66502463054189"/>
         </scene>
-        <!--Home View Controller-->
+        <!--Map-->
         <scene sceneID="hhu-UX-Rbw">
             <objects>
                 <viewController id="uDv-Wy-duU" customClass="HomeViewController" customModule="OceanShare" customModuleProvider="target" sceneMemberID="viewController">
@@ -464,7 +464,7 @@
                         <color key="backgroundColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="7pO-eU-Sn3"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="map" selectedImage="map" id="bRW-5l-FGI">
+                    <tabBarItem key="tabBarItem" title="Map" image="map" selectedImage="map" id="bRW-5l-FGI">
                         <color key="badgeColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBarItem>
                 </viewController>
@@ -472,7 +472,7 @@
             </objects>
             <point key="canvasLocation" x="-1517" y="-256"/>
         </scene>
-        <!--Profile View Controller-->
+        <!--Profile-->
         <scene sceneID="2Rx-gS-xhY">
             <objects>
                 <viewController storyboardIdentifier="HomeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Aag-DV-mf2" customClass="ProfileViewController" customModule="OceanShare" customModuleProvider="target" sceneMemberID="viewController">
@@ -654,7 +654,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ohI-aR-Znj" userLabel="showSettingView">
                                         <rect key="frame" x="0.0" y="0.0" width="65" height="65"/>
                                         <connections>
-                                            <segue destination="spY-lt-BDS" kind="show" id="7nA-WT-Lww"/>
+                                            <segue destination="spY-lt-BDS" kind="show" animates="NO" id="7nA-WT-Lww"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -701,7 +701,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wwf-3U-MfL" userLabel="showInformationView">
                                         <rect key="frame" x="0.0" y="0.0" width="65" height="65"/>
                                         <connections>
-                                            <segue destination="cIM-eW-Aei" kind="show" animates="NO" id="atA-Bk-OiU"/>
+                                            <segue destination="cIM-eW-Aei" kind="show" animates="NO" id="d4f-Fz-oeb"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -836,8 +836,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Adl-ct-WWv"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="profile" selectedImage="profile" id="qrl-R6-HuZ">
+                    <tabBarItem key="tabBarItem" title="Profile" image="profile" selectedImage="profile" id="qrl-R6-HuZ">
                         <color key="badgeColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
                     </tabBarItem>
                     <connections>
                         <outlet property="addEditIcon" destination="OUc-9V-fLo" id="ML0-2J-lYQ"/>
@@ -1128,7 +1129,7 @@
                                 </constraints>
                                 <state key="normal" image="chevronLeft"/>
                                 <connections>
-                                    <action selector="handleBack:" destination="cIM-eW-Aei" eventType="touchUpInside" id="8xJ-Zs-QN9"/>
+                                    <action selector="handleBack:" destination="cIM-eW-Aei" eventType="touchUpInside" id="agh-SA-s8o"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Information" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6HC-hB-rrt">
@@ -1513,7 +1514,7 @@
                         </textField>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qUl-bk-htU">
                             <rect key="frame" x="30" y="8" width="275" height="144"/>
-                            <string key="text">Write a new email in the field below, complete with your password to confirm then 'Accept' to change your email. You will probably receive a confirmation email.</string>
+                            <string key="text">Write a new email in the field below, complete with your password to confirm then 'Accept' to change your email. You will soon receive a confirmation email.</string>
                             <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
@@ -1937,7 +1938,7 @@
             </objects>
             <point key="canvasLocation" x="-1517.3913043478262" y="-1061.413043478261"/>
         </scene>
-        <!--Friend View Controller-->
+        <!--Weather-->
         <scene sceneID="NhU-iz-wlY">
             <objects>
                 <viewController id="pXj-zn-I7p" customClass="FriendViewController" customModule="OceanShare" customModuleProvider="target" sceneMemberID="viewController">
@@ -2014,7 +2015,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6JB-iU-29R"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="sun" selectedImage="sun" id="DGj-Re-bVk">
+                    <tabBarItem key="tabBarItem" title="Weather" image="sun" selectedImage="sun" id="DGj-Re-bVk">
                         <color key="badgeColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBarItem>
                 </viewController>
@@ -2025,7 +2026,7 @@
         <!--Main Tab Bar Controller-->
         <scene sceneID="QMU-Np-6pR">
             <objects>
-                <tabBarController storyboardIdentifier="MainTabBarController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hdb-R8-5II" customClass="MainTabBarController" customModule="OceanShare" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MainTabBarController" modalTransitionStyle="crossDissolve" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hdb-R8-5II" customClass="MainTabBarController" customModule="OceanShare" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="1jF-hM-YBJ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
