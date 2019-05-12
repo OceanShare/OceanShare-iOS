@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class StartViewController: UIViewController {
+class StartViewController: UIViewController, UIPageViewControllerDelegate {
     
     // MARK: - outlets
     
