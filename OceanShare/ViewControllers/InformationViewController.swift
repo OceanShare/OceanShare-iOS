@@ -14,6 +14,7 @@ import FirebaseDatabase
 import FirebaseCore
 import FirebaseStorage
 import GoogleSignIn
+import SkeletonView
 
 class InformationViewController: UIViewController {
     
@@ -52,6 +53,12 @@ class InformationViewController: UIViewController {
     @IBOutlet weak var emailModifierPic: UIImageView!
     @IBOutlet weak var shipModifierPic: UIImageView!
     @IBOutlet weak var passwordModifierPic: UIImageView!
+    
+    // container outlets
+    @IBOutlet weak var nameContainer: UIView!
+    @IBOutlet weak var emailContainer: UIView!
+    @IBOutlet weak var shipContainer: UIView!
+    @IBOutlet weak var passwordContainer: UIView!
     
     // displayed label oultets
     @IBOutlet weak var userName: UILabel!
@@ -106,6 +113,9 @@ class InformationViewController: UIViewController {
     // MARK: - Setup
     
     func setupView() {
+        // setup alpha blur effect
+        self.visualEffectView.alpha = 0.8
+        // setup icons
         self.nameModifierPic.image = self.nameModifierPic.image!.withRenderingMode(.alwaysTemplate)
         self.nameModifierPic.tintColor = UIColor(rgb: 0xC5C7D2)
         self.emailModifierPic.image = self.emailModifierPic.image!.withRenderingMode(.alwaysTemplate)
@@ -114,9 +124,11 @@ class InformationViewController: UIViewController {
         self.shipModifierPic.tintColor = UIColor(rgb: 0xC5C7D2)
         self.passwordModifierPic.image = self.passwordModifierPic.image!.withRenderingMode(.alwaysTemplate)
         self.passwordModifierPic.tintColor = UIColor(rgb: 0xC5C7D2)
+        // setup skeleton
+        self.turnOnSkeleton()
     }
     
-    // MARK: - Popup Animations
+    // MARK: - Animations
     
     func animateIn(view: UIView) {
         visualEffectView.isHidden = false
@@ -142,6 +154,24 @@ class InformationViewController: UIViewController {
             self.viewStacked!.removeFromSuperview()
                 self.visualEffectView.isHidden = true
         }
+    }
+    
+    func turnOnSkeleton() {
+        self.nameContainer.isSkeletonable = true
+        self.emailContainer.isSkeletonable = true
+        self.shipContainer.isSkeletonable = true
+        self.passwordContainer.isSkeletonable = true
+        self.nameContainer.showAnimatedSkeleton()
+        self.emailContainer.showAnimatedSkeleton()
+        self.shipContainer.showAnimatedSkeleton()
+        self.passwordContainer.showAnimatedSkeleton()
+    }
+    
+    func turnOffSkeleton() {
+        self.nameContainer.hideSkeleton()
+        self.emailContainer.hideSkeleton()
+        self.shipContainer.hideSkeleton()
+        self.passwordContainer.hideSkeleton()
     }
     
     // MARK: - Popup Actions
@@ -348,9 +378,9 @@ class InformationViewController: UIViewController {
     // MARK: - Navigation Actions
     
     @IBAction func handleBack(_ sender: Any) {
-        navigationController?.popViewController(animated: true)
-        dismiss(animated: false, completion: nil)
-        
+        let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
+        self.show(mainTabBarController, sender: self)
     }
 
     // MARK: - Updater
@@ -406,7 +436,9 @@ class InformationViewController: UIViewController {
                         
                         self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
                         
-                    }})
+                    }
+                    self.turnOffSkeleton()
+                })
             } else {
                 print("X Error User Not Found.")
                 return

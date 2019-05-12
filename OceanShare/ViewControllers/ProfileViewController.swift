@@ -13,6 +13,7 @@ import FirebaseDatabase
 import FirebaseCore
 import FirebaseStorage
 import GoogleSignIn
+import SkeletonView
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -35,6 +36,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     // MARK: - Outlets
     
     // user information outlets
+    @IBOutlet weak var infoContainer: UIView!
+    @IBOutlet weak var pictureContainer: DesignableView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var profilePicture: UIImageView!
     @IBOutlet weak var shipName: UILabel!
@@ -55,16 +58,13 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         fetchUserInfo()
     }
     
-    /*override func viewDidAppear(_ animated: Bool) {
-        fetchUserInfo()
-    }*/
-    
     // MARK: - Setup
     
     func setupView() {
+        // setup the profile picture and its container
         self.profilePicture.layer.cornerRadius = 95
         self.profilePicture.clipsToBounds = true
-        
+        // setup the icons
         self.settingsIcon.image = self.settingsIcon.image!.withRenderingMode(.alwaysTemplate)
         self.settingsIcon.tintColor = UIColor(rgb: 0xC5C7D2)
         self.editIcon.image = self.editIcon.image!.withRenderingMode(.alwaysTemplate)
@@ -73,6 +73,21 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.pictureIcon.tintColor = UIColor(rgb: 0xFFFFFF)
         self.addEditIcon.image = self.addEditIcon.image!.withRenderingMode(.alwaysTemplate)
         self.addEditIcon.tintColor = UIColor(rgb: 0x57A1FF)
+        // setup the skeleton animation
+        self.turnOnSkeleton()
+    }
+    
+    // MARK: - Animations
+    
+    func turnOnSkeleton() {
+        let gradient = SkeletonGradient(baseColor: UIColor.clouds)
+        let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .topLeftBottomRight)
+        self.profilePicture.isSkeletonable = true
+        self.profilePicture.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+    }
+    
+    func turnOffSkeleton() {
+        self.pictureContainer.hideSkeleton()
     }
     
     // MARK: - Actions
@@ -153,7 +168,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                         let finalPicture = UIImage(data: pictureData! as Data)
                         
                         self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
-                    }})
+                    }
+                    self.turnOffSkeleton()
+                })
             } else {
                 print("X Error User Not Found.")
                 return
@@ -170,17 +187,19 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         if let editedImage = info ["UIImagePickerControllerEditedImage"] as? UIImage {
             selectedImageFromPicker = editedImage
+            
         } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
             selectedImageFromPicker = originalImage
+            
         }
         
         if let selectedImage = selectedImageFromPicker {
             profilePicture.image = selectedImage
-            
+            // convert the selected image to jpeg and compress it
             let uploadImage = selectedImage.jpegData(compressionQuality: 0.6)
             updateProfileInfo(withImage: uploadImage, name: appUser!.name)
-        }
         
+        }
         dismiss(animated: true, completion: nil)
     }
     

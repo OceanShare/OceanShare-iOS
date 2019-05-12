@@ -68,7 +68,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         self.password.tintColor = UIColor(rgb: 0xFFFFFF)
     }
     
-    // MARK: Email Login
+    // MARK: - Email Login
     
     @IBAction func forgotHandler(_ sender: UIButton) {
         

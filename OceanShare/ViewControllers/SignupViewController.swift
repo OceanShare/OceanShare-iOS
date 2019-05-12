@@ -96,7 +96,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
             return
         } else {
             // do not care about the warning
-            Auth.auth().createUserAndRetrieveData(withEmail: email!, password: password!) { (authResult, err) in
+            Auth.auth().createUser(withEmail: email!, password: password!) { (authResult, err) in
                 if let err = err {
                     print("(1) Registration Failed: ", err.localizedDescription)
                     

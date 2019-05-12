@@ -11,8 +11,6 @@ import FirebaseAuth
 
 class RootViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-    // MARK: - Variables
-    
     var pageControl = UIPageControl()
     // list the view controller from the root view controller
     lazy var viewControllerList:[UIViewController] = {
@@ -37,6 +35,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         }
         // apply the design stuff to the view
         configurePageControl()
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -44,7 +43,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         
         // check if the user is already logged in
         if UserDefaults.standard.object(forKey: "user_uid_key") != nil {
-            let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+            let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier:   "MainTabBarController") as! MainTabBarController
             mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
             self.present(mainTabBarController, animated: true,completion: nil)
         }
@@ -88,5 +87,5 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         let pageContentViewController = pageViewController.viewControllers![0]
         self.pageControl.currentPage = viewControllerList.firstIndex(of: pageContentViewController)!
     } 
-    
+
 }
