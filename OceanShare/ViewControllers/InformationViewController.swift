@@ -246,7 +246,7 @@ class InformationViewController: UIViewController {
         } else {
             let credential = EmailAuthProvider.credential(withEmail: currentEmail!, password: password!)
             // prompt the user to re-provide their sign-in credentials
-            self.currentUser?.reauthenticateAndRetrieveData(with: credential) { authResult, error in
+            self.currentUser?.reauthenticate(with: credential) { authResult, error in
                 if let error = error {
                     print("X", error)
                     self.displayMessage(userMessage: "We are unable to check if you really are the captain.")
@@ -289,7 +289,7 @@ class InformationViewController: UIViewController {
         } else {
             let credential = EmailAuthProvider.credential(withEmail: currentEmail!, password: currentPassword!)
             // prompt the user to re-provide their sign-in credentials
-            self.currentUser?.reauthenticateAndRetrieveData(with: credential) { authResult, error in
+            self.currentUser?.reauthenticate(with: credential) { authResult, error in
                 if let error = error {
                     print ("X", error)
                     self.displayMessage(userMessage: "We are unable to check if you really are the captain.")
@@ -344,7 +344,7 @@ class InformationViewController: UIViewController {
         } else {
             let credential = EmailAuthProvider.credential(withEmail: email!, password: password!)
             // prompt the user to re-provide their sign-in credentials
-            self.currentUser?.reauthenticateAndRetrieveData(with: credential) { authResult, error in
+            self.currentUser?.reauthenticate(with: credential) { authResult, error in
                 if let error = error {
                     print("X", error)
                     self.displayMessage(userMessage: "We are unable to check if you really are the captain.")

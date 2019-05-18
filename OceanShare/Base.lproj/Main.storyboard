@@ -50,7 +50,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="1lK-en-euY" kind="show" animates="NO" id="LuF-ow-han"/>
+                                    <segue destination="1lK-en-euY" kind="show" id="wI6-NF-RFK"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="uDS-3e-hGH">
@@ -87,7 +87,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XUt-dt-tRJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5234.3999999999996" y="-255.66502463054189"/>
+            <point key="canvasLocation" x="-5223" y="-257"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="Ujd-bV-SD6">
@@ -2498,6 +2498,6 @@
         <image name="twitterLogo" width="170.66667175292969" height="170.66667175292969"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="9Nz-BS-gQU"/>
+        <segue reference="wI6-NF-RFK"/>
     </inferredMetricsTieBreakers>
 </document>
