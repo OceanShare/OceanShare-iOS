@@ -21,6 +21,7 @@
 		BF7563D621DA0BB300F8166B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7563D521DA0BB300F8166B /* ProfileViewController.swift */; };
 		BF7563D821DA12E700F8166B /* FriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7563D721DA12E700F8166B /* FriendViewController.swift */; };
 		BF7563DB21DA155B00F8166B /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7563DA21DA155B00F8166B /* MainTabBarController.swift */; };
+		BF86CF9B2293DC9C009A7646 /* FireBaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF86CF9A2293DC9C009A7646 /* FireBaseManager.swift */; };
 		BF89D36F21D3152800E522AC /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D36E21D3152800E522AC /* RootViewController.swift */; };
 		BF89D37321D32EBC00E522AC /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D37221D32EBC00E522AC /* SignupViewController.swift */; };
 		BF89D37521D32EE900E522AC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF89D37421D32EE900E522AC /* LoginViewController.swift */; };
@@ -78,6 +79,7 @@
 		BF7563D521DA0BB300F8166B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		BF7563D721DA12E700F8166B /* FriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendViewController.swift; sourceTree = "<group>"; };
 		BF7563DA21DA155B00F8166B /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		BF86CF9A2293DC9C009A7646 /* FireBaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireBaseManager.swift; sourceTree = "<group>"; };
 		BF89D36E21D3152800E522AC /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		BF89D37221D32EBC00E522AC /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		BF89D37421D32EE900E522AC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 				BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */,
 				BF13F79D21DB512C0086F24B /* UIViewExtensions.swift */,
 				201E152A21E4C0E500050361 /* UITextFieldExtensions.swift */,
+				BF86CF9A2293DC9C009A7646 /* FireBaseManager.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -585,6 +588,7 @@
 				BF7563D821DA12E700F8166B /* FriendViewController.swift in Sources */,
 				BF56CDEA21D5D3A7003707A9 /* AppUser.swift in Sources */,
 				201E152B21E4C0E500050361 /* UITextFieldExtensions.swift in Sources */,
+				BF86CF9B2293DC9C009A7646 /* FireBaseManager.swift in Sources */,
 				BF3306FD21DF599000433264 /* Helper.swift in Sources */,
 				BF1F80A122705B84004F8144 /* SettingsViewController.swift in Sources */,
 				BF7563D621DA0BB300F8166B /* ProfileViewController.swift in Sources */,
