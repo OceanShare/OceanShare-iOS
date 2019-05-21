@@ -88,4 +88,14 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         self.pageControl.currentPage = viewControllerList.firstIndex(of: pageContentViewController)!
     } 
 
+    // MARK: - Functions
+    
+    /*func nextClicked(index: Int) {
+        let nextViewController: UIViewController = self.viewControllerList[index + 1]
+        print(nextViewController)
+        print([nextViewController])
+        setViewControllers([nextViewController], direction: .forward, animated: true, completion: nil)
+        
+    }*/
+    
 }

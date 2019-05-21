@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         guard let authentication = user.authentication else { return }
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken, accessToken: authentication.accessToken)
         
-        Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
+        Auth.auth().signIn(with: credential, completion: { (authResult, error) in
             if (error) != nil {
                 print("(2) Google Authentification Failed: ", error as Any)
             } else {
@@ -105,7 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 let appDelegate = UIApplication.shared.delegate
                 appDelegate?.window??.rootViewController = protectedPage
             }
-        }
+        })
     }
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {

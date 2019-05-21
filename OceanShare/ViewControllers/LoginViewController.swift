@@ -158,7 +158,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                         self.imageURL = retrievedURL
                         
                     }
-                    Auth.auth().signInAndRetrieveData(with: credentials, completion: { (authResult, err) in
+                    Auth.auth().signIn(with: credentials, completion: { (authResult, err) in
                         if let err = err {
                             print("(3) Facebook Authentication Failed: ", err)
                             return
@@ -220,7 +220,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 guard let secret = session?.authTokenSecret else {return}
                 let credential = TwitterAuthProvider.credential(withToken: token, secret: secret)
                 
-                Auth.auth().signInAndRetrieveData(with: credential, completion: { (authResult, err) in
+                Auth.auth().signIn(with: credential, completion: { (authResult, err) in
                     if let err = err {
                         print("(2) Twitter Authentication Failed: ", err.localizedDescription)
                     } else {

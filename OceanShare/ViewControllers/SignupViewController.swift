@@ -161,7 +161,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                         self.imageURL = retrievedURL
                     }
                     
-                    Auth.auth().signInAndRetrieveData(with: credentials, completion: { (authResult, err) in
+                    Auth.auth().signIn(with: credentials, completion: { (authResult, err) in
                         if let err = err {
                             print("X Facebook Authentication Failed: ", err)
                             return
@@ -208,16 +208,16 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     fileprivate func configureTwitter() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
             if (error != nil) {
-                print("X Twitter authentication failed: ", error!.localizedDescription)
+                print("(1) Twitter authentication failed: ", error!.localizedDescription)
             } else {
                 // get the twitter credentials
                 guard let token = session?.authToken else {return}
                 guard let secret = session?.authTokenSecret else {return}
                 let credential = TwitterAuthProvider.credential(withToken: token, secret: secret)
                 
-                Auth.auth().signInAndRetrieveData(with: credential, completion: { (authResult, err) in
+                Auth.auth().signIn(with: credential, completion: { (authResult, err) in
                     if let err = err {
-                        print("X Twitter authentication failed: ", err.localizedDescription)
+                        print("(2) Twitter authentication failed: ", err.localizedDescription)
                     } else {
                         let user = Auth.auth().currentUser
                         
