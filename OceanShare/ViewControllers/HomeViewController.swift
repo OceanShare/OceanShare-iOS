@@ -43,7 +43,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref = Database.database().reference().child("Tag")
+        //ref = Database.database().reference().child("Tag")
+        ref = Database.database().reference().child("markers")
         // define the MLG map view and the user on this map
         setupMapBox()
         //showTags(mapView: mapView)
@@ -80,41 +81,42 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         print("SETUPMAPBOX")
         showTags(mapView: mapView)
         
-        actionButton.buttonColor = UIColor(rgb: 0x57A1FF)
+        actionButton.buttonColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        //actionButton.buttonColor = UIColor(rgb: 0x57A1FF)
         
         // list the icon buttons
         actionButton.addItem(title: "Dolphin", image: UIImage(named: "dauphin")?.withRenderingMode(.alwaysTemplate)) { item in
-            Helper.showAlert(for: item)
+            //Helper.showAlert(for: item)
             self.id_tag = "Dolphin"
             self.description_tag = "Dolphin"
             self.Activate()
         }
         actionButton.addItem(title: "Medusa", image: UIImage(named: "meduse")?.withRenderingMode(.alwaysTemplate)) { item in
-            Helper.showAlert(for: item)
+            //Helper.showAlert(for: item)
             self.id_tag = "Medusa"
             self.description_tag = "Medusa"
             self.Activate()
         }
         actionButton.addItem(title: "Diver", image: UIImage(named: "plongeur")?.withRenderingMode(.alwaysTemplate)) { item in
-            Helper.showAlert(for: item)
+            //Helper.showAlert(for: item)
             self.id_tag = "Diver"
             self.description_tag = "Diver"
             self.Activate()
         }
         actionButton.addItem(title: "Position", image: UIImage(named: "Posititon")?.withRenderingMode(.alwaysTemplate)) { item in
-            Helper.showAlert(for: item)
+            //Helper.showAlert(for: item)
             self.id_tag = "Position"
             self.description_tag = "Position"
             self.Activate()
         }
         actionButton.addItem(title: "SOS", image: UIImage(named: "warnongBW")?.withRenderingMode(.alwaysTemplate)) { item in
-            Helper.showAlert(for: item)
+            //Helper.showAlert(for: item)
             self.id_tag = "SOS"
             self.description_tag = "SOS"
             self.Activate()
         }
         actionButton.addItem(title: "Waste", image: UIImage(named: "wasteP")?.withRenderingMode(.alwaysTemplate)) { item in
-            Helper.showAlert(for: item)
+            //Helper.showAlert(for: item)
             self.id_tag = "Waste"
             self.description_tag = "Waste"
             self.Activate()
@@ -228,8 +230,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
                     let data = tag.value as? NSDictionary
                     let description  = data?["description"] as? String
                     let id  = data?["title"] as? String
-                    let x = data?["x"] as? Double
-                    let y = data?["y"] as? Double
+                    let x = data?["latitude"] as? Double
+                    let y = data?["longitude"] as? Double
                     var markerHash: Int
                     markerHash = self.putTagfromServer(mapView: mapView, Tag: Tag(id: id, description: description, x: x, y: y))
                     print("SHOWTAG TagHash = ", markerHash)
@@ -271,8 +273,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         let Tag: [String: Any] = [
             "title": id as Any,
             "description": description as Any,
-            "x": cordinate.latitude as Any,
-            "y": cordinate.longitude as Any,
+            "latitude": cordinate.latitude as Any,
+            "longitude": cordinate.longitude as Any,
             "time": dateInFormat as Any
         ]
         
@@ -290,8 +292,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         let Tag: [String: Any] = [
             "title": Tag.id as Any,
             "description": Tag.description as Any,
-            "x": Tag.x as Any,
-            "y": Tag.y as Any,
+            "latitude": Tag.x as Any,
+            "longitude": Tag.y as Any,
             "time": dateInFormat as Any
         ]
         
@@ -333,8 +335,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
                         self.removeTag(MarkerHash: self.Tags_hashs[count])
                         let data = tag.value as? NSDictionary
                         let id  = data?["title"] as? String
-                        let x = data?["x"] as? Double
-                        let y = data?["y"] as? Double
+                        let x = data?["latitude"] as? Double
+                        let y = data?["longitude"] as? Double
                         var markerHash: Int
                         var FirebaseId: String
                         
@@ -361,7 +363,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     }
     
     func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
-        return UIButton(type: .detailDisclosure)
+        return UIButton(type: .contactAdd)
     }
     
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {

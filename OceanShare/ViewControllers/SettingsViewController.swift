@@ -24,7 +24,8 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func learnMore(_ sender: Any) {
-        guard let url = URL(string: "http://www.oceanshare.info") else { return }
+        //guard let url = URL(string: "http://www.oceanshare.info") else { return }
+        guard let url = URL(string: "https://sagotg.github.io/OceanShare/") else { return }
         UIApplication.shared.open(url)
     }
     
