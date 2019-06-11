@@ -23,6 +23,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     // MARK: - Variables
     
+    // view
+    var effect: UIVisualEffect!
+    var viewStacked: UIView?
+    
     // tag properties
     var Tags_ids = [String]()
     var Tags_hashs = [Int]()
@@ -32,97 +36,142 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     var description_tag = "."
     
     // map properties
-    let actionButton = JJFloatingActionButton()
+    //let actionButton = JJFloatingActionButton()
     var goinside = true
     var cordinate: CLLocationCoordinate2D!
     var mapView: MGLMapView!
     var isInside = false
+    
+    // MARK: - Outlets
+    
+    @IBOutlet weak var buttonMenu: DesignableButton!
+    @IBOutlet weak var visualEffectView: UIVisualEffectView!
+    @IBOutlet weak var iconView: UIView!
     
     // MARK: - ViewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //ref = Database.database().reference().child("Tag")
         ref = Database.database().reference().child("markers")
         // define the MLG map view and the user on this map
         setupMapBox()
-        //showTags(mapView: mapView)
+        // setup the visual effect
+        effect = visualEffectView.effect
+        visualEffectView.effect = nil
+        visualEffectView.isHidden = true
     }
     
     // MARK: - Setup
     
     func Activate() {
         let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
+
+        self.mapView.addGestureRecognizer(PressRecognizer)
+        isInside = true
         
-        if (actionButton.buttonState.rawValue == 3){
-            for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-                PressRecognizer.require(toFail: recognizer)
-            }
-            self.mapView.addGestureRecognizer(PressRecognizer)
-            isInside = true
-            
-        } else {
-            self.mapView.removeGestureRecognizer(PressRecognizer)
-            isInside = false
-            
-        }
+        // TODO: - enable icon addition when one is dropped
+        //self.mapView.removeGestureRecognizer(PressRecognizer)
+        //isInside = false
+        
     }
     
     func setupMapBox() {
         mapView = MGLMapView(frame: view.bounds)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.delegate = self
-        
         // enable heading tracking mode (arrow will appear)
         mapView.userTrackingMode = .followWithHeading
         // enable the permanent heading indicator which will appear when the tracking mode is not `.followWithHeading`.
         mapView.showsUserHeadingIndicator = true
-        print("SETUPMAPBOX")
         showTags(mapView: mapView)
-        
-        actionButton.buttonColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        //actionButton.buttonColor = UIColor(rgb: 0x57A1FF)
-        
-        // list the icon buttons
-        actionButton.addItem(title: "Dolphin", image: UIImage(named: "dauphin")?.withRenderingMode(.alwaysTemplate)) { item in
-            //Helper.showAlert(for: item)
-            self.id_tag = "Dolphin"
-            self.description_tag = "Dolphin"
-            self.Activate()
-        }
-        actionButton.addItem(title: "Medusa", image: UIImage(named: "meduse")?.withRenderingMode(.alwaysTemplate)) { item in
-            //Helper.showAlert(for: item)
-            self.id_tag = "Medusa"
-            self.description_tag = "Medusa"
-            self.Activate()
-        }
-        actionButton.addItem(title: "Diver", image: UIImage(named: "plongeur")?.withRenderingMode(.alwaysTemplate)) { item in
-            //Helper.showAlert(for: item)
-            self.id_tag = "Diver"
-            self.description_tag = "Diver"
-            self.Activate()
-        }
-        actionButton.addItem(title: "Position", image: UIImage(named: "Posititon")?.withRenderingMode(.alwaysTemplate)) { item in
-            //Helper.showAlert(for: item)
-            self.id_tag = "Position"
-            self.description_tag = "Position"
-            self.Activate()
-        }
-        actionButton.addItem(title: "SOS", image: UIImage(named: "warnongBW")?.withRenderingMode(.alwaysTemplate)) { item in
-            //Helper.showAlert(for: item)
-            self.id_tag = "SOS"
-            self.description_tag = "SOS"
-            self.Activate()
-        }
-        actionButton.addItem(title: "Waste", image: UIImage(named: "wasteP")?.withRenderingMode(.alwaysTemplate)) { item in
-            //Helper.showAlert(for: item)
-            self.id_tag = "Waste"
-            self.description_tag = "Waste"
-            self.Activate()
-        }
+        // add the layer views
         view.addSubview(mapView)
-        actionButton.display(inViewController: self)
+        view.addSubview(buttonMenu)
+        view.addSubview(visualEffectView)
+        
+    }
+    
+    // MARK: - Animations
+    
+    func animateIn(view: UIView) {
+        visualEffectView.isHidden = false
+        self.view.addSubview(view)
+        view.center = self.view.center
+        
+        view.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+        view.alpha = 0
+        
+        UIView.animate(withDuration: 0.4) {
+            self.visualEffectView.effect = self.effect
+            view.alpha = 1
+            view.transform = CGAffineTransform.identity
+            self.visualEffectView.alpha = 0.8
+        }
+    }
+    
+    func animateOut() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.viewStacked!.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+            self.viewStacked!.alpha = 0
+            self.visualEffectView.effect = nil
+        }) { (success:Bool) in
+            self.viewStacked!.removeFromSuperview()
+            self.visualEffectView.isHidden = true
+        }
+    }
+    
+    // MARK: - Menu
+    
+    @IBAction func closeMenu(_ sender: Any) {
+        animateOut()
+    }
+    
+    @IBAction func openMenu(_ sender: Any) {
+        self.viewStacked = iconView
+        animateIn(view: iconView)
+    }
+    
+    @IBAction func diverActivate(_ sender: Any) {
+        self.id_tag = "Diver"
+        self.description_tag = "Diver"
+        self.Activate()
+        animateOut()
+    }
+    
+    @IBAction func wasteActivate(_ sender: Any) {
+        self.id_tag = "Waste"
+        self.description_tag = "Waste"
+        self.Activate()
+        animateOut()
+    }
+    
+    @IBAction func medusaActivate(_ sender: Any) {
+        self.id_tag = "Medusa"
+        self.description_tag = "Medusa"
+        self.Activate()
+        animateOut()
+    }
+    
+    @IBAction func dolphinActivate(_ sender: Any) {
+        self.id_tag = "Dolphin"
+        self.description_tag = "Dolphin"
+        self.Activate()
+        animateOut()
+    }
+    
+    @IBAction func destinationActivate(_ sender: Any) {
+        self.id_tag = "Position"
+        self.description_tag = "Position"
+        self.Activate()
+        animateOut()
+    }
+    
+    @IBAction func warningActivate(_ sender: Any) {
+        self.id_tag = "SOS"
+        self.description_tag = "SOS"
+        self.Activate()
+        animateOut()
     }
     
     // MARK: - Tag Handling
