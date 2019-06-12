@@ -36,7 +36,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     var description_tag = "."
     
     // map properties
-    //let actionButton = JJFloatingActionButton()
     var goinside = true
     var cordinate: CLLocationCoordinate2D!
     var mapView: MGLMapView!
@@ -47,6 +46,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     @IBOutlet weak var buttonMenu: DesignableButton!
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
     @IBOutlet weak var iconView: UIView!
+    @IBOutlet weak var closeIcon: UIImageView!
     
     // MARK: - ViewDidLoad
     
@@ -55,7 +55,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         
         ref = Database.database().reference().child("markers")
         // define the MLG map view and the user on this map
-        setupMapBox()
+        setupView()
         // setup the visual effect
         effect = visualEffectView.effect
         visualEffectView.effect = nil
@@ -64,19 +64,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     // MARK: - Setup
     
-    func Activate() {
-        let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
-
-        self.mapView.addGestureRecognizer(PressRecognizer)
-        isInside = true
-        
-        // TODO: - enable icon addition when one is dropped
-        //self.mapView.removeGestureRecognizer(PressRecognizer)
-        //isInside = false
-        
-    }
-    
-    func setupMapBox() {
+    func setupView() {
+        // mapview setup
         mapView = MGLMapView(frame: view.bounds)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.delegate = self
@@ -85,7 +74,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         // enable the permanent heading indicator which will appear when the tracking mode is not `.followWithHeading`.
         mapView.showsUserHeadingIndicator = true
         showTags(mapView: mapView)
-        // add the layer views
+        // icon setup
+        self.closeIcon.image = self.closeIcon.image!.withRenderingMode(.alwaysTemplate)
+        self.closeIcon.tintColor = UIColor(rgb: 0xFFFFFF)
+        // add the layers in the right order
         view.addSubview(mapView)
         view.addSubview(buttonMenu)
         view.addSubview(visualEffectView)
@@ -176,6 +168,20 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     // MARK: - Tag Handling
     
+    func Activate() {
+        let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
+        // allow users to add interact with the map
+        self.mapView.addGestureRecognizer(PressRecognizer)
+        isInside = true
+    }
+    
+    func Unactivate() {
+        let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
+        // unable interaction with the map
+        self.mapView.removeGestureRecognizer(PressRecognizer)
+        isInside = false
+    }
+    
     func putTag(mapView: MGLMapView, id: String, description: String, cordinate: CLLocationCoordinate2D) -> Int {
         
        let marker = MGLPointAnnotation()
@@ -186,31 +192,37 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             marker.title = "Dolphin"
             marker.subtitle = description
             mapView.addAnnotation(marker)
+            Unactivate()
         case "Medusa":
             marker.coordinate = cordinate
             marker.title = "Medusa"
             marker.subtitle = description
             mapView.addAnnotation(marker)
+            Unactivate()
         case "Diver":
             marker.coordinate = cordinate
             marker.title = "Diver"
             marker.subtitle = description
             mapView.addAnnotation(marker)
+            Unactivate()
         case "Position":
             marker.coordinate = cordinate
             marker.title = "Position"
             marker.subtitle = description
             mapView.addAnnotation(marker)
+            Unactivate()
         case "SOS":
             marker.coordinate = cordinate
             marker.title = "SOS"
             marker.subtitle = description
             mapView.addAnnotation(marker)
+            Unactivate()
         case "Waste":
             marker.coordinate = cordinate
             marker.title = "Waste"
             marker.subtitle = description
             mapView.addAnnotation(marker)
+            Unactivate()
         default:
             print("Error in func putTag")
         }
