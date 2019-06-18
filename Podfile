@@ -21,6 +21,8 @@ target 'OceanShare' do
   pod 'Alamofire', '~> 5.0.0.beta.1'
   pod 'JJFloatingActionButton'
   pod 'SkeletonView'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Performance'
 
   target 'OceanShareTests' do
     inherit! :search_paths

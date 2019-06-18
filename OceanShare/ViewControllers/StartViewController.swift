@@ -36,10 +36,4 @@ class StartViewController: UIViewController, UIPageViewControllerDelegate {
         self.StartButton.applyGradient(colours:[color1, color2], corner:27.5)
     }
     
-    // Actions
-    
-    /*@IBAction func nextClicked(_ sender: Any) {
-        self.parentView.nextClicked(index: 0)
-    }*/
-    
 }

@@ -43,9 +43,43 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         
         // check if the user is already logged in
         if UserDefaults.standard.object(forKey: "user_uid_key") != nil {
-            let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier:   "MainTabBarController") as! MainTabBarController
-            mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
-            self.present(mainTabBarController, animated: true,completion: nil)
+            if UserDefaults.standard.object(forKey : "user_logged_by_email") != nil {
+                
+                // check if the user has confirmed its email address
+                if (Auth.auth().currentUser?.isEmailVerified == true) {
+                    print("-> Email Authentication Success.")
+                    
+                    // set the userdefaults data
+                    UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
+                    UserDefaults.standard.synchronize()
+                    
+                    // redirect the user to the map
+                    let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier:   "MainTabBarController") as! MainTabBarController
+                    mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+                    self.present(mainTabBarController, animated: true,completion: nil)
+                    
+                } else {
+                    
+                    // handle the email confirmation
+                    let alert = UIAlertController(title: "Please Confirm Your Email.", message: "You need to confirm your email address to finish your inscription and access to your profile.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Send me an other mail.", style: .default, handler: { action in
+                        self.sendEmailVerification()
+                        print("~ Action Informations: An Other Mail Has Been Sent.")
+                    }))
+                    alert.addAction(UIAlertAction(title: "I'll check my emails", style: .default, handler: { action in
+                        print("~ Action Information: OK Pressed.")
+                    }))
+                    self.present(alert, animated: true, completion: nil)
+                    
+                }
+                
+            } else {
+                // redirect the user to the map
+                let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier:   "MainTabBarController") as! MainTabBarController
+                mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+                self.present(mainTabBarController, animated: true,completion: nil)
+                
+            }
         }
     }
     
@@ -86,16 +120,14 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         let pageContentViewController = pageViewController.viewControllers![0]
         self.pageControl.currentPage = viewControllerList.firstIndex(of: pageContentViewController)!
-    } 
-
-    // MARK: - Functions
+    }
     
-    /*func nextClicked(index: Int) {
-        let nextViewController: UIViewController = self.viewControllerList[index + 1]
-        print(nextViewController)
-        print([nextViewController])
-        setViewControllers([nextViewController], direction: .forward, animated: true, completion: nil)
-        
-    }*/
+    // MARK: - Email Verification
+    
+    func sendEmailVerification(_ callback: ((Error?) -> ())? = nil){
+        Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
+            callback?(error)
+        })
+    }
     
 }

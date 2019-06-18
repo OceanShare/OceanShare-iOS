@@ -109,6 +109,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                     print("-> Email Authentication Success.")
                     // set the userdefaults data
                     UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
+                    UserDefaults.standard.set("yes", forKey: "user_logged_by_email")
                     UserDefaults.standard.synchronize()
                     // access to the homeviewcontroller
                     let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController

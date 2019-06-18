@@ -15,6 +15,7 @@ import FirebaseCore
 import FirebaseStorage
 import GoogleSignIn
 import SkeletonView
+import FirebasePerformance
 
 class InformationViewController: UIViewController {
     
@@ -219,14 +220,19 @@ class InformationViewController: UIViewController {
             displayMessage(userMessage: "The new name should be different from the previous one Matey!")
             return
         } else {
+            let trace = Performance.startTrace(name: "changeUserName")
             // define the database structure
             let userData: [String: Any] = ["name": name as Any]
             // update the user data on the database
-            guard let uid = self.currentUser?.uid else { return }
+            guard let uid = self.currentUser?.uid else {
+                trace?.stop()
+                return
+            }
             self.ref.child("users/\(uid)").updateChildValues(userData)
             self.userName.text = name
             self.animateOut()
             print("~ Action Information: Name correclty updated.")
+            trace?.stop()
         }
         
     }
@@ -244,12 +250,14 @@ class InformationViewController: UIViewController {
             displayMessage(userMessage: "The new email should be different from previous one Matey!")
             return
         } else {
+            let trace = Performance.startTrace(name: "changeUserEmail")
             let credential = EmailAuthProvider.credential(withEmail: currentEmail!, password: password!)
             // prompt the user to re-provide their sign-in credentials
             self.currentUser?.reauthenticate(with: credential) { authResult, error in
                 if let error = error {
                     print("X", error)
                     self.displayMessage(userMessage: "We are unable to check if you really are the captain.")
+                    trace?.stop()
                     return
                 } else {
                     // update the user email
@@ -257,15 +265,20 @@ class InformationViewController: UIViewController {
                         if error != nil {
                             print("X", error!)
                             self.displayMessage(userMessage: "We are unable to update your email now Captain, please try later.")
+                            trace?.stop()
                         } else {
                             // define the database structure
                             let userData: [String: Any] = ["email": newEmail as Any]
                             // update the user data on the database
-                            guard let uid = self.currentUser?.uid else { return }
+                            guard let uid = self.currentUser?.uid else {
+                                trace?.stop()
+                                return
+                            }
                             self.ref.child("users/\(uid)").updateChildValues(userData)
                             self.userEmailAddress.text = newEmail
                             self.animateOut()
                             print("~ Action Information: Email correclty updated.")
+                            trace?.stop()
                         }
                     }
                 }
@@ -287,12 +300,14 @@ class InformationViewController: UIViewController {
             displayMessage(userMessage: "The new password should be different than previous one Matey!")
             return
         } else {
+            let trace = Performance.startTrace(name: "changeUserPassword")
             let credential = EmailAuthProvider.credential(withEmail: currentEmail!, password: currentPassword!)
             // prompt the user to re-provide their sign-in credentials
             self.currentUser?.reauthenticate(with: credential) { authResult, error in
                 if let error = error {
                     print ("X", error)
                     self.displayMessage(userMessage: "We are unable to check if you really are the captain.")
+                    trace?.stop()
                     return
                 } else {
                     // update the user password
@@ -300,9 +315,11 @@ class InformationViewController: UIViewController {
                         if error != nil {
                             print("X", error!)
                             self.displayMessage(userMessage: "We are unable to update your password now Captain, please try later.")
+                            trace?.stop()
                         } else {
                             self.animateOut()
                             print("~ Action Information: Password  correctly updated.")
+                            trace?.stop()
                         }
                     }
                 }
@@ -323,14 +340,19 @@ class InformationViewController: UIViewController {
             displayMessage(userMessage: "The new ship name field should be different than the previous one Matey!")
             return
         } else {
+            let trace = Performance.startTrace(name: "changeUserPassword")
             // define the database structure
             let userData: [String: Any] = ["ship_name": shipName as Any]
             // update the user data on the database
-            guard let uid = self.currentUser?.uid else { return }
+            guard let uid = self.currentUser?.uid else {
+                trace?.stop()
+                return
+            }
             self.ref.child("users/\(uid)").updateChildValues(userData)
             self.userShipName.text = shipName!
             self.animateOut()
             print("~ Action Informations: Ship name correctly updated.")
+            trace?.stop()
         }
     }
     
@@ -342,12 +364,14 @@ class InformationViewController: UIViewController {
             displayMessage(userMessage: "Yo ho ho, if you really want to leave us, you will need to fill your password field Matey!")
             return
         } else {
+            let trace = Performance.startTrace(name: "deleteUser")
             let credential = EmailAuthProvider.credential(withEmail: email!, password: password!)
             // prompt the user to re-provide their sign-in credentials
             self.currentUser?.reauthenticate(with: credential) { authResult, error in
                 if let error = error {
                     print("X", error)
                     self.displayMessage(userMessage: "We are unable to check if you really are the captain.")
+                    trace?.stop()
                     return
                 } else {
                     // delete the user data in the Database table
@@ -362,10 +386,12 @@ class InformationViewController: UIViewController {
                         if let error = error {
                             print("X", error)
                             self.displayMessage(userMessage: "We are unable to delete your account now Captain, please try later.")
+                            trace?.stop()
                         } else {
                             let loginViewController = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
                             self.present(loginViewController, animated: true ,completion: nil)
                             print("~ Action Information: User corretly deleted.")
+                            trace?.stop()
                         }
                     }
                 }
@@ -407,6 +433,7 @@ class InformationViewController: UIViewController {
             }
             
             let user = Auth.auth().currentUser
+            let trace = Performance.startTrace(name: "fetchUserPictureFromProfileView")
             
             if let user = user {
                 _ = Storage.storage().reference().child("profile_pictures").child("\(String(describing: user.uid)).png").downloadURL(completion: { (url, error) in
@@ -418,7 +445,6 @@ class InformationViewController: UIViewController {
                             let finalPicture = UIImage(data: pictureData! as Data)
                             
                             self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
-                            
                         } else {
                             // set a default avatar
                             let pictureURL = URL(string: "https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-1/p480x480/29187034_1467064540082381_56763327166021632_n.jpg?_nc_cat=107&_nc_ht=scontent-lax3-2.xx&oh=7c2e6e423e8bd35727d754d1c47059d6&oe=5D33AACC")
@@ -427,7 +453,6 @@ class InformationViewController: UIViewController {
                             let finalPicture = UIImage(data: pictureData! as Data)
                             
                             self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
-                            
                         }
                     } else {
                         // set the custom profile picture if the user has one
@@ -435,15 +460,15 @@ class InformationViewController: UIViewController {
                         let finalPicture = UIImage(data: pictureData! as Data)
                         
                         self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
-                        
                     }
                     self.turnOffSkeleton()
                 })
             } else {
                 print("X Error User Not Found.")
+                trace?.stop()
                 return
-                
             }
+            trace?.stop()
         }
     }
     

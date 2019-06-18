@@ -14,6 +14,7 @@ import FirebaseCore
 import FirebaseStorage
 import GoogleSignIn
 import SkeletonView
+import FirebasePerformance
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -142,6 +143,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             }
             
             let user = Auth.auth().currentUser
+            let trace = Performance.startTrace(name: "fetchUserPictureFromInformationView")
             
             if let user = user {
                 _ = Storage.storage().reference().child("profile_pictures").child("\(String(describing: user.uid)).png").downloadURL(completion: { (url, error) in
@@ -172,9 +174,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                     self.turnOffSkeleton()
                 })
             } else {
-                print("X Error User Not Found.")
+                print("X Error User Not Found In The Storage.")
+                trace?.stop()
                 return
             }
+            trace?.stop()
         }
     }
     

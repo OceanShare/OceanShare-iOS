@@ -98,6 +98,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 // set the userdefaults data
                 UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
                 UserDefaults.standard.synchronize()
+                
+                // send an email to the email address mentioned
+                self.sendEmailVerification()
+                
                 // access to the homeviewcontroller
                 let mainStoryBoard: UIStoryboard = UIStoryboard(name:"Main", bundle:nil)
                 let protectedPage = mainStoryBoard.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
@@ -119,6 +123,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         } catch let signOutError as NSError {
             print ("(1) Error While Signing Out: %@", signOutError)
         }
+    }
+    
+    // MARK: - Email Verification
+    
+    func sendEmailVerification(_ callback: ((Error?) -> ())? = nil){
+        Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
+            callback?(error)
+        })
     }
     
 }
