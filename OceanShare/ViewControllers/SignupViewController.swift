@@ -124,7 +124,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                     UserDefaults.standard.synchronize()
                     // access to the homeviewcontroller
                     let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                    mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+                    mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
                     self.present(mainTabBarController, animated: true,completion: nil)
                     
                     // send an email to the email address mentioned
@@ -187,7 +187,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                 UserDefaults.standard.synchronize()
                 // access to the homeviewcontroller
                 let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+                mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
                 self.present(mainTabBarController, animated: true,completion: nil)
             }
         })
@@ -239,7 +239,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                         UserDefaults.standard.synchronize()
                         // access to the homeviewcontroller
                         let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+                        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
                         self.present(mainTabBarController, animated: true,completion: nil)
                     }
                 })

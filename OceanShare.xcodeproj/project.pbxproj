@@ -275,6 +275,7 @@
 				BF92736321D1D57500BDCC16 /* Resources */,
 				85736BE0041004982D5B0D34 /* [CP] Embed Pods Frameworks */,
 				100DC23B7633B637BD06D148 /* [CP] Copy Pods Resources */,
+				BF8EEBD222BA310F0025DDFE /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -552,6 +553,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OceanShare/Pods-OceanShare-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		BF8EEBD222BA310F0025DDFE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\n\"${PODS_ROOT}/Fabric/run\"\n";
+		};
 		E9C6D9E7F1415C24CCCA787D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -778,7 +796,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = OceanShare/OceanShare.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 9478G9T3JY;
 				INFOPLIST_FILE = OceanShare/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

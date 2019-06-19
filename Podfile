@@ -23,6 +23,8 @@ target 'OceanShare' do
   pod 'SkeletonView'
   pod 'Firebase/Analytics'
   pod 'Firebase/Performance'
+  pod 'Fabric', '~> 1.10.1'
+  pod 'Crashlytics', '~> 3.13.1'
 
   target 'OceanShareTests' do
     inherit! :search_paths

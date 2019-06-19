@@ -113,7 +113,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                     UserDefaults.standard.synchronize()
                     // access to the homeviewcontroller
                     let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                    mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+                    mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
                     self.present(mainTabBarController, animated: true,completion: nil)
                     
                 } else {
@@ -170,7 +170,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                         
                         refToCheck.child(user!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
                             if snapshot.hasChild("email") {
-                                print("-> Google user has already set its data.")
+                                print("-> Facebook user has already set its data.")
                             } else {
                                 // define the database structure
                                 let userData: [String: Any] = [
@@ -192,7 +192,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 UserDefaults.standard.synchronize()
                 // access to the homeviewcontroller
                 let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+                mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
                 self.present(mainTabBarController, animated: true,completion: nil)
             }
         })
@@ -230,7 +230,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                         
                         refToCheck.child(user!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
                             if snapshot.hasChild("email") {
-                                print("-> Google user has already set its data.")
+                                print("-> Twitter user has already set its data.")
                             } else {
                                 // define the database structure
                                 let userData: [String: Any] = [
@@ -251,7 +251,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                         UserDefaults.standard.synchronize()
                         // access to the homeviewcontroller
                         let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+                        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
                         self.present(mainTabBarController, animated: true,completion: nil)
                     }
                 })

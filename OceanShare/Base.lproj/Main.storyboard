@@ -69,19 +69,29 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AXJ-by-cXn">
+                                <rect key="frame" x="20" y="35" width="41" height="30"/>
+                                <state key="normal" title="Crash"/>
+                                <connections>
+                                    <action selector="didPressCrash:" destination="UcI-SK-gg2" eventType="touchUpInside" id="DNq-0g-d7Z"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="AXJ-by-cXn" firstAttribute="top" secondItem="JqP-3W-Qyb" secondAttribute="top" constant="35" id="6Ho-9v-UGB"/>
                             <constraint firstAttribute="bottom" secondItem="oTn-bL-iIH" secondAttribute="bottom" constant="105" id="Ktv-lC-sfg"/>
                             <constraint firstItem="uDS-3e-hGH" firstAttribute="centerX" secondItem="JqP-3W-Qyb" secondAttribute="centerX" id="Mzy-1i-A8G"/>
                             <constraint firstItem="oTn-bL-iIH" firstAttribute="top" secondItem="uDS-3e-hGH" secondAttribute="bottom" constant="180" id="Q0R-e2-GTs"/>
                             <constraint firstItem="yIh-bw-pLn" firstAttribute="centerX" secondItem="JqP-3W-Qyb" secondAttribute="centerX" id="X8X-qg-mHI"/>
                             <constraint firstItem="oTn-bL-iIH" firstAttribute="centerX" secondItem="JqP-3W-Qyb" secondAttribute="centerX" id="eCS-b1-mtf"/>
                             <constraint firstItem="yIh-bw-pLn" firstAttribute="top" secondItem="oTn-bL-iIH" secondAttribute="bottom" constant="56" id="uGl-D6-ylR"/>
+                            <constraint firstItem="AXJ-by-cXn" firstAttribute="leading" secondItem="JqP-3W-Qyb" secondAttribute="leading" constant="20" id="wbf-L0-jz5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2GI-DS-MPe"/>
                     </view>
                     <connections>
+                        <outlet property="CrashButton" destination="AXJ-by-cXn" id="tFb-me-bOV"/>
                         <outlet property="StartButton" destination="oTn-bL-iIH" id="h4c-0T-Bbb"/>
                     </connections>
                 </viewController>
@@ -2493,16 +2503,16 @@
         <scene sceneID="QMU-Np-6pR">
             <objects>
                 <tabBarController storyboardIdentifier="MainTabBarController" modalTransitionStyle="crossDissolve" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hdb-R8-5II" customClass="MainTabBarController" customModule="OceanShare" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="1jF-hM-YBJ">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" itemPositioning="centered" id="1jF-hM-YBJ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="selectedImageTintColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
-                        <segue destination="Aag-DV-mf2" kind="relationship" relationship="viewControllers" id="Kfz-bm-rld"/>
-                        <segue destination="uDv-Wy-duU" kind="relationship" relationship="viewControllers" id="uB7-67-QfY"/>
-                        <segue destination="pXj-zn-I7p" kind="relationship" relationship="viewControllers" id="b18-Mf-RU6"/>
+                        <segue destination="uDv-Wy-duU" kind="relationship" relationship="viewControllers" id="8ce-MF-937"/>
+                        <segue destination="pXj-zn-I7p" kind="relationship" relationship="viewControllers" id="e4u-ft-FdT"/>
+                        <segue destination="Aag-DV-mf2" kind="relationship" relationship="viewControllers" id="dGB-t8-4zK"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9BS-ZV-3oq" userLabel="First Responder" sceneMemberID="firstResponder"/>

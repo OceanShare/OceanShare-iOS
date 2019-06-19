@@ -6,6 +6,9 @@ PODS:
   - Bolts/AppLinks (1.9.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.9.0)
+  - Crashlytics (3.13.1):
+    - Fabric (~> 1.10.1)
+  - Fabric (1.10.1)
   - FacebookCore (0.4.0):
     - Bolts (~> 1.9)
     - FBSDKCoreKit (~> 4.36)
@@ -149,6 +152,8 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 5.0.0.beta.1)
+  - Crashlytics (~> 3.13.1)
+  - Fabric (~> 1.10.1)
   - FacebookCore (= 0.4)
   - FacebookLogin (= 0.4)
   - FBSDKCoreKit (= 4.36.0)
@@ -170,6 +175,8 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - Bolts
+    - Crashlytics
+    - Fabric
     - FacebookCore
     - FacebookLogin
     - FBSDKCoreKit
@@ -203,6 +210,8 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: cd08a4402bd12cacd0c66f23fb12fec8d6b965e4
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  Crashlytics: 5aa8e90dcbf2f34898b4f5a0037787531246cca0
+  Fabric: f6f21452846788bb44595d73e9909d79d328e617
   FacebookCore: 770e57cfe250a4de4458b682191c0ff062dee247
   FacebookLogin: eb0f2251aca835a94d70a5f7e580edc46d1e1603
   FBSDKCoreKit: 3b8e6570eedb443f9fc4af196a7bf39f18e3a3d8
@@ -233,6 +242,6 @@ SPEC CHECKSUMS:
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: 4e4d51447959a84f2fae57dde2e0c25dd3454c1a
+PODFILE CHECKSUM: 057b762e15192a2386e8222811a1075ca9ab6798
 
 COCOAPODS: 1.6.1

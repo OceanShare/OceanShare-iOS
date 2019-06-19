@@ -8,6 +8,8 @@
 
 import UIKit
 import Foundation
+import Crashlytics
+import Fabric
 
 class StartViewController: UIViewController, UIPageViewControllerDelegate {
     
@@ -18,6 +20,7 @@ class StartViewController: UIViewController, UIPageViewControllerDelegate {
     // MARK: - outlets
     
     @IBOutlet weak var StartButton: UIButton!
+    @IBOutlet weak var CrashButton: UIButton!
     
     // MARK: - ViewDidLoad
     
@@ -26,6 +29,8 @@ class StartViewController: UIViewController, UIPageViewControllerDelegate {
         
         // apply the design stuff to the view
         setupRadiant()
+        //Fabric.sharedSDK().debug = true
+        CrashButton.isHidden = true
     }
     
     // MARK: - Setup
@@ -35,5 +40,11 @@ class StartViewController: UIViewController, UIPageViewControllerDelegate {
         let color2 = UIColor(rgb: 0x6dd5ed)
         self.StartButton.applyGradient(colours:[color1, color2], corner:27.5)
     }
+    
+    @IBAction func didPressCrash(_ sender: Any) {
+        print("Crash Button Pressed!")
+        Crashlytics.sharedInstance().crash()
+    }
+    
     
 }
