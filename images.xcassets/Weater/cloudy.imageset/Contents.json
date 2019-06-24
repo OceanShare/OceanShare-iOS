@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "bluetooth - copie-1.png",
+      "filename" : "cloudy.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "bluetooth - copie.png",
+      "filename" : "cloudy-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "bluetooth.png",
+      "filename" : "cloudy-2.png",
       "scale" : "3x"
     }
   ],

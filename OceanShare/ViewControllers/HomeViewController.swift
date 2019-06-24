@@ -17,15 +17,18 @@ import JJFloatingActionButton
 class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     // MARK: - Firebase
+    // ------------------------------------------------------- //
     
     var ref: DatabaseReference!
     let storageRef = FirebaseStorage.Storage().reference()
     
     // MARK: - Variables
+    // ------------------------------------------------------- //
     
     // view
     var effect: UIVisualEffect!
     var viewStacked: UIView?
+    var overViewStacked: UIView?
     
     // tag properties
     var Tags_ids = [String]()
@@ -42,13 +45,39 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     var isInside = false
     
     // MARK: - Outlets
+    // ------------------------------------------------------- //
     
-    @IBOutlet weak var buttonMenu: DesignableButton!
-    @IBOutlet weak var visualEffectView: UIVisualEffectView!
+    // icon view
     @IBOutlet weak var iconView: UIView!
     @IBOutlet weak var closeIcon: UIImageView!
+    @IBOutlet weak var buttonMenu: DesignableButton!
+    
+    // comment views
+    @IBOutlet weak var commentView: UIView!
+    @IBOutlet weak var descriptionTextField: UITextField!
+    
+    // description view
+    @IBOutlet weak var descriptionView: UIView!
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var eventImage: UIImageView!
+    @IBOutlet weak var eventLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UITextView!
+    @IBOutlet weak var thumbDownView: DesignableView!
+    @IBOutlet weak var thumbDownIcon: UIImageView!
+    @IBOutlet weak var thumbUpView: DesignableView!
+    @IBOutlet weak var thumbUpIcon: UIImageView!
+    @IBOutlet weak var editIcon: UIImageView!
+    @IBOutlet weak var closeDescriptionIcon: UIImageView!
+    
+    // edition view
+    @IBOutlet var editionView: UIView!
+    @IBOutlet weak var newDescriptionTextField: UITextField!
+    
+    // visual effect
+    @IBOutlet weak var visualEffectView: UIVisualEffectView!
     
     // MARK: - ViewDidLoad
+    // ------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +92,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     }
     
     // MARK: - Setup
+    // ------------------------------------------------------- //
     
     func setupView() {
         // mapview setup
@@ -75,16 +105,30 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         mapView.showsUserHeadingIndicator = true
         showTags(mapView: mapView)
         // icon setup
-        self.closeIcon.image = self.closeIcon.image!.withRenderingMode(.alwaysTemplate)
-        self.closeIcon.tintColor = UIColor(rgb: 0xFFFFFF)
+        self.setupCustomIcons()
         // add the layers in the right order
         view.addSubview(mapView)
         view.addSubview(buttonMenu)
         view.addSubview(visualEffectView)
-        
+    }
+    
+    func setupCustomIcons() {
+        // icon view
+        self.closeIcon.image = self.closeIcon.image!.withRenderingMode(.alwaysTemplate)
+        self.closeIcon.tintColor = UIColor(rgb: 0xFFFFFF)
+        // description view
+        self.editIcon.image = self.editIcon.image!.withRenderingMode(.alwaysTemplate)
+        self.editIcon.tintColor = UIColor(rgb: 0xC5C7D2)
+        self.closeDescriptionIcon.image = self.closeDescriptionIcon.image!.withRenderingMode(.alwaysTemplate)
+        self.closeDescriptionIcon.tintColor = UIColor(rgb: 0xFFFFFF)
+        self.thumbUpIcon.image = self.thumbUpIcon.image!.withRenderingMode(.alwaysTemplate)
+        self.thumbUpIcon.tintColor = UIColor(rgb: 0x606060)
+        self.thumbDownIcon.image = self.thumbDownIcon.image!.withRenderingMode(.alwaysTemplate)
+        self.thumbDownIcon.tintColor = UIColor(rgb: 0x606060)
     }
     
     // MARK: - Animations
+    // ------------------------------------------------------- //
     
     func animateIn(view: UIView) {
         visualEffectView.isHidden = false
@@ -102,6 +146,20 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         }
     }
     
+    func animateInWithoutBlur(view: UIView) {
+        self.view.addSubview(view)
+        view.center = self.view.center
+        
+        view.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+        view.alpha = 0
+        
+        UIView.animate(withDuration: 0.4) {
+            view.alpha = 1
+            view.transform = CGAffineTransform.identity
+        }
+        
+    }
+    
     func animateOut() {
         UIView.animate(withDuration: 0.3, animations: {
             self.viewStacked!.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
@@ -113,7 +171,17 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         }
     }
     
-    // MARK: - Menu
+    func animateOutWithoutBlur() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.overViewStacked!.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+            self.overViewStacked!.alpha = 0
+        }) { (success:Bool) in
+            self.overViewStacked!.removeFromSuperview()
+        }
+    }
+    
+    // MARK: - Menu Icon View
+    // ------------------------------------------------------- //
     
     @IBAction func closeMenu(_ sender: Any) {
         animateOut()
@@ -166,7 +234,66 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         animateOut()
     }
     
-    // MARK: - Tag Handling
+    @IBAction func weatherActivate(_ sender: Any) {
+        // TODO: add the weather event
+        self.Activate()
+        animateOut()
+    }
+    
+    
+    // MARK: - Description View
+    // ------------------------------------------------------- //
+    
+    @IBAction func closeDescription(_ sender: Any) {
+        animateOut()
+    }
+    
+    @IBAction func downVoteEvent(_ sender: Any) {
+        self.thumbDownView.backgroundColor = UIColor(rgb: 0xFB6060)
+        self.thumbDownIcon.tintColor = UIColor(rgb: 0xFFFFFF)
+        // TODO: down-voting event
+    }
+    
+    @IBAction func upVoteEvent(_ sender: Any) {
+        self.thumbUpView.backgroundColor = UIColor(rgb: 0x41E08D)
+        self.thumbUpIcon.tintColor = UIColor(rgb: 0xFFFFFF)
+        // TODO: up-voting event
+    }
+    
+    @IBAction func editEvent(_ sender: Any) {
+        self.overViewStacked = editionView
+        animateInWithoutBlur(view: editionView)
+        // TODO: editing event
+    }
+    
+    // MARK: - Comment View
+    // ------------------------------------------------------- //
+    
+    @IBAction func submitComment(_ sender: Any) {
+        // TODO: submitting comment
+    }
+    
+    @IBAction func cancelComment(_ sender: Any) {
+        // TODO: cancel comment
+    }
+    
+    // MARK: - Edition View
+    // ------------------------------------------------------- //
+    
+    @IBAction func changeDescription(_ sender: Any) {
+        // TODO: change description
+    }
+    
+    @IBAction func deleteEvent(_ sender: Any) {
+        // TODO: delete event
+    }
+    
+    @IBAction func closeEdition(_ sender: Any) {
+        animateOutWithoutBlur()
+    }
+    
+    // MARK: - Map Interactions
+    // ------------------------------------------------------- //
     
     func Activate() {
         let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
@@ -181,6 +308,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         self.mapView.removeGestureRecognizer(PressRecognizer)
         isInside = false
     }
+    
+    // MARK: - Tag Handling
+    // ------------------------------------------------------- //
     
     func putTag(mapView: MGLMapView, id: String, description: String, cordinate: CLLocationCoordinate2D) -> Int {
         
@@ -418,6 +548,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     }
     
     // MARK: - Annotation
+    // ------------------------------------------------------- //
     
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
         return true
@@ -431,7 +562,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         // hide the callout view.
         mapView.deselectAnnotation(annotation, animated: false)
         
-        let ac = UIAlertController(title: "Add description (optional)", message: nil, preferredStyle: .alert)
+        self.viewStacked = descriptionView
+        animateIn(view: descriptionView)
+        
+        /*let ac = UIAlertController(title: "Add description (optional)", message: nil, preferredStyle: .alert)
         ac.addTextField()
         
         let Change = UIAlertAction(title: "Change Description", style: .default) { [unowned ac] _ in
@@ -448,7 +582,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         ac.addAction(Change)
         ac.addAction(Delete)
         
-        present(ac, animated: true)
+        present(ac, animated: true)*/
         
     }
     
@@ -550,6 +684,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
 }
 
 // MARK: - Custom Class
+// ------------------------------------------------------- //
 
 class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     let size: CGFloat = 48
