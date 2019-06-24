@@ -98,27 +98,21 @@ class InformationViewController: UIViewController {
         super.viewDidLoad()
         
         ref = Database.database().reference()
-        // apply the design stuff to the view
-        setupView()
+        self.setupView()
         // keybord handler
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         observeKeyboardNotification()
-        // setup the visual effect
-        effect = visualEffectView.effect
-        visualEffectView.effect = nil
-        visualEffectView.isHidden = true
-        // get the profile picture and the user name
         self.fetchUserInfo()
     }
     
     // MARK: - Setup
     
     func setupView() {
-        // setup alpha blur effect
+        self.effect = self.visualEffectView.effect
+        self.visualEffectView.effect = nil
+        self.visualEffectView.isHidden = true
         self.visualEffectView.alpha = 0.8
-        // setup icons
         self.setupCustomIcons()
-        // setup skeleton
         self.turnOnSkeleton()
     }
     
@@ -409,7 +403,7 @@ class InformationViewController: UIViewController {
     
     @IBAction func handleBack(_ sender: Any) {
         let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
+        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[2]
         self.show(mainTabBarController, sender: self)
     }
 
