@@ -117,6 +117,12 @@ class InformationViewController: UIViewController {
         // setup alpha blur effect
         self.visualEffectView.alpha = 0.8
         // setup icons
+        self.setupCustomIcons()
+        // setup skeleton
+        self.turnOnSkeleton()
+    }
+    
+    func setupCustomIcons() {
         self.nameModifierPic.image = self.nameModifierPic.image!.withRenderingMode(.alwaysTemplate)
         self.nameModifierPic.tintColor = UIColor(rgb: 0xC5C7D2)
         self.emailModifierPic.image = self.emailModifierPic.image!.withRenderingMode(.alwaysTemplate)
@@ -125,8 +131,6 @@ class InformationViewController: UIViewController {
         self.shipModifierPic.tintColor = UIColor(rgb: 0xC5C7D2)
         self.passwordModifierPic.image = self.passwordModifierPic.image!.withRenderingMode(.alwaysTemplate)
         self.passwordModifierPic.tintColor = UIColor(rgb: 0xC5C7D2)
-        // setup skeleton
-        self.turnOnSkeleton()
     }
     
     // MARK: - Animations

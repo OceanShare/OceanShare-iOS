@@ -1508,7 +1508,7 @@
                     <viewLayoutGuide key="safeArea" id="NxQ-ZU-gQj"/>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-645" y="-258"/>
+            <point key="canvasLocation" x="-2297" y="-258"/>
         </scene>
         <!--Profile-->
         <scene sceneID="2Rx-gS-xhY">
@@ -1906,7 +1906,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gXe-eX-Onw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2297" y="-631"/>
+            <point key="canvasLocation" x="-2297" y="-932"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="Y4M-eD-9jB">
@@ -2038,7 +2038,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pSc-LO-GM8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3064" y="-1060"/>
+            <point key="canvasLocation" x="-3064" y="-932"/>
         </scene>
         <!--Information View Controller-->
         <scene sceneID="7aK-5P-L8P">
@@ -2989,7 +2989,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-2297" y="-1510"/>
+            <point key="canvasLocation" x="-1533" y="-932"/>
         </scene>
         <!--Weather-->
         <scene sceneID="NhU-iz-wlY">
@@ -3421,7 +3421,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ke6-q7-Z6z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2297" y="109"/>
+            <point key="canvasLocation" x="-2297" y="422"/>
         </scene>
         <!--Main Tab Bar Controller-->
         <scene sceneID="QMU-Np-6pR">
