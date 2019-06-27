@@ -52,7 +52,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     @IBOutlet weak var closeIcon: UIImageView!
     @IBOutlet weak var buttonMenu: DesignableButton!
     
-    // comment views
+    // comment view
     @IBOutlet weak var commentView: UIView!
     @IBOutlet weak var descriptionTextField: UITextField!
     
@@ -70,8 +70,21 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     @IBOutlet weak var closeDescriptionIcon: UIImageView!
     
     // edition view
-    @IBOutlet var editionView: UIView!
+    @IBOutlet weak var editionView: UIView!
     @IBOutlet weak var newDescriptionTextField: UITextField!
+    
+    // wheater icon view
+    @IBOutlet weak var weatherIconView: UIView!
+    @IBOutlet weak var airTemperatureLabel: UILabel!
+    @IBOutlet weak var weatherLabel: UILabel!
+    @IBOutlet weak var sunriseLabel: UILabel!
+    @IBOutlet weak var sunsetLabel: UILabel!
+    @IBOutlet weak var rainRiskLabel: UILabel!
+    @IBOutlet weak var waterTemperatureLabel: UILabel!
+    @IBOutlet weak var windLabel: UILabel!
+    @IBOutlet weak var humidityLabel: UILabel!
+    @IBOutlet weak var visibilityLabel: UILabel!
+    @IBOutlet weak var uvLabel: UILabel!
     
     // visual effect
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
