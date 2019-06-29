@@ -66,6 +66,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.profilePicture.layer.cornerRadius = 95
         self.profilePicture.clipsToBounds = true
         // setup the icons
+        self.setupCustomIcons()
+        // setup the skeleton animation
+        self.turnOnSkeleton()
+    }
+    
+    func setupCustomIcons() {
         self.settingsIcon.image = self.settingsIcon.image!.withRenderingMode(.alwaysTemplate)
         self.settingsIcon.tintColor = UIColor(rgb: 0xC5C7D2)
         self.editIcon.image = self.editIcon.image!.withRenderingMode(.alwaysTemplate)
@@ -74,8 +80,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.pictureIcon.tintColor = UIColor(rgb: 0xFFFFFF)
         self.addEditIcon.image = self.addEditIcon.image!.withRenderingMode(.alwaysTemplate)
         self.addEditIcon.tintColor = UIColor(rgb: 0x57A1FF)
-        // setup the skeleton animation
-        self.turnOnSkeleton()
     }
     
     // MARK: - Animations

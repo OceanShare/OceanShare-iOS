@@ -62,6 +62,10 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         self.background.layer.cornerRadius = 16
         self.background.clipsToBounds = true
         // icon setup
+        self.setupCustomIcons()
+    }
+    
+    func setupCustomIcons() {
         self.email.image = self.email.image!.withRenderingMode(.alwaysTemplate)
         self.email.tintColor = UIColor(rgb: 0xFFFFFF)
         self.password.image = self.password.image!.withRenderingMode(.alwaysTemplate)

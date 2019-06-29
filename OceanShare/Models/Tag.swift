@@ -11,7 +11,7 @@ import UIKit
 import Mapbox
 
 struct Tag {
-    var id: String?
+    var id: Int?
     var description: String?
     var x: Double?
     var y: Double?

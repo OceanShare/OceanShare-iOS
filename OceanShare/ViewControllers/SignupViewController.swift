@@ -69,6 +69,10 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         self.background.layer.cornerRadius = 16
         self.background.clipsToBounds = true
         // icon setup
+        self.setupCustomIcons()
+    }
+
+    func setupCustomIcons() {
         self.name.image = self.name.image!.withRenderingMode(.alwaysTemplate)
         self.name.tintColor = UIColor(rgb: 0xFFFFFF)
         self.email.image = self.email.image!.withRenderingMode(.alwaysTemplate)
@@ -78,7 +82,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         self.confirm.image = self.confirm.image!.withRenderingMode(.alwaysTemplate)
         self.confirm.tintColor = UIColor(rgb: 0xFFFFFF)
     }
-
+    
     // MARK: - Email Registration
     
     @IBAction func registerButtonTapped(_ sender: UIButton) {
