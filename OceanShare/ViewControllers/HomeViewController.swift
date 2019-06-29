@@ -35,7 +35,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     var Tags_hashs = [Int]()
     var x_tag = 0.0
     var y_tag = 0.0
-    var id_tag = "0"
+    var id_tag = 0
     var description_tag = "."
     
     // map properties
@@ -205,44 +205,44 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         animateIn(view: iconView)
     }
     
+    @IBAction func medusaActivate(_ sender: Any) {
+        self.id_tag = 0
+        self.description_tag = "Medusa"
+        self.Activate()
+        animateOut()
+    }
+    
     @IBAction func diverActivate(_ sender: Any) {
-        self.id_tag = "Diver"
+        self.id_tag = 1
         self.description_tag = "Diver"
         self.Activate()
         animateOut()
     }
     
     @IBAction func wasteActivate(_ sender: Any) {
-        self.id_tag = "Waste"
+        self.id_tag = 2
         self.description_tag = "Waste"
         self.Activate()
         animateOut()
     }
     
-    @IBAction func medusaActivate(_ sender: Any) {
-        self.id_tag = "Medusa"
-        self.description_tag = "Medusa"
+    @IBAction func warningActivate(_ sender: Any) {
+        self.id_tag = 3
+        self.description_tag = "SOS"
         self.Activate()
         animateOut()
     }
     
     @IBAction func dolphinActivate(_ sender: Any) {
-        self.id_tag = "Dolphin"
+        self.id_tag = 4
         self.description_tag = "Dolphin"
         self.Activate()
         animateOut()
     }
     
     @IBAction func destinationActivate(_ sender: Any) {
-        self.id_tag = "Position"
+        self.id_tag = 5
         self.description_tag = "Position"
-        self.Activate()
-        animateOut()
-    }
-    
-    @IBAction func warningActivate(_ sender: Any) {
-        self.id_tag = "SOS"
-        self.description_tag = "SOS"
         self.Activate()
         animateOut()
     }
@@ -312,6 +312,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
         // allow users to add interact with the map
         self.mapView.addGestureRecognizer(PressRecognizer)
+        print("Inside")
         isInside = true
     }
     
@@ -319,50 +320,51 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
         // unable interaction with the map
         self.mapView.removeGestureRecognizer(PressRecognizer)
+        print("outside")
         isInside = false
     }
     
     // MARK: - Tag Handling
     // ------------------------------------------------------- //
     
-    func putTag(mapView: MGLMapView, id: String, description: String, cordinate: CLLocationCoordinate2D) -> Int {
+    func putTag(mapView: MGLMapView, id: Int, description: String, cordinate: CLLocationCoordinate2D) -> Int {
         
        let marker = MGLPointAnnotation()
         
         switch id {
-        case "Dolphin":
-            marker.coordinate = cordinate
-            marker.title = "Dolphin"
-            marker.subtitle = description
-            mapView.addAnnotation(marker)
-            Unactivate()
-        case "Medusa":
+        case 0:
             marker.coordinate = cordinate
             marker.title = "Medusa"
             marker.subtitle = description
             mapView.addAnnotation(marker)
             Unactivate()
-        case "Diver":
+        case 1:
             marker.coordinate = cordinate
             marker.title = "Diver"
             marker.subtitle = description
             mapView.addAnnotation(marker)
             Unactivate()
-        case "Position":
+        case 2:
             marker.coordinate = cordinate
-            marker.title = "Position"
+            marker.title = "Waste"
             marker.subtitle = description
             mapView.addAnnotation(marker)
             Unactivate()
-        case "SOS":
+        case 3:
             marker.coordinate = cordinate
             marker.title = "SOS"
             marker.subtitle = description
             mapView.addAnnotation(marker)
             Unactivate()
-        case "Waste":
+        case 4:
             marker.coordinate = cordinate
-            marker.title = "Waste"
+            marker.title = "Dolphin"
+            marker.subtitle = description
+            mapView.addAnnotation(marker)
+            Unactivate()
+        case 5:
+            marker.coordinate = cordinate
+            marker.title = "Position"
             marker.subtitle = description
             mapView.addAnnotation(marker)
             Unactivate()
@@ -377,34 +379,34 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         let marker = MGLPointAnnotation()
         
         switch Tag.id {
-        case "Dolphin":
-            marker.coordinate = CLLocationCoordinate2D(latitude: Tag.x ?? 0, longitude: Tag.y ?? 0)
-            marker.title = "Dolphin"
-            marker.subtitle = Tag.description
-            mapView.addAnnotation(marker)
-        case "Medusa":
+        case 0:
             marker.coordinate = CLLocationCoordinate2D(latitude: Tag.x ?? 0, longitude: Tag.y ?? 0)
             marker.title = "Medusa"
             marker.subtitle = Tag.description
             mapView.addAnnotation(marker)
-        case "Diver":
+        case 1:
             marker.coordinate = CLLocationCoordinate2D(latitude: Tag.x ?? 0, longitude: Tag.y ?? 0)
             marker.title = "Diver"
             marker.subtitle = Tag.description
             mapView.addAnnotation(marker)
-        case "Position":
+        case 2:
             marker.coordinate = CLLocationCoordinate2D(latitude: Tag.x ?? 0, longitude: Tag.y ?? 0)
-            marker.title = "Position"
+            marker.title = "Waste"
             marker.subtitle = Tag.description
             mapView.addAnnotation(marker)
-        case "SOS":
+        case 3:
             marker.coordinate = CLLocationCoordinate2D(latitude: Tag.x ?? 0, longitude: Tag.y ?? 0)
             marker.title = "SOS"
             marker.subtitle = Tag.description
             mapView.addAnnotation(marker)
-        case "Waste":
+        case 4:
             marker.coordinate = CLLocationCoordinate2D(latitude: Tag.x ?? 0, longitude: Tag.y ?? 0)
-            marker.title = "Waste"
+            marker.title = "Dolphin"
+            marker.subtitle = Tag.description
+            mapView.addAnnotation(marker)
+        case 5:
+            marker.coordinate = CLLocationCoordinate2D(latitude: Tag.x ?? 0, longitude: Tag.y ?? 0)
+            marker.title = "Position"
             marker.subtitle = Tag.description
             mapView.addAnnotation(marker)
         default:
@@ -415,14 +417,14 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     func putTagsinArray(markerHash: Int, FirebaseID: String) {
         
-        print("------------")
+        //print("------------")
         self.Tags_ids.append(FirebaseID)
         self.Tags_hashs.append(markerHash)
-        print("putTagsinArray Tags_id = " ,FirebaseID)
-        print("putTagsinArray Tags_hash = " ,markerHash)
-        print(self.Tags_ids)
-        print(self.Tags_hashs)
-        print("------------")
+        //print("putTagsinArray Tags_id = " ,FirebaseID)
+        //print("putTagsinArray Tags_hash = " ,markerHash)
+        //print(self.Tags_ids)
+        //print(self.Tags_hashs)
+        //print("------------")
     }
     
     func showTags(mapView: MGLMapView) {
@@ -433,7 +435,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
                     // getting values
                     let data = tag.value as? NSDictionary
                     let description  = data?["description"] as? String
-                    let id  = data?["title"] as? String
+                    let id  = data?["groupId"] as? Int
                     let x = data?["latitude"] as? Double
                     let y = data?["longitude"] as? Double
                     var markerHash: Int
@@ -466,20 +468,22 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
          }*/
     }
     
-    func saveTags(id: String, description: String, cordinate: CLLocationCoordinate2D) -> String{
+    func saveTags(id: Int, description: String, cordinate: CLLocationCoordinate2D) -> String {
         
         print("SAVE TAGS DEBUT")
         
+        let userId = Auth.auth().currentUser?.uid
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
         let dateInFormat = dateFormatter.string(from: NSDate() as Date)
         let key = self.ref.childByAutoId().key
         let Tag: [String: Any] = [
-            "title": id as Any,
+            "groupId": id as Any,
             "description": description as Any,
             "latitude": cordinate.latitude as Any,
             "longitude": cordinate.longitude as Any,
-            "time": dateInFormat as Any
+            "time": dateInFormat as Any,
+            "user": userId as Any
         ]
         
         self.ref.child(key!).setValue(Tag)
@@ -493,12 +497,14 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         let dateInFormat = dateFormatter.string(from: NSDate() as Date)
         let key = self.ref.childByAutoId().key
         
+        let userId = Auth.auth().currentUser?.uid
         let Tag: [String: Any] = [
-            "title": Tag.id as Any,
+            "groupId": Tag.id as Any,
             "description": Tag.description as Any,
             "latitude": Tag.x as Any,
             "longitude": Tag.y as Any,
-            "time": dateInFormat as Any
+            "time": dateInFormat as Any,
+            "user": userId as Any
         ]
         
         self.ref.child(key!).setValue(Tag)
@@ -526,19 +532,19 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         while (Tags_hashs[count] != MarkerHash) {
             count = count + 1
         }
-        print("ChangeTag count = ", count)
+        //print("ChangeTag count = ", count)
         
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             print("ChangeTag Childrencount = ", snapshot.childrenCount)
             if snapshot.childrenCount > 0 {
                 for tag in snapshot.children.allObjects as! [DataSnapshot] {
                     // getting valuess
-                    print("Tag_id = ", self.Tags_ids[count])
-                    print("Tag_hash = ", self.Tags_hashs[count])
+                    //print("Tag_id = ", self.Tags_ids[count])
+                    //print("Tag_hash = ", self.Tags_hashs[count])
                     if (self.Tags_ids[count] == tag.key && hasDoneWork == false) {
                         self.removeTag(MarkerHash: self.Tags_hashs[count])
                         let data = tag.value as? NSDictionary
-                        let id  = data?["title"] as? String
+                        let id  = data?["groupId"] as? Int
                         let x = data?["latitude"] as? Double
                         let y = data?["longitude"] as? Double
                         var markerHash: Int
