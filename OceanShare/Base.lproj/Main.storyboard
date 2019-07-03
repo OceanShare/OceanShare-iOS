@@ -552,6 +552,7 @@
                         <outlet property="descriptionLabel" destination="GS1-Jy-Yg6" id="DsO-sF-cpu"/>
                         <outlet property="descriptionTextField" destination="UEy-MI-z4Y" id="RHx-tH-Dcv"/>
                         <outlet property="descriptionView" destination="Q2C-gq-N7s" id="XqA-AT-Rbq"/>
+                        <outlet property="editButton" destination="R6I-JN-g75" id="yXZ-fW-Oat"/>
                         <outlet property="editIcon" destination="fx2-M7-lzi" id="hiu-mg-bGf"/>
                         <outlet property="editionView" destination="w30-nj-wkj" id="aBs-I1-S1Z"/>
                         <outlet property="eventImage" destination="Zc9-x6-D2O" id="GWO-nb-amQ"/>
