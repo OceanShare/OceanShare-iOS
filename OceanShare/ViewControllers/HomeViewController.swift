@@ -12,6 +12,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import FirebaseCore
 import FirebaseStorage
+import FirebasePerformance
 import JJFloatingActionButton
 
 class HomeViewController: UIViewController, MGLMapViewDelegate {
@@ -36,8 +37,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     var y_tag = 0.0
     var id_tag = 0
     var description_tag = "."
+    
+    // tag globals
     var selectedTag: MGLAnnotation?
     var selectedTagId: String?
+    var selectedTagUserId: String?
+    var selectedTagUserName: String?
     
     // map properties
     var goinside = true
@@ -62,6 +67,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     @IBOutlet weak var eventImage: UIImageView!
     @IBOutlet weak var eventLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UITextView!
+    @IBOutlet weak var userLabel: UILabel!
     @IBOutlet weak var thumbDownView: DesignableView!
     @IBOutlet weak var thumbDownIcon: UIImageView!
     @IBOutlet weak var thumbUpView: DesignableView!
@@ -71,6 +77,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     @IBOutlet weak var closeDescriptionIcon: UIImageView!
     
     // edition view
+    @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var editionView: UIView!
     @IBOutlet weak var newDescriptionTextField: UITextField!
     
@@ -123,11 +130,16 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         mapView.showsUserHeadingIndicator = true
         getTagsFromServer(mapView: mapView)
         
+        // setup textfields
+        self.descriptionTextField.maxLength = 75
+        self.newDescriptionTextField.maxLength = 75
+        
         // icon setup
         self.setupCustomIcons()
         
         // add the layers in the right order
         view.addSubview(mapView)
+        view.addSubview(headerView)
         view.addSubview(buttonMenu)
         view.addSubview(visualEffectView)
         
@@ -136,13 +148,13 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     func setupCustomIcons() {
         // icon view
         self.closeIcon.image = self.closeIcon.image!.withRenderingMode(.alwaysTemplate)
-        self.closeIcon.tintColor = UIColor(rgb: 0xFFFFFF)
+        self.closeIcon.tintColor = UIColor(rgb: 0x000000)
         
         // description view
         self.editIcon.image = self.editIcon.image!.withRenderingMode(.alwaysTemplate)
         self.editIcon.tintColor = UIColor(rgb: 0xC5C7D2)
         self.closeDescriptionIcon.image = self.closeDescriptionIcon.image!.withRenderingMode(.alwaysTemplate)
-        self.closeDescriptionIcon.tintColor = UIColor(rgb: 0xFFFFFF)
+        self.closeDescriptionIcon.tintColor = UIColor(rgb: 0x000000)
         self.thumbUpIcon.image = self.thumbUpIcon.image!.withRenderingMode(.alwaysTemplate)
         self.thumbUpIcon.tintColor = UIColor(rgb: 0x606060)
         self.thumbDownIcon.image = self.thumbDownIcon.image!.withRenderingMode(.alwaysTemplate)
@@ -152,7 +164,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     // MARK: - Animations
     
-    func animateIn(view: UIView) {
+    func animateIn(view: UIView) { // TODO: refactor
         visualEffectView.isHidden = false
         self.view.addSubview(view)
         view.center = self.view.center
@@ -169,7 +181,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         }
     }
     
-    func animateInWithoutBlur(view: UIView) {
+    func animateInWithoutBlur(view: UIView) { // TODO: refactor
         self.view.addSubview(view)
         view.center = self.view.center
         
@@ -183,7 +195,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         }
     }
     
-    func animateOut() {
+    func animateOut() { // TODO: refactor
         UIView.animate(withDuration: 0.3, animations: {
             self.viewStacked!.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
             self.viewStacked!.alpha = 0
@@ -196,7 +208,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         }
     }
     
-    func animateOutWithoutBlur() {
+    func animateOutWithoutBlur() { // TODO: refactor
         UIView.animate(withDuration: 0.3, animations: {
             self.overViewStacked!.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
             self.overViewStacked!.alpha = 0
@@ -308,7 +320,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     @IBAction func editEvent(_ sender: Any) {
         self.overViewStacked = editionView
         animateInWithoutBlur(view: editionView)
-        // TODO: editing event
+
     }
     
     // MARK: - Comment View
@@ -324,11 +336,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     // MARK: - Edition View
     
     @IBAction func changeDescription(_ sender: Any) {
-        /*let Change = UIAlertAction(title: "Change Description", style: .default) { [unowned ac] _ in
-         self.Tag_properties.description = ac.textFields![0].text!
-         self.ChangeTag(MarkerHash: annotation.hash)
-         mapView.removeAnnotation(annotation)*/
- 
+        self.ref.child(self.selectedTagId!).updateChildValues(["description": self.newDescriptionTextField.text!])
+        fetchTag(MarkerHash: selectedTag!.hash)
+        animateOutWithoutBlur()
+        
     }
     
     @IBAction func deleteEvent(_ sender: Any) {
@@ -380,11 +391,91 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
         let dateInFormat = dateFormatter.string(from: NSDate() as Date)
         return (dateInFormat)
+        
     }
     
     func getCurrentUser() -> String {
         let userId = Auth.auth().currentUser?.uid
         return (userId ?? "Cannot get User")
+        
+    }
+    
+    func getUserNameById(userId: String) {
+        let trace = Performance.startTrace(name: "getUserName")
+        let userRef = Database.database().reference().child("users")
+        
+        userRef.child(userId).observeSingleEvent(of: .value) { (snapshot) in
+            guard let data = snapshot.value as? NSDictionary else {
+                trace?.stop()
+                return
+                
+            }
+            guard let userNameFromData = data["name"] as? String else {
+                trace?.stop()
+                return
+                
+            }
+            self.userLabel.text = "Dropped by: " + userNameFromData + "."
+            trace?.stop()
+            
+        }
+    }
+    
+    func getDateFromString(time: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
+        dateFormatter.locale = Locale(identifier: "fr_GP")
+        let date = dateFormatter.date(from:time)!
+        return date
+        
+    }
+    
+    func getPastTime(for date : Date) -> String {
+        
+        var secondsAgo = Int(Date().timeIntervalSince(date))
+        if secondsAgo < 0 {
+            secondsAgo = secondsAgo * (-1)
+        }
+        
+        let minute = 60
+        let hour = 60 * minute
+        let day = 24 * hour
+        let week = 7 * day
+        
+        if secondsAgo < minute  {
+            if secondsAgo < 2 {
+                return "Just now."
+            } else {
+                return "\(secondsAgo) seconds ago."
+            }
+        } else if secondsAgo < hour {
+            let min = secondsAgo/minute
+            if min == 1{
+                return "\(min) minutes ago."
+            } else {
+                return "\(min) minutes ago."
+            }
+        } else if secondsAgo < day {
+            let hr = secondsAgo/hour
+            if hr == 1{
+                return "\(hr) hour ago."
+            } else {
+                return "\(hr) hours ago."
+            }
+        } else if secondsAgo < week {
+            let day = secondsAgo/day
+            if day == 1{
+                return "\(day) day ago."
+            } else {
+                return "\(day) days ago."
+            }
+        } else {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMM dd, hh:mm a"
+            formatter.locale = Locale(identifier: "fr_GP")
+            let strDate: String = formatter.string(from: date)
+            return strDate
+        }
     }
     
     // MARK: - Online Tag
@@ -398,42 +489,36 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Medusa"
-            marker.subtitle = Tag.description
             mapView.addAnnotation(marker)
             Unactivate()
         case 1:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Diver"
-            marker.subtitle = Tag.description
             mapView.addAnnotation(marker)
             Unactivate()
         case 2:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Waste"
-            marker.subtitle = Tag.description
             mapView.addAnnotation(marker)
             Unactivate()
         case 3:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "SOS"
-            marker.subtitle = Tag.description
             mapView.addAnnotation(marker)
             Unactivate()
         case 4:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Dolphin"
-            marker.subtitle = Tag.description
             mapView.addAnnotation(marker)
             Unactivate()
         case 5:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Position"
-            marker.subtitle = Tag.description
             mapView.addAnnotation(marker)
             Unactivate()
         default:
@@ -522,15 +607,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     func fetchTag(MarkerHash: Int) {
         var count = 0
         let hasDoneWork = false
-        print(MarkerHash)
-        print(Tags_hashs)
         
         while (Tags_hashs[count] != MarkerHash) {
             count = count + 1
             
         }
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            print("ChangeTag Childrencount = ", snapshot.childrenCount)
             if snapshot.childrenCount > 0 {
                 for tag in snapshot.children.allObjects as! [DataSnapshot] {
                     
@@ -541,15 +623,25 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
                         let time = data?["time"] as? String
                         let user = data?["user"] as? String
                         
+                        if description!.isEmpty == false {
+                            self.newDescriptionTextField.text = description
+                            
+                        }
+                    
+                        self.timeLabel.text = self.getPastTime(for: self.getDateFromString(time: time!))
                         self.selectedTagId = tag.key
+                        self.selectedTagUserId = user
                         self.descriptionLabel.text = description
-                        self.timeLabel.text = time! + " minutes ago"
                         
                         if user != Auth.auth().currentUser?.uid {
                             self.editButton.isEnabled = false
+                            self.editIcon.isHidden = true
+                            self.getUserNameById(userId: user!)
                             
                         } else {
+                            self.userLabel.text = "You have dropped this event."
                             self.editButton.isEnabled = true
+                            self.editIcon.isHidden = false
                             
                         }
                         
@@ -591,15 +683,14 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
                                 self.descriptionLabel.text = "Someone is going there."
                             }
                         default:
-                            print("Error in func fetchTag")
+                            print("Error deprecated tag.")
                             
                         }
                     }
                 }
             }
         }) { (error) in
-            print("ERROR")
-            print(error.localizedDescription)
+            print("Error: ", error.localizedDescription)
             
         }
     }
@@ -639,49 +730,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             }
             self.Tags_hashs.remove(at: count)
             self.Tags_ids.remove(at: count)
-            
-        }
-    }
-    
-    func ChangeTag(MarkerHash: Int) {
-        var count = 0
-        var hasDoneWork = false
-        print(MarkerHash)
-        print(Tags_hashs)
-
-        while (Tags_hashs[count] != MarkerHash) {
-            count = count + 1
-            
-        }
-        
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            print("ChangeTag Childrencount = ", snapshot.childrenCount)
-            if snapshot.childrenCount > 0 {
-                for tag in snapshot.children.allObjects as! [DataSnapshot] {
-                    
-                    // getting valuess
-                    if (self.Tags_ids[count] == tag.key && hasDoneWork == false) {
-                        let data = tag.value as? NSDictionary
-                        let id  = data?["groupId"] as? Int
-                        let x = data?["latitude"] as? Double
-                        let y = data?["longitude"] as? Double
-                        let time = data?["time"] as? String
-                        let user = data?["user"] as? String
-                        var markerHash: Int
-                        var FirebaseId: String
-                        
-                        self.removeTag(MarkerHash: self.Tags_hashs[count])
-                        markerHash = self.putTag(mapView: self.mapView, Tag: Tag(description: self.Tag_properties.description, id: id, latitude: x, longitude: y, time: time, user: user))
-                        FirebaseId = self.saveTags(Tag: Tag(description: self.Tag_properties.description, id: id, latitude: x, longitude: y, time: time, user: user))
-                        self.putTagsinArray(markerHash: markerHash, FirebaseID: FirebaseId)
-                        hasDoneWork = true
-                        
-                    }
-                }
-            }
-        }) { (error) in
-            print("ERROR")
-            print(error.localizedDescription)
             
         }
     }

@@ -338,7 +338,7 @@ class InformationViewController: UIViewController {
             displayMessage(userMessage: "The new ship name field should be different than the previous one Matey!")
             return
         } else {
-            let trace = Performance.startTrace(name: "changeUserPassword")
+            let trace = Performance.startTrace(name: "changeShipName")
             // define the database structure
             let userData: [String: Any] = ["ship_name": shipName as Any]
             // update the user data on the database
