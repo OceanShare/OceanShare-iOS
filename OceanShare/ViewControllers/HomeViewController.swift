@@ -771,32 +771,32 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         var test = MGLAnnotationImage()
         
         if annotation.title == "Dolphin" {
-            var image = UIImage(named: "dauphin")!
+            var image = UIImage(named: "pin_dauphin")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             test = MGLAnnotationImage(image: image, reuseIdentifier: "Dauphin")
             
         } else if annotation.title == "Medusa" {
-            var image = UIImage(named: "meduse")!
+            var image = UIImage(named: "pin_meduse")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             test = MGLAnnotationImage(image: image, reuseIdentifier: "Meduse")
             
         } else if annotation.title == "Diver" {
-            var image = UIImage(named: "plongeur")!
+            var image = UIImage(named: "pin_plongeur")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             test = MGLAnnotationImage(image: image, reuseIdentifier: "Plongeur")
             
         } else if annotation.title == "Position" {
-            var image = UIImage(named: "Posititon")!
+            var image = UIImage(named: "pin_destination")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             test = MGLAnnotationImage(image: image, reuseIdentifier: "Posititon")
             
         } else if annotation.title == "SOS" {
-            var image = UIImage(named: "warnongBW")!
+            var image = UIImage(named: "pin_warning")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             test = MGLAnnotationImage(image: image, reuseIdentifier: "Warning")
             
         } else {
-            var image = UIImage(named: "wasteP")!
+            var image = UIImage(named: "pin_waste")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             test = MGLAnnotationImage(image: image, reuseIdentifier: "Waste")
             
