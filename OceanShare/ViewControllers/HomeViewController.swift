@@ -33,10 +33,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     var Tag_properties = Tag(description: "", id: 0, latitude: 0.0, longitude: 0.0, time: "", user: "")
     var Tags_ids = [String]()
     var Tags_hashs = [Int]()
-    var x_tag = 0.0
-    var y_tag = 0.0
-    var id_tag = 0
-    var description_tag = "."
     
     // tag globals
     var selectedTag: MGLAnnotation?
@@ -45,7 +41,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     var selectedTagUserName: String?
     
     // map properties
-    var goinside = true
     var cordinate: CLLocationCoordinate2D!
     var mapView: MGLMapView!
     var isInside = false
@@ -164,92 +159,84 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     // MARK: - Animations
     
-    func animateIn(view: UIView) { // TODO: refactor
-        visualEffectView.isHidden = false
+    func animateInWithOptionalEffect(view: UIView, effect: Bool) {
+        if effect == true {
+            visualEffectView.isHidden = false
+            
+        }
         self.view.addSubview(view)
         view.center = self.view.center
         
         view.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
         view.alpha = 0
         
-        UIView.animate(withDuration: 0.4) {
-            self.visualEffectView.effect = self.effect
-            view.alpha = 1
-            view.transform = CGAffineTransform.identity
-            self.visualEffectView.alpha = 0.8
-            
-        }
-    }
-    
-    func animateInWithoutBlur(view: UIView) { // TODO: refactor
-        self.view.addSubview(view)
-        view.center = self.view.center
-        
-        view.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
-        view.alpha = 0
         
         UIView.animate(withDuration: 0.4) {
+            if effect == true {
+                self.visualEffectView.effect = self.effect
+                self.visualEffectView.alpha = 0.8
+                
+            }
             view.alpha = 1
             view.transform = CGAffineTransform.identity
-            
         }
     }
     
-    func animateOut() { // TODO: refactor
+    func animateOutWithOptionalEffect(effect: Bool) {
         UIView.animate(withDuration: 0.3, animations: {
-            self.viewStacked!.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
-            self.viewStacked!.alpha = 0
-            self.visualEffectView.effect = nil
-            
+            if effect == true {
+                self.viewStacked!.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+                self.viewStacked!.alpha = 0
+                self.visualEffectView.effect = nil
+
+            } else {
+                self.overViewStacked!.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+                self.overViewStacked!.alpha = 0
+                
+            }
         }) { (success:Bool) in
-            self.viewStacked!.removeFromSuperview()
-            self.visualEffectView.isHidden = true
-            
-        }
-    }
-    
-    func animateOutWithoutBlur() { // TODO: refactor
-        UIView.animate(withDuration: 0.3, animations: {
-            self.overViewStacked!.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
-            self.overViewStacked!.alpha = 0
-            
-        }) { (success:Bool) in
-            self.overViewStacked!.removeFromSuperview()
-            
+            if effect == true {
+                self.viewStacked!.removeFromSuperview()
+                self.visualEffectView.isHidden = true
+                
+            } else {
+                self.overViewStacked!.removeFromSuperview()
+                
+            }
         }
     }
     
     // MARK: - Menu Icon View
     
     @IBAction func closeMenu(_ sender: Any) {
-        animateOut()
+        self.animateOutWithOptionalEffect(effect: true)
         
     }
     
     @IBAction func openMenu(_ sender: Any) {
         self.viewStacked = iconView
-        animateIn(view: iconView)
+        self.animateInWithOptionalEffect(view: iconView, effect: true)
         
     }
     
     @IBAction func medusaActivate(_ sender: Any) {
         Tag_properties.id = 0
-        Tag_properties.description = "Medusa"
+        Tag_properties.description = "Jellyfishs"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.Activate()
-        animateOut()
+        self.isPressable(activate: true)
+        self.animateOutWithOptionalEffect(effect: true)
         
     }
     
     @IBAction func diverActivate(_ sender: Any) {
         Tag_properties.id = 1
-        Tag_properties.description = "Diver"
+        Tag_properties.description = "Divers"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.Activate()
-        animateOut()
-        
+        self.isPressable(activate: true)
+        self.animateOutWithOptionalEffect(effect: true)
+
     }
     
     @IBAction func wasteActivate(_ sender: Any) {
@@ -257,52 +244,52 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.description = "Waste"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.Activate()
-        animateOut()
-        
+        self.isPressable(activate: true)
+        self.animateOutWithOptionalEffect(effect: true)
+
     }
     
     @IBAction func warningActivate(_ sender: Any) {
         Tag_properties.id = 3
-        Tag_properties.description = "SOS"
+        Tag_properties.description = "Warning"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.Activate()
-        animateOut()
-        
+        self.isPressable(activate: true)
+        self.animateOutWithOptionalEffect(effect: true)
+
     }
     
     @IBAction func dolphinActivate(_ sender: Any) {
         Tag_properties.id = 4
-        Tag_properties.description = "Dolphin"
+        Tag_properties.description = "Dolphins"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.Activate()
-        animateOut()
-        
+        self.isPressable(activate: true)
+        self.animateOutWithOptionalEffect(effect: true)
+
     }
     
     @IBAction func destinationActivate(_ sender: Any) {
         Tag_properties.id = 5
-        Tag_properties.description = "Position"
+        Tag_properties.description = "Destination"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.Activate()
-        animateOut()
-        
+        self.isPressable(activate: true)
+        self.animateOutWithOptionalEffect(effect: true)
+
     }
     
     @IBAction func weatherActivate(_ sender: Any) {
         // TODO: add the weather event
-        self.Activate()
-        animateOut()
-        
+        self.isPressable(activate: true)
+        self.animateOutWithOptionalEffect(effect: true)
+
     }
     
     // MARK: - Description View
     
     @IBAction func closeDescription(_ sender: Any) {
-        animateOut()
+        self.animateOutWithOptionalEffect(effect: true)
     }
     
     @IBAction func downVoteEvent(_ sender: Any) {
@@ -319,7 +306,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     @IBAction func editEvent(_ sender: Any) {
         self.overViewStacked = editionView
-        animateInWithoutBlur(view: editionView)
+        self.animateInWithOptionalEffect(view: editionView, effect: false)
 
     }
     
@@ -337,49 +324,39 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     @IBAction func changeDescription(_ sender: Any) {
         self.ref.child(self.selectedTagId!).updateChildValues(["description": self.newDescriptionTextField.text!])
-        fetchTag(MarkerHash: selectedTag!.hash)
-        animateOutWithoutBlur()
+        self.fetchTag(MarkerHash: selectedTag!.hash)
+        self.animateOutWithOptionalEffect(effect: false)
         
     }
     
     @IBAction func deleteEvent(_ sender: Any) {
-        removeTag(MarkerHash: selectedTag!.hash)
-        mapView.removeAnnotation(selectedTag!)
-        animateOutWithoutBlur()
-        animateOut()
+        self.removeTag(MarkerHash: selectedTag!.hash)
+        self.mapView.removeAnnotation(selectedTag!)
+        self.animateOutWithOptionalEffect(effect: false)
+        self.animateOutWithOptionalEffect(effect: true)
         
     }
     
     @IBAction func closeEdition(_ sender: Any) {
-        animateOutWithoutBlur()
+        self.animateOutWithOptionalEffect(effect: false)
+
     }
     
     // MARK: - Map Interactions
     
-    func Activate() {
+    func isPressable(activate: Bool) {
         let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
         
-        self.mapView.addGestureRecognizer(PressRecognizer)
-        print("Activate")
-        isInside = true
-        
-        for recognizer in mapView.gestureRecognizers ?? [] {
-            //   print("Active")
-            //   print(recognizer)
+        if (activate == true) {
+            for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+                PressRecognizer.require(toFail: recognizer)
+            }
+            self.mapView.addGestureRecognizer(PressRecognizer)
+            isInside = true
             
-        }
-    }
-    
-    func Unactivate() {
-        let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
-        
-        self.mapView.removeGestureRecognizer(PressRecognizer)
-        print("Unactivate")
-        isInside = false
-        
-        for recognizer in mapView.gestureRecognizers ?? [] {
-            //      print("Unactive")
-            //     print(recognizer)
+        } else {
+            self.mapView.removeGestureRecognizer(PressRecognizer)
+            isInside = false
             
         }
     }
@@ -435,6 +412,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         var secondsAgo = Int(Date().timeIntervalSince(date))
         if secondsAgo < 0 {
             secondsAgo = secondsAgo * (-1)
+            
         }
         
         let minute = 60
@@ -445,29 +423,37 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         if secondsAgo < minute  {
             if secondsAgo < 2 {
                 return "Just now."
+                
             } else {
                 return "\(secondsAgo) seconds ago."
+                
             }
         } else if secondsAgo < hour {
             let min = secondsAgo/minute
             if min == 1{
                 return "\(min) minutes ago."
+                
             } else {
                 return "\(min) minutes ago."
+                
             }
         } else if secondsAgo < day {
             let hr = secondsAgo/hour
             if hr == 1{
                 return "\(hr) hour ago."
+                
             } else {
                 return "\(hr) hours ago."
+                
             }
         } else if secondsAgo < week {
             let day = secondsAgo/day
             if day == 1{
                 return "\(day) day ago."
+                
             } else {
                 return "\(day) days ago."
+                
             }
         } else {
             let formatter = DateFormatter()
@@ -475,12 +461,13 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             formatter.locale = Locale(identifier: "fr_GP")
             let strDate: String = formatter.string(from: date)
             return strDate
+            
         }
     }
     
     // MARK: - Online Tag
     
-    func putTag(mapView: MGLMapView, Tag: Tag) -> Int {
+    @discardableResult func putTag(mapView: MGLMapView, Tag: Tag) -> Int {
         
         let marker = MGLPointAnnotation()
         
@@ -488,39 +475,39 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         case 0:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
-            marker.title = "Medusa"
+            marker.title = "Jellyfishs"
             mapView.addAnnotation(marker)
-            Unactivate()
+            self.isPressable(activate: false)
         case 1:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
-            marker.title = "Diver"
+            marker.title = "Divers"
             mapView.addAnnotation(marker)
-            Unactivate()
+            self.isPressable(activate: false)
         case 2:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Waste"
             mapView.addAnnotation(marker)
-            Unactivate()
+            self.isPressable(activate: false)
         case 3:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
-            marker.title = "SOS"
+            marker.title = "Warning"
             mapView.addAnnotation(marker)
-            Unactivate()
+            self.isPressable(activate: false)
         case 4:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
-            marker.title = "Dolphin"
+            marker.title = "Dolphins"
             mapView.addAnnotation(marker)
-            Unactivate()
+            self.isPressable(activate: false)
         case 5:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
-            marker.title = "Position"
+            marker.title = "Destination"
             mapView.addAnnotation(marker)
-            Unactivate()
+            self.isPressable(activate: false)
         default:
             print("Error in func putTag")
             
@@ -559,45 +546,31 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     }
     
     func SyncData() {
-        // THIS IS FOR GETTING DATA WHEN DATA CHANGE IN FIREBASE
-        
+        // related to firebase's real time database
         ref.observeSingleEvent(of: .childAdded) { (snapshot) in
-            print("CHILD_ADDED")
+            self.Tag_properties.description = snapshot.childSnapshot(forPath:"description").value as? String
+            self.Tag_properties.id = snapshot.childSnapshot(forPath:"groupId").value as? Int
+            self.Tag_properties.latitude = snapshot.childSnapshot(forPath:"latitude").value as? Double
+            self.Tag_properties.longitude = snapshot.childSnapshot(forPath:"longitude").value as? Double
+            _ = self.putTag(mapView: self.mapView, Tag: self.Tag_properties)
             
-            for tag in snapshot.children.allObjects as! [DataSnapshot] {
-                
-                print(tag)
-                // getting values
-                /*      let data = tag.value as? NSDictionary
-                 let description  = data?["description"] as? String
-                 let id  = data?["id"] as? String
-                 let x = data?["x"] as? Double
-                 let y = data?["y"] as? Double
-                 var markerHash: Int
-                 markerHash = self.putTagfromServer(mapView: mapView, Tag: Tag(id: id, description: description, x: x, y: y))
-                 print("Puttaginarray SHOWTAG")
-                 self.putTagsinArray(markerHash: markerHash, FirebaseID: tag.key)*/
-            
-            }
         }
         ref.observeSingleEvent(of: .childRemoved) { (snapshot) in
-            print("CHILD_REMOVED")
+            let Tag_id = snapshot.key
             
-            for tag in snapshot.children.allObjects as! [DataSnapshot] {
+            var count = 0
+            while (self.Tags_ids[count] != Tag_id) {
+                count = count + 1
+            
+            }
+            let allAnnotations = self.mapView.annotations
+            for eachAnnot in allAnnotations! {
+                if eachAnnot.hash == self.Tags_hashs[count] {
+                    print("MATCH")
+                    self.mapView.removeAnnotation(eachAnnot)
+                    self.removeTag(MarkerHash: self.Tags_hashs[count])
                 
-                let data = snapshot.value as? NSDictionary
-                //  print(tag)
-                // getting values
-                /*      let data = tag.value as? NSDictionary
-                 let description  = data?["description"] as? String
-                 let id  = data?["id"] as? String
-                 let x = data?["x"] as? Double
-                 let y = data?["y"] as? Double
-                 var markerHash: Int
-                 markerHash = self.putTagfromServer(mapView: mapView, Tag: Tag(id: id, description: description, x: x, y: y))
-                 print("Puttaginarray SHOWTAG")
-                 self.putTagsinArray(markerHash: markerHash, FirebaseID: tag.key)*/
-            
+                }
             }
         }
     }
@@ -647,37 +620,37 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
                         
                         switch id {
                         case 0:
-                            self.eventImage.image = UIImage(named: "meduse")
+                            self.eventImage.image = UIImage(named: "jellyfishs")
                             self.eventLabel.text = "Jellyfish"
                             if description!.isEmpty {
                                 self.descriptionLabel.text = "Jellyfish have been spotted at this location."
                             }
                         case 1:
-                            self.eventImage.image = UIImage(named: "plongeur")
+                            self.eventImage.image = UIImage(named: "divers")
                             self.eventLabel.text = "Divers"
                             if description!.isEmpty {
                                 self.descriptionLabel.text = "There are probably divers working here."
                             }
                         case 2:
-                            self.eventImage.image = UIImage(named: "wasteP")
+                            self.eventImage.image = UIImage(named: "waste")
                             self.eventLabel.text = "Waste"
                             if description!.isEmpty {
                                 self.descriptionLabel.text = "The water looks polluted here."
                             }
                         case 3:
-                            self.eventImage.image = UIImage(named: "warnongBW")
+                            self.eventImage.image = UIImage(named: "warning_black")
                             self.eventLabel.text = "SOS"
                             if description!.isEmpty {
                                 self.descriptionLabel.text = "Someone needs help or there is a danger."
                             }
                         case 4:
-                            self.eventImage.image = UIImage(named: "dauphin")
+                            self.eventImage.image = UIImage(named: "dolphins")
                             self.eventLabel.text = "Dolphins"
                             if description!.isEmpty {
                                 self.descriptionLabel.text = "Dolphins have been spotted in the vicinity."
                             }
                         case 5:
-                            self.eventImage.image = UIImage(named: "Position")
+                            self.eventImage.image = UIImage(named: "destination")
                             self.eventLabel.text = "Destination"
                             if description!.isEmpty {
                                 self.descriptionLabel.text = "Someone is going there."
@@ -751,7 +724,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         mapView.deselectAnnotation(annotation, animated: false)
         
         self.viewStacked = descriptionView
-        animateIn(view: descriptionView)
+        animateInWithOptionalEffect(view: descriptionView, effect: true)
         
         self.selectedTag = annotation
         fetchTag(MarkerHash: annotation.hash)
@@ -768,40 +741,40 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
-        var test = MGLAnnotationImage()
+        var marker = MGLAnnotationImage()
         
-        if annotation.title == "Dolphin" {
-            var image = UIImage(named: "pin_dauphin")!
+        if annotation.title == "Dolphins" {
+            var image = UIImage(named: "pin_dolphins")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-            test = MGLAnnotationImage(image: image, reuseIdentifier: "Dauphin")
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Dolphins")
             
-        } else if annotation.title == "Medusa" {
-            var image = UIImage(named: "pin_meduse")!
+        } else if annotation.title == "Jellyfishs" {
+            var image = UIImage(named: "pin_jellyfishs")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-            test = MGLAnnotationImage(image: image, reuseIdentifier: "Meduse")
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Jellyfishs")
             
-        } else if annotation.title == "Diver" {
-            var image = UIImage(named: "pin_plongeur")!
+        } else if annotation.title == "Divers" {
+            var image = UIImage(named: "pin_divers")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-            test = MGLAnnotationImage(image: image, reuseIdentifier: "Plongeur")
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Divers")
             
-        } else if annotation.title == "Position" {
+        } else if annotation.title == "Destination" {
             var image = UIImage(named: "pin_destination")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-            test = MGLAnnotationImage(image: image, reuseIdentifier: "Posititon")
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Destination")
             
-        } else if annotation.title == "SOS" {
+        } else if annotation.title == "Warning" {
             var image = UIImage(named: "pin_warning")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-            test = MGLAnnotationImage(image: image, reuseIdentifier: "Warning")
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Warning")
             
         } else {
             var image = UIImage(named: "pin_waste")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-            test = MGLAnnotationImage(image: image, reuseIdentifier: "Waste")
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Waste")
             
         }
-        return test
+        return marker
     
     }
     
@@ -812,15 +785,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             let PressMapCoordinates = mapView.convert(PressScreenCoordinates, toCoordinateFrom: mapView)
             Tag_properties.latitude = PressMapCoordinates.latitude
             Tag_properties.longitude = PressMapCoordinates.longitude
-            // Activate()
             let point = mapView.convert(PressMapCoordinates, toPointTo: mapView)
             let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
-            
-            if (features.description != "[]") {
-            
+            if (features.description != "[]"){
                 let ac = UIAlertController(title: "Add description (optional)", message: nil, preferredStyle: .alert)
                 ac.addTextField()
-            
+                
                 let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned ac] _ in
                     var FirebaseId: String
                     var markerHash: Int
@@ -828,15 +798,13 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
                     FirebaseId = self.saveTags(Tag: self.Tag_properties)
                     markerHash = self.putTag(mapView: self.mapView, Tag: self.Tag_properties)
                     self.putTagsinArray(markerHash: markerHash, FirebaseID: FirebaseId)
-                
+                    
                 }
-                
                 ac.addAction(submitAction)
                 present(ac, animated: true)
             
             } else {
                 let label = UILabel(frame: CGRect(x: 0, y: 0, width: 400, height: 50))
-                
                 label.center = CGPoint(x: mapView.center.x, y: 100)
                 label.textColor = UIColor(rgb: 0x57A1FF)
                 label.font = UIFont.boldSystemFont(ofSize: 25.0)
@@ -845,14 +813,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
                 label.cornerRadius = 27.5
                 label.textAlignment = .center
                 label.text = "Can't drop markers on earth"
-                
                 self.view.addSubview(label)
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     label.isHidden = true
                 
                 }
-                print("NOT WATER")
-            
             }
         }
     }

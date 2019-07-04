@@ -625,7 +625,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="agI-Ea-AJS" userLabel="diverIcon" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
                             <rect key="frame" x="167" y="208" width="80" height="80"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="plongeur" translatesAutoresizingMaskIntoConstraints="NO" id="jfQ-k9-zye">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="divers" translatesAutoresizingMaskIntoConstraints="NO" id="jfQ-k9-zye">
                                     <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f86-UB-s46">
@@ -660,7 +660,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VH2-3Q-JCr" userLabel="wasteIcon" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
                             <rect key="frame" x="272" y="208" width="80" height="80"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wasteP" translatesAutoresizingMaskIntoConstraints="NO" id="LBG-8d-LR3">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="waste" translatesAutoresizingMaskIntoConstraints="NO" id="LBG-8d-LR3">
                                     <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fTd-p3-MQF">
@@ -695,7 +695,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o8j-UM-oEg" userLabel="medusaIcon" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
                             <rect key="frame" x="62" y="208" width="80" height="80"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="meduse" translatesAutoresizingMaskIntoConstraints="NO" id="oif-0f-EVz">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jellyfishs" translatesAutoresizingMaskIntoConstraints="NO" id="oif-0f-EVz">
                                     <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TtE-Dj-nyM">
@@ -730,7 +730,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U6P-XO-QNm" userLabel="dolphinIcon" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
                             <rect key="frame" x="167" y="328" width="80" height="80"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dauphin" translatesAutoresizingMaskIntoConstraints="NO" id="mv4-jQ-FrF">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dolphins" translatesAutoresizingMaskIntoConstraints="NO" id="mv4-jQ-FrF">
                                     <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sw8-Uw-Zxa">
@@ -767,7 +767,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cbs-Rn-LUn" userLabel="destinationIcon" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
                             <rect key="frame" x="272" y="328" width="80" height="80"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Posititon" translatesAutoresizingMaskIntoConstraints="NO" id="Hau-5j-eLL">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="destination" translatesAutoresizingMaskIntoConstraints="NO" id="Hau-5j-eLL">
                                     <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5M1-X7-tfk">
@@ -802,7 +802,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Cz-Jc-KHg" userLabel="warningIcon" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
                             <rect key="frame" x="62" y="328" width="80" height="80"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="warnongBW" translatesAutoresizingMaskIntoConstraints="NO" id="c8U-Bz-X5W">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="warning_black" translatesAutoresizingMaskIntoConstraints="NO" id="c8U-Bz-X5W">
                                     <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o5Y-vp-p5U">
@@ -4291,29 +4291,29 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Posititon" width="30" height="30"/>
         <image name="add" width="30" height="30"/>
         <image name="bar" width="105.33333587646484" height="93.333335876464844"/>
         <image name="blueSquare" width="414" height="663.33331298828125"/>
         <image name="chevronLeft" width="30" height="30"/>
         <image name="close" width="21.333333969116211" height="21.333333969116211"/>
-        <image name="dauphin" width="30" height="30"/>
+        <image name="destination" width="30" height="30"/>
+        <image name="divers" width="30" height="30"/>
+        <image name="dolphins" width="30" height="30"/>
         <image name="double_chevron" width="30" height="30"/>
         <image name="double_reverse_chevron" width="30" height="30"/>
         <image name="facebookLogo" width="170.66667175292969" height="170.66667175292969"/>
         <image name="googleLogo" width="170.66667175292969" height="170.66667175292969"/>
         <image name="grenage" width="30" height="30"/>
         <image name="humidity" width="30" height="30"/>
+        <image name="jellyfishs" width="31.666666030883789" height="30"/>
         <image name="key" width="30" height="30"/>
         <image name="logo" width="459.66665649414062" height="168.33332824707031"/>
         <image name="logoBlack" width="459.66665649414062" height="168.33332824707031"/>
         <image name="mail" width="30" height="30"/>
         <image name="maintenance" width="633.33331298828125" height="633.33331298828125"/>
         <image name="map" width="30" height="30"/>
-        <image name="meduse" width="31.666666030883789" height="30"/>
         <image name="modify" width="30" height="30"/>
         <image name="picture" width="30" height="30"/>
-        <image name="plongeur" width="30" height="30"/>
         <image name="profile" width="30" height="30"/>
         <image name="profileBackground" width="283.66665649414062" height="180.33332824707031"/>
         <image name="rain_risk" width="30" height="30"/>
@@ -4326,8 +4326,8 @@
         <image name="twitterLogo" width="170.66667175292969" height="170.66667175292969"/>
         <image name="uv_indice" width="30" height="30"/>
         <image name="visibility" width="30" height="30"/>
-        <image name="warnongBW" width="30" height="30"/>
-        <image name="wasteP" width="30" height="30"/>
+        <image name="warning_black" width="30" height="30"/>
+        <image name="waste" width="30" height="30"/>
         <image name="water_temperature" width="30" height="30"/>
         <image name="wind" width="30" height="30"/>
     </resources>

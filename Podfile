@@ -1,6 +1,8 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '12.1'
 
+# inhibit_all_warnings!
+
 target 'OceanShare' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
@@ -12,11 +14,11 @@ target 'OceanShare' do
   pod 'Firebase/Storage'
   pod 'Mapbox-iOS-SDK'
   pod 'GoogleSignIn'
-  pod 'FBSDKCoreKit', '4.36.0'
-  pod 'FBSDKShareKit', '4.36.0'
-  pod 'FBSDKLoginKit', '4.36.0'
-  pod 'FacebookCore', '0.4'
-  pod 'FacebookLogin', '0.4'
+  pod 'FBSDKCoreKit', '4.36.0', :inhibit_warnings => true
+  pod 'FBSDKShareKit', '4.36.0', :inhibit_warnings => true
+  pod 'FBSDKLoginKit', '4.36.0', :inhibit_warnings => true
+  pod 'FacebookCore', '0.4', :inhibit_warnings => true
+  pod 'FacebookLogin', '0.4', :inhibit_warnings => true
   pod 'TwitterKit'
   pod 'Alamofire', '~> 5.0.0.beta.1'
   pod 'JJFloatingActionButton'
