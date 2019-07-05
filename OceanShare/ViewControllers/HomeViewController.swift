@@ -117,6 +117,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         mapView = MGLMapView(frame: view.bounds)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.delegate = self
+        mapView.logoView.isHidden = true
+        mapView.attributionButton.isHidden = true
         
         // enable heading tracking mode (arrow will appear)
         mapView.userTrackingMode = .followWithHeading
@@ -124,10 +126,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         // enable the permanent heading indicator which will appear when the tracking mode is not `.followWithHeading`.
         mapView.showsUserHeadingIndicator = true
         getTagsFromServer(mapView: mapView)
-        
-        // setup textfields
-        self.descriptionTextField.maxLength = 75
-        self.newDescriptionTextField.maxLength = 75
         
         // icon setup
         self.setupCustomIcons()
@@ -169,7 +167,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         
         view.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
         view.alpha = 0
-        
         
         UIView.animate(withDuration: 0.4) {
             if effect == true {
@@ -313,11 +310,23 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     // MARK: - Comment View
     
     @IBAction func submitComment(_ sender: Any) {
-        // TODO: submitting comment
+        var firebaseId: String
+        var markerHash: Int
+        
+        self.Tag_properties.description = self.descriptionTextField.text
+        firebaseId = self.saveTags(Tag: self.Tag_properties)
+        markerHash = self.putTag(mapView: self.mapView, Tag: self.Tag_properties)
+        self.putTagsinArray(MarkerHash: markerHash, FirebaseID: firebaseId)
+        // hide the popup and empty the textfield
+        self.animateOutWithOptionalEffect(effect: true)
+        self.descriptionTextField.text = ""
+        
     }
     
     @IBAction func cancelComment(_ sender: Any) {
-        // TODO: cancel comment
+        self.animateOutWithOptionalEffect(effect: true)
+        self.descriptionTextField.text = ""
+        
     }
     
     // MARK: - Edition View
@@ -515,9 +524,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         return marker.hash
     }
     
-    func putTagsinArray(markerHash: Int, FirebaseID: String) {
+    func putTagsinArray(MarkerHash: Int, FirebaseID: String) {
         self.Tags_ids.append(FirebaseID)
-        self.Tags_hashs.append(markerHash)
+        self.Tags_hashs.append(MarkerHash)
         
     }
     
@@ -535,7 +544,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
                     let user = data?["user"] as? String
                     var markerHash: Int
                     markerHash = self.putTag(mapView: mapView, Tag: Tag(description: description, id: id, latitude: x, longitude: y, time: time, user: user))
-                    self.putTagsinArray(markerHash: markerHash, FirebaseID: tag.key)
+                    self.putTagsinArray(MarkerHash: markerHash, FirebaseID: tag.key)
                     
                 }
             }
@@ -639,7 +648,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
                             }
                         case 3:
                             self.eventImage.image = UIImage(named: "warning_black")
-                            self.eventLabel.text = "SOS"
+                            self.eventLabel.text = "Warning"
                             if description!.isEmpty {
                                 self.descriptionLabel.text = "Someone needs help or there is a danger."
                             }
@@ -722,10 +731,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
         // hide the callout view.
         mapView.deselectAnnotation(annotation, animated: false)
-        
+        // description view popup animation
         self.viewStacked = descriptionView
         animateInWithOptionalEffect(view: descriptionView, effect: true)
-        
+        // fetch the selected tag
         self.selectedTag = annotation
         fetchTag(MarkerHash: annotation.hash)
         
@@ -788,20 +797,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             let point = mapView.convert(PressMapCoordinates, toPointTo: mapView)
             let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
             if (features.description != "[]"){
-                let ac = UIAlertController(title: "Add description (optional)", message: nil, preferredStyle: .alert)
-                ac.addTextField()
-                
-                let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned ac] _ in
-                    var FirebaseId: String
-                    var markerHash: Int
-                    self.Tag_properties.description = ac.textFields![0].text!
-                    FirebaseId = self.saveTags(Tag: self.Tag_properties)
-                    markerHash = self.putTag(mapView: self.mapView, Tag: self.Tag_properties)
-                    self.putTagsinArray(markerHash: markerHash, FirebaseID: FirebaseId)
-                    
-                }
-                ac.addAction(submitAction)
-                present(ac, animated: true)
+                self.viewStacked = commentView
+                self.animateInWithOptionalEffect(view: commentView, effect: true)
             
             } else {
                 let label = UILabel(frame: CGRect(x: 0, y: 0, width: 400, height: 50))
