@@ -146,6 +146,7 @@ PODS:
   - nanopb/encode (0.3.901)
   - Protobuf (3.8.0)
   - SkeletonView (1.5)
+  - SwiftyJSON (4.3.0)
   - TwitterCore (3.2.0)
   - TwitterKit (3.4.2):
     - TwitterCore (>= 3.2.0)
@@ -169,6 +170,7 @@ DEPENDENCIES:
   - JJFloatingActionButton
   - Mapbox-iOS-SDK
   - SkeletonView
+  - SwiftyJSON (~> 4.0)
   - TwitterKit
 
 SPEC REPOS:
@@ -204,6 +206,7 @@ SPEC REPOS:
     - nanopb
     - Protobuf
     - SkeletonView
+    - SwiftyJSON
     - TwitterCore
     - TwitterKit
 
@@ -239,9 +242,10 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 3f617b9a6e73605565086864c9bc26b2bf2dd5a3
   SkeletonView: 6cbb80f82f8bdee3f9093e2fa03b84819b4bd826
+  SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: 0145959c3b4b38292062499c5a87785304943f34
+PODFILE CHECKSUM: ff847e53f04364129a85fceea4c1912d690ff5f2
 
 COCOAPODS: 1.7.2
