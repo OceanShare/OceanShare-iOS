@@ -41,11 +41,16 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     var selectedTagUserName: String?
     
     // map properties
+    var compassOriginY: CGFloat = 55
     var cordinate: CLLocationCoordinate2D!
     var mapView: MGLMapView!
     var isInside = false
     
     // MARK: - Outlets
+    
+    // map view
+    @IBOutlet weak var centerIcon: UIImageView!
+    @IBOutlet weak var centerView: DesignableButton!
     
     // icon view
     @IBOutlet weak var iconView: UIView!
@@ -92,7 +97,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     // visual effect
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
     
-    // MARK: - ViewDidLoad
+    // MARK: - View's Managers
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,6 +112,13 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         effect = visualEffectView.effect
         visualEffectView.effect = nil
         visualEffectView.isHidden = true
+        
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        self.setupCompass()
         
     }
     
@@ -133,12 +145,17 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         // add the layers in the right order
         view.addSubview(mapView)
         view.addSubview(headerView)
+        view.addSubview(centerView)
         view.addSubview(buttonMenu)
         view.addSubview(visualEffectView)
         
     }
     
     func setupCustomIcons() {
+        // map view
+        self.centerIcon.image = self.centerIcon.image!.withRenderingMode(.alwaysTemplate)
+        self.centerIcon.tintColor = UIColor(rgb: 0xFFFFFF)
+        
         // icon view
         self.closeIcon.image = self.closeIcon.image!.withRenderingMode(.alwaysTemplate)
         self.closeIcon.tintColor = UIColor(rgb: 0x000000)
@@ -153,6 +170,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         self.thumbDownIcon.image = self.thumbDownIcon.image!.withRenderingMode(.alwaysTemplate)
         self.thumbDownIcon.tintColor = UIColor(rgb: 0x606060)
         
+    }
+    
+    func setupCompass() {
+        var centerPoint = self.mapView.compassView.center
+        centerPoint.y = 130
+        self.mapView.compassView.center = centerPoint
     }
     
     // MARK: - Animations
@@ -177,6 +200,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             view.alpha = 1
             view.transform = CGAffineTransform.identity
         }
+        
     }
     
     func animateOutWithOptionalEffect(effect: Bool) {
@@ -203,16 +227,23 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         }
     }
     
-    // MARK: - Menu Icon View
+    // MARK: - Map View
     
-    @IBAction func closeMenu(_ sender: Any) {
-        self.animateOutWithOptionalEffect(effect: true)
+    @IBAction func centerMapToUser(_ sender: Any) {
+        self.mapView.setCenter(mapView.userLocation!.coordinate, animated: true)
         
     }
     
     @IBAction func openMenu(_ sender: Any) {
         self.viewStacked = iconView
         self.animateInWithOptionalEffect(view: iconView, effect: true)
+        
+    }
+    
+    // MARK: - Icon View
+    
+    @IBAction func closeMenu(_ sender: Any) {
+        self.animateOutWithOptionalEffect(effect: true)
         
     }
     
