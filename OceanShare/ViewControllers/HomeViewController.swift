@@ -448,13 +448,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     }
     
     func getPastTime(for date : Date) -> String {
-        
         var secondsAgo = Int(Date().timeIntervalSince(date))
         if secondsAgo < 0 {
             secondsAgo = secondsAgo * (-1)
             
         }
-        
         let minute = 60
         let hour = 60 * minute
         let day = 24 * hour

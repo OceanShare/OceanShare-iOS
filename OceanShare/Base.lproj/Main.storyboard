@@ -598,17 +598,12 @@
                                         </constraints>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.82745098039215681" green="0.94901960784313721" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="V1S-cc-2Cu" secondAttribute="bottom" constant="15" id="OvS-eK-irA"/>
                                     <constraint firstAttribute="height" constant="100" id="PLt-eJ-eMb"/>
                                     <constraint firstItem="V1S-cc-2Cu" firstAttribute="centerX" secondItem="26U-SV-mDL" secondAttribute="centerX" id="hLk-Zx-9xI"/>
                                 </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
