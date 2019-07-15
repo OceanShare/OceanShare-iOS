@@ -11,7 +11,7 @@ import UIKit
 import SwiftyJSON
 
 struct Weather {
-    let dateAndTime: NSDate
+    let dateAndTime: Date
     let city: String
     let longitude: Double
     let latitude: Double
@@ -45,7 +45,7 @@ struct Weather {
     }
     
     init(weatherData: JSON) {
-        dateAndTime = NSDate(timeIntervalSince1970: weatherData["dt"].double!)
+        dateAndTime = Date(timeIntervalSince1970: weatherData["dt"].double!)
         city = weatherData["name"].string!
         longitude = weatherData["coord"]["lon"].double!
         latitude = weatherData["coord"]["lat"].double!
@@ -59,8 +59,8 @@ struct Weather {
         cloudCover = weatherData["clouds"]["all"].int!
         windSpeed = weatherData["wind"]["speed"].double!
         windDirection = weatherData["wind"]["deg"].double
-        sunrise = Date(timeIntervalSince1970: weatherData["sys"]["sunrise"].double!) // TimeInterval
-        sunset = Date(timeIntervalSince1970: weatherData["sys"]["sunset"].double!) // TimeInterval
+        sunrise = Date(timeIntervalSince1970: weatherData["sys"]["sunrise"].double!)
+        sunset = Date(timeIntervalSince1970: weatherData["sys"]["sunset"].double!)
         
         if let rainDict = weatherData["rain"]["3h"].double {
             rainfallInLast3Hours = rainDict
