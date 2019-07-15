@@ -37,6 +37,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     let locationManager = CLLocationManager()
     var currentLatitude: Double = 0.0
     var currentLongitude: Double = 0.0
+    var uvGlobal: String!
     
     // MARK: - View's Managers
     
@@ -63,7 +64,34 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     // MARL: - Data Handlers
     
+    func analyseUvIndex(uvIndex: Double) {
+        if uvIndex < 2 {
+            self.uvGlobal = "\(round(100 * uvIndex) / 100) (Low)"
+
+        } else if uvIndex > 6 {
+            self.uvGlobal = "\(round(100 * uvIndex) / 100) (High)"
+            
+        } else {
+            self.uvGlobal = "\(round(100 * uvIndex) / 100) (Medium)"
+            
+        }
+    }
+    
     func transformData(rawData: JSON) {
+        // get uv index
+        if let uvData = rawData["uv"].string {
+            let uvAsData = uvData.data(using: .utf8)!
+            let uvAsJson = JSON(uvAsData)
+            
+            if let uvIndex = uvAsJson["value"].double {
+                self.analyseUvIndex(uvIndex: uvIndex)
+                
+            } else {
+                print(uvAsJson["value"].error!)
+                
+            }
+        }
+        // get weather
         if let data = rawData["weather"].string {
             let dataAsData = data.data(using: .utf8)!
             let dataAsJson = JSON(dataAsData)
@@ -169,16 +197,22 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             self.rainRiskLabel.text = "\(weather.cloudCover) %"
             // TODO Watertemp
             self.waterTemperatureLabel.text = "-- °C"
-            self.windLabel.text = "\(round(100 * (weather.windSpeed * (60*60) / 1000)) / 100) km/h"
+            self.windLabel.text = "\(round(100 * (weather.windSpeed * ( 60 * 60 ) / 1000)) / 100) km/h"
             self.humidityLabel.text = "\(weather.humidity) %"
+            
             if weather.visibility != nil {
                 self.visibilityLabel.text = "\(round(100 * (Double(weather.visibility! / 1000))) / 100) km"
             } else {
                 self.visibilityLabel.text = "-- km"
             }
-            // TODO UV
-            self.uvIndiceLabel.text = "--"
             
+            if self.uvGlobal != nil {
+                self.uvIndiceLabel.text = self.uvGlobal
+                
+            } else {
+                self.uvIndiceLabel.text = "--"
+                
+            }
         }
     }
     
