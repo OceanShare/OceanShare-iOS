@@ -497,7 +497,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             }
         } else {
             let formatter = DateFormatter()
-            formatter.dateFormat = "MMM dd, hh:mm a"
+            formatter.dateFormat = "MM/dd, hh:mm a"
             formatter.locale = Locale(identifier: "fr_GP")
             let strDate: String = formatter.string(from: date)
             return strDate

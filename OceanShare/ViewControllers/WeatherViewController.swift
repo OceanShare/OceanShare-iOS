@@ -11,7 +11,7 @@ import Alamofire
 import SwiftyJSON
 import MapKit
 import CoreLocation
-
+import FirebasePerformance
 
 class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -33,6 +33,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     // MARK: - Variables
     
+    // globals
     let locationManager = CLLocationManager()
     var currentLatitude: Double = 0.0
     var currentLongitude: Double = 0.0
@@ -56,18 +57,16 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     
-        getWeatherFromLocation()
+        getWeatherFromCurrentLocation()
         
     }
     
     // MARL: - Data Handlers
     
     func transformData(rawData: JSON) {
-        print("rawData :\(rawData)")
         if let data = rawData["weather"].string {
             let dataAsData = data.data(using: .utf8)!
             let dataAsJson = JSON(dataAsData)
-            print(dataAsJson)
 
             do {
                 _ = try JSONSerialization.jsonObject(
@@ -93,7 +92,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         
     }
     
-    func getWeatherFromLocation() {
+    func getWeatherFromCurrentLocation() {
         let param: Parameters = [
             "lat": String(self.currentLatitude),
             "lng": String(self.currentLongitude)]
@@ -103,6 +102,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             "Accept": "application/json",
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjF9.Vcp2grZ53t_OG3jwSXsRwfc_UUjboNgZarkAGiX0jgM" ]
         
+        let trace = Performance.startTrace(name: "getWeatherFromCurrentLocation")
         _ = AF.request("http://35.198.134.25:5000/api/weather",
                            method: .get,
                            parameters: param,
@@ -115,29 +115,64 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             case .failure(let error):
                 print(error)
             }})
+        trace?.stop()
     }
     
-    // MARK - Setters
+    // MARK - Updaters
     
     func didGetWeather(weather: Weather) {
         DispatchQueue.main.async {
-            // TODO image
+            
+            print("Value to check (weatherID -> weatherImage): ", weather.weatherID)
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "hh:mm a"
+            formatter.locale = Locale(identifier: "fr_GP")
+            let sunriseDate: String = formatter.string(from: weather.sunrise)
+            self.sunriseLabel.text = sunriseDate
+            let sunsetDate: String = formatter.string(from: weather.sunset)
+            self.sunsetLabel.text = sunsetDate
+            
+            switch weather.weatherID {
+            case 0...300 :
+                self.weatherImage.image = UIImage(named: "stormy")
+            case 301...500 :
+                self.weatherImage.image = UIImage(named: "rainy")
+            case 501...600 :
+                self.weatherImage.image = UIImage(named: "cloudy")
+            case 601...700 :
+                self.weatherImage.image = UIImage(named: "snowy")
+            case 701...771 :
+                self.weatherImage.image = UIImage(named: "cloudy")
+            case 772...799 :
+                self.weatherImage.image = UIImage(named: "stormy")
+            case 800 :
+                self.weatherImage.image = UIImage(named: "sunny")
+            case 801...804 :
+                self.weatherImage.image = UIImage(named: "semi_cloudy")
+            case 900...903, 905...1000  :
+                self.weatherImage.image = UIImage(named: "stormy")
+            case 903 :
+                self.weatherImage.image = UIImage(named: "snowy")
+            case 904 :
+                self.weatherImage.image = UIImage(named: "sunny")
+            default :
+                self.weatherImage.image = UIImage(named: "semi_cloudy")
+            }
+            
             self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
             self.weatherDescriptionLabel.text = weather.weatherDescription
+            
             self.longitudeLabel.text = String(format:"%f", weather.longitude)
             self.latitudeLabel.text = String(format:"%f", weather.latitude)
-            // TODO sunrise
-            self.sunriseLabel.text = "--:--"
-            // TODO sunset
-            self.sunsetLabel.text = "--:--"
+            
             self.rainRiskLabel.text = "\(weather.cloudCover) %"
             // TODO Watertemp
             self.waterTemperatureLabel.text = "-- °C"
-            self.windLabel.text = "\((weather.windSpeed * (60*60) / 1000)) km/h"
+            self.windLabel.text = "\(round(100 * (weather.windSpeed * (60*60) / 1000)) / 100) km/h"
             self.humidityLabel.text = "\(weather.humidity) %"
-            
             if weather.visibility != nil {
-                self.visibilityLabel.text = "\(Double(weather.visibility! / 1000)) km"
+                self.visibilityLabel.text = "\(round(100 * (Double(weather.visibility! / 1000))) / 100) km"
             } else {
                 self.visibilityLabel.text = "-- km"
             }
