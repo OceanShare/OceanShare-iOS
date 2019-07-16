@@ -51,6 +51,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     // map view
     @IBOutlet weak var centerIcon: UIImageView!
     @IBOutlet weak var centerView: DesignableButton!
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var oceanShareLogo: UIImageView!
+    @IBOutlet weak var messageLabel: UILabel!
     
     // icon view
     @IBOutlet weak var iconView: UIView!
@@ -77,7 +80,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     @IBOutlet weak var closeDescriptionIcon: UIImageView!
     
     // edition view
-    @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var editionView: UIView!
     @IBOutlet weak var newDescriptionTextField: UITextField!
     
@@ -103,7 +105,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         super.viewDidLoad()
         
         ref = Database.database().reference().child("markers")
-        SyncData()
+        syncData()
         
         // define the MLG map view and the user on this map
         setupView()
@@ -126,28 +128,28 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     func setupView() {
         // mapview setup
-        mapView = MGLMapView(frame: view.bounds)
-        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        mapView.delegate = self
-        mapView.logoView.isHidden = true
-        mapView.attributionButton.isHidden = true
+        self.mapView = MGLMapView(frame: view.bounds)
+        self.mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.mapView.delegate = self
+        self.mapView.logoView.isHidden = true
+        self.mapView.attributionButton.isHidden = true
         
         // enable heading tracking mode (arrow will appear)
-        mapView.userTrackingMode = .followWithHeading
+        self.mapView.userTrackingMode = .followWithHeading
         
         // enable the permanent heading indicator which will appear when the tracking mode is not `.followWithHeading`.
-        mapView.showsUserHeadingIndicator = true
-        getTagsFromServer(mapView: mapView)
+        self.mapView.showsUserHeadingIndicator = true
+        self.getTagsFromServer(mapView: self.mapView)
         
         // icon setup
         self.setupCustomIcons()
         
         // add the layers in the right order
-        view.addSubview(mapView)
-        view.addSubview(headerView)
-        view.addSubview(centerView)
-        view.addSubview(buttonMenu)
-        view.addSubview(visualEffectView)
+        self.view.addSubview(mapView)
+        self.view.addSubview(headerView)
+        self.view.addSubview(centerView)
+        self.view.addSubview(buttonMenu)
+        self.view.addSubview(visualEffectView)
         
     }
     
@@ -176,9 +178,23 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         var centerPoint = self.mapView.compassView.center
         centerPoint.y = 130
         self.mapView.compassView.center = centerPoint
+        
     }
     
     // MARK: - Animations
+    
+    func PutMessageOnHeader(msg: String, color: UIColor) {
+        self.oceanShareLogo.isHidden = true
+        self.headerView.backgroundColor = color
+        self.messageLabel.text = msg
+        self.messageLabel.isHidden = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.messageLabel.isHidden = true
+            self.oceanShareLogo.isHidden = false
+            self.headerView.backgroundColor = UIColor(rgb: 0xD3F2FF)
+            
+        }
+    }
     
     func animateInWithOptionalEffect(view: UIView, effect: Bool) {
         if effect == true {
@@ -583,7 +599,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         }
     }
     
-    func SyncData() {
+    func syncData() {
         // related to firebase's real time database
         ref.observeSingleEvent(of: .childAdded) { (snapshot) in
             self.Tag_properties.description = snapshot.childSnapshot(forPath:"description").value as? String
@@ -830,21 +846,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
                 self.animateInWithOptionalEffect(view: commentView, effect: true)
             
             } else {
-                let label = UILabel(frame: CGRect(x: 0, y: 0, width: 400, height: 50))
-                label.center = CGPoint(x: mapView.center.x, y: 100)
-                label.textColor = UIColor(rgb: 0x57A1FF)
-                label.font = UIFont.boldSystemFont(ofSize: 25.0)
-                label.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.7)
-                label.clipsToBounds = true
-                label.cornerRadius = 27.5
-                label.textAlignment = .center
-                label.text = "Can't drop markers on earth"
-                self.view.addSubview(label)
+                self.PutMessageOnHeader(msg: "Can't drop markers on earth", color: UIColor(rgb: 0xFB6060))
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    label.isHidden = true
-                
-                }
             }
         }
     }
