@@ -168,8 +168,8 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
                 self.weatherImage.image = UIImage(named: "moon")
             } else {
                 switch weather.weatherID {
-                case 0...300 :
-                    self.weatherImage.image = UIImage(named: "stormy")
+                case 0...300 : //
+                    self.weatherImage.image = UIImage(named: "storm")
                 case 301...500 :
                     self.weatherImage.image = UIImage(named: "rainy")
                 case 501...600 :
@@ -179,13 +179,13 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
                 case 701...771 :
                     self.weatherImage.image = UIImage(named: "cloudy")
                 case 772...799 :
-                    self.weatherImage.image = UIImage(named: "stormy")
+                    self.weatherImage.image = UIImage(named: "storm")
                 case 800 :
                     self.weatherImage.image = UIImage(named: "sunny")
                 case 801...804 :
                     self.weatherImage.image = UIImage(named: "semi_cloudy")
                 case 900...903, 905...1000  :
-                    self.weatherImage.image = UIImage(named: "stormy")
+                    self.weatherImage.image = UIImage(named: "storm")
                 case 903 :
                     self.weatherImage.image = UIImage(named: "snowy")
                 case 904 :

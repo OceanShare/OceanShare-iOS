@@ -270,6 +270,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.user = getCurrentUser()
         self.isPressable(activate: true)
         self.animateOutWithOptionalEffect(effect: true)
+        self.PutMessageOnHeader(msg: "Jellyfishs event selected.", color: UIColor(rgb: 0x5BD999))
         
     }
     
@@ -280,7 +281,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.user = getCurrentUser()
         self.isPressable(activate: true)
         self.animateOutWithOptionalEffect(effect: true)
-
+        self.PutMessageOnHeader(msg: "Divers event selected.", color: UIColor(rgb: 0x5BD999))
+        
     }
     
     @IBAction func wasteActivate(_ sender: Any) {
@@ -290,7 +292,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.user = getCurrentUser()
         self.isPressable(activate: true)
         self.animateOutWithOptionalEffect(effect: true)
-
+        self.PutMessageOnHeader(msg: "Waste event selected.", color: UIColor(rgb: 0x5BD999))
+        
     }
     
     @IBAction func warningActivate(_ sender: Any) {
@@ -300,6 +303,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.user = getCurrentUser()
         self.isPressable(activate: true)
         self.animateOutWithOptionalEffect(effect: true)
+        self.PutMessageOnHeader(msg: "Warning event selected.", color: UIColor(rgb: 0x5BD999))
 
     }
     
@@ -310,6 +314,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.user = getCurrentUser()
         self.isPressable(activate: true)
         self.animateOutWithOptionalEffect(effect: true)
+        self.PutMessageOnHeader(msg: "Dolphins event selected.", color: UIColor(rgb: 0x5BD999))
 
     }
     
@@ -320,6 +325,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.user = getCurrentUser()
         self.isPressable(activate: true)
         self.animateOutWithOptionalEffect(effect: true)
+        self.PutMessageOnHeader(msg: "Destination event selected.", color: UIColor(rgb: 0x5BD999))
 
     }
     
@@ -367,6 +373,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         // hide the popup and empty the textfield
         self.animateOutWithOptionalEffect(effect: true)
         self.descriptionTextField.text = ""
+        self.PutMessageOnHeader(msg: "Your event has been dropped.", color: UIColor(rgb: 0x5BD999))
         
     }
     
@@ -390,6 +397,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         self.mapView.removeAnnotation(selectedTag!)
         self.animateOutWithOptionalEffect(effect: false)
         self.animateOutWithOptionalEffect(effect: true)
+        self.PutMessageOnHeader(msg: "Event correctly deleted.", color: UIColor(rgb: 0x5BD999))
         
     }
     
@@ -519,7 +527,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         }
     }
     
-    // MARK: - Online Tag
+    // MARK: - Online Tags
     
     @discardableResult func putTag(mapView: MGLMapView, Tag: Tag) -> Int {
         
@@ -846,7 +854,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
                 self.animateInWithOptionalEffect(view: commentView, effect: true)
             
             } else {
-                self.PutMessageOnHeader(msg: "Can't drop markers on earth", color: UIColor(rgb: 0xFB6060))
+                self.PutMessageOnHeader(msg: "Can't drop markers on earth.", color: UIColor(rgb: 0xFB6060))
                 
             }
         }
