@@ -14,6 +14,10 @@ import FirebaseCore
 import FirebaseStorage
 import FirebasePerformance
 import JJFloatingActionButton
+import SwiftyJSON
+import MapKit
+import CoreLocation
+import Alamofire
 
 class HomeViewController: UIViewController, MGLMapViewDelegate {
     
@@ -45,6 +49,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     var cordinate: CLLocationCoordinate2D!
     var mapView: MGLMapView!
     var isInside = false
+    
+    // weather icon
+    var uvGlobal: String!
     
     // MARK: - Outlets
     
@@ -268,7 +275,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.description = "Jellyfishs"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.isPressable(activate: true)
+        self.isPressable(activate: true, display: true)
         self.animateOutWithOptionalEffect(effect: true)
         self.PutMessageOnHeader(msg: "Jellyfishs event selected.", color: UIColor(rgb: 0x5BD999))
         
@@ -279,7 +286,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.description = "Divers"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.isPressable(activate: true)
+        self.isPressable(activate: true, display: true)
         self.animateOutWithOptionalEffect(effect: true)
         self.PutMessageOnHeader(msg: "Divers event selected.", color: UIColor(rgb: 0x5BD999))
         
@@ -290,7 +297,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.description = "Waste"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.isPressable(activate: true)
+        self.isPressable(activate: true, display: true)
         self.animateOutWithOptionalEffect(effect: true)
         self.PutMessageOnHeader(msg: "Waste event selected.", color: UIColor(rgb: 0x5BD999))
         
@@ -301,7 +308,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.description = "Warning"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.isPressable(activate: true)
+        self.isPressable(activate: true, display: true)
         self.animateOutWithOptionalEffect(effect: true)
         self.PutMessageOnHeader(msg: "Warning event selected.", color: UIColor(rgb: 0x5BD999))
 
@@ -312,7 +319,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.description = "Dolphins"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.isPressable(activate: true)
+        self.isPressable(activate: true, display: true)
         self.animateOutWithOptionalEffect(effect: true)
         self.PutMessageOnHeader(msg: "Dolphins event selected.", color: UIColor(rgb: 0x5BD999))
 
@@ -323,16 +330,16 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.description = "Destination"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.isPressable(activate: true)
+        self.isPressable(activate: true, display: true)
         self.animateOutWithOptionalEffect(effect: true)
         self.PutMessageOnHeader(msg: "Destination event selected.", color: UIColor(rgb: 0x5BD999))
 
     }
     
     @IBAction func weatherActivate(_ sender: Any) {
-        // TODO: add the weather event
-        self.isPressable(activate: true)
         self.animateOutWithOptionalEffect(effect: true)
+        self.isPressable(activate: true, display: false)
+        self.PutMessageOnHeader(msg: "Weather information selected.", color: UIColor(rgb: 0x5BD999))
 
     }
     
@@ -370,7 +377,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         firebaseId = self.saveTags(Tag: self.Tag_properties)
         markerHash = self.putTag(mapView: self.mapView, Tag: self.Tag_properties)
         self.putTagsinArray(MarkerHash: markerHash, FirebaseID: firebaseId)
-        // hide the popup and empty the textfield
         self.animateOutWithOptionalEffect(effect: true)
         self.descriptionTextField.text = ""
         self.PutMessageOnHeader(msg: "Your event has been dropped.", color: UIColor(rgb: 0x5BD999))
@@ -408,20 +414,37 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     // MARK: - Map Interactions
     
-    func isPressable(activate: Bool) {
-        let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
-        
-        if (activate == true) {
-            for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-                PressRecognizer.require(toFail: recognizer)
+    func isPressable(activate: Bool, display: Bool) {
+        if display == true {
+            let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
+            
+            if (activate == true) {
+                for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+                    PressRecognizer.require(toFail: recognizer)
+                }
+                self.mapView.addGestureRecognizer(PressRecognizer)
+                isInside = true
+                
+            } else {
+                self.mapView.removeGestureRecognizer(PressRecognizer)
+                isInside = false
+                
             }
-            self.mapView.addGestureRecognizer(PressRecognizer)
-            isInside = true
-            
         } else {
-            self.mapView.removeGestureRecognizer(PressRecognizer)
-            isInside = false
+            let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMapWithoutDisplay))
             
+            if (activate == true) {
+                for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+                    PressRecognizer.require(toFail: recognizer)
+                }
+                self.mapView.addGestureRecognizer(PressRecognizer)
+                isInside = true
+                
+            } else {
+                self.mapView.removeGestureRecognizer(PressRecognizer)
+                isInside = false
+                
+            }
         }
     }
     
@@ -539,37 +562,37 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Jellyfishs"
             mapView.addAnnotation(marker)
-            self.isPressable(activate: false)
+            self.isPressable(activate: false, display: true)
         case 1:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Divers"
             mapView.addAnnotation(marker)
-            self.isPressable(activate: false)
+            self.isPressable(activate: false, display: true)
         case 2:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Waste"
             mapView.addAnnotation(marker)
-            self.isPressable(activate: false)
+            self.isPressable(activate: false, display: true)
         case 3:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Warning"
             mapView.addAnnotation(marker)
-            self.isPressable(activate: false)
+            self.isPressable(activate: false, display: true)
         case 4:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Dolphins"
             mapView.addAnnotation(marker)
-            self.isPressable(activate: false)
+            self.isPressable(activate: false, display: true)
         case 5:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Destination"
             mapView.addAnnotation(marker)
-            self.isPressable(activate: false)
+            self.isPressable(activate: false, display: true)
         default:
             print("Error in func putTag")
             
@@ -841,7 +864,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     }
     
     @objc func PressOnMap(_ recognizer: UITapGestureRecognizer) {
-
         if (isInside == true) {
             let PressScreenCoordinates = recognizer.location(in: mapView)
             let PressMapCoordinates = mapView.convert(PressScreenCoordinates, toCoordinateFrom: mapView)
@@ -858,6 +880,148 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
                 
             }
         }
+    }
+    
+    // MARK: - Weather
+    
+    @objc func PressOnMapWithoutDisplay(_ recognizer: UITapGestureRecognizer) {
+        if (isInside == true) {
+            let PressScreenCoordinates = recognizer.location(in: mapView)
+            let PressMapCoordinates = mapView.convert(PressScreenCoordinates, toCoordinateFrom: mapView)
+            let longitude = PressMapCoordinates.longitude
+            let latitude = PressMapCoordinates.latitude
+            self.getWeatherFromSelectedLocation(long: longitude, lat: latitude)
+            self.viewStacked = self.weatherIconView
+            self.animateInWithOptionalEffect(view: weatherIconView, effect: true)
+            self.isPressable(activate: false, display: false)
+            
+        }
+    }
+    
+    func getWeatherFromSelectedLocation(long: Double, lat: Double) {
+        let param: Parameters = [
+            "lat": String(lat),
+            "lng": String(long)]
+        
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjF9.Vcp2grZ53t_OG3jwSXsRwfc_UUjboNgZarkAGiX0jgM" ]
+        
+        let trace = Performance.startTrace(name: "getWeatherFromCurrentLocation")
+        _ = AF.request("http://35.198.134.25:5000/api/weather",
+                       method: .get,
+                       parameters: param,
+                       encoding: URLEncoding.default,
+                       headers: headers).validate(statusCode: 200..<500).responseJSON(completionHandler: {response in
+                        switch response.result {
+                        case .success(let value):
+                            let jsonObject = JSON(value)
+                            self.transformData(rawData: jsonObject)
+                        case .failure(let error):
+                            print(error)
+                        }})
+        trace?.stop()
+    }
+    
+    func analyseUvIndex(uvIndex: Double) {
+        if uvIndex < 2 {
+            self.uvGlobal = "\(round(100 * uvIndex) / 100) (Low)"
+            
+        } else if uvIndex > 6 {
+            self.uvGlobal = "\(round(100 * uvIndex) / 100) (High)"
+            
+        } else {
+            self.uvGlobal = "\(round(100 * uvIndex) / 100) (Medium)"
+            
+        }
+    }
+    
+    func transformData(rawData: JSON) {
+        // get uv index
+        if let uvData = rawData["uv"].string {
+            let uvAsData = uvData.data(using: .utf8)!
+            let uvAsJson = JSON(uvAsData)
+            
+            if let uvIndex = uvAsJson["value"].double {
+                self.analyseUvIndex(uvIndex: uvIndex)
+                
+            } else {
+                print(uvAsJson["value"].error!)
+                
+            }
+        }
+        // get weather
+        if let data = rawData["weather"].string {
+            let dataAsData = data.data(using: .utf8)!
+            let dataAsJson = JSON(dataAsData)
+            
+            do {
+                _ = try JSONSerialization.jsonObject(
+                    with: dataAsData,
+                    options: .mutableContainers) as! [String: AnyObject]
+                
+                let weather = Weather(weatherData: dataAsJson)
+                self.didGetWeather(weather: weather)
+            } catch let jsonError as NSError {
+                self.didNotGetWeather(error: jsonError)
+                
+            }
+        } else {
+            print(rawData["weather"].error!)
+            
+        }
+    }
+    
+    func didGetWeather(weather: Weather) {
+        DispatchQueue.main.async {
+            self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
+            self.weatherLabel.text = weather.weatherDescription
+            let formatter = DateFormatter()
+            formatter.dateFormat = "hh:mm a"
+            formatter.locale = Locale(identifier: "fr_GP")
+            let sunriseDate: String = formatter.string(from: weather.sunrise)
+            self.sunriseLabel.text = sunriseDate
+            let sunsetDate: String = formatter.string(from: weather.sunset)
+            self.sunsetLabel.text = sunsetDate
+            
+            self.rainRiskLabel.text = "\(weather.cloudCover) %"
+            // TODO Watertemp
+            self.waterTemperatureLabel.text = "-- °C"
+            self.windLabel.text = "\(round(100 * (weather.windSpeed * ( 60 * 60 ) / 1000)) / 100) km/h"
+            self.humidityLabel.text = "\(weather.humidity) %"
+            
+            if weather.visibility != nil {
+                self.visibilityLabel.text = "\(round(100 * (Double(weather.visibility! / 1000))) / 100) km"
+            } else {
+                self.visibilityLabel.text = "-- km"
+            }
+            
+            if self.uvGlobal != nil {
+                self.uvLabel.text = self.uvGlobal
+                
+            } else {
+                self.uvLabel.text = "--"
+                
+            }
+        }
+    }
+    
+    func didNotGetWeather(error: NSError) {
+        DispatchQueue.main.async {
+            self.airTemperatureLabel.text = "Unknown"
+            self.weatherLabel.text = "Unknown"
+            self.sunriseLabel.text = "Unknown"
+            self.sunsetLabel.text = "Unknown"
+            self.rainRiskLabel.text = "Unknown"
+            self.waterTemperatureLabel.text = "Unknown"
+            self.windLabel.text = "Unknown"
+            self.humidityLabel.text = "Unknown"
+            self.visibilityLabel.text = "Unknown"
+            self.uvLabel.text = "Unknown"
+        }
+        print("Error: \(error) in function didNotGetWeather (WeatherViewController.Swift).")
+        
     }
 }
 

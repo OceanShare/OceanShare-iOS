@@ -162,36 +162,45 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             let sunsetDate: String = formatter.string(from: weather.sunset)
             self.sunsetLabel.text = sunsetDate
             
-            if (weather.dateAndTime < weather.sunrise) {
-                self.weatherImage.image = UIImage(named: "moon")
-            } else if (weather.dateAndTime > weather.sunset) {
-                self.weatherImage.image = UIImage(named: "moon")
+            if (weather.dateAndTime < weather.sunrise) || (weather.dateAndTime > weather.sunset) {
+                switch weather.weatherID {
+                case 0...232 :
+                    self.weatherImage.image = UIImage(named: "storm")
+                case 300...321, 500...504, 520...531 :
+                    self.weatherImage.image = UIImage(named: "night_rain")
+                case 511, 600...622 :
+                    self.weatherImage.image = UIImage(named: "snow")
+                case 801...804 :
+                    self.weatherImage.image = UIImage(named: "night_cloud")
+                default:
+                    self.weatherImage.image = UIImage(named: "moon")
+            
+                }
             } else {
                 switch weather.weatherID {
-                case 0...300 : //
+                case 0...232 :
                     self.weatherImage.image = UIImage(named: "storm")
-                case 301...500 :
-                    self.weatherImage.image = UIImage(named: "rainy")
-                case 501...600 :
-                    self.weatherImage.image = UIImage(named: "cloudy")
-                case 601...700 :
-                    self.weatherImage.image = UIImage(named: "snowy")
+                case 300...321, 520...531 :
+                    self.weatherImage.image = UIImage(named: "light_rain")
+                case 500...504 :
+                    self.weatherImage.image = UIImage(named: "rain")
+                case 511, 600...601, 615...622 :
+                    self.weatherImage.image = UIImage(named: "snow")
+                case 611...613 :
+                    self.weatherImage.image = UIImage(named: "hail")
                 case 701...771 :
-                    self.weatherImage.image = UIImage(named: "cloudy")
-                case 772...799 :
-                    self.weatherImage.image = UIImage(named: "storm")
+                    self.weatherImage.image = UIImage(named: "cloud")
+                case 781 :
+                    self.weatherImage.image = UIImage(named: "tornado")
                 case 800 :
-                    self.weatherImage.image = UIImage(named: "sunny")
-                case 801...804 :
-                    self.weatherImage.image = UIImage(named: "semi_cloudy")
-                case 900...903, 905...1000  :
-                    self.weatherImage.image = UIImage(named: "storm")
-                case 903 :
-                    self.weatherImage.image = UIImage(named: "snowy")
-                case 904 :
-                    self.weatherImage.image = UIImage(named: "sunny")
+                    self.weatherImage.image = UIImage(named: "sun")
+                case 801, 802 :
+                    self.weatherImage.image = UIImage(named: "overcast_cloud")
+                case 803, 804 :
+                    self.weatherImage.image = UIImage(named: "clouds")
                 default :
-                    self.weatherImage.image = UIImage(named: "semi_cloudy")
+                    self.weatherImage.image = UIImage(named: "thermometer")
+                    
                 }
             }
             
@@ -244,4 +253,3 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     }
     
 }
-
