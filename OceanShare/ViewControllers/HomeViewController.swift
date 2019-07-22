@@ -19,19 +19,31 @@ import MapKit
 import CoreLocation
 import Alamofire
 
-class HomeViewController: UIViewController, MGLMapViewDelegate {
+class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate {
+
+    // MARK: - Variables
     
-    // MARK: - Firebase
-    
+    // firebase
     var ref: DatabaseReference!
     let storageRef = FirebaseStorage.Storage().reference()
-    
-    // MARK: - Variables
     
     // view
     var effect: UIVisualEffect!
     var viewStacked: UIView?
     var overViewStacked: UIView?
+    var compassOriginY: CGFloat = 55
+    var cordinate: CLLocationCoordinate2D!
+    let locationManager = CLLocationManager()
+    
+    // map properties
+    var isInside = false
+    var mapView: MGLMapView!
+    let pressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
+    let pressRecognizerWithoutDisplay = UITapGestureRecognizer(target: self, action: #selector(PressOnMapWithoutDisplay))
+
+    
+    // weather icon
+    var uvGlobal: String!
     
     // tag properties
     var Tag_properties = Tag(description: "", id: 0, latitude: 0.0, longitude: 0.0, time: "", user: "")
@@ -44,15 +56,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     var selectedTagUserId: String?
     var selectedTagUserName: String?
     
-    // map properties
-    var compassOriginY: CGFloat = 55
-    var cordinate: CLLocationCoordinate2D!
-    var mapView: MGLMapView!
-    var isInside = false
-    
-    // weather icon
-    var uvGlobal: String!
-    
     // MARK: - Outlets
     
     // map view
@@ -61,6 +64,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var oceanShareLogo: UIImageView!
     @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var currentLongitudeLabel: UILabel!
+    @IBOutlet weak var currentLatitudeLabel: UILabel!
     
     // icon view
     @IBOutlet weak var iconView: UIView!
@@ -92,7 +97,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     // wheater icon view
     @IBOutlet weak var weatherIconView: UIView!
+    @IBOutlet weak var weatherImage: UIImageView!
     @IBOutlet weak var airTemperatureLabel: UILabel!
+    @IBOutlet weak var weatherLongitudeLabel: UILabel!
+    @IBOutlet weak var weatherLatitudeLabel: UILabel!
     @IBOutlet weak var weatherLabel: UILabel!
     @IBOutlet weak var sunriseLabel: UILabel!
     @IBOutlet weak var sunsetLabel: UILabel!
@@ -122,12 +130,30 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         visualEffectView.effect = nil
         visualEffectView.isHidden = true
         
+        self.locationManager.requestAlwaysAuthorization()
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+            
+        }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         self.setupCompass()
+        
+    }
+    
+    // MARK: - Location Manager
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        self.currentLatitudeLabel.text = String(format:"%f", locValue.latitude)
+        self.currentLongitudeLabel.text = String(format:"%f", locValue.longitude)
         
     }
     
@@ -275,7 +301,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.description = "Jellyfishs"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.isPressable(activate: true, display: true)
+        self.putIconOnMap(activate: true)
         self.animateOutWithOptionalEffect(effect: true)
         self.PutMessageOnHeader(msg: "Jellyfishs event selected.", color: UIColor(rgb: 0x5BD999))
         
@@ -286,7 +312,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.description = "Divers"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.isPressable(activate: true, display: true)
+        self.putIconOnMap(activate: true)
         self.animateOutWithOptionalEffect(effect: true)
         self.PutMessageOnHeader(msg: "Divers event selected.", color: UIColor(rgb: 0x5BD999))
         
@@ -297,7 +323,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.description = "Waste"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.isPressable(activate: true, display: true)
+        self.putIconOnMap(activate: true)
         self.animateOutWithOptionalEffect(effect: true)
         self.PutMessageOnHeader(msg: "Waste event selected.", color: UIColor(rgb: 0x5BD999))
         
@@ -308,7 +334,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.description = "Warning"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.isPressable(activate: true, display: true)
+        self.putIconOnMap(activate: true)
         self.animateOutWithOptionalEffect(effect: true)
         self.PutMessageOnHeader(msg: "Warning event selected.", color: UIColor(rgb: 0x5BD999))
 
@@ -319,7 +345,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.description = "Dolphins"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.isPressable(activate: true, display: true)
+        self.putIconOnMap(activate: true)
         self.animateOutWithOptionalEffect(effect: true)
         self.PutMessageOnHeader(msg: "Dolphins event selected.", color: UIColor(rgb: 0x5BD999))
 
@@ -330,7 +356,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         Tag_properties.description = "Destination"
         Tag_properties.time = getCurrentTime()
         Tag_properties.user = getCurrentUser()
-        self.isPressable(activate: true, display: true)
+        self.putIconOnMap(activate: true)
         self.animateOutWithOptionalEffect(effect: true)
         self.PutMessageOnHeader(msg: "Destination event selected.", color: UIColor(rgb: 0x5BD999))
 
@@ -338,7 +364,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     @IBAction func weatherActivate(_ sender: Any) {
         self.animateOutWithOptionalEffect(effect: true)
-        self.isPressable(activate: true, display: false)
+        self.putWeatherOnMap(activate: true)
         self.PutMessageOnHeader(msg: "Weather information selected.", color: UIColor(rgb: 0x5BD999))
 
     }
@@ -380,12 +406,14 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
         self.animateOutWithOptionalEffect(effect: true)
         self.descriptionTextField.text = ""
         self.PutMessageOnHeader(msg: "Your event has been dropped.", color: UIColor(rgb: 0x5BD999))
+        self.putIconOnMap(activate: false)
         
     }
     
     @IBAction func cancelComment(_ sender: Any) {
         self.animateOutWithOptionalEffect(effect: true)
         self.descriptionTextField.text = ""
+        self.putIconOnMap(activate: false)
         
     }
     
@@ -414,37 +442,61 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     // MARK: - Map Interactions
     
-    func isPressable(activate: Bool, display: Bool) {
-        if display == true {
-            let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
-            
-            if (activate == true) {
-                for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-                    PressRecognizer.require(toFail: recognizer)
-                }
-                self.mapView.addGestureRecognizer(PressRecognizer)
-                isInside = true
+    func putIconOnMap(activate: Bool) {
+        let pressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
+        pressRecognizer.name = "pressRecognizer"
+        
+        for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+            if recognizer.name == "pressRecognizerWithoutDisplay" {
+                print("yes -> \(String(describing: recognizer.name))")
+                mapView.removeGestureRecognizer(recognizer)
                 
             } else {
-                self.mapView.removeGestureRecognizer(PressRecognizer)
-                isInside = false
-                
+                print("nope -> \(String(describing: recognizer.name))")
+
             }
+        }
+        
+        if (activate == true) {
+            for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+                pressRecognizer.require(toFail: recognizer)
+            }
+            self.mapView.addGestureRecognizer(pressRecognizer)
+            self.isInside = true
+            
         } else {
-            let PressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMapWithoutDisplay))
+            self.mapView.removeGestureRecognizer(pressRecognizer)
+            self.isInside = false
             
-            if (activate == true) {
-                for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-                    PressRecognizer.require(toFail: recognizer)
-                }
-                self.mapView.addGestureRecognizer(PressRecognizer)
-                isInside = true
+        }
+    }
+    
+    func putWeatherOnMap(activate: Bool) {
+        let pressRecognizerWithoutDisplay = UITapGestureRecognizer(target: self, action: #selector(PressOnMapWithoutDisplay))
+        pressRecognizerWithoutDisplay.name = "pressRecognizerWithoutDisplay"
+        
+        for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+            if recognizer.name == "pressRecognizer" {
+                print("yes -> \(String(describing: recognizer.name))")
+                mapView.removeGestureRecognizer(recognizer)
                 
             } else {
-                self.mapView.removeGestureRecognizer(PressRecognizer)
-                isInside = false
-                
+                print("nope -> \(String(describing: recognizer.name))")
             }
+        }
+        
+        if (activate == true) {
+            
+            for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+                pressRecognizerWithoutDisplay.require(toFail: recognizer)
+            }
+            self.mapView.addGestureRecognizer(pressRecognizerWithoutDisplay)
+            self.isInside = true
+            
+        } else {
+            self.mapView.removeGestureRecognizer(pressRecognizerWithoutDisplay)
+            self.isInside = false
+            
         }
     }
     
@@ -562,37 +614,31 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Jellyfishs"
             mapView.addAnnotation(marker)
-            self.isPressable(activate: false, display: true)
         case 1:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Divers"
             mapView.addAnnotation(marker)
-            self.isPressable(activate: false, display: true)
         case 2:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Waste"
             mapView.addAnnotation(marker)
-            self.isPressable(activate: false, display: true)
         case 3:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Warning"
             mapView.addAnnotation(marker)
-            self.isPressable(activate: false, display: true)
         case 4:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Dolphins"
             mapView.addAnnotation(marker)
-            self.isPressable(activate: false, display: true)
         case 5:
             marker.coordinate.latitude = Tag.latitude!
             marker.coordinate.longitude = Tag.longitude!
             marker.title = "Destination"
             mapView.addAnnotation(marker)
-            self.isPressable(activate: false, display: true)
         default:
             print("Error in func putTag")
             
@@ -864,14 +910,15 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     }
     
     @objc func PressOnMap(_ recognizer: UITapGestureRecognizer) {
-        if (isInside == true) {
+        if (self.isInside == true) {
             let PressScreenCoordinates = recognizer.location(in: mapView)
             let PressMapCoordinates = mapView.convert(PressScreenCoordinates, toCoordinateFrom: mapView)
             Tag_properties.latitude = PressMapCoordinates.latitude
             Tag_properties.longitude = PressMapCoordinates.longitude
+            
             let point = mapView.convert(PressMapCoordinates, toPointTo: mapView)
             let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
-            if (features.description != "[]"){
+            if (features.description != "[]") {
                 self.viewStacked = commentView
                 self.animateInWithOptionalEffect(view: commentView, effect: true)
             
@@ -885,16 +932,24 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     // MARK: - Weather
     
     @objc func PressOnMapWithoutDisplay(_ recognizer: UITapGestureRecognizer) {
-        if (isInside == true) {
+        if (self.isInside == true) {
             let PressScreenCoordinates = recognizer.location(in: mapView)
             let PressMapCoordinates = mapView.convert(PressScreenCoordinates, toCoordinateFrom: mapView)
             let longitude = PressMapCoordinates.longitude
             let latitude = PressMapCoordinates.latitude
             self.getWeatherFromSelectedLocation(long: longitude, lat: latitude)
-            self.viewStacked = self.weatherIconView
-            self.animateInWithOptionalEffect(view: weatherIconView, effect: true)
-            self.isPressable(activate: false, display: false)
             
+            let point = mapView.convert(PressMapCoordinates, toPointTo: mapView)
+            let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
+            if (features.description != "[]") {
+                self.viewStacked = self.weatherIconView
+                self.animateInWithOptionalEffect(view: weatherIconView, effect: true)
+                self.putWeatherOnMap(activate: false)
+                
+            } else {
+                self.PutMessageOnHeader(msg: "Can't drop markers on earth.", color: UIColor(rgb: 0xFB6060))
+                
+            }
         }
     }
     
@@ -975,8 +1030,57 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
     
     func didGetWeather(weather: Weather) {
         DispatchQueue.main.async {
+            
+            print("Value to check (weatherID -> weatherImage): ", weather.weatherID)
+            
+            if (weather.dateAndTime < weather.sunrise) || (weather.dateAndTime > weather.sunset) {
+                switch weather.weatherID {
+                case 0...232 :
+                    self.weatherImage.image = UIImage(named: "storm")
+                case 300...321, 500...504, 520...531 :
+                    self.weatherImage.image = UIImage(named: "night_rain")
+                case 511, 600...622 :
+                    self.weatherImage.image = UIImage(named: "snow")
+                case 801...804 :
+                    self.weatherImage.image = UIImage(named: "night_cloud")
+                default:
+                    self.weatherImage.image = UIImage(named: "moon")
+                    
+                }
+            } else {
+                switch weather.weatherID {
+                case 0...232 :
+                    self.weatherImage.image = UIImage(named: "storm")
+                case 300...321, 520...531 :
+                    self.weatherImage.image = UIImage(named: "light_rain")
+                case 500...504 :
+                    self.weatherImage.image = UIImage(named: "rain")
+                case 511, 600...601, 615...622 :
+                    self.weatherImage.image = UIImage(named: "snow")
+                case 611...613 :
+                    self.weatherImage.image = UIImage(named: "hail")
+                case 701...771 :
+                    self.weatherImage.image = UIImage(named: "cloud")
+                case 781 :
+                    self.weatherImage.image = UIImage(named: "tornado")
+                case 800 :
+                    self.weatherImage.image = UIImage(named: "sunny")
+                case 801, 802 :
+                    self.weatherImage.image = UIImage(named: "overcast_cloud")
+                case 803, 804 :
+                    self.weatherImage.image = UIImage(named: "clouds")
+                default :
+                    self.weatherImage.image = UIImage(named: "thermometer")
+                    
+                }
+            }
+            
             self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
             self.weatherLabel.text = weather.weatherDescription
+            
+            self.weatherLongitudeLabel.text = String(format:"%f", weather.longitude)
+            self.weatherLatitudeLabel.text = String(format:"%f", weather.latitude)
+            
             let formatter = DateFormatter()
             formatter.dateFormat = "hh:mm a"
             formatter.locale = Locale(identifier: "fr_GP")
@@ -986,8 +1090,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             self.sunsetLabel.text = sunsetDate
             
             self.rainRiskLabel.text = "\(weather.cloudCover) %"
-            // TODO Watertemp
             self.waterTemperatureLabel.text = "-- °C"
+            
             self.windLabel.text = "\(round(100 * (weather.windSpeed * ( 60 * 60 ) / 1000)) / 100) km/h"
             self.humidityLabel.text = "\(weather.humidity) %"
             
@@ -996,7 +1100,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate {
             } else {
                 self.visibilityLabel.text = "-- km"
             }
-            
             if self.uvGlobal != nil {
                 self.uvLabel.text = self.uvGlobal
                 

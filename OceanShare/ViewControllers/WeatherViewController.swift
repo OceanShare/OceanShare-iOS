@@ -154,14 +154,6 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             
             print("Value to check (weatherID -> weatherImage): ", weather.weatherID)
             
-            let formatter = DateFormatter()
-            formatter.dateFormat = "hh:mm a"
-            formatter.locale = Locale(identifier: "fr_GP")
-            let sunriseDate: String = formatter.string(from: weather.sunrise)
-            self.sunriseLabel.text = sunriseDate
-            let sunsetDate: String = formatter.string(from: weather.sunset)
-            self.sunsetLabel.text = sunsetDate
-            
             if (weather.dateAndTime < weather.sunrise) || (weather.dateAndTime > weather.sunset) {
                 switch weather.weatherID {
                 case 0...232 :
@@ -193,7 +185,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
                 case 781 :
                     self.weatherImage.image = UIImage(named: "tornado")
                 case 800 :
-                    self.weatherImage.image = UIImage(named: "sun")
+                    self.weatherImage.image = UIImage(named: "sunny")
                 case 801, 802 :
                     self.weatherImage.image = UIImage(named: "overcast_cloud")
                 case 803, 804 :
@@ -210,9 +202,17 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             self.longitudeLabel.text = String(format:"%f", weather.longitude)
             self.latitudeLabel.text = String(format:"%f", weather.latitude)
             
+            let formatter = DateFormatter()
+            formatter.dateFormat = "hh:mm a"
+            formatter.locale = Locale(identifier: "fr_GP")
+            let sunriseDate: String = formatter.string(from: weather.sunrise)
+            self.sunriseLabel.text = sunriseDate
+            let sunsetDate: String = formatter.string(from: weather.sunset)
+            self.sunsetLabel.text = sunsetDate
+            
             self.rainRiskLabel.text = "\(weather.cloudCover) %"
-            // TODO Watertemp
             self.waterTemperatureLabel.text = "-- °C"
+            
             self.windLabel.text = "\(round(100 * (weather.windSpeed * ( 60 * 60 ) / 1000)) / 100) km/h"
             self.humidityLabel.text = "\(weather.humidity) %"
             
@@ -221,7 +221,6 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             } else {
                 self.visibilityLabel.text = "-- km"
             }
-            
             if self.uvGlobal != nil {
                 self.uvIndiceLabel.text = self.uvGlobal
                 
