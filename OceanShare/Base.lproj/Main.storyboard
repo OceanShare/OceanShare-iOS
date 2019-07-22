@@ -702,6 +702,8 @@
                         <outlet property="headerView" destination="26U-SV-mDL" id="ewT-Dl-9mM"/>
                         <outlet property="humidityLabel" destination="caK-zs-dVX" id="nv0-2w-zjE"/>
                         <outlet property="iconView" destination="YpB-T6-md2" id="hOe-cG-YwX"/>
+                        <outlet property="latitudeStackView" destination="368-zh-s2H" id="ZGg-ii-ctC"/>
+                        <outlet property="longitudeStackView" destination="JZo-g1-aCl" id="Eb9-Ig-3v0"/>
                         <outlet property="messageLabel" destination="i1I-yy-2vf" id="rFO-z5-VGN"/>
                         <outlet property="newDescriptionTextField" destination="NXd-fb-7C3" id="dRW-lA-Nlt"/>
                         <outlet property="oceanShareLogo" destination="V1S-cc-2Cu" id="FKG-JR-FNf"/>

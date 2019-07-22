@@ -38,9 +38,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     // map properties
     var isInside = false
     var mapView: MGLMapView!
-    let pressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
-    let pressRecognizerWithoutDisplay = UITapGestureRecognizer(target: self, action: #selector(PressOnMapWithoutDisplay))
-
     
     // weather icon
     var uvGlobal: String!
@@ -64,7 +61,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var oceanShareLogo: UIImageView!
     @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var longitudeStackView: UIStackView!
     @IBOutlet weak var currentLongitudeLabel: UILabel!
+    @IBOutlet weak var latitudeStackView: UIStackView!
     @IBOutlet weak var currentLatitudeLabel: UILabel!
     
     // icon view
@@ -166,20 +165,18 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         self.mapView.delegate = self
         self.mapView.logoView.isHidden = true
         self.mapView.attributionButton.isHidden = true
-        
         // enable heading tracking mode (arrow will appear)
         self.mapView.userTrackingMode = .followWithHeading
-        
         // enable the permanent heading indicator which will appear when the tracking mode is not `.followWithHeading`.
         self.mapView.showsUserHeadingIndicator = true
         self.getTagsFromServer(mapView: self.mapView)
-        
         // icon setup
         self.setupCustomIcons()
-        
         // add the layers in the right order
         self.view.addSubview(mapView)
         self.view.addSubview(headerView)
+        self.view.addSubview(longitudeStackView)
+        self.view.addSubview(latitudeStackView)
         self.view.addSubview(centerView)
         self.view.addSubview(buttonMenu)
         self.view.addSubview(visualEffectView)
@@ -438,66 +435,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBAction func closeEdition(_ sender: Any) {
         self.animateOutWithOptionalEffect(effect: false)
 
-    }
-    
-    // MARK: - Map Interactions
-    
-    func putIconOnMap(activate: Bool) {
-        let pressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
-        pressRecognizer.name = "pressRecognizer"
-        
-        for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-            if recognizer.name == "pressRecognizerWithoutDisplay" {
-                print("yes -> \(String(describing: recognizer.name))")
-                mapView.removeGestureRecognizer(recognizer)
-                
-            } else {
-                print("nope -> \(String(describing: recognizer.name))")
-
-            }
-        }
-        
-        if (activate == true) {
-            for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-                pressRecognizer.require(toFail: recognizer)
-            }
-            self.mapView.addGestureRecognizer(pressRecognizer)
-            self.isInside = true
-            
-        } else {
-            self.mapView.removeGestureRecognizer(pressRecognizer)
-            self.isInside = false
-            
-        }
-    }
-    
-    func putWeatherOnMap(activate: Bool) {
-        let pressRecognizerWithoutDisplay = UITapGestureRecognizer(target: self, action: #selector(PressOnMapWithoutDisplay))
-        pressRecognizerWithoutDisplay.name = "pressRecognizerWithoutDisplay"
-        
-        for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-            if recognizer.name == "pressRecognizer" {
-                print("yes -> \(String(describing: recognizer.name))")
-                mapView.removeGestureRecognizer(recognizer)
-                
-            } else {
-                print("nope -> \(String(describing: recognizer.name))")
-            }
-        }
-        
-        if (activate == true) {
-            
-            for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-                pressRecognizerWithoutDisplay.require(toFail: recognizer)
-            }
-            self.mapView.addGestureRecognizer(pressRecognizerWithoutDisplay)
-            self.isInside = true
-            
-        } else {
-            self.mapView.removeGestureRecognizer(pressRecognizerWithoutDisplay)
-            self.isInside = false
-            
-        }
     }
     
     // MARK: - Getters
@@ -909,6 +846,33 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     }
     
+    // MARK: - Gesture Recognizers
+    
+    func putIconOnMap(activate: Bool) {
+        let pressRecognizer = UITapGestureRecognizer(target: self, action: #selector(PressOnMap))
+        pressRecognizer.name = "pressRecognizer"
+        
+        for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+            if recognizer.name == "pressRecognizerWithoutDisplay" {
+                mapView.removeGestureRecognizer(recognizer)
+                
+            }
+        }
+        
+        if (activate == true) {
+            for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+                pressRecognizer.require(toFail: recognizer)
+            }
+            self.mapView.addGestureRecognizer(pressRecognizer)
+            self.isInside = true
+            
+        } else {
+            self.mapView.removeGestureRecognizer(pressRecognizer)
+            self.isInside = false
+            
+        }
+    }
+    
     @objc func PressOnMap(_ recognizer: UITapGestureRecognizer) {
         if (self.isInside == true) {
             let PressScreenCoordinates = recognizer.location(in: mapView)
@@ -921,7 +885,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             if (features.description != "[]") {
                 self.viewStacked = commentView
                 self.animateInWithOptionalEffect(view: commentView, effect: true)
-            
+                
             } else {
                 self.PutMessageOnHeader(msg: "Can't drop markers on earth.", color: UIColor(rgb: 0xFB6060))
                 
@@ -929,8 +893,32 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-    // MARK: - Weather
-    
+    func putWeatherOnMap(activate: Bool) {
+        let pressRecognizerWithoutDisplay = UITapGestureRecognizer(target: self, action: #selector(PressOnMapWithoutDisplay))
+        pressRecognizerWithoutDisplay.name = "pressRecognizerWithoutDisplay"
+        
+        for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+            if recognizer.name == "pressRecognizer" {
+                mapView.removeGestureRecognizer(recognizer)
+                
+            }
+        }
+        
+        if (activate == true) {
+            
+            for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+                pressRecognizerWithoutDisplay.require(toFail: recognizer)
+            }
+            self.mapView.addGestureRecognizer(pressRecognizerWithoutDisplay)
+            self.isInside = true
+            
+        } else {
+            self.mapView.removeGestureRecognizer(pressRecognizerWithoutDisplay)
+            self.isInside = false
+            
+        }
+    }
+
     @objc func PressOnMapWithoutDisplay(_ recognizer: UITapGestureRecognizer) {
         if (self.isInside == true) {
             let PressScreenCoordinates = recognizer.location(in: mapView)
@@ -952,6 +940,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             }
         }
     }
+    
+    // MARK: - Weather
     
     func getWeatherFromSelectedLocation(long: Double, lat: Double) {
         let param: Parameters = [
