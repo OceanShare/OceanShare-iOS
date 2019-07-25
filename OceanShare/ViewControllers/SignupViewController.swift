@@ -22,16 +22,14 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     
     // MARK: - Outlets
     
-    @IBOutlet weak var background: UIImageView!
     @IBOutlet weak var signUpButton: UIButton!
     
-    // text field outlets
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmTextField: UITextField!
     
-    // icon outlets
+    @IBOutlet weak var background: UIImageView!
     @IBOutlet weak var name: UIImageView!
     @IBOutlet weak var email: UIImageView!
     @IBOutlet weak var password: UIImageView!
@@ -40,19 +38,19 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     // MARK: - Variables
     
     var ref: DatabaseReference!
-    let storageRef = FirebaseStorage.Storage().reference()
     var imageURL: String?
     var currentTappedTextField : UITextField?
+    
+    let storageRef = FirebaseStorage.Storage().reference()
+    let registry = Registry()
 
     // MARK: - ViewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         ref = Database.database().reference()
-        // keybord handler
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-        observeKeyboardNotification()
+
         // apply the design stuff to the view
         setupView()
     }
@@ -60,33 +58,33 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     // MARK: - Setup
     
     func setupView() {
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
+        observeKeyboardNotification()
         // gradient setup
-        let color1 = UIColor(rgb: 0x57A1FF)
-        let color2 = UIColor(rgb: 0x6dd5ed)
-        self.signUpButton.applyGradient(colours:[color1, color2], corner:27.5)
+        let color1 = registry.customClearBlue
+        let color2 = registry.customWhiteBlue
+        signUpButton.applyGradient(colours:[color1, color2], corner:27.5)
         // background setup
-        self.background.layer.cornerRadius = 16
-        self.background.clipsToBounds = true
+        background.layer.cornerRadius = 16
+        background.clipsToBounds = true
         // icon setup
-        self.setupCustomIcons()
+        setupCustomIcons()
     }
 
     func setupCustomIcons() {
-        self.name.image = self.name.image!.withRenderingMode(.alwaysTemplate)
-        self.name.tintColor = UIColor(rgb: 0xFFFFFF)
-        self.email.image = self.email.image!.withRenderingMode(.alwaysTemplate)
-        self.email.tintColor = UIColor(rgb: 0xFFFFFF)
-        self.password.image = self.password.image!.withRenderingMode(.alwaysTemplate)
-        self.password.tintColor = UIColor(rgb: 0xFFFFFF)
-        self.confirm.image = self.confirm.image!.withRenderingMode(.alwaysTemplate)
-        self.confirm.tintColor = UIColor(rgb: 0xFFFFFF)
+        name.image = name.image!.withRenderingMode(.alwaysTemplate)
+        name.tintColor = registry.customWhite
+        email.image = email.image!.withRenderingMode(.alwaysTemplate)
+        email.tintColor = registry.customWhite
+        password.image = password.image!.withRenderingMode(.alwaysTemplate)
+        password.tintColor = registry.customWhite
+        confirm.image = confirm.image!.withRenderingMode(.alwaysTemplate)
+        confirm.tintColor = registry.customWhite
     }
     
     // MARK: - Email Registration
     
     @IBAction func registerButtonTapped(_ sender: UIButton) {
-        
         let name = nameTextField.text
         let email = emailTextField.text
         let password = passwordTextField.text
@@ -94,10 +92,12 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         if (email?.isEmpty)! || (password?.isEmpty)! || (confirmTextField.text?.isEmpty)! || (nameTextField.text?.isEmpty)! {
             displayMessage(userMessage: "All Fields are required.")
             return
+            
         }
         if ((confirmTextField.text?.elementsEqual(password!))! != true) {
             displayMessage(userMessage: "Please make sure that passwords match.")
             return
+            
         } else {
             // do not care about the warning
             Auth.auth().createUser(withEmail: email!, password: password!) { (authResult, err) in
@@ -110,6 +110,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                         print("~ Actions Informations: OK pressed.")
                     }))
                     self.present(alert, animated: true, completion: nil)
+                    
                 } else {
                     // define the database structure
                     let userData: [String: Any] = [
@@ -133,6 +134,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                     
                     // send an email to the email address mentioned
                     self.sendEmailVerification()
+                    
                 }
             }
         }
@@ -144,8 +146,10 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self, handler:{(facebookResult, facebookError) -> Void in
             if facebookError != nil {
                 print("X Facebook Authentication Failed: \(String(describing: facebookError)).")
+                
             } else if facebookResult!.isCancelled {
                 print("X Facebook Authentication Was Cancelled.")
+                
             } else {
                 // get the credentials
                 let accessToken = FBSDKAccessToken.current()
@@ -157,6 +161,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                     if err != nil {
                         print("X Facebook Authentication Failed: ", err as Any)
                         return
+                        
                     }
                     
                     // retrieve user profile picture
@@ -164,12 +169,14 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                     if let retrievedURL = ((field!["picture"] as? [String: Any])?["data"] as? [String: Any])?["url"] as? String {
                         // set the value of the retrieved picture
                         self.imageURL = retrievedURL
+                        
                     }
                     
                     Auth.auth().signIn(with: credentials, completion: { (authResult, err) in
                         if let err = err {
                             print("X Facebook Authentication Failed: ", err)
                             return
+                            
                         }
                         let user = Auth.auth().currentUser
                         
@@ -183,6 +190,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                         // push the user datas on the database
                         guard let uid = authResult?.user.uid else { return }
                         self.ref.child("users/\(uid)").setValue(userData)
+                        
                     })
                 })
                 print("-> Facebook Authentication Success.")
@@ -193,6 +201,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                 let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                 mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
                 self.present(mainTabBarController, animated: true,completion: nil)
+                
             }
         })
     }
@@ -202,18 +211,21 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     @IBAction func googleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().signIn()
+        
     }
     
     // MARK: - Twitter Registration
     
     @IBAction func twitterLogin(_ sender: UIButton) {
         configureTwitter()
+        
     }
     
     fileprivate func configureTwitter() {
         let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
             if (error != nil) {
                 print("(1) Twitter authentication failed: ", error!.localizedDescription)
+            
             } else {
                 // get the twitter credentials
                 guard let token = session?.authToken else {return}
@@ -223,6 +235,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                 Auth.auth().signIn(with: credential, completion: { (authResult, err) in
                     if let err = err {
                         print("(2) Twitter authentication failed: ", err.localizedDescription)
+                    
                     } else {
                         let user = Auth.auth().currentUser
                         
@@ -245,6 +258,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
                         let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                         mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
                         self.present(mainTabBarController, animated: true,completion: nil)
+                        
                     }
                 })
             }
@@ -254,6 +268,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         view.addSubview(twitterSignInButton)
         twitterSignInButton.isHidden = true
         twitterSignInButton.accessibilityActivate()
+        
     }
     
     // MARK: - Keyboard Handling
@@ -261,6 +276,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     fileprivate func observeKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
     }
     
     @objc func keyboardShow() {
@@ -269,6 +285,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
             self.view.frame = CGRect(x: 0, y: -200, width: self.view.frame.width, height: self.view.frame.height)
             
         }, completion: nil)
+        
     }
     
     @objc func keyboardHide() {
@@ -277,12 +294,14 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
             self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
             
         }, completion: nil)
+        
     }
     
     // use this method to get tapped textField
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         currentTappedTextField = textField
         return true
+        
     }
     
     // MARK: - Error Handling
@@ -304,6 +323,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
         Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
             callback?(error)
         })
+        
     }
     
 }

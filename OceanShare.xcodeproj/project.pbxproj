@@ -34,6 +34,7 @@
 		BF92737E21D1D57600BDCC16 /* OceanShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92737D21D1D57600BDCC16 /* OceanShareTests.swift */; };
 		BF92738921D1D57600BDCC16 /* OceanShareUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92738821D1D57600BDCC16 /* OceanShareUITests.swift */; };
 		BF92739D21D231BB00BDCC16 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */; };
+		BFF9641C22E8FEDE00CAB149 /* Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF9641B22E8FEDE00CAB149 /* Registry.swift */; };
 		EA5ABE72D7963E2AEB820984 /* Pods_OceanShareUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A0292141E4382E098436B6 /* Pods_OceanShareUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +101,7 @@
 		BF92738A21D1D57600BDCC16 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		BFCF47C021DE4B3C00F18016 /* OceanShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OceanShare.entitlements; sourceTree = "<group>"; };
+		BFF9641B22E8FEDE00CAB149 /* Registry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registry.swift; sourceTree = "<group>"; };
 		E3BCBE1CA27A9FBC058526E4 /* Pods-OceanShareTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests.release.xcconfig"; sourceTree = "<group>"; };
 		F3A46E28483D16D19D3A09C2 /* Pods-OceanShareUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareUITests.release.xcconfig"; path = "Target Support Files/Pods-OceanShareUITests/Pods-OceanShareUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -242,6 +244,7 @@
 				BF3306FC21DF599000433264 /* Helper.swift */,
 				BF8CCE3A2274729B000863AC /* Tag.swift */,
 				BF0FE36D22D8C32600615109 /* Weather.swift */,
+				BFF9641B22E8FEDE00CAB149 /* Registry.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -555,6 +558,7 @@
 				BF89D37321D32EBC00E522AC /* SignupViewController.swift in Sources */,
 				BF7563D821DA12E700F8166B /* WeatherViewController.swift in Sources */,
 				BF56CDEA21D5D3A7003707A9 /* AppUser.swift in Sources */,
+				BFF9641C22E8FEDE00CAB149 /* Registry.swift in Sources */,
 				201E152B21E4C0E500050361 /* UITextFieldExtensions.swift in Sources */,
 				BF86CF9B2293DC9C009A7646 /* FireBaseManager.swift in Sources */,
 				BF3306FD21DF599000433264 /* Helper.swift in Sources */,

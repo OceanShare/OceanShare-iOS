@@ -11,7 +11,9 @@ import FirebaseAuth
 
 class RootViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
+    let registry = Registry()
     var pageControl = UIPageControl()
+    
     // list the view controller from the root view controller
     lazy var viewControllerList:[UIViewController] = {
         let sb = UIStoryboard(name: "Main", bundle: nil)
@@ -27,11 +29,11 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         super.viewDidLoad()
         
         // define the Firebase variable
-        self.dataSource = self
-        self.delegate = self
+        dataSource = self
+        delegate = self
         // define the first view of the RootViewController
         if let firstViewController = viewControllerList.first {
-            self.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
+            setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
         }
         // apply the design stuff to the view
         configurePageControl()
@@ -56,9 +58,9 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
                     UserDefaults.standard.set("yes", forKey: "user_logged_by_email")
                     UserDefaults.standard.synchronize()
                     // access to the homeviewcontroller
-                    let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+                    let mainTabBarController = storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                     mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
-                    self.present(mainTabBarController, animated: true,completion: nil)
+                    present(mainTabBarController, animated: true,completion: nil)
                     
                 } else {
                     print("-> Email not validated yet or user not re-logged yet.")
@@ -74,7 +76,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
                         self.present(loginViewController, animated: true,completion: nil)
                         print("~ Action Information: OK Pressed.")
                     }))
-                    self.present(alert, animated: true, completion: nil)
+                    present(alert, animated: true, completion: nil)
                     
                 }
             } else {
@@ -82,9 +84,9 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
                 print("-> User logged bu social networks.")
                 
                 // redirect the user to the map
-                let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier:   "MainTabBarController") as! MainTabBarController
+                let mainTabBarController = storyboard?.instantiateViewController(withIdentifier:   "MainTabBarController") as! MainTabBarController
                 mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
-                self.present(mainTabBarController, animated: true,completion: nil)
+                present(mainTabBarController, animated: true,completion: nil)
                 
             }
         }
@@ -95,13 +97,13 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     func configurePageControl() {
         // The total number of pages that are available is based on how many available colors we have.
         pageControl = UIPageControl(frame: CGRect(x: 0,y: UIScreen.main.bounds.maxY - 50,width: UIScreen.main.bounds.width,height: 50))
-        self.pageControl.numberOfPages = viewControllerList.count
-        self.pageControl.currentPage = 0
-        self.pageControl.tintColor = UIColor.black
-        self.pageControl.pageIndicatorTintColor = UIColor.gray
-        self.pageControl.currentPageIndicatorTintColor = UIColor(rgb: 0x57A1FF)
-        self.pageControl.layer.position.y = self.view.frame.height - 75
-        self.view.addSubview(pageControl)
+        pageControl.numberOfPages = viewControllerList.count
+        pageControl.currentPage = 0
+        pageControl.tintColor = registry.customBlack
+        pageControl.pageIndicatorTintColor = registry.customDarkGrey
+        pageControl.currentPageIndicatorTintColor = registry.customClearBlue
+        pageControl.layer.position.y = view.frame.height - 75
+        view.addSubview(pageControl)
     }
     
     // MARK: - Datasource Functions
@@ -126,7 +128,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
 
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         let pageContentViewController = pageViewController.viewControllers![0]
-        self.pageControl.currentPage = viewControllerList.firstIndex(of: pageContentViewController)!
+        pageControl.currentPage = viewControllerList.firstIndex(of: pageContentViewController)!
     }
     
     // MARK: - Email Verification

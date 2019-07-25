@@ -13,7 +13,7 @@ import FirebaseDatabase
 import FirebaseCore
 import FirebaseStorage
 
-class FirebaseManager {
+/*class FirebaseManager {
     static let shared = FirebaseManager()
     private let reference = Database.database().reference()
 }
@@ -28,4 +28,4 @@ extension FirebaseManager {
             print(error?.localizedDescription as Any)
         }
     }
-}
+}*/

@@ -40,6 +40,10 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     var currentLongitude: Double = 0.0
     var uvGlobal: String!
     
+    // classes
+    let weather = Weather.self
+    let registry = Registry()
+    
     // MARK: - View's Managers
     
     override func viewDidLoad() {
@@ -65,19 +69,6 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     // MARL: - Data Handlers
     
-    func analyseUvIndex(uvIndex: Double) {
-        if uvIndex < 2 {
-            self.uvGlobal = "\(round(100 * uvIndex) / 100) (Low)"
-
-        } else if uvIndex > 6 {
-            self.uvGlobal = "\(round(100 * uvIndex) / 100) (High)"
-            
-        } else {
-            self.uvGlobal = "\(round(100 * uvIndex) / 100) (Medium)"
-            
-        }
-    }
-    
     func transformData(rawData: JSON) {
         // get uv index
         if let uvData = rawData["uv"].string {
@@ -85,7 +76,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             let uvAsJson = JSON(uvAsData)
             
             if let uvIndex = uvAsJson["value"].double {
-                self.analyseUvIndex(uvIndex: uvIndex)
+                self.uvGlobal = self.weather.analyseUvIndex(uvIndex: uvIndex)
                 
             } else {
                 print(uvAsJson["value"].error!)
@@ -131,7 +122,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             "Accept": "application/json",
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjF9.Vcp2grZ53t_OG3jwSXsRwfc_UUjboNgZarkAGiX0jgM" ]
         
-        let trace = Performance.startTrace(name: "getWeatherFromCurrentLocation")
+        let trace = Performance.startTrace(name: self.registry.trace4)
         _ = AF.request("http://35.198.134.25:5000/api/weather",
                            method: .get,
                            parameters: param,
@@ -151,50 +142,8 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     func didGetWeather(weather: Weather) {
         DispatchQueue.main.async {
-            
             print("Value to check (weatherID -> weatherImage): ", weather.weatherID)
-            
-            if (weather.dateAndTime < weather.sunrise) || (weather.dateAndTime > weather.sunset) {
-                switch weather.weatherID {
-                case 0...232 :
-                    self.weatherImage.image = UIImage(named: "storm")
-                case 300...321, 500...504, 520...531 :
-                    self.weatherImage.image = UIImage(named: "night_rain")
-                case 511, 600...622 :
-                    self.weatherImage.image = UIImage(named: "snow")
-                case 801...804 :
-                    self.weatherImage.image = UIImage(named: "night_cloud")
-                default:
-                    self.weatherImage.image = UIImage(named: "moon")
-            
-                }
-            } else {
-                switch weather.weatherID {
-                case 0...232 :
-                    self.weatherImage.image = UIImage(named: "storm")
-                case 300...321, 520...531 :
-                    self.weatherImage.image = UIImage(named: "light_rain")
-                case 500...504 :
-                    self.weatherImage.image = UIImage(named: "rain")
-                case 511, 600...601, 615...622 :
-                    self.weatherImage.image = UIImage(named: "snow")
-                case 611...613 :
-                    self.weatherImage.image = UIImage(named: "hail")
-                case 701...771 :
-                    self.weatherImage.image = UIImage(named: "cloud")
-                case 781 :
-                    self.weatherImage.image = UIImage(named: "tornado")
-                case 800 :
-                    self.weatherImage.image = UIImage(named: "sunny")
-                case 801, 802 :
-                    self.weatherImage.image = UIImage(named: "overcast_cloud")
-                case 803, 804 :
-                    self.weatherImage.image = UIImage(named: "clouds")
-                default :
-                    self.weatherImage.image = UIImage(named: "thermometer")
-                    
-                }
-            }
+            self.weatherImage.image = self.weather.analyseDescription(weather: weather, registry: self.registry)
             
             self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
             self.weatherDescriptionLabel.text = weather.weatherDescription

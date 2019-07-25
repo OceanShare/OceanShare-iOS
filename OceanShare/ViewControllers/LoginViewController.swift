@@ -22,32 +22,29 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
     // MARK: - Outlets
     
-    @IBOutlet weak var background: UIImageView!
+    @IBOutlet weak var backgroundImage: UIImageView!
+    @IBOutlet weak var emailImage: UIImageView!
+    @IBOutlet weak var passwordImage: UIImageView!
+    
     @IBOutlet weak var loginButton: UIButton!
     
-    // text field outlets
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
-    // icon outlets
-    @IBOutlet weak var email: UIImageView!
-    @IBOutlet weak var password: UIImageView!
     
     // MARK: - Variables
     
     var ref: DatabaseReference!
-    let storageRef = FirebaseStorage.Storage().reference()
     var imageURL: String?
     
-    // MARK: - ViewDidLoad
+    let storageRef = FirebaseStorage.Storage().reference()
+    let registry = Registry()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         ref = Database.database().reference()
-        // keybord handler
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-        observeKeyboardNotification()
+ 
         // apply the design stuff to the view
         setupView()
     }
@@ -55,21 +52,26 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     // MARK: - Setup
     
     func setupView() {
-        let color1 = UIColor(rgb: 0x57A1FF)
-        let color2 = UIColor(rgb: 0x6dd5ed)
-        self.loginButton.applyGradient(colours:[color1, color2], corner:27.5)
+        // keybord handler
+        view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
+        observeKeyboardNotification()
+        // gradiant
+        let color1 = registry.customClearBlue
+        let color2 = registry.customWhiteBlue
+        loginButton.applyGradient(colours:[color1, color2], corner:27.5)
         // background setup
-        self.background.layer.cornerRadius = 16
-        self.background.clipsToBounds = true
+        backgroundImage.layer.cornerRadius = 16
+        backgroundImage.clipsToBounds = true
         // icon setup
-        self.setupCustomIcons()
+        setupCustomIcons()
+        
     }
     
     func setupCustomIcons() {
-        self.email.image = self.email.image!.withRenderingMode(.alwaysTemplate)
-        self.email.tintColor = UIColor(rgb: 0xFFFFFF)
-        self.password.image = self.password.image!.withRenderingMode(.alwaysTemplate)
-        self.password.tintColor = UIColor(rgb: 0xFFFFFF)
+        emailImage.image = emailImage.image!.withRenderingMode(.alwaysTemplate)
+        emailImage.tintColor = registry.customWhite
+        passwordImage.image = passwordImage.image!.withRenderingMode(.alwaysTemplate)
+        passwordImage.tintColor = registry.customWhite
     }
     
     // MARK: - Email Login
@@ -91,7 +93,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         alert.addAction(UIAlertAction(title: "I'll check my emails", style: .default, handler: { action in
             print("~ Action Information: OK Pressed.")
         }))
-        self.present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
     @IBAction func loginButtonTapped(_ sender: UIButton) {

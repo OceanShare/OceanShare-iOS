@@ -22,6 +22,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     var ref: DatabaseReference!
     let storageRef = FirebaseStorage.Storage().reference()
+    let registry = Registry()
+    
     var appUser: AppUser? {
         didSet {
             guard let name = appUser?.name else { return }
@@ -53,33 +55,35 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         super.viewDidLoad()
 
         ref = Database.database().reference()
-        // apply the design stuff to the view
+
         setupView()
-        // get the profile picture and the user name
         fetchUserInfo()
+        
     }
     
     // MARK: - Setup
     
     func setupView() {
         // setup the profile picture and its container
-        self.profilePicture.layer.cornerRadius = 95
-        self.profilePicture.clipsToBounds = true
+        profilePicture.layer.cornerRadius = 95
+        profilePicture.clipsToBounds = true
         // setup the icons
-        self.setupCustomIcons()
+        setupCustomIcons()
         // setup the skeleton animation
-        self.turnOnSkeleton()
+        turnOnSkeleton()
+        
     }
     
     func setupCustomIcons() {
-        self.settingsIcon.image = self.settingsIcon.image!.withRenderingMode(.alwaysTemplate)
-        self.settingsIcon.tintColor = UIColor(rgb: 0xC5C7D2)
-        self.editIcon.image = self.editIcon.image!.withRenderingMode(.alwaysTemplate)
-        self.editIcon.tintColor = UIColor(rgb: 0xC5C7D2)
-        self.pictureIcon.image = self.pictureIcon.image!.withRenderingMode(.alwaysTemplate)
-        self.pictureIcon.tintColor = UIColor(rgb: 0xFFFFFF)
-        self.addEditIcon.image = self.addEditIcon.image!.withRenderingMode(.alwaysTemplate)
-        self.addEditIcon.tintColor = UIColor(rgb: 0x57A1FF)
+        settingsIcon.image = settingsIcon.image!.withRenderingMode(.alwaysTemplate)
+        settingsIcon.tintColor = registry.customGrey
+        editIcon.image = editIcon.image!.withRenderingMode(.alwaysTemplate)
+        editIcon.tintColor = registry.customGrey
+        pictureIcon.image = pictureIcon.image!.withRenderingMode(.alwaysTemplate)
+        pictureIcon.tintColor = registry.customWhite
+        addEditIcon.image = addEditIcon.image!.withRenderingMode(.alwaysTemplate)
+        addEditIcon.tintColor = registry.customClearBlue
+        
     }
     
     // MARK: - Animations
@@ -87,12 +91,14 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     func turnOnSkeleton() {
         let gradient = SkeletonGradient(baseColor: UIColor.clouds)
         let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .topLeftBottomRight)
-        self.profilePicture.isSkeletonable = true
-        self.profilePicture.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        profilePicture.isSkeletonable = true
+        profilePicture.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
+        
     }
     
     func turnOffSkeleton() {
-        self.pictureContainer.hideSkeleton()
+        pictureContainer.hideSkeleton()
+        
     }
     
     // MARK: - Actions
@@ -104,6 +110,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         picker.allowsEditing = true
         picker.sourceType = UIImagePickerController.SourceType.photoLibrary
         present(picker, animated: true, completion: nil)
+        
     }
     
     @IBAction func handleLogout(_ sender: UIButton) {
@@ -118,9 +125,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                 let appDelegate = UIApplication.shared.delegate
                 appDelegate?.window??.rootViewController = signInPage
                 print("-> User has correctly logged out.")
+                
             }
         } catch let signOutError as NSError {
             print ("X Error signing out: %@", signOutError)
+            
         }
     }
     
@@ -134,7 +143,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             guard let userName = data["name"] as? String else { return }
             guard let userEmail = data["email"] as? String else { return }
             guard let userShipName = data["ship_name"] as? String else {
-                
                 let user = Auth.auth().currentUser
                 let defaultShipName = "My Boat"
                 let userData: [String: Any] = ["ship_name": defaultShipName as Any]
@@ -144,10 +152,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                 self.shipName.text = "\" " + defaultShipName + " \""
                 self.fetchUserInfo()
                 return
+                
             }
             
             let user = Auth.auth().currentUser
-            let trace = Performance.startTrace(name: "fetchUserPictureFromInformationView")
+            let trace = Performance.startTrace(name: self.registry.trace3)
             
             if let user = user {
                 _ = Storage.storage().reference().child("profile_pictures").child("\(String(describing: user.uid)).png").downloadURL(completion: { (url, error) in
@@ -159,14 +168,16 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                             let finalPicture = UIImage(data: pictureData! as Data)
                             
                             self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
+                            
                         } else {
                             // set a default avatar
-                            let pictureURL = URL(string: "https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-1/p480x480/29187034_1467064540082381_56763327166021632_n.jpg?_nc_cat=107&_nc_ht=scontent-lax3-2.xx&oh=7c2e6e423e8bd35727d754d1c47059d6&oe=5D33AACC")
+                            let pictureURL = URL(string: self.registry.defaultPictureUrl)
                             // todo, find a better default user profile picture
                             let pictureData = NSData(contentsOf: pictureURL!)
                             let finalPicture = UIImage(data: pictureData! as Data)
                             
                             self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
+                            
                         }
                     } else {
                         // set the custom profile picture if the user has one
@@ -174,15 +185,19 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                         let finalPicture = UIImage(data: pictureData! as Data)
                         
                         self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
+                        
                     }
                     self.turnOffSkeleton()
+                    
                 })
             } else {
                 print("X Error User Not Found In The Storage.")
                 trace?.stop()
                 return
+                
             }
             trace?.stop()
+            
         }
     }
     
@@ -209,16 +224,19 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         }
         dismiss(animated: true, completion: nil)
+        
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         // dismiss the image picker if the cancel button is tapped
         dismiss(animated: true, completion: nil)
+        
     }
     
     func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
         // swift 4 function to convert value
         return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+        
     }
     
     // MARK: - Storage
@@ -227,13 +245,16 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         if let request = Auth.auth().currentUser?.createProfileChangeRequest(){
             if let name = name{
                 request.displayName = name
+                
             }
             if let url = photoUrl{
                 request.photoURL = url
+                
             }
             
             request.commitChanges(completion: { (error) in
                 callback?(error)
+                
             })
         }
     }
@@ -242,6 +263,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         guard let user = Auth.auth().currentUser else {
             callback?(nil)
             return
+            
         }
         
         if let image = image {
@@ -250,14 +272,17 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             _ = profileImgReference.putData(image, metadata: nil) { (metadata, error) in
                 if let error = error {
                     callback?(error)
+                    
                 } else {
                     profileImgReference.downloadURL(completion: { (url, error) in
                         if let url = url{
                             self.createProfileChangeRequest(photoUrl: url, name: name, { (error) in
                                 callback?(error)
                             })
+                            
                         } else {
                             callback?(error)
+                            
                         }
                     })
                 }
@@ -265,9 +290,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         } else if let name = name {
             self.createProfileChangeRequest(name: name, { (error) in
                 callback?(error)
+                
             })
         } else {
             callback?(nil)
+            
         }
     }
     

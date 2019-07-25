@@ -13,10 +13,14 @@ import Fabric
 
 class StartViewController: UIViewController, UIPageViewControllerDelegate {
     
-    // MARK: - outlets
+    // MARK: - Variables
     
-    @IBOutlet weak var StartButton: UIButton!
-    @IBOutlet weak var CrashButton: UIButton!
+    let registry = Registry()
+    
+    // MARK: - Outlets
+    
+    @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var crashButton: UIButton!
     
     // MARK: - ViewDidLoad
     
@@ -24,17 +28,18 @@ class StartViewController: UIViewController, UIPageViewControllerDelegate {
         super.viewDidLoad()
         
         // apply the design stuff to the view
-        setupRadiant()
+        setupView()
         //Fabric.sharedSDK().debug = true
-        CrashButton.isHidden = true
+        
     }
     
     // MARK: - Setup
     
-    func setupRadiant() {
-        let color1 = UIColor(rgb: 0x57A1FF)
-        let color2 = UIColor(rgb: 0x6dd5ed)
-        self.StartButton.applyGradient(colours:[color1, color2], corner:27.5)
+    func setupView() {
+        let color1 = registry.customClearBlue
+        let color2 = registry.customWhiteBlue
+        startButton.applyGradient(colours:[color1, color2], corner:27.5)
+        crashButton.isHidden = true
     }
     
     // MARK: - Actions
@@ -43,6 +48,5 @@ class StartViewController: UIViewController, UIPageViewControllerDelegate {
         print("Crash Button Pressed!")
         Crashlytics.sharedInstance().crash()
     }
-    
     
 }

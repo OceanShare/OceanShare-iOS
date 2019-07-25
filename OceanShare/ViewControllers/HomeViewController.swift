@@ -8,16 +8,16 @@
 
 import UIKit
 import Mapbox
+import MapKit
+import SwiftyJSON
+import Alamofire
+import CoreLocation
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseCore
 import FirebaseStorage
 import FirebasePerformance
-import JJFloatingActionButton
-import SwiftyJSON
-import MapKit
-import CoreLocation
-import Alamofire
+
 
 class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate {
 
@@ -31,7 +31,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var effect: UIVisualEffect!
     var viewStacked: UIView?
     var overViewStacked: UIView?
-    var compassOriginY: CGFloat = 55
     var cordinate: CLLocationCoordinate2D!
     let locationManager = CLLocationManager()
     
@@ -39,19 +38,22 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var isInside = false
     var mapView: MGLMapView!
     
-    // weather icon
-    var uvGlobal: String!
-    
     // tag properties
-    var Tag_properties = Tag(description: "", id: 0, latitude: 0.0, longitude: 0.0, time: "", user: "")
-    var Tags_ids = [String]()
-    var Tags_hashs = [Int]()
+    var tagProperties = Tag(description: "", id: 0, latitude: 0.0, longitude: 0.0, time: "", user: "")
+    var tagIds = [String]()
+    var tagHashs = [Int]()
     
-    // tag globals
+    // saved tag
     var selectedTag: MGLAnnotation?
     var selectedTagId: String?
     var selectedTagUserId: String?
     var selectedTagUserName: String?
+    
+    // globals
+    var uvGlobal: String!
+    let registry = Registry()
+    let weather = Weather.self
+    let appUser = AppUser.self
     
     // MARK: - Outlets
     
@@ -61,9 +63,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var oceanShareLogo: UIImageView!
     @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var longitudeStackView: UIStackView!
+    @IBOutlet weak var longitudeView: DesignableView!
     @IBOutlet weak var currentLongitudeLabel: UILabel!
-    @IBOutlet weak var latitudeStackView: UIStackView!
+    @IBOutlet weak var latitudeView: DesignableView!
     @IBOutlet weak var currentLatitudeLabel: UILabel!
     
     // icon view
@@ -119,19 +121,59 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         super.viewDidLoad()
         
         ref = Database.database().reference().child("markers")
-        syncData()
         
-        // define the MLG map view and the user on this map
+        syncData()
         setupView()
         
-        // setup the visual effect
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        setupCompass()
+        
+    }
+    
+    // MARK: - Location Manager
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        currentLatitudeLabel.text = String(format:"%f", locValue.latitude)
+        currentLongitudeLabel.text = String(format:"%f", locValue.longitude)
+        
+    }
+    
+    // MARK: - Setup
+    
+    func setupView() {
+        // blur effect
         effect = visualEffectView.effect
         visualEffectView.effect = nil
         visualEffectView.isHidden = true
-        
-        self.locationManager.requestAlwaysAuthorization()
-        // For use in foreground
-        self.locationManager.requestWhenInUseAuthorization()
+        // mapview setup
+        mapView = MGLMapView(frame: view.bounds)
+        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        mapView.delegate = self
+        mapView.logoView.isHidden = true
+        mapView.attributionButton.isHidden = true
+        // enable heading tracking mode (arrow will appear)
+        mapView.userTrackingMode = .followWithHeading
+        // enable the permanent heading indicator which will appear when the tracking mode is not `.followWithHeading`.
+        mapView.showsUserHeadingIndicator = true
+        getTagsFromServer(mapView: self.mapView)
+        // icon setup
+        setupCustomIcons()
+        // add the layers in the right order
+        view.addSubview(mapView)
+        view.addSubview(headerView)
+        view.addSubview(longitudeView)
+        view.addSubview(latitudeView)
+        view.addSubview(centerView)
+        view.addSubview(buttonMenu)
+        view.addSubview(visualEffectView)
+        // setup the location manager
+        locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
@@ -140,88 +182,45 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        self.setupCompass()
-        
-    }
-    
-    // MARK: - Location Manager
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        self.currentLatitudeLabel.text = String(format:"%f", locValue.latitude)
-        self.currentLongitudeLabel.text = String(format:"%f", locValue.longitude)
-        
-    }
-    
-    // MARK: - Setup
-    
-    func setupView() {
-        // mapview setup
-        self.mapView = MGLMapView(frame: view.bounds)
-        self.mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.mapView.delegate = self
-        self.mapView.logoView.isHidden = true
-        self.mapView.attributionButton.isHidden = true
-        // enable heading tracking mode (arrow will appear)
-        self.mapView.userTrackingMode = .followWithHeading
-        // enable the permanent heading indicator which will appear when the tracking mode is not `.followWithHeading`.
-        self.mapView.showsUserHeadingIndicator = true
-        self.getTagsFromServer(mapView: self.mapView)
-        // icon setup
-        self.setupCustomIcons()
-        // add the layers in the right order
-        self.view.addSubview(mapView)
-        self.view.addSubview(headerView)
-        self.view.addSubview(longitudeStackView)
-        self.view.addSubview(latitudeStackView)
-        self.view.addSubview(centerView)
-        self.view.addSubview(buttonMenu)
-        self.view.addSubview(visualEffectView)
-        
-    }
-    
     func setupCustomIcons() {
         // map view
-        self.centerIcon.image = self.centerIcon.image!.withRenderingMode(.alwaysTemplate)
-        self.centerIcon.tintColor = UIColor(rgb: 0xFFFFFF)
+        centerIcon.image = centerIcon.image!.withRenderingMode(.alwaysTemplate)
+        centerIcon.tintColor = registry.customWhite
         
         // icon view
-        self.closeIcon.image = self.closeIcon.image!.withRenderingMode(.alwaysTemplate)
-        self.closeIcon.tintColor = UIColor(rgb: 0x000000)
+        closeIcon.image = closeIcon.image!.withRenderingMode(.alwaysTemplate)
+        closeIcon.tintColor = registry.customBlack
         
         // description view
-        self.editIcon.image = self.editIcon.image!.withRenderingMode(.alwaysTemplate)
-        self.editIcon.tintColor = UIColor(rgb: 0xC5C7D2)
-        self.closeDescriptionIcon.image = self.closeDescriptionIcon.image!.withRenderingMode(.alwaysTemplate)
-        self.closeDescriptionIcon.tintColor = UIColor(rgb: 0x000000)
-        self.thumbUpIcon.image = self.thumbUpIcon.image!.withRenderingMode(.alwaysTemplate)
-        self.thumbUpIcon.tintColor = UIColor(rgb: 0x606060)
-        self.thumbDownIcon.image = self.thumbDownIcon.image!.withRenderingMode(.alwaysTemplate)
-        self.thumbDownIcon.tintColor = UIColor(rgb: 0x606060)
+        editIcon.image = editIcon.image!.withRenderingMode(.alwaysTemplate)
+        editIcon.tintColor = registry.customGrey
+        closeDescriptionIcon.image = closeDescriptionIcon.image!.withRenderingMode(.alwaysTemplate)
+        closeDescriptionIcon.tintColor = registry.customBlack
+        thumbUpIcon.image = thumbUpIcon.image!.withRenderingMode(.alwaysTemplate)
+        thumbUpIcon.tintColor = registry.customDarkGrey
+        thumbDownIcon.image = thumbDownIcon.image!.withRenderingMode(.alwaysTemplate)
+        thumbDownIcon.tintColor = registry.customDarkGrey
         
     }
     
     func setupCompass() {
-        var centerPoint = self.mapView.compassView.center
+        var centerPoint = mapView.compassView.center
         centerPoint.y = 130
-        self.mapView.compassView.center = centerPoint
+        mapView.compassView.center = centerPoint
         
     }
     
     // MARK: - Animations
     
     func PutMessageOnHeader(msg: String, color: UIColor) {
-        self.oceanShareLogo.isHidden = true
-        self.headerView.backgroundColor = color
-        self.messageLabel.text = msg
-        self.messageLabel.isHidden = false
+        oceanShareLogo.isHidden = true
+        headerView.backgroundColor = color
+        messageLabel.text = msg
+        messageLabel.isHidden = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             self.messageLabel.isHidden = true
             self.oceanShareLogo.isHidden = false
-            self.headerView.backgroundColor = UIColor(rgb: 0xD3F2FF)
+            self.headerView.backgroundColor = self.registry.customMilkyWhite
             
         }
     }
@@ -276,117 +275,117 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     // MARK: - Map View
     
     @IBAction func centerMapToUser(_ sender: Any) {
-        self.mapView.setCenter(mapView.userLocation!.coordinate, animated: true)
+        mapView.setCenter(mapView.userLocation!.coordinate, animated: true)
         
     }
     
     @IBAction func openMenu(_ sender: Any) {
-        self.viewStacked = iconView
-        self.animateInWithOptionalEffect(view: iconView, effect: true)
+        viewStacked = iconView
+        animateInWithOptionalEffect(view: iconView, effect: true)
         
     }
     
     // MARK: - Icon View
     
     @IBAction func closeMenu(_ sender: Any) {
-        self.animateOutWithOptionalEffect(effect: true)
+        animateOutWithOptionalEffect(effect: true)
         
     }
     
     @IBAction func medusaActivate(_ sender: Any) {
-        Tag_properties.id = 0
-        Tag_properties.description = "Jellyfishs"
-        Tag_properties.time = getCurrentTime()
-        Tag_properties.user = getCurrentUser()
-        self.putIconOnMap(activate: true)
-        self.animateOutWithOptionalEffect(effect: true)
-        self.PutMessageOnHeader(msg: "Jellyfishs event selected.", color: UIColor(rgb: 0x5BD999))
+        tagProperties.id = 0
+        tagProperties.description = "Jellyfishs"
+        tagProperties.time = weather.getCurrentTime()
+        tagProperties.user = appUser.getCurrentUser()
+        putIconOnMap(activate: true)
+        animateOutWithOptionalEffect(effect: true)
+        PutMessageOnHeader(msg: "Jellyfishs event selected.", color: registry.customGreen)
         
     }
     
     @IBAction func diverActivate(_ sender: Any) {
-        Tag_properties.id = 1
-        Tag_properties.description = "Divers"
-        Tag_properties.time = getCurrentTime()
-        Tag_properties.user = getCurrentUser()
-        self.putIconOnMap(activate: true)
-        self.animateOutWithOptionalEffect(effect: true)
-        self.PutMessageOnHeader(msg: "Divers event selected.", color: UIColor(rgb: 0x5BD999))
+        tagProperties.id = 1
+        tagProperties.description = "Divers"
+        tagProperties.time = weather.getCurrentTime()
+        tagProperties.user = appUser.getCurrentUser()
+        putIconOnMap(activate: true)
+        animateOutWithOptionalEffect(effect: true)
+        PutMessageOnHeader(msg: "Divers event selected.", color: registry.customGreen)
         
     }
     
     @IBAction func wasteActivate(_ sender: Any) {
-        Tag_properties.id = 2
-        Tag_properties.description = "Waste"
-        Tag_properties.time = getCurrentTime()
-        Tag_properties.user = getCurrentUser()
-        self.putIconOnMap(activate: true)
-        self.animateOutWithOptionalEffect(effect: true)
-        self.PutMessageOnHeader(msg: "Waste event selected.", color: UIColor(rgb: 0x5BD999))
+        tagProperties.id = 2
+        tagProperties.description = "Waste"
+        tagProperties.time = weather.getCurrentTime()
+        tagProperties.user = appUser.getCurrentUser()
+        putIconOnMap(activate: true)
+        animateOutWithOptionalEffect(effect: true)
+        PutMessageOnHeader(msg: "Waste event selected.", color: registry.customGreen)
         
     }
     
     @IBAction func warningActivate(_ sender: Any) {
-        Tag_properties.id = 3
-        Tag_properties.description = "Warning"
-        Tag_properties.time = getCurrentTime()
-        Tag_properties.user = getCurrentUser()
-        self.putIconOnMap(activate: true)
-        self.animateOutWithOptionalEffect(effect: true)
-        self.PutMessageOnHeader(msg: "Warning event selected.", color: UIColor(rgb: 0x5BD999))
+        tagProperties.id = 3
+        tagProperties.description = "Warning"
+        tagProperties.time = weather.getCurrentTime()
+        tagProperties.user = appUser.getCurrentUser()
+        putIconOnMap(activate: true)
+        animateOutWithOptionalEffect(effect: true)
+        PutMessageOnHeader(msg: "Warning event selected.", color: registry.customGreen)
 
     }
     
     @IBAction func dolphinActivate(_ sender: Any) {
-        Tag_properties.id = 4
-        Tag_properties.description = "Dolphins"
-        Tag_properties.time = getCurrentTime()
-        Tag_properties.user = getCurrentUser()
-        self.putIconOnMap(activate: true)
-        self.animateOutWithOptionalEffect(effect: true)
-        self.PutMessageOnHeader(msg: "Dolphins event selected.", color: UIColor(rgb: 0x5BD999))
+        tagProperties.id = 4
+        tagProperties.description = "Dolphins"
+        tagProperties.time = weather.getCurrentTime()
+        tagProperties.user = appUser.getCurrentUser()
+        putIconOnMap(activate: true)
+        animateOutWithOptionalEffect(effect: true)
+        PutMessageOnHeader(msg: "Dolphins event selected.", color: registry.customGreen)
 
     }
     
     @IBAction func destinationActivate(_ sender: Any) {
-        Tag_properties.id = 5
-        Tag_properties.description = "Destination"
-        Tag_properties.time = getCurrentTime()
-        Tag_properties.user = getCurrentUser()
-        self.putIconOnMap(activate: true)
-        self.animateOutWithOptionalEffect(effect: true)
-        self.PutMessageOnHeader(msg: "Destination event selected.", color: UIColor(rgb: 0x5BD999))
+        tagProperties.id = 5
+        tagProperties.description = "Destination"
+        tagProperties.time = weather.getCurrentTime()
+        tagProperties.user = appUser.getCurrentUser()
+        putIconOnMap(activate: true)
+        animateOutWithOptionalEffect(effect: true)
+        PutMessageOnHeader(msg: "Destination event selected.", color: registry.customGreen)
 
     }
     
     @IBAction func weatherActivate(_ sender: Any) {
-        self.animateOutWithOptionalEffect(effect: true)
-        self.putWeatherOnMap(activate: true)
-        self.PutMessageOnHeader(msg: "Weather information selected.", color: UIColor(rgb: 0x5BD999))
+        animateOutWithOptionalEffect(effect: true)
+        putWeatherOnMap(activate: true)
+        PutMessageOnHeader(msg: "Weather information selected.", color: registry.customGreen)
 
     }
     
     // MARK: - Description View
     
     @IBAction func closeDescription(_ sender: Any) {
-        self.animateOutWithOptionalEffect(effect: true)
+        animateOutWithOptionalEffect(effect: true)
     }
     
     @IBAction func downVoteEvent(_ sender: Any) {
-        self.thumbDownView.backgroundColor = UIColor(rgb: 0xFB6060)
-        self.thumbDownIcon.tintColor = UIColor(rgb: 0xFFFFFF)
+        thumbDownView.backgroundColor = registry.customRed
+        thumbDownIcon.tintColor = registry.customWhite
         // TODO: down-voting event
     }
     
     @IBAction func upVoteEvent(_ sender: Any) {
-        self.thumbUpView.backgroundColor = UIColor(rgb: 0x41E08D)
-        self.thumbUpIcon.tintColor = UIColor(rgb: 0xFFFFFF)
+        thumbUpView.backgroundColor = registry.customFlashGreen
+        thumbUpIcon.tintColor = registry.customWhite
         // TODO: up-voting event
     }
     
     @IBAction func editEvent(_ sender: Any) {
-        self.overViewStacked = editionView
-        self.animateInWithOptionalEffect(view: editionView, effect: false)
+        overViewStacked = editionView
+        animateInWithOptionalEffect(view: editionView, effect: false)
 
     }
     
@@ -396,65 +395,51 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         var firebaseId: String
         var markerHash: Int
         
-        self.Tag_properties.description = self.descriptionTextField.text
-        firebaseId = self.saveTags(Tag: self.Tag_properties)
-        markerHash = self.putTag(mapView: self.mapView, Tag: self.Tag_properties)
-        self.putTagsinArray(MarkerHash: markerHash, FirebaseID: firebaseId)
-        self.animateOutWithOptionalEffect(effect: true)
-        self.descriptionTextField.text = ""
-        self.PutMessageOnHeader(msg: "Your event has been dropped.", color: UIColor(rgb: 0x5BD999))
-        self.putIconOnMap(activate: false)
+        tagProperties.description = descriptionTextField.text
+        firebaseId = saveTags(Tag: tagProperties)
+        markerHash = putTag(mapView: mapView, Tag: tagProperties)
+        putTagsinArray(MarkerHash: markerHash, FirebaseID: firebaseId)
+        animateOutWithOptionalEffect(effect: true)
+        descriptionTextField.text = ""
+        PutMessageOnHeader(msg: "Your event has been dropped.", color: registry.customGreen)
+        putIconOnMap(activate: false)
         
     }
     
     @IBAction func cancelComment(_ sender: Any) {
-        self.animateOutWithOptionalEffect(effect: true)
-        self.descriptionTextField.text = ""
-        self.putIconOnMap(activate: false)
+        animateOutWithOptionalEffect(effect: true)
+        descriptionTextField.text = ""
+        putIconOnMap(activate: false)
         
     }
     
     // MARK: - Edition View
     
     @IBAction func changeDescription(_ sender: Any) {
-        self.ref.child(self.selectedTagId!).updateChildValues(["description": self.newDescriptionTextField.text!])
-        self.fetchTag(MarkerHash: selectedTag!.hash)
-        self.animateOutWithOptionalEffect(effect: false)
+        ref.child(selectedTagId!).updateChildValues(["description": newDescriptionTextField.text!])
+        fetchTag(MarkerHash: selectedTag!.hash)
+        animateOutWithOptionalEffect(effect: false)
         
     }
     
     @IBAction func deleteEvent(_ sender: Any) {
-        self.removeTag(MarkerHash: selectedTag!.hash)
-        self.mapView.removeAnnotation(selectedTag!)
-        self.animateOutWithOptionalEffect(effect: false)
-        self.animateOutWithOptionalEffect(effect: true)
-        self.PutMessageOnHeader(msg: "Event correctly deleted.", color: UIColor(rgb: 0x5BD999))
+        removeTag(MarkerHash: selectedTag!.hash)
+        mapView.removeAnnotation(selectedTag!)
+        animateOutWithOptionalEffect(effect: false)
+        animateOutWithOptionalEffect(effect: true)
+        PutMessageOnHeader(msg: "Event correctly deleted.", color: registry.customGreen)
         
     }
     
     @IBAction func closeEdition(_ sender: Any) {
-        self.animateOutWithOptionalEffect(effect: false)
+        animateOutWithOptionalEffect(effect: false)
 
     }
     
-    // MARK: - Getters
-    
-    func getCurrentTime() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
-        let dateInFormat = dateFormatter.string(from: NSDate() as Date)
-        return (dateInFormat)
-        
-    }
-    
-    func getCurrentUser() -> String {
-        let userId = Auth.auth().currentUser?.uid
-        return (userId ?? "Cannot get User")
-        
-    }
+    // MARK: - Description View
     
     func getUserNameById(userId: String) {
-        let trace = Performance.startTrace(name: "getUserName")
+        let trace = Performance.startTrace(name: registry.trace1)
         let userRef = Database.database().reference().child("users")
         
         userRef.child(userId).observeSingleEvent(of: .value) { (snapshot) in
@@ -470,71 +455,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             }
             self.userLabel.text = "Dropped by: " + userNameFromData + "."
             trace?.stop()
-            
-        }
-    }
-    
-    func getDateFromString(time: String) -> Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
-        dateFormatter.locale = Locale(identifier: "fr_GP")
-        let date = dateFormatter.date(from:time)!
-        return date
-        
-    }
-    
-    func getPastTime(for date : Date) -> String {
-        var secondsAgo = Int(Date().timeIntervalSince(date))
-        if secondsAgo < 0 {
-            secondsAgo = secondsAgo * (-1)
-            
-        }
-        let minute = 60
-        let hour = 60 * minute
-        let day = 24 * hour
-        let week = 7 * day
-        
-        if secondsAgo < minute  {
-            if secondsAgo < 2 {
-                return "Just now."
-                
-            } else {
-                return "\(secondsAgo) seconds ago."
-                
-            }
-        } else if secondsAgo < hour {
-            let min = secondsAgo/minute
-            if min == 1{
-                return "\(min) minutes ago."
-                
-            } else {
-                return "\(min) minutes ago."
-                
-            }
-        } else if secondsAgo < day {
-            let hr = secondsAgo/hour
-            if hr == 1{
-                return "\(hr) hour ago."
-                
-            } else {
-                return "\(hr) hours ago."
-                
-            }
-        } else if secondsAgo < week {
-            let day = secondsAgo/day
-            if day == 1{
-                return "\(day) day ago."
-                
-            } else {
-                return "\(day) days ago."
-                
-            }
-        } else {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MM/dd, hh:mm a"
-            formatter.locale = Locale(identifier: "fr_GP")
-            let strDate: String = formatter.string(from: date)
-            return strDate
             
         }
     }
@@ -584,8 +504,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     func putTagsinArray(MarkerHash: Int, FirebaseID: String) {
-        self.Tags_ids.append(FirebaseID)
-        self.Tags_hashs.append(MarkerHash)
+        tagIds.append(FirebaseID)
+        tagHashs.append(MarkerHash)
         
     }
     
@@ -616,27 +536,27 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     func syncData() {
         // related to firebase's real time database
         ref.observeSingleEvent(of: .childAdded) { (snapshot) in
-            self.Tag_properties.description = snapshot.childSnapshot(forPath:"description").value as? String
-            self.Tag_properties.id = snapshot.childSnapshot(forPath:"groupId").value as? Int
-            self.Tag_properties.latitude = snapshot.childSnapshot(forPath:"latitude").value as? Double
-            self.Tag_properties.longitude = snapshot.childSnapshot(forPath:"longitude").value as? Double
-            _ = self.putTag(mapView: self.mapView, Tag: self.Tag_properties)
+            self.tagProperties.description = snapshot.childSnapshot(forPath:"description").value as? String
+            self.tagProperties.id = snapshot.childSnapshot(forPath:"groupId").value as? Int
+            self.tagProperties.latitude = snapshot.childSnapshot(forPath:"latitude").value as? Double
+            self.tagProperties.longitude = snapshot.childSnapshot(forPath:"longitude").value as? Double
+            _ = self.putTag(mapView: self.mapView, Tag: self.tagProperties)
             
         }
         ref.observeSingleEvent(of: .childRemoved) { (snapshot) in
             let Tag_id = snapshot.key
             
             var count = 0
-            while (self.Tags_ids[count] != Tag_id) {
+            while (self.tagIds[count] != Tag_id) {
                 count = count + 1
             
             }
             let allAnnotations = self.mapView.annotations
             for eachAnnot in allAnnotations! {
-                if eachAnnot.hash == self.Tags_hashs[count] {
+                if eachAnnot.hash == self.tagHashs[count] {
                     print("MATCH")
                     self.mapView.removeAnnotation(eachAnnot)
-                    self.removeTag(MarkerHash: self.Tags_hashs[count])
+                    self.removeTag(MarkerHash: self.tagHashs[count])
                 
                 }
             }
@@ -649,7 +569,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         var count = 0
         let hasDoneWork = false
         
-        while (Tags_hashs[count] != MarkerHash) {
+        while (tagHashs[count] != MarkerHash) {
             count = count + 1
             
         }
@@ -657,7 +577,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             if snapshot.childrenCount > 0 {
                 for tag in snapshot.children.allObjects as! [DataSnapshot] {
                     
-                    if (self.Tags_ids[count] == tag.key && hasDoneWork == false) {
+                    if (self.tagIds[count] == tag.key && hasDoneWork == false) {
                         let data = tag.value as? NSDictionary
                         let id  = data?["groupId"] as? Int
                         let description = data?["description"] as? String
@@ -669,7 +589,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                             
                         }
                     
-                        self.timeLabel.text = self.getPastTime(for: self.getDateFromString(time: time!))
+                        self.timeLabel.text = self.weather.getPastTime(for: self.weather.getDateFromString(time: time!))
                         self.selectedTagId = tag.key
                         self.selectedTagUserId = user
                         self.descriptionLabel.text = description
@@ -758,19 +678,19 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     func removeTag(MarkerHash: Int) {
         var count = 0
         
-        while (Tags_hashs[count] != MarkerHash) {
+        while (tagHashs[count] != MarkerHash) {
             count = count + 1
         
         }
         
-        self.ref.child(self.selectedTagId!).removeValue { (error, ref) in
+        ref.child(selectedTagId!).removeValue { (error, ref) in
             if error != nil {
                 print("Failed to delete tag: ", error!)
                 return
                 
             }
-            self.Tags_hashs.remove(at: count)
-            self.Tags_ids.remove(at: count)
+            self.tagHashs.remove(at: count)
+            self.tagIds.remove(at: count)
             
         }
     }
@@ -791,10 +711,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         // hide the callout view.
         mapView.deselectAnnotation(annotation, animated: false)
         // description view popup animation
-        self.viewStacked = descriptionView
+        viewStacked = descriptionView
         animateInWithOptionalEffect(view: descriptionView, effect: true)
         // fetch the selected tag
-        self.selectedTag = annotation
+        selectedTag = annotation
         fetchTag(MarkerHash: annotation.hash)
         
     }
@@ -877,8 +797,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         if (self.isInside == true) {
             let PressScreenCoordinates = recognizer.location(in: mapView)
             let PressMapCoordinates = mapView.convert(PressScreenCoordinates, toCoordinateFrom: mapView)
-            Tag_properties.latitude = PressMapCoordinates.latitude
-            Tag_properties.longitude = PressMapCoordinates.longitude
+            tagProperties.latitude = PressMapCoordinates.latitude
+            tagProperties.longitude = PressMapCoordinates.longitude
             
             let point = mapView.convert(PressMapCoordinates, toPointTo: mapView)
             let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
@@ -887,7 +807,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 self.animateInWithOptionalEffect(view: commentView, effect: true)
                 
             } else {
-                self.PutMessageOnHeader(msg: "Can't drop markers on earth.", color: UIColor(rgb: 0xFB6060))
+                self.PutMessageOnHeader(msg: "Can't drop markers on earth.", color: self.registry.customRed)
                 
             }
         }
@@ -935,7 +855,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 self.putWeatherOnMap(activate: false)
                 
             } else {
-                self.PutMessageOnHeader(msg: "Can't drop markers on earth.", color: UIColor(rgb: 0xFB6060))
+                self.PutMessageOnHeader(msg: "Can't get weather from earth.", color: self.registry.customRed)
                 
             }
         }
@@ -953,7 +873,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             "Accept": "application/json",
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjF9.Vcp2grZ53t_OG3jwSXsRwfc_UUjboNgZarkAGiX0jgM" ]
         
-        let trace = Performance.startTrace(name: "getWeatherFromCurrentLocation")
+        let trace = Performance.startTrace(name: registry.trace2)
         _ = AF.request("http://35.198.134.25:5000/api/weather",
                        method: .get,
                        parameters: param,
@@ -969,19 +889,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         trace?.stop()
     }
     
-    func analyseUvIndex(uvIndex: Double) {
-        if uvIndex < 2 {
-            self.uvGlobal = "\(round(100 * uvIndex) / 100) (Low)"
-            
-        } else if uvIndex > 6 {
-            self.uvGlobal = "\(round(100 * uvIndex) / 100) (High)"
-            
-        } else {
-            self.uvGlobal = "\(round(100 * uvIndex) / 100) (Medium)"
-            
-        }
-    }
-    
     func transformData(rawData: JSON) {
         // get uv index
         if let uvData = rawData["uv"].string {
@@ -989,7 +896,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             let uvAsJson = JSON(uvAsData)
             
             if let uvIndex = uvAsJson["value"].double {
-                self.analyseUvIndex(uvIndex: uvIndex)
+                self.uvGlobal = self.weather.analyseUvIndex(uvIndex: uvIndex)
                 
             } else {
                 print(uvAsJson["value"].error!)
@@ -1020,50 +927,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     func didGetWeather(weather: Weather) {
         DispatchQueue.main.async {
-            
             print("Value to check (weatherID -> weatherImage): ", weather.weatherID)
-            
-            if (weather.dateAndTime < weather.sunrise) || (weather.dateAndTime > weather.sunset) {
-                switch weather.weatherID {
-                case 0...232 :
-                    self.weatherImage.image = UIImage(named: "storm")
-                case 300...321, 500...504, 520...531 :
-                    self.weatherImage.image = UIImage(named: "night_rain")
-                case 511, 600...622 :
-                    self.weatherImage.image = UIImage(named: "snow")
-                case 801...804 :
-                    self.weatherImage.image = UIImage(named: "night_cloud")
-                default:
-                    self.weatherImage.image = UIImage(named: "moon")
-                    
-                }
-            } else {
-                switch weather.weatherID {
-                case 0...232 :
-                    self.weatherImage.image = UIImage(named: "storm")
-                case 300...321, 520...531 :
-                    self.weatherImage.image = UIImage(named: "light_rain")
-                case 500...504 :
-                    self.weatherImage.image = UIImage(named: "rain")
-                case 511, 600...601, 615...622 :
-                    self.weatherImage.image = UIImage(named: "snow")
-                case 611...613 :
-                    self.weatherImage.image = UIImage(named: "hail")
-                case 701...771 :
-                    self.weatherImage.image = UIImage(named: "cloud")
-                case 781 :
-                    self.weatherImage.image = UIImage(named: "tornado")
-                case 800 :
-                    self.weatherImage.image = UIImage(named: "sunny")
-                case 801, 802 :
-                    self.weatherImage.image = UIImage(named: "overcast_cloud")
-                case 803, 804 :
-                    self.weatherImage.image = UIImage(named: "clouds")
-                default :
-                    self.weatherImage.image = UIImage(named: "thermometer")
-                    
-                }
-            }
+            self.weatherImage.image = self.weather.analyseDescription(weather: weather, registry: self.registry)
             
             self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
             self.weatherLabel.text = weather.weatherDescription
@@ -1191,9 +1056,9 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
         let max: CGFloat = size / 2
         let pad: CGFloat = 3
         
-        let top =    CGPoint(x: max * 0.5, y: 0)
-        let left =   CGPoint(x: 0 + pad,   y: max - pad)
-        let right =  CGPoint(x: max - pad, y: max - pad)
+        let top = CGPoint(x: max * 0.5, y: 0)
+        let left = CGPoint(x: 0 + pad, y: max - pad)
+        let right = CGPoint(x: max - pad, y: max - pad)
         let center = CGPoint(x: max * 0.5, y: max * 0.6)
         
         let bezierPath = UIBezierPath()
