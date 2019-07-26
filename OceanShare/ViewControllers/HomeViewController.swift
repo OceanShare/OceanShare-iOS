@@ -39,7 +39,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var mapView: MGLMapView!
     
     // tag properties
-    var tagProperties = Tag(description: "", id: 0, latitude: 0.0, longitude: 0.0, time: "", user: "")
+    var tagProperties = Tag(description: "", id: 0, latitude: 0.0, longitude: 0.0, time: "", user: "", timestamp: "")
     var tagIds = [String]()
     var tagHashs = [Int]()
     
@@ -297,6 +297,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         tagProperties.description = "Jellyfishs"
         tagProperties.time = weather.getCurrentTime()
         tagProperties.user = appUser.getCurrentUser()
+        tagProperties.timestamp = ServerValue.timestamp()
         putIconOnMap(activate: true)
         animateOutWithOptionalEffect(effect: true)
         PutMessageOnHeader(msg: "Jellyfishs event selected.", color: registry.customGreen)
@@ -308,6 +309,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         tagProperties.description = "Divers"
         tagProperties.time = weather.getCurrentTime()
         tagProperties.user = appUser.getCurrentUser()
+        tagProperties.timestamp = ServerValue.timestamp()
         putIconOnMap(activate: true)
         animateOutWithOptionalEffect(effect: true)
         PutMessageOnHeader(msg: "Divers event selected.", color: registry.customGreen)
@@ -319,6 +321,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         tagProperties.description = "Waste"
         tagProperties.time = weather.getCurrentTime()
         tagProperties.user = appUser.getCurrentUser()
+        tagProperties.timestamp = ServerValue.timestamp()
         putIconOnMap(activate: true)
         animateOutWithOptionalEffect(effect: true)
         PutMessageOnHeader(msg: "Waste event selected.", color: registry.customGreen)
@@ -330,6 +333,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         tagProperties.description = "Warning"
         tagProperties.time = weather.getCurrentTime()
         tagProperties.user = appUser.getCurrentUser()
+        tagProperties.timestamp = ServerValue.timestamp()
         putIconOnMap(activate: true)
         animateOutWithOptionalEffect(effect: true)
         PutMessageOnHeader(msg: "Warning event selected.", color: registry.customGreen)
@@ -341,6 +345,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         tagProperties.description = "Dolphins"
         tagProperties.time = weather.getCurrentTime()
         tagProperties.user = appUser.getCurrentUser()
+        tagProperties.timestamp = ServerValue.timestamp()
         putIconOnMap(activate: true)
         animateOutWithOptionalEffect(effect: true)
         PutMessageOnHeader(msg: "Dolphins event selected.", color: registry.customGreen)
@@ -352,6 +357,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         tagProperties.description = "Destination"
         tagProperties.time = weather.getCurrentTime()
         tagProperties.user = appUser.getCurrentUser()
+        tagProperties.timestamp = ServerValue.timestamp()
         putIconOnMap(activate: true)
         animateOutWithOptionalEffect(effect: true)
         PutMessageOnHeader(msg: "Destination event selected.", color: registry.customGreen)
@@ -521,8 +527,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     let y = data?["longitude"] as? Double
                     let time = data?["time"] as? String
                     let user = data?["user"] as? String
+                    let timestamp = data?["timestamp"] as? String
                     var markerHash: Int
-                    markerHash = self.putTag(mapView: mapView, Tag: Tag(description: description, id: id, latitude: x, longitude: y, time: time, user: user))
+                    markerHash = self.putTag(mapView: mapView, Tag: Tag(description: description, id: id, latitude: x, longitude: y, time: time, user: user, timestamp: timestamp))
                     self.putTagsinArray(MarkerHash: markerHash, FirebaseID: tag.key)
                     
                 }
@@ -667,7 +674,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             "latitude": Tag.latitude as Any,
             "longitude": Tag.longitude as Any,
             "time": Tag.time as Any,
-            "user": Tag.user as Any
+            "user": Tag.user as Any,
+            "timestamp": Tag.timestamp as Any
         ]
         
         self.ref.child(key!).setValue(TagFirebase)
@@ -947,7 +955,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             self.rainRiskLabel.text = "\(weather.cloudCover) %"
             self.waterTemperatureLabel.text = "-- °C"
             
-            self.windLabel.text = "\(round(100 * (weather.windSpeed * ( 60 * 60 ) / 1000)) / 100) km/h"
+            // TODO: check
+            //self.windLabel.text = "\(round(100 * (weather.windSpeed * ( 60 * 60 ) / 1000)) / 100) km/h"
+            self.windLabel.text = self.weather.analyseWindDirection(degrees: weather.windSpeed)
             self.humidityLabel.text = "\(weather.humidity) %"
             
             if weather.visibility != nil {

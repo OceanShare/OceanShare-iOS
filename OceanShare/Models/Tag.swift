@@ -17,5 +17,6 @@ struct Tag {
     var longitude: Double?
     var time: String?
     var user: String?
+    var timestamp: Any?
     
 }

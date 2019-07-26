@@ -162,7 +162,9 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             self.rainRiskLabel.text = "\(weather.cloudCover) %"
             self.waterTemperatureLabel.text = "-- °C"
             
-            self.windLabel.text = "\(round(100 * (weather.windSpeed * ( 60 * 60 ) / 1000)) / 100) km/h"
+            // TODO: test
+            //self.windLabel.text = "\(round(100 * (weather.windSpeed * ( 60 * 60 ) / 1000)) / 100) km/h"
+            self.windLabel.text = self.weather.analyseWindDirection(degrees: weather.windSpeed)
             self.humidityLabel.text = "\(weather.humidity) %"
             
             if weather.visibility != nil {
