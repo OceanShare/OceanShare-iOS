@@ -120,10 +120,10 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         let headers: HTTPHeaders = [
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjF9.Vcp2grZ53t_OG3jwSXsRwfc_UUjboNgZarkAGiX0jgM" ]
+            "Authorization": self.registry.apiBearer ]
         
         let trace = Performance.startTrace(name: self.registry.trace4)
-        _ = AF.request("http://35.198.134.25:5000/api/weather",
+        _ = AF.request(self.registry.apiUrl,
                            method: .get,
                            parameters: param,
                            encoding: URLEncoding.default,
@@ -142,7 +142,6 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     func didGetWeather(weather: Weather) {
         DispatchQueue.main.async {
-            print("Value to check (weatherID -> weatherImage): ", weather.weatherID)
             self.weatherImage.image = self.weather.analyseDescription(weather: weather, registry: self.registry)
             
             self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
@@ -162,8 +161,6 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             self.rainRiskLabel.text = "\(weather.cloudCover) %"
             self.waterTemperatureLabel.text = "-- °C"
             
-            // TODO: test
-            //self.windLabel.text = "\(round(100 * (weather.windSpeed * ( 60 * 60 ) / 1000)) / 100) km/h"
             self.windLabel.text = self.weather.analyseWindDirection(degrees: weather.windSpeed)
             self.humidityLabel.text = "\(weather.humidity) %"
             
@@ -184,21 +181,21 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     func didNotGetWeather(error: NSError) {
         DispatchQueue.main.async {
-            self.airTemperatureLabel.text = "Unknown"
-            self.weatherDescriptionLabel.text = "Unknown"
-            self.longitudeLabel.text = "Unknown"
-            self.latitudeLabel.text = "Unknown"
-            self.sunriseLabel.text = "Unknown"
-            self.sunsetLabel.text = "Unknown"
-            self.rainRiskLabel.text = "Unknown"
-            self.waterTemperatureLabel.text = "Unknown"
-            self.windLabel.text = "Unknown"
-            self.humidityLabel.text = "Unknown"
-            self.visibilityLabel.text = "Unknown"
-            self.uvIndiceLabel.text = "Unknown"
+            self.airTemperatureLabel.text = "-- °C"
+            self.weatherDescriptionLabel.text = "--"
+            self.longitudeLabel.text = "--"
+            self.latitudeLabel.text = "--"
+            self.sunriseLabel.text = "--:--"
+            self.sunsetLabel.text = "--:--"
+            self.rainRiskLabel.text = "-- %"
+            self.waterTemperatureLabel.text = "-- °C"
+            self.windLabel.text = "-- km/h"
+            self.humidityLabel.text = "-- %"
+            self.visibilityLabel.text = "-- km"
+            self.uvIndiceLabel.text = "--"
             
         }
-        print("Error: \(error) in function didNotGetWeather (WeatherViewController.Swift).")
+        print("Error in 'didNotGetWeather' (WeatherViewController.Swift): \(error).")
         
     }
     

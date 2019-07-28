@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 struct Registry {
-    // colors
+    // custom colors
     let customClearBlue = UIColor(rgb: 0x57A1FF)
     let customWhiteBlue = UIColor(rgb: 0x6dd5ed)
     let customDarkBlue = UIColor(rgb: 0x033542)
@@ -40,9 +40,39 @@ struct Registry {
     let iconSun = UIImage(named: "sunny")
     let iconThermometer = UIImage(named: "thermometer")
     
-    // default urls
+    // default profile picture urls
     let defaultPictureUrl = "https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-1/p480x480/29187034_1467064540082381_56763327166021632_n.jpg?_nc_cat=107&_nc_ht=scontent-lax3-2.xx&oh=7c2e6e423e8bd35727d754d1c47059d6&oe=5D33AACC"
+    
+    // oceanshare website url
     let websiteUrl = "https://sagotg.github.io/OceanShare/"
+    
+    // oceanshare api url
+    let apiUrl = "http://35.198.134.25:5000/api/weather"
+    
+    // default event descriptions
+    let descJellyfishs = "Jellyfish have been spotted at this location."
+    let descDivers = "There are probably divers working here."
+    let descWaste = "The water looks polluted here."
+    let descWarning = "Someone needs help or there is a danger."
+    let descDolphins = "Dolphins have been spotted in the vicinity."
+    let descDestination = "Someone is going there."
+    
+    // header messages
+    let msgJellyfishs = "Jellyfishs event selected."
+    let msgDivers = "Divers event selected."
+    let msgWaste = "Waste event selected."
+    let msgWarning = "Warning event selected."
+    let msgDolphins = "Dolphins event selected."
+    let msgDestination = "Destination event selected."
+    let msgWeather = "Weather information selected."
+    let msgEventLimit = "Already dropped 5 events"
+    let msgDistanceLimit = "Can't drop an event so far."
+    let msgEarthLimit = "Can't drop markers on earth."
+    let msgDropSuccess = "Your event has been dropped."
+    let msgDeleteSuccess = "Event correctly deleted."
+    
+    // tokens
+    let apiBearer = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjF9.Vcp2grZ53t_OG3jwSXsRwfc_UUjboNgZarkAGiX0jgM"
     
     // performance traces
     let trace1 = "getUserNameById" // HomeViewController
@@ -55,4 +85,6 @@ struct Registry {
     let trace8 = "acceptChangeShipName" // InformationViewController
     let trace9 = "acceptDeletion" // InformationViewController
     let trace10 = "fetchUserInfoFromInformationView" // InformationViewController
+    let trace11 = "getDroppedIconByUser" // HomeViewController
+    let trace12 = "getTagsFromServer" // HomeViewController
 }
