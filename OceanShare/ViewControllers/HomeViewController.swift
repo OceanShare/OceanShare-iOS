@@ -9,6 +9,7 @@
 import UIKit
 import Mapbox
 import MapKit
+import Turf
 import SwiftyJSON
 import Alamofire
 import CoreLocation
@@ -293,6 +294,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     @IBAction func medusaActivate(_ sender: Any) {
+        // TODO: check -> nbr of icon already dropped by this user
         tagProperties.id = 0
         tagProperties.description = "Jellyfishs"
         tagProperties.time = weather.getCurrentTime()
@@ -380,13 +382,13 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBAction func downVoteEvent(_ sender: Any) {
         thumbDownView.backgroundColor = registry.customRed
         thumbDownIcon.tintColor = registry.customWhite
-        // TODO: down-voting event
+        // TODO: code -> down-voting event
     }
     
     @IBAction func upVoteEvent(_ sender: Any) {
         thumbUpView.backgroundColor = registry.customFlashGreen
         thumbUpIcon.tintColor = registry.customWhite
-        // TODO: up-voting event
+        // TODO: code -> up-voting event
     }
     
     @IBAction func editEvent(_ sender: Any) {
@@ -558,11 +560,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 count = count + 1
             
             }
-            let allAnnotations = self.mapView.annotations
-            for eachAnnot in allAnnotations! {
-                if eachAnnot.hash == self.tagHashs[count] {
+            let annotations = self.mapView.annotations
+            for annotation in annotations! {
+                if annotation.hash == self.tagHashs[count] {
                     print("MATCH")
-                    self.mapView.removeAnnotation(eachAnnot)
+                    print("\(annotation.hash)")
+                    self.mapView.removeAnnotation(annotation)
                     self.removeTag(MarkerHash: self.tagHashs[count])
                 
                 }
@@ -576,7 +579,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         var count = 0
         let hasDoneWork = false
         
-        while (tagHashs[count] != MarkerHash) {
+        while (tagHashs[count] != MarkerHash) { // TODO: fix -> index out of range when a marker different from the first one to be dropped is the last one on the map
             count = count + 1
             
         }
@@ -690,14 +693,13 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             count = count + 1
         
         }
-        
-        ref.child(selectedTagId!).removeValue { (error, ref) in
+        ref.child(selectedTagId!).removeValue { (error, ref) in // TODO: fix -> Unexpectedly found nil while unwrapping an Optional value
             if error != nil {
                 print("Failed to delete tag: ", error!)
                 return
                 
             }
-            self.tagHashs.remove(at: count)
+            self.tagHashs.remove(at: count) // TODO: fix -> index out of range when the last marker is deleted
             self.tagIds.remove(at: count)
             
         }
@@ -807,15 +809,21 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             let PressMapCoordinates = mapView.convert(PressScreenCoordinates, toCoordinateFrom: mapView)
             tagProperties.latitude = PressMapCoordinates.latitude
             tagProperties.longitude = PressMapCoordinates.longitude
-            
-            let point = mapView.convert(PressMapCoordinates, toPointTo: mapView)
-            let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
-            if (features.description != "[]") {
-                self.viewStacked = commentView
-                self.animateInWithOptionalEffect(view: commentView, effect: true)
-                
+            let distance = self.mapView.userLocation!.coordinate.distance(to: PressMapCoordinates)
+            // fix a limit of 10km to drop an icon (10km = visibility)
+            if distance < 10000 {
+                let point = mapView.convert(PressMapCoordinates, toPointTo: mapView)
+                let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
+                if (features.description != "[]") {
+                    self.viewStacked = commentView
+                    self.animateInWithOptionalEffect(view: commentView, effect: true)
+                    
+                } else {
+                    self.PutMessageOnHeader(msg: "Can't drop markers on earth.", color: self.registry.customRed)
+                    
+                }
             } else {
-                self.PutMessageOnHeader(msg: "Can't drop markers on earth.", color: self.registry.customRed)
+                print(distance)
                 
             }
         }
@@ -854,16 +862,22 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             let longitude = PressMapCoordinates.longitude
             let latitude = PressMapCoordinates.latitude
             self.getWeatherFromSelectedLocation(long: longitude, lat: latitude)
-            
-            let point = mapView.convert(PressMapCoordinates, toPointTo: mapView)
-            let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
-            if (features.description != "[]") {
-                self.viewStacked = self.weatherIconView
-                self.animateInWithOptionalEffect(view: weatherIconView, effect: true)
-                self.putWeatherOnMap(activate: false)
-                
+            let distance = self.mapView.userLocation!.coordinate.distance(to: PressMapCoordinates)
+            // fix a limit of 100km to drop a weather request
+            if distance < 100000 {
+                let point = mapView.convert(PressMapCoordinates, toPointTo: mapView)
+                let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
+                if (features.description != "[]") {
+                    self.viewStacked = self.weatherIconView
+                    self.animateInWithOptionalEffect(view: weatherIconView, effect: true)
+                    self.putWeatherOnMap(activate: false)
+                    
+                } else {
+                    self.PutMessageOnHeader(msg: "Can't get weather from earth.", color: self.registry.customRed)
+                    
+                }
             } else {
-                self.PutMessageOnHeader(msg: "Can't get weather from earth.", color: self.registry.customRed)
+                print(distance)
                 
             }
         }
@@ -955,8 +969,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             self.rainRiskLabel.text = "\(weather.cloudCover) %"
             self.waterTemperatureLabel.text = "-- °C"
             
-            // TODO: check
-            //self.windLabel.text = "\(round(100 * (weather.windSpeed * ( 60 * 60 ) / 1000)) / 100) km/h"
+            // TODO: check -> windLabel
             self.windLabel.text = self.weather.analyseWindDirection(degrees: weather.windSpeed)
             self.humidityLabel.text = "\(weather.humidity) %"
             

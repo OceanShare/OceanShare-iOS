@@ -28,6 +28,7 @@ target 'OceanShare' do
   pod 'Fabric', '~> 1.10.1'
   pod 'Crashlytics', '~> 3.13.1'
   pod 'SwiftyJSON', '~> 4.0'
+  pod 'Turf', '~> 0.3'
 
   target 'OceanShareTests' do
     inherit! :search_paths
