@@ -195,7 +195,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             self.uvIndiceLabel.text = "--"
             
         }
-        print("Error in 'didNotGetWeather' (WeatherViewController.Swift): \(error).")
+        print(error)
         
     }
     

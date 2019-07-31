@@ -40,7 +40,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var mapView: MGLMapView!
     
     // tag properties
-    var tagProperties = Tag(description: "", id: 0, latitude: 0.0, longitude: 0.0, time: "", user: "", timestamp: "")
+    var tagProperties = Tag(description: "", id: 0, latitude: 0.0, longitude: 0.0, time: "", user: "", timestamp: "", upvote: 0, downvote: 0, contributors: ["":0])
     var tagIds = [String]()
     var tagHashs = [Int]()
     
@@ -49,10 +49,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var selectedTagId: String?
     var selectedTagUserId: String?
     var selectedTagUserName: String?
+    var isUserDeletingTag = false
     
     // globals
     var uvGlobal: String!
-    var droppedIconNumber: Int!
+    var droppedIconNumber: Int! = 0
     let registry = Registry()
     let weather = Weather.self
     let appUser = AppUser.self
@@ -87,8 +88,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var descriptionLabel: UITextView!
     @IBOutlet weak var userLabel: UILabel!
     @IBOutlet weak var thumbDownView: DesignableView!
+    @IBOutlet weak var downVoteButton: UIButton!
     @IBOutlet weak var thumbDownIcon: UIImageView!
     @IBOutlet weak var thumbUpView: DesignableView!
+    @IBOutlet weak var upVoteButton: UIButton!
     @IBOutlet weak var thumbUpIcon: UIImageView!
     @IBOutlet weak var editIcon: UIImageView!
     @IBOutlet weak var editButton: UIButton!
@@ -332,12 +335,15 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     func eventActivator (eventId: Int, eventDescription: String, eventMessage: String) {
-        if (droppedIconNumber < 5) {
+        if (droppedIconNumber! < 5) {
             tagProperties.id = eventId
             tagProperties.description = eventDescription
             tagProperties.time = weather.getCurrentTime()
             tagProperties.user = appUser.getCurrentUser()
             tagProperties.timestamp = ServerValue.timestamp()
+            tagProperties.upvote = 0
+            tagProperties.downvote = 0
+            tagProperties.contributors = [appUser.getCurrentUser() : 0]
             putIconOnMap(activate: true)
             animateOutWithOptionalEffect(effect: true)
             PutMessageOnHeader(msg: eventMessage, color: registry.customGreen)
@@ -347,7 +353,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             self.PutMessageOnHeader(msg: self.registry.msgEventLimit, color: self.registry.customRed)
             
         }
-        
     }
     
     func getDroppedIconByUser() {
@@ -382,22 +387,57 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    @IBAction func editEvent(_ sender: Any) {
+        overViewStacked = editionView
+        animateInWithOptionalEffect(view: editionView, effect: false)
+        
+    }
+    
     @IBAction func downVoteEvent(_ sender: Any) {
         thumbDownView.backgroundColor = registry.customRed
         thumbDownIcon.tintColor = registry.customWhite
-        // TODO: code -> down-voting event
+        upVoteButton.isEnabled = false
+        downVoteButton.isEnabled = false
+        
+        let uid = Auth.auth().currentUser!.uid
+        let markerData: [String: Int] = [uid: 2]
+        
+        ref.child(selectedTagId!).child("contributors").updateChildValues(markerData)
+        ref.child(selectedTagId!).observeSingleEvent(of: .value) { (snapshot) in
+            guard let data = snapshot.value as? NSDictionary else { return }
+            guard let voteAmount = data["downvote"] as? Int else { return }
+            guard let upVoteAmount = data["upvote"] as? Int else { return }
+            
+            let updatedAmount = ["downvote" : voteAmount + 1]
+            self.ref.child(self.selectedTagId!).updateChildValues(updatedAmount)
+            
+            if ((voteAmount - upVoteAmount) >= 3) {
+                self.isUserDeletingTag = true
+                self.removeTag()
+                // TODO: show message
+            }
+        }
     }
     
     @IBAction func upVoteEvent(_ sender: Any) {
         thumbUpView.backgroundColor = registry.customFlashGreen
         thumbUpIcon.tintColor = registry.customWhite
-        // TODO: code -> up-voting event
-    }
-    
-    @IBAction func editEvent(_ sender: Any) {
-        overViewStacked = editionView
-        animateInWithOptionalEffect(view: editionView, effect: false)
-
+        upVoteButton.isEnabled = false
+        downVoteButton.isEnabled = false
+        
+        let uid = Auth.auth().currentUser!.uid
+        let markerData: [String: Int] = [uid: 1]
+        
+        ref.child(selectedTagId!).child("contributors").updateChildValues(markerData)
+        ref.child(selectedTagId!).observeSingleEvent(of: .value) { (snapshot) in
+            guard let data = snapshot.value as? NSDictionary else { return }
+            guard let voteAmount = data["upvote"] as? Int else { return }
+            
+            let updatedAmount = ["upvote" : voteAmount + 1]
+            self.ref.child(self.selectedTagId!).updateChildValues(updatedAmount)
+            
+            // TODO: show message
+        }
     }
     
     // MARK: - Comment View
@@ -435,7 +475,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     @IBAction func deleteEvent(_ sender: Any) {
-        removeTag(MarkerHash: selectedTag!.hash)
+        isUserDeletingTag = true
+        removeTag()
         mapView.removeAnnotation(selectedTag!)
         animateOutWithOptionalEffect(effect: false)
         animateOutWithOptionalEffect(effect: true)
@@ -452,7 +493,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     // MARK: - Online Tags
     
     @discardableResult func putTag(mapView: MGLMapView, Tag: Tag) -> Int {
-        
         let marker = MGLPointAnnotation()
         marker.coordinate.latitude = Tag.latitude!
         marker.coordinate.longitude = Tag.longitude!
@@ -480,7 +520,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             print("Error in func putTag")
             
         }
-        
         return marker.hash
     }
     
@@ -503,8 +542,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     let time = data?["time"] as? String
                     let user = data?["user"] as? String
                     let timestamp = data?["timestamp"] as? String
+                    let upvote = data?["upvote"] as? Int
+                    let downvote = data?["downvote"] as? Int
+                    let contributors = data?["contributors"] as? [String:Int]
                     var markerHash: Int
-                    markerHash = self.putTag(mapView: mapView, Tag: Tag(description: description, id: id, latitude: x, longitude: y, time: time, user: user, timestamp: timestamp))
+                    markerHash = self.putTag(mapView: mapView, Tag: Tag(description: description, id: id, latitude: x, longitude: y, time: time, user: user, timestamp: timestamp, upvote: upvote, downvote: downvote, contributors: contributors))
                     self.putTagsinArray(MarkerHash: markerHash, FirebaseID: tag.key)
                     trace?.stop()
                     
@@ -527,23 +569,28 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             
         }
         ref.observeSingleEvent(of: .childRemoved) { (snapshot) in
-            let Tag_id = snapshot.key
-            
-            var count = 0
-            while (self.tagIds[count] != Tag_id) {
-                count = count + 1
-            
-            }
-            let annotations = self.mapView.annotations
-            for annotation in annotations! {
-                if annotation.hash == self.tagHashs[count] {
-                    print("MATCH")
-                    print("\(annotation.hash)")
-                    self.mapView.removeAnnotation(annotation)
-                    self.removeTag(MarkerHash: self.tagHashs[count])
+            if (self.isUserDeletingTag == false) {
+                print("sync delete by server")
+                let Tag_id = snapshot.key
+                
+                var count = 0
+                while (self.tagIds[count] != Tag_id) {
+                    count = count + 1
                 
                 }
+                let annotations = self.mapView.annotations
+                for annotation in annotations! {
+                    if annotation.hash == self.tagHashs[count] {
+                        self.mapView.removeAnnotation(annotation)
+                        self.tagHashs.remove(at: count)
+                        self.tagIds.remove(at: count)
+                        break
+                        
+                    }
+                }
+                self.isUserDeletingTag = false
             }
+            self.syncData()
         }
     }
     
@@ -566,6 +613,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                         let description = data?["description"] as? String
                         let time = data?["time"] as? String
                         let user = data?["user"] as? String
+                        let contributors = data?["contributors"] as? [String:Int]
                         
                         if description!.isEmpty == false {
                             self.newDescriptionTextField.text = description
@@ -582,10 +630,49 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                             self.editIcon.isHidden = true
                             self.getUserNameById(userId: user!)
                             
+                            for contributor in contributors! {
+                                if contributor.key == Auth.auth().currentUser?.uid {
+                                    switch contributor.value {
+                                    case 1: // upvoted
+                                        self.thumbUpView.backgroundColor = self.registry.customFlashGreen
+                                        self.thumbDownView.backgroundColor = self.registry.customLightGrey
+                                        self.thumbUpIcon.tintColor = self.registry.customWhite
+                                        self.thumbDownIcon.tintColor = self.registry.customDarkGrey
+                                        self.upVoteButton.isEnabled = false
+                                        self.downVoteButton.isEnabled = false
+                                    case 2: // downvoted
+                                        self.thumbDownView.backgroundColor = self.registry.customRed
+                                        self.thumbUpView.backgroundColor = self.registry.customLightGrey
+                                        self.thumbDownIcon.tintColor = self.registry.customWhite
+                                        self.thumbUpIcon.tintColor = self.registry.customDarkGrey
+                                        self.upVoteButton.isEnabled = false
+                                        self.downVoteButton.isEnabled = false
+                                    default: // not already voted
+                                        self.upVoteButton.isEnabled = false
+                                        self.downVoteButton.isEnabled = false
+                                        
+                                    }
+                                } else {
+                                    self.thumbUpView.backgroundColor = self.registry.customLightGrey
+                                    self.thumbDownView.backgroundColor = self.registry.customLightGrey
+                                    self.thumbUpIcon.tintColor = self.registry.customDarkGrey
+                                    self.thumbDownIcon.tintColor = self.registry.customDarkGrey
+                                    self.upVoteButton.isEnabled = true
+                                    self.downVoteButton.isEnabled = true
+                                    
+                                }
+                            }
                         } else {
                             self.userLabel.text = "You have dropped this event."
                             self.editButton.isEnabled = true
                             self.editIcon.isHidden = false
+                            
+                            self.thumbDownView.backgroundColor = self.registry.customLightGrey
+                            self.thumbUpView.backgroundColor = self.registry.customLightGrey
+                            self.thumbDownIcon.tintColor = self.registry.customDarkGrey
+                            self.thumbUpIcon.tintColor = self.registry.customDarkGrey
+                            self.upVoteButton.isEnabled = false
+                            self.downVoteButton.isEnabled = false
                             
                         }
                         
@@ -672,7 +759,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             "longitude": Tag.longitude as Any,
             "time": Tag.time as Any,
             "user": Tag.user as Any,
-            "timestamp": Tag.timestamp as Any
+            "timestamp": Tag.timestamp as Any,
+            "upvote": Tag.upvote as Any,
+            "downvote": Tag.downvote as Any,
+            "contributors": Tag.contributors as Any
         ]
         
         self.ref.child(key!).setValue(TagFirebase)
@@ -680,22 +770,20 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
-    func removeTag(MarkerHash: Int) {
+    func removeTag() {
         var count = 0
-        
-        while (tagHashs[count] != MarkerHash) {
+        while (tagIds[count] != selectedTagId!) {
             count = count + 1
         
         }
+        self.tagHashs.remove(at: count)
+        self.tagIds.remove(at: count)
         ref.child(selectedTagId!).removeValue { (error, ref) in
             if error != nil {
                 print("Failed to delete tag: ", error!)
                 return
                 
             }
-            self.tagHashs.remove(at: count)
-            self.tagIds.remove(at: count)
-            
         }
     }
     
@@ -712,12 +800,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
-        // hide the callout view.
         mapView.deselectAnnotation(annotation, animated: false)
-        // description view popup animation
         viewStacked = descriptionView
         animateInWithOptionalEffect(view: descriptionView, effect: true)
-        // fetch the selected tag
         selectedTag = annotation
         fetchTag(MarkerHash: annotation.hash)
         
@@ -804,7 +889,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             tagProperties.latitude = pressMapCoordinates.latitude
             tagProperties.longitude = pressMapCoordinates.longitude
             let distance = self.mapView.userLocation!.coordinate.distance(to: pressMapCoordinates)
-            // fix a limit of 10km to drop an icon (10km = visibility)
+
             if distance < 10000 {
                 let point = mapView.convert(pressMapCoordinates, toPointTo: mapView)
                 let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
@@ -856,7 +941,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             let latitude = pressMapCoordinates.latitude
             self.getWeatherFromSelectedLocation(long: longitude, lat: latitude)
             let distance = self.mapView.userLocation!.coordinate.distance(to: pressMapCoordinates)
-            // fix a limit of 100km to drop a weather request
+
             if distance < 100000 {
                 let point = mapView.convert(pressMapCoordinates, toPointTo: mapView)
                 let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
@@ -902,7 +987,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     func transformData(rawData: JSON) {
-        // get uv index
         if let uvData = rawData["uv"].string {
             let uvAsData = uvData.data(using: .utf8)!
             let uvAsJson = JSON(uvAsData)
@@ -915,7 +999,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 
             }
         }
-        // get weather
         if let data = rawData["weather"].string {
             let dataAsData = data.data(using: .utf8)!
             let dataAsJson = JSON(dataAsData)
@@ -980,19 +1063,19 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     func didNotGetWeather(error: NSError) {
         DispatchQueue.main.async {
-            self.airTemperatureLabel.text = "Unknown"
-            self.weatherLabel.text = "Unknown"
-            self.sunriseLabel.text = "Unknown"
-            self.sunsetLabel.text = "Unknown"
-            self.rainRiskLabel.text = "Unknown"
-            self.waterTemperatureLabel.text = "Unknown"
-            self.windLabel.text = "Unknown"
-            self.humidityLabel.text = "Unknown"
-            self.visibilityLabel.text = "Unknown"
-            self.uvLabel.text = "Unknown"
+            self.airTemperatureLabel.text = "-- °C"
+            self.weatherLabel.text = "--"
+            self.sunriseLabel.text = "--"
+            self.sunsetLabel.text = "--:--"
+            self.rainRiskLabel.text = "-- %"
+            self.waterTemperatureLabel.text = "-- °C"
+            self.windLabel.text = "-- km/h"
+            self.humidityLabel.text = "-- %"
+            self.visibilityLabel.text = "-- km"
+            self.uvLabel.text = "--"
             
         }
-        print("\(error)")
+        print(error)
         
     }
 }

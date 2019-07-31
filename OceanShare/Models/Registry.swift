@@ -18,6 +18,7 @@ struct Registry {
     let customFlashGreen = UIColor(rgb: 0x41E08D)
     let customGreen = UIColor(rgb: 0x5BD999)
     let customClearGrey = UIColor(rgb: 0xF4F8FB)
+    let customLightGrey = UIColor(rgb: 0xEFEFF4)
     let customGrey = UIColor(rgb: 0xC5C7D2)
     let customDarkGrey = UIColor(rgb: 0x606060)
     let customMilkyWhite = UIColor(rgb: 0xD3F2FF)

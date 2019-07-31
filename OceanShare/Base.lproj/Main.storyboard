@@ -740,6 +740,7 @@
                         <outlet property="descriptionLabel" destination="GS1-Jy-Yg6" id="DsO-sF-cpu"/>
                         <outlet property="descriptionTextField" destination="UEy-MI-z4Y" id="RHx-tH-Dcv"/>
                         <outlet property="descriptionView" destination="Q2C-gq-N7s" id="XqA-AT-Rbq"/>
+                        <outlet property="downVoteButton" destination="f4U-Az-Zss" id="k8k-cQ-EvX"/>
                         <outlet property="editButton" destination="R6I-JN-g75" id="yXZ-fW-Oat"/>
                         <outlet property="editIcon" destination="fx2-M7-lzi" id="hiu-mg-bGf"/>
                         <outlet property="editionView" destination="w30-nj-wkj" id="aBs-I1-S1Z"/>
@@ -761,6 +762,7 @@
                         <outlet property="thumbUpIcon" destination="1gM-ko-RS9" id="dWC-sT-6fq"/>
                         <outlet property="thumbUpView" destination="nch-Vy-8mi" id="cCK-k4-kI2"/>
                         <outlet property="timeLabel" destination="bwH-K8-i9o" id="ybe-cC-Di4"/>
+                        <outlet property="upVoteButton" destination="vBH-5f-hzk" id="LRJ-jt-hCV"/>
                         <outlet property="userLabel" destination="W5I-gt-rZU" id="3q1-JP-MZZ"/>
                         <outlet property="uvLabel" destination="Xfs-ai-KkW" id="yzD-Up-ae7"/>
                         <outlet property="visibilityLabel" destination="l4k-zd-6KS" id="09d-mw-mHR"/>

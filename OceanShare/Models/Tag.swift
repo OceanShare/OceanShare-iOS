@@ -18,5 +18,8 @@ struct Tag {
     var time: String?
     var user: String?
     var timestamp: Any?
+    var upvote: Int?
+    var downvote: Int?
+    var contributors: [String:Int]?
     
 }
