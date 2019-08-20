@@ -26,7 +26,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     // firebase
     var ref: DatabaseReference!
-    let storageRef = FirebaseStorage.Storage().reference()
+    let storageRef = Storage.storage().reference()
     
     // view
     var effect: UIVisualEffect!
@@ -82,6 +82,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     // description view
     @IBOutlet weak var descriptionView: UIView!
+    @IBOutlet weak var ratedLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var eventImage: UIImageView!
     @IBOutlet weak var eventLabel: UILabel!
@@ -129,6 +130,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
         syncData()
         setupView()
+        setupInfo()
         
     }
     
@@ -152,9 +154,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         mapView.delegate = self
         mapView.logoView.isHidden = true
         mapView.attributionButton.isHidden = true
-        // enable heading tracking mode (arrow will appear)
         mapView.userTrackingMode = .followWithHeading
-        // enable the permanent heading indicator which will appear when the tracking mode is not `.followWithHeading`.
         mapView.showsUserHeadingIndicator = true
         getTagsFromServer(mapView: self.mapView)
         // icon setup
@@ -167,6 +167,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         view.addSubview(centerView)
         view.addSubview(buttonMenu)
         view.addSubview(visualEffectView)
+        
+    }
+    
+    func setupInfo() {
         // setup the location manager
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
@@ -398,6 +402,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         thumbDownIcon.tintColor = registry.customWhite
         upVoteButton.isEnabled = false
         downVoteButton.isEnabled = false
+        ratedLabel.text = "You've downvoted this event."
         
         let uid = Auth.auth().currentUser!.uid
         let markerData: [String: Int] = [uid: 2]
@@ -410,11 +415,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             
             let updatedAmount = ["downvote" : voteAmount + 1]
             self.ref.child(self.selectedTagId!).updateChildValues(updatedAmount)
-            
             if ((voteAmount - upVoteAmount) >= 3) {
                 self.isUserDeletingTag = true
                 self.removeTag()
-                // TODO: show message
+                // TODO: show message + check removetag
             }
         }
     }
@@ -424,6 +428,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         thumbUpIcon.tintColor = registry.customWhite
         upVoteButton.isEnabled = false
         downVoteButton.isEnabled = false
+        ratedLabel.text = "You've upvoted this event."
         
         let uid = Auth.auth().currentUser!.uid
         let markerData: [String: Int] = [uid: 1]
@@ -432,11 +437,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         ref.child(selectedTagId!).observeSingleEvent(of: .value) { (snapshot) in
             guard let data = snapshot.value as? NSDictionary else { return }
             guard let voteAmount = data["upvote"] as? Int else { return }
-            
             let updatedAmount = ["upvote" : voteAmount + 1]
             self.ref.child(self.selectedTagId!).updateChildValues(updatedAmount)
             
-            // TODO: show message
         }
     }
     
@@ -476,8 +479,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     @IBAction func deleteEvent(_ sender: Any) {
         isUserDeletingTag = true
-        removeTag()
         mapView.removeAnnotation(selectedTag!)
+        removeTag()
         animateOutWithOptionalEffect(effect: false)
         animateOutWithOptionalEffect(effect: true)
         PutMessageOnHeader(msg: registry.msgDeleteSuccess, color: registry.customGreen)
@@ -578,9 +581,14 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     count = count + 1
                 
                 }
+                print(count) // test
                 let annotations = self.mapView.annotations
+                print(annotations!) // test
+                print(self.tagHashs) // test
+                print(self.tagIds) // test
                 for annotation in annotations! {
                     if annotation.hash == self.tagHashs[count] {
+                        print("ENTER BEFORE RMannotation") // test
                         self.mapView.removeAnnotation(annotation)
                         self.tagHashs.remove(at: count)
                         self.tagIds.remove(at: count)
@@ -588,13 +596,13 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                         
                     }
                 }
-                self.isUserDeletingTag = false
             }
+            self.isUserDeletingTag = false
             self.syncData()
         }
     }
     
-    // MARK: - Tag's Interactions
+    // MARK: - Description View
     
     func fetchTag(MarkerHash: Int) {
         var count = 0
@@ -629,94 +637,32 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                             self.editButton.isEnabled = false
                             self.editIcon.isHidden = true
                             self.getUserNameById(userId: user!)
-                            
+                            // unrated event
+                            self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: false, isUserEvent: false, isUnrated: true)
                             for contributor in contributors! {
                                 if contributor.key == Auth.auth().currentUser?.uid {
                                     switch contributor.value {
-                                    case 1: // upvoted
-                                        self.thumbUpView.backgroundColor = self.registry.customFlashGreen
-                                        self.thumbDownView.backgroundColor = self.registry.customLightGrey
-                                        self.thumbUpIcon.tintColor = self.registry.customWhite
-                                        self.thumbDownIcon.tintColor = self.registry.customDarkGrey
-                                        self.upVoteButton.isEnabled = false
-                                        self.downVoteButton.isEnabled = false
-                                    case 2: // downvoted
-                                        self.thumbDownView.backgroundColor = self.registry.customRed
-                                        self.thumbUpView.backgroundColor = self.registry.customLightGrey
-                                        self.thumbDownIcon.tintColor = self.registry.customWhite
-                                        self.thumbUpIcon.tintColor = self.registry.customDarkGrey
-                                        self.upVoteButton.isEnabled = false
-                                        self.downVoteButton.isEnabled = false
-                                    default: // not already voted
-                                        self.upVoteButton.isEnabled = false
-                                        self.downVoteButton.isEnabled = false
+                                    case 1: // upvoted event
+                                        self.setDescriptionViewFromRatingState(isUpvoted: true, isDownvoted: false, isUserEvent: false, isUnrated: false)
+                                        break
+                                    case 2: // downvoted event
+                                        self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: true, isUserEvent: false, isUnrated: false)
+                                        break
+                                    default: // user event
+                                        print("Error: uid does not fit.")
+                                        self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: false, isUserEvent: true, isUnrated: false)
+                                        break
                                         
                                     }
-                                } else {
-                                    self.thumbUpView.backgroundColor = self.registry.customLightGrey
-                                    self.thumbDownView.backgroundColor = self.registry.customLightGrey
-                                    self.thumbUpIcon.tintColor = self.registry.customDarkGrey
-                                    self.thumbDownIcon.tintColor = self.registry.customDarkGrey
-                                    self.upVoteButton.isEnabled = true
-                                    self.downVoteButton.isEnabled = true
-                                    
                                 }
                             }
                         } else {
-                            self.userLabel.text = "You have dropped this event."
-                            self.editButton.isEnabled = true
-                            self.editIcon.isHidden = false
-                            
-                            self.thumbDownView.backgroundColor = self.registry.customLightGrey
-                            self.thumbUpView.backgroundColor = self.registry.customLightGrey
-                            self.thumbDownIcon.tintColor = self.registry.customDarkGrey
-                            self.thumbUpIcon.tintColor = self.registry.customDarkGrey
-                            self.upVoteButton.isEnabled = false
-                            self.downVoteButton.isEnabled = false
+                            // user event
+                            self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: false, isUserEvent: true, isUnrated: false)
                             
                         }
+                        self.setDescriptionViewById(id: id!, description: description!)
                         
-                        switch id {
-                        case 0:
-                            self.eventImage.image = UIImage(named: "jellyfishs")
-                            self.eventLabel.text = "Jellyfish"
-                            if description!.isEmpty {
-                                self.descriptionLabel.text = self.registry.descJellyfishs
-                            }
-                        case 1:
-                            self.eventImage.image = UIImage(named: "divers")
-                            self.eventLabel.text = "Divers"
-                            if description!.isEmpty {
-                                self.descriptionLabel.text = self.registry.descDivers
-                            }
-                        case 2:
-                            self.eventImage.image = UIImage(named: "waste")
-                            self.eventLabel.text = "Waste"
-                            if description!.isEmpty {
-                                self.descriptionLabel.text = self.registry.descWaste
-                            }
-                        case 3:
-                            self.eventImage.image = UIImage(named: "warning_black")
-                            self.eventLabel.text = "Warning"
-                            if description!.isEmpty {
-                                self.descriptionLabel.text = self.registry.descWarning
-                            }
-                        case 4:
-                            self.eventImage.image = UIImage(named: "dolphins")
-                            self.eventLabel.text = "Dolphins"
-                            if description!.isEmpty {
-                                self.descriptionLabel.text = self.registry.descDolphins
-                            }
-                        case 5:
-                            self.eventImage.image = UIImage(named: "destination")
-                            self.eventLabel.text = "Destination"
-                            if description!.isEmpty {
-                                self.descriptionLabel.text = self.registry.descDestination
-                            }
-                        default:
-                            print("Error deprecated tag.")
-                            
-                        }
                     }
                 }
             }
@@ -724,6 +670,97 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             print("Error: ", error.localizedDescription)
             
         }
+    }
+    
+    func setDescriptionViewFromRatingState(isUpvoted: Bool, isDownvoted: Bool, isUserEvent: Bool, isUnrated: Bool) {
+        if (isUpvoted == true) {
+            self.thumbUpView.backgroundColor = self.registry.customFlashGreen
+            self.thumbDownView.backgroundColor = self.registry.customLightGrey
+            self.thumbUpIcon.tintColor = self.registry.customWhite
+            self.thumbDownIcon.tintColor = self.registry.customDarkGrey
+            self.upVoteButton.isEnabled = false
+            self.downVoteButton.isEnabled = false
+            self.ratedLabel.text = "You've already rated this event."
+            
+        }
+        if (isDownvoted == true) {
+            self.thumbDownView.backgroundColor = self.registry.customRed
+            self.thumbUpView.backgroundColor = self.registry.customLightGrey
+            self.thumbDownIcon.tintColor = self.registry.customWhite
+            self.thumbUpIcon.tintColor = self.registry.customDarkGrey
+            self.upVoteButton.isEnabled = false
+            self.downVoteButton.isEnabled = false
+            self.ratedLabel.text = "You've already rated this event."
+            
+        }
+        if (isUserEvent == true) {
+            self.userLabel.text = "You have dropped this event."
+            self.editButton.isEnabled = true
+            self.editIcon.isHidden = false
+            self.thumbDownView.backgroundColor = self.registry.customLightGrey
+            self.thumbUpView.backgroundColor = self.registry.customLightGrey
+            self.thumbDownIcon.tintColor = self.registry.customDarkGrey
+            self.thumbUpIcon.tintColor = self.registry.customDarkGrey
+            self.upVoteButton.isEnabled = false
+            self.downVoteButton.isEnabled = false
+            self.ratedLabel.text = "You can't rate your own event."
+            
+        }
+        if (isUnrated == true) {
+            self.thumbUpView.backgroundColor = self.registry.customLightGrey
+            self.thumbDownView.backgroundColor = self.registry.customLightGrey
+            self.thumbUpIcon.tintColor = self.registry.customDarkGrey
+            self.thumbDownIcon.tintColor = self.registry.customDarkGrey
+            self.upVoteButton.isEnabled = true
+            self.downVoteButton.isEnabled = true
+            self.ratedLabel.text = ""
+            
+        }
+    }
+    
+    func setDescriptionViewById(id: Int, description: String) {
+        switch id {
+        case 0:
+            self.eventImage.image = self.registry.eventJellyfishs
+            self.eventLabel.text = "Jellyfish"
+            if description.isEmpty {
+                self.descriptionLabel.text = self.registry.descJellyfishs
+            }
+        case 1:
+            self.eventImage.image = self.registry.eventDivers
+            self.eventLabel.text = "Divers"
+            if description.isEmpty {
+                self.descriptionLabel.text = self.registry.descDivers
+            }
+        case 2:
+            self.eventImage.image = self.registry.eventWaste
+            self.eventLabel.text = "Waste"
+            if description.isEmpty {
+                self.descriptionLabel.text = self.registry.descWaste
+            }
+        case 3:
+            self.eventImage.image = self.registry.eventWarning
+            self.eventLabel.text = "Warning"
+            if description.isEmpty {
+                self.descriptionLabel.text = self.registry.descWarning
+            }
+        case 4:
+            self.eventImage.image = self.registry.eventDolphins
+            self.eventLabel.text = "Dolphins"
+            if description.isEmpty {
+                self.descriptionLabel.text = self.registry.descDolphins
+            }
+        case 5:
+            self.eventImage.image = self.registry.eventDestination
+            self.eventLabel.text = "Destination"
+            if description.isEmpty {
+                self.descriptionLabel.text = self.registry.descDestination
+            }
+        default:
+            print("Error deprecated tag.")
+            
+        }
+    
     }
     
     func getUserNameById(userId: String) {
@@ -747,10 +784,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    // MARK: - Tag's Interaction
+    
     func saveTags(Tag: Tag) -> String {
-        
-        print("SAVE TAGS DEBUT")
-        
         let key = self.ref.childByAutoId().key
         let TagFirebase: [String: Any] = [
             "groupId": Tag.id as Any,
@@ -771,13 +807,19 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     func removeTag() {
+        print("Enter RM Tag") // test
+        print(selectedTagId!) // test
+        print(tagIds) // test
         var count = 0
         while (tagIds[count] != selectedTagId!) {
             count = count + 1
         
         }
+        print(count) // test
         self.tagHashs.remove(at: count)
         self.tagIds.remove(at: count)
+        print(tagHashs) // test
+        print(tagIds) // test
         ref.child(selectedTagId!).removeValue { (error, ref) in
             if error != nil {
                 print("Failed to delete tag: ", error!)

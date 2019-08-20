@@ -29,7 +29,7 @@ class InformationViewController: UIViewController {
     // MARK: - Databse
     
     var ref: DatabaseReference!
-    let storageRef = FirebaseStorage.Storage().reference()
+    let storageRef = Storage.storage().reference()
     let currentUser = Auth.auth().currentUser
     let registry = Registry()
     

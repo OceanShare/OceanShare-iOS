@@ -37,7 +37,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     var ref: DatabaseReference!
     var imageURL: String?
     
-    let storageRef = FirebaseStorage.Storage().reference()
+    let storageRef = Storage.storage().reference()
     let registry = Registry()
     
     override func viewDidLoad() {

@@ -41,7 +41,7 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     var imageURL: String?
     var currentTappedTextField : UITextField?
     
-    let storageRef = FirebaseStorage.Storage().reference()
+    let storageRef = Storage.storage().reference()
     let registry = Registry()
 
     // MARK: - ViewDidLoad
