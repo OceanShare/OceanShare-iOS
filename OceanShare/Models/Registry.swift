@@ -41,6 +41,14 @@ struct Registry {
     let iconSun = UIImage(named: "sunny")
     let iconThermometer = UIImage(named: "thermometer")
     
+    // event images
+    let eventJellyfishs = UIImage(named: "jellyfishs")
+    let eventDivers = UIImage(named: "divers")
+    let eventWaste = UIImage(named: "waste")
+    let eventWarning = UIImage(named: "warning_black")
+    let eventDolphins = UIImage(named: "dolphins")
+    let eventDestination = UIImage(named: "destination")
+    
     // default profile picture urls
     let defaultPictureUrl = "https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-1/p480x480/29187034_1467064540082381_56763327166021632_n.jpg?_nc_cat=107&_nc_ht=scontent-lax3-2.xx&oh=7c2e6e423e8bd35727d754d1c47059d6&oe=5D33AACC"
     

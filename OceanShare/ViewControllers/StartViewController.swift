@@ -27,7 +27,6 @@ class StartViewController: UIViewController, UIPageViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // apply the design stuff to the view
         setupView()
         //Fabric.sharedSDK().debug = true
         

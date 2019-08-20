@@ -21,7 +21,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     // MARK: - Database
     
     var ref: DatabaseReference!
-    let storageRef = FirebaseStorage.Storage().reference()
+    let storageRef = Storage.storage().reference()
     let registry = Registry()
     
     var appUser: AppUser? {
