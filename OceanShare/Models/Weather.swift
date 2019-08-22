@@ -84,15 +84,15 @@ struct Weather {
         var windDirection: String
         
         if (348.75 <= degrees && degrees <= 360) {
-            windDirection = "N";
+            windDirection = "N ";
         } else if (0 <= degrees && degrees <= 11.25) {
-            windDirection = "N";
+            windDirection = "N ";
         } else if (11.25 < degrees && degrees <= 33.75) {
-            windDirection = "NNE";
+            windDirection = "NNE ";
         } else if (33.75 < degrees && degrees <= 56.25) {
-            windDirection = "NE";
+            windDirection = "NE ";
         } else if (56.25 < degrees && degrees <= 78.75) {
-            windDirection = "ENE";
+            windDirection = "ENE ";
         } else if (78.75 < degrees && degrees <= 101.25) {
             windDirection = "E ";
         } else if (101.25 < degrees && degrees <= 123.75) {

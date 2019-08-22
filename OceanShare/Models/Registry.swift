@@ -56,7 +56,7 @@ struct Registry {
     let websiteUrl = "https://sagotg.github.io/OceanShare/"
     
     // oceanshare api url
-    let apiUrl = "http://35.198.134.25:5000/api/weather"
+    let apiUrl = "http://104.197.254.106:5000/api/weather"
     
     // default event descriptions
     let descJellyfishs = "Jellyfish have been spotted at this location."
