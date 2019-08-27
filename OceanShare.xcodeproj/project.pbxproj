@@ -16,6 +16,7 @@
 		BF212F55225F3C390030771F /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF212F54225F3C390030771F /* InformationViewController.swift */; };
 		BF3306FD21DF599000433264 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3306FC21DF599000433264 /* Helper.swift */; };
 		BF48EC3E220EEAE00097A64C /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF48EC3D220EEAE00097A64C /* images.xcassets */; };
+		BF5195472314255600E46FB4 /* Slide.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF5195462314255600E46FB4 /* Slide.xib */; };
 		BF56CDE621D5CB17003707A9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56CDE521D5CB17003707A9 /* HomeViewController.swift */; };
 		BF56CDEA21D5D3A7003707A9 /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56CDE921D5D3A7003707A9 /* AppUser.swift */; };
 		BF56CDEC21D5E9F7003707A9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF56CDEB21D5E9F7003707A9 /* GoogleService-Info.plist */; };
@@ -34,6 +35,7 @@
 		BF92737E21D1D57600BDCC16 /* OceanShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92737D21D1D57600BDCC16 /* OceanShareTests.swift */; };
 		BF92738921D1D57600BDCC16 /* OceanShareUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92738821D1D57600BDCC16 /* OceanShareUITests.swift */; };
 		BF92739D21D231BB00BDCC16 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */; };
+		BFAFEF042313D4090023BD0C /* Slide.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAFEF032313D4090023BD0C /* Slide.swift */; };
 		BFF9641C22E8FEDE00CAB149 /* Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF9641B22E8FEDE00CAB149 /* Registry.swift */; };
 		EA5ABE72D7963E2AEB820984 /* Pods_OceanShareUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A0292141E4382E098436B6 /* Pods_OceanShareUITests.framework */; };
 /* End PBXBuildFile section */
@@ -76,6 +78,7 @@
 		BF212F54225F3C390030771F /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
 		BF3306FC21DF599000433264 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		BF48EC3D220EEAE00097A64C /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
+		BF5195462314255600E46FB4 /* Slide.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Slide.xib; sourceTree = "<group>"; };
 		BF56CDE521D5CB17003707A9 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		BF56CDE921D5D3A7003707A9 /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
 		BF56CDEB21D5E9F7003707A9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -100,6 +103,7 @@
 		BF92738821D1D57600BDCC16 /* OceanShareUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceanShareUITests.swift; sourceTree = "<group>"; };
 		BF92738A21D1D57600BDCC16 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
+		BFAFEF032313D4090023BD0C /* Slide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slide.swift; sourceTree = "<group>"; };
 		BFCF47C021DE4B3C00F18016 /* OceanShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OceanShare.entitlements; sourceTree = "<group>"; };
 		BFF9641B22E8FEDE00CAB149 /* Registry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registry.swift; sourceTree = "<group>"; };
 		E3BCBE1CA27A9FBC058526E4 /* Pods-OceanShareTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -178,6 +182,7 @@
 		BF92736721D1D57500BDCC16 /* OceanShare */ = {
 			isa = PBXGroup;
 			children = (
+				BFAFEF022313D3B00023BD0C /* Views */,
 				BFCF47C021DE4B3C00F18016 /* OceanShare.entitlements */,
 				BF92739821D2302900BDCC16 /* Models */,
 				BF92739721D2302200BDCC16 /* Extensions */,
@@ -247,6 +252,15 @@
 				BFF9641B22E8FEDE00CAB149 /* Registry.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		BFAFEF022313D3B00023BD0C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BFAFEF032313D4090023BD0C /* Slide.swift */,
+				BF5195462314255600E46FB4 /* Slide.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		CE8419B35B9134E684D42069 /* Pods */ = {
@@ -387,6 +401,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF5195472314255600E46FB4 /* Slide.xib in Resources */,
 				BF92737321D1D57600BDCC16 /* LaunchScreen.storyboard in Resources */,
 				BF48EC3E220EEAE00097A64C /* images.xcassets in Resources */,
 				BF56CDEC21D5E9F7003707A9 /* GoogleService-Info.plist in Resources */,
@@ -570,6 +585,7 @@
 				BF92739D21D231BB00BDCC16 /* UIColorExtensions.swift in Sources */,
 				BF0FE36E22D8C32600615109 /* Weather.swift in Sources */,
 				BF92736B21D1D57500BDCC16 /* StartViewController.swift in Sources */,
+				BFAFEF042313D4090023BD0C /* Slide.swift in Sources */,
 				BF92736921D1D57500BDCC16 /* AppDelegate.swift in Sources */,
 				BF212F55225F3C390030771F /* InformationViewController.swift in Sources */,
 			);
