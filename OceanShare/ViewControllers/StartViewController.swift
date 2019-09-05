@@ -20,19 +20,20 @@ class StartViewController: UIViewController, UIPageViewControllerDelegate, UIScr
     
     // MARK: - Outlets
     
-    // view
+    /* view */
     @IBOutlet weak var oceanshareLogo: UIImageView!
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var crashButton: UIButton!
     @IBOutlet var walkthroughView: UIView!
     
-    // walkthrough view
+    /* walkthrough view */
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var walkthroughSquare: DesignableView!
     @IBOutlet weak var firstSlideButton: DesignableButton!
     @IBOutlet weak var secondSlideButton: DesignableButton!
     @IBOutlet weak var thirdSlideButton: DesignableButton!
+    @IBOutlet weak var skipWalkthroughLabel: DesignableButton!
     
     // MARK: - ViewDidLoad
     
@@ -40,32 +41,43 @@ class StartViewController: UIViewController, UIPageViewControllerDelegate, UIScr
         super.viewDidLoad()
         
         setupView()
-        //Fabric.sharedSDK().debug = true
 
     }
     
     // MARK: - Setup
     
     func setupView() {
+        /* set the gradiant */
         let color1 = registry.customClearBlue
         let color2 = registry.customWhiteBlue
         startButton.applyGradient(colours:[color1, color2], corner:27.5)
+        /* set the crash button */
         crashButton.isHidden = true
-        scrollView.layer.cornerRadius = 25
+        // Fabric.sharedSDK().debug = true
+        /* set the walkthrough page control */
+        scrollView.layer.cornerRadius = 15
         scrollView.layer.masksToBounds = true
-        
         scrollView.delegate = self
-        
         slides = createSlides()
         setupSlideScrollView(slides: slides)
         pageControl.numberOfPages = slides.count
         pageControl.currentPage = 0
         view.bringSubviewToFront(pageControl)
+        /* set localized labels */
+        setupLocalizedStrings()
         
+    }
+    
+    func setupLocalizedStrings() {
+        startButton.setTitle(NSLocalizedString("startButton", comment: ""), for: .normal)
+        skipWalkthroughLabel.setTitle(NSLocalizedString("skipWalkthrough", comment: ""), for: .normal)
     }
     
     // MARK: - Actions
     
+    /*
+     * This action needs the shared SDK to be activated on its debug mode
+     */
     @IBAction func didPressCrash(_ sender: Any) {
         print("Crash Button Pressed!")
         Crashlytics.sharedInstance().crash()
@@ -98,22 +110,26 @@ class StartViewController: UIViewController, UIPageViewControllerDelegate, UIScr
             }
         ) { (success:Bool) in
             self.walkthroughView.removeFromSuperview()
-            // if the user already know the app = redirection to the login view
+            /* if the user already know the app = redirection to the login view */
             let loginViewController = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
             self.present(loginViewController, animated: true,completion: nil)
             
         }
     }
     
+    /*
+     * Scroll the size of the whole scroll view malus 2/3 of itself
+     */
     @IBAction func firstPressed(_ sender: Any) {
-        // scroll the size of the whole scroll view malus 2/3 of itself
         let rightOffset = scrollView!.contentSize.width - scrollView!.bounds.size.width * 2
         self.scrollView!.setContentOffset(CGPoint(x: rightOffset, y: 0), animated: true)
         
     }
     
+    /*
+     * Scroll the size of the whole scroll view malus 1/3 of itself
+     */
     @IBAction func secondPressed(_ sender: Any) {
-        // scroll the size of the whole scroll view malus 1/3 of itself
         let rightOffset = scrollView!.contentSize.width - scrollView!.bounds.size.width
         self.scrollView!.setContentOffset(CGPoint(x: rightOffset, y: 0), animated: true)
         

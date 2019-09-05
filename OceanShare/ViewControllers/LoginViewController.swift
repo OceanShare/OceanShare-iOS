@@ -23,14 +23,19 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     // MARK: - Outlets
     
     @IBOutlet weak var backgroundImage: UIImageView!
+    @IBOutlet weak var loginTitle: UILabel!
+    
+    @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var emailImage: UIImageView!
-    @IBOutlet weak var passwordImage: UIImageView!
-    
-    @IBOutlet weak var loginButton: UIButton!
-    
     @IBOutlet weak var emailTextField: UITextField!
+    
+    @IBOutlet weak var passwordLabel: UILabel!
+    @IBOutlet weak var passwordImage: UIImageView!
     @IBOutlet weak var passwordTextField: UITextField!
     
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var forgotButton: DesignableButton!
+    @IBOutlet weak var registerButton: UIButton!
     
     // MARK: - Variables
     
@@ -45,26 +50,36 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
 
         ref = Database.database().reference()
  
-        // apply the design stuff to the view
         setupView()
     }
     
     // MARK: - Setup
     
     func setupView() {
-        // keybord handler
+        /* set keybord handler */
         view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
         observeKeyboardNotification()
-        // gradiant
+        /* set gradiant */
         let color1 = registry.customClearBlue
         let color2 = registry.customWhiteBlue
         loginButton.applyGradient(colours:[color1, color2], corner:27.5)
-        // background setup
+        /* set background */
         backgroundImage.layer.cornerRadius = 16
         backgroundImage.clipsToBounds = true
-        // icon setup
+        /* set localized labels */
+        setupLocalizedStrings()
+        /* set icons */
         setupCustomIcons()
         
+    }
+    
+    func setupLocalizedStrings() {
+        loginTitle.text = NSLocalizedString("loginTitle", comment: "")
+        emailLabel.text = NSLocalizedString("emailLabel", comment: "")
+        passwordLabel.text = NSLocalizedString("passwordLabel", comment: "")
+        forgotButton.setTitle(NSLocalizedString("forgotButton", comment: ""), for: .normal)
+        loginButton.setTitle(NSLocalizedString("loginButton", comment: ""), for: .normal)
+        registerButton.setTitle(NSLocalizedString("registerFromLogin", comment: ""), for: .normal)
     }
     
     func setupCustomIcons() {
@@ -81,16 +96,16 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         let email = emailTextField.text
         
         if (email?.isEmpty)! {
-            displayMessage(userMessage: "You need to fill the email field.")
+            displayMessage(userMessage: NSLocalizedString("emailNeeded", comment: ""))
             return
         }
         sendPasswordReset(withEmail: email!)
-        let alert = UIAlertController(title: "Please Check Your Emails.", message: "You probably recieved a mail from us to help you finding a new password.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Send me an other mail.", style: .default, handler: { action in
+        let alert = UIAlertController(title: NSLocalizedString("checkEmailTitle", comment: ""), message: NSLocalizedString("checkEmailMessage", comment: ""), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("sendAnotherMailAction", comment: ""), style: .default, handler: { action in
             self.sendPasswordReset(withEmail: email!)
             print("~ Action Informations: An Other Mail Has Been Sent.")
         }))
-        alert.addAction(UIAlertAction(title: "I'll check my emails", style: .default, handler: { action in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("checkMailAction", comment: ""), style: .default, handler: { action in
             print("~ Action Information: OK Pressed.")
         }))
         present(alert, animated: true, completion: nil)
@@ -104,32 +119,32 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if let err = error {
                 print("(1) Email Authentication Failed: ", err.localizedDescription)
-                // error handling
-                let alertController = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                /* error handling */
+                let alertController = UIAlertController(title: NSLocalizedString("error", comment: ""), message: NSLocalizedString("wrongPassword", comment: ""), preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: NSLocalizedString("ok", comment: ""), style: .cancel, handler: nil)
                 alertController.addAction(defaultAction)
                 self.present(alertController, animated: true, completion: nil)
             } else {
-                // check if the user has confirmed its email address
+                /* check if the user has confirmed its email address */
                 if (Auth.auth().currentUser?.isEmailVerified == true) {
                     print("-> Email Authentication Success.")
-                    // set the userdefaults data
+                    /* set the userdefaults data */
                     UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
                     UserDefaults.standard.set("yes", forKey: "user_logged_by_email")
                     UserDefaults.standard.synchronize()
-                    // access to the homeviewcontroller
+                    /* access to the homeviewcontroller */
                     let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                     mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
                     self.present(mainTabBarController, animated: true,completion: nil)
                     
                 } else {
-                    // handle the email confirmation
-                    let alert = UIAlertController(title: "Please Confirm Your Email.", message: "You need to confirm your email address to finish your inscription and access to your profile.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Send me an other mail.", style: .default, handler: { action in
+                    /* handle the email confirmation */
+                    let alert = UIAlertController(title: NSLocalizedString("emailNeedsConfirmation", comment: ""), message: NSLocalizedString("emailNeedsConfirmationMessage", comment: ""), preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("sendAnotherMailAction", comment: ""), style: .default, handler: { action in
                         self.sendEmailVerification()
                         print("~ Action Informations: An Other Mail Has Been Sent.")
                     }))
-                    alert.addAction(UIAlertAction(title: "I'll check my emails", style: .default, handler: { action in
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("checkMailAction", comment: ""), style: .default, handler: { action in
                         print("~ Action Information: OK Pressed.")
                     }))
                     self.present(alert, animated: true, completion: nil)
@@ -147,21 +162,21 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
             } else if facebookResult!.isCancelled {
                 print("(0) Facebook login was cancelled.")
             } else {
-                // get the credentials
+                /* get the credentials */
                 let accessToken = FBSDKAccessToken.current()
                 guard let accessTokenString = accessToken?.tokenString else { return }
                 let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
-                // get user datas from the facebook account as the profile picture
+                /* get user datas from the facebook account as the profile picture */
                 FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
                     if err != nil {
                         print("(2) Facebook Authentication Failed: ", err as Any)
                         return
                         
                     }
-                    // retrieve user profile picture from facebook
+                    /* retrieve user profile picture from facebook */
                     let field = result! as? [String: Any]
                     if let retrievedURL = ((field!["picture"] as? [String: Any])?["data"] as? [String: Any])?["url"] as? String {
-                        // set the value of the retrieved picture
+                        /* set the value of the retrieved picture */
                         self.imageURL = retrievedURL
                         
                     }
@@ -178,14 +193,14 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                             if snapshot.hasChild("email") {
                                 print("-> Facebook user has already set its data.")
                             } else {
-                                // define the database structure
+                                /* define the database structure */
                                 let userData: [String: Any] = [
                                     "name": user?.displayName as Any,
                                     "email": user?.email as Any
                                 ]
                                 
                                 self.ref = Database.database().reference()
-                                // push the user datas on the database
+                                /* push the user datas on the database */
                                 guard let uid = authResult?.user.uid else { return }
                                 self.ref.child("users/\(uid)").setValue(userData)
                             }
@@ -193,10 +208,10 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                     })
                 })
                 print("-> Facebook Authentication Success.")
-                // set the userdefaults data
+                /* set the userdefaults data */
                 UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
                 UserDefaults.standard.synchronize()
-                // access to the homeviewcontroller
+                /* access to the homeviewcontroller */
                 let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                 mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
                 self.present(mainTabBarController, animated: true,completion: nil)
@@ -222,7 +237,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
             if (error != nil) {
                 print("(1) Twitter Authentication Failed: ", error!.localizedDescription)
             } else {
-                // get the twitter credentials
+                /* get the twitter credentials */
                 guard let token = session?.authToken else {return}
                 guard let secret = session?.authTokenSecret else {return}
                 let credential = TwitterAuthProvider.credential(withToken: token, secret: secret)
@@ -238,24 +253,24 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                             if snapshot.hasChild("email") {
                                 print("-> Twitter user has already set its data.")
                             } else {
-                                // define the database structure
+                                /* define the database structure */
                                 let userData: [String: Any] = [
                                     "name": user?.displayName as Any,
                                     "email": user?.email as Any
                                 ]
                                 
                                 self.ref = Database.database().reference()
-                                // push the user datas on the database
+                                /* push the user datas on the database */
                                 guard let uid = authResult?.user.uid else { return }
                                 self.ref.child("users/\(uid)").setValue(userData)
                             }
                         })
                         
                         print("-> Twitter Authentication Success.")
-                        // set the userdefaults data
+                        /* set the userdefaults data */
                         UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
                         UserDefaults.standard.synchronize()
-                        // access to the homeviewcontroller
+                        /* access to the homeviewcontroller */
                         let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                         mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
                         self.present(mainTabBarController, animated: true,completion: nil)
@@ -263,7 +278,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                 })
             }
         })
-        // hide the true and unconfigurable twitter button
+        /* hide the true and unconfigurable twitter button */
         twitterSignInButton.frame = CGRect(x: 300, y: 200, width: 73, height: 65)
         view.addSubview(twitterSignInButton)
         twitterSignInButton.isHidden = true
@@ -274,8 +289,8 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
-            let alertController = UIAlertController(title: "Please Fill The Fields Correctly.", message: userMessage, preferredStyle: .alert)
-            let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
+            let alertController = UIAlertController(title: NSLocalizedString("defaultErrorMessage", comment: ""), message: userMessage, preferredStyle: .alert)
+            let OKAction = UIAlertAction(title: NSLocalizedString("ok", comment: ""), style: .default) { (action:UIAlertAction!) in
                 print("~ Actions Information: OK Pressed.")
             }
             alertController.addAction(OKAction)

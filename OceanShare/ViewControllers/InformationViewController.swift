@@ -228,12 +228,13 @@ class InformationViewController: UIViewController {
         let currentName = self.appUser?.name
         // error checking
         if (name?.isEmpty)! {
-            displayMessage(userMessage: "The new name field is required if you want to change yours Matey!")
+            //displayMessage(userMessage: "The new name field is required if you want to change yours Matey!")
+            displayMessage(userMessage: NSLocalizedString("changeNameErrorHandler1", comment: ""))
             return
             
         }
         if currentName == name {
-            displayMessage(userMessage: "The new name should be different from the previous one Matey!")
+            displayMessage(userMessage: NSLocalizedString("changeNameErrorHandler2", comment: ""))
             return
             
         } else {
@@ -262,12 +263,12 @@ class InformationViewController: UIViewController {
         let newEmail = self.emailFieldEmailModifier.text
         // error checking
         if (password?.isEmpty)! || (newEmail?.isEmpty)! {
-            displayMessage(userMessage: "The new email field and password field are required if you want to change yours Matey!")
+            displayMessage(userMessage: NSLocalizedString("changeEmailErrorHandler1", comment: ""))
             return
             
         }
         if newEmail == currentEmail {
-            displayMessage(userMessage: "The new email should be different from previous one Matey!")
+            displayMessage(userMessage: NSLocalizedString("changeEmailErrorHandler2", comment: ""))
             return
             
         } else {
@@ -277,7 +278,7 @@ class InformationViewController: UIViewController {
             self.currentUser?.reauthenticate(with: credential) { authResult, error in
                 if let error = error {
                     print("X", error)
-                    self.displayMessage(userMessage: "We are unable to check if you really are the captain.")
+                    self.displayMessage(userMessage: NSLocalizedString("reAuthErrorMessage", comment: ""))
                     trace?.stop()
                     return
                     
@@ -286,7 +287,7 @@ class InformationViewController: UIViewController {
                     self.currentUser?.updateEmail(to: newEmail!) { (error) in
                         if error != nil {
                             print("X", error!)
-                            self.displayMessage(userMessage: "We are unable to update your email now Captain, please try later.")
+                            self.displayMessage(userMessage: NSLocalizedString("changeEmailErrorMessage", comment: ""))
                             trace?.stop()
                             
                         } else {
@@ -318,12 +319,12 @@ class InformationViewController: UIViewController {
         let newPassword = self.passwordFieldPasswordModifier.text
         // error checking
         if (currentPassword?.isEmpty)! || (newPassword?.isEmpty)! {
-            displayMessage(userMessage: "The current password field and new password field are required if you want to change yours Matey!")
+            displayMessage(userMessage: NSLocalizedString("changePasswordErrorHandler1", comment: ""))
             return
             
         }
         if currentPassword == newPassword {
-            displayMessage(userMessage: "The new password should be different than previous one Matey!")
+            displayMessage(userMessage: NSLocalizedString("changePasswordErrorHandler2", comment: ""))
             return
             
         } else {
@@ -333,7 +334,7 @@ class InformationViewController: UIViewController {
             self.currentUser?.reauthenticate(with: credential) { authResult, error in
                 if let error = error {
                     print ("X", error)
-                    self.displayMessage(userMessage: "We are unable to check if you really are the captain.")
+                    self.displayMessage(userMessage: NSLocalizedString("reAuthErrorMessage", comment: ""))
                     trace?.stop()
                     return
                     
@@ -342,7 +343,7 @@ class InformationViewController: UIViewController {
                     self.currentUser?.updatePassword(to: newPassword!) { (error) in
                         if error != nil {
                             print("X", error!)
-                            self.displayMessage(userMessage: "We are unable to update your password now Captain, please try later.")
+                            self.displayMessage(userMessage: NSLocalizedString("changePasswordErrorMessage", comment: ""))
                             trace?.stop()
                             
                         } else {
@@ -363,12 +364,12 @@ class InformationViewController: UIViewController {
         let shipName = self.shipFieldShipModifier.text
         // error checking
         if (shipName?.isEmpty)! {
-            displayMessage(userMessage: "The new ship name field is required if you want to change yours Matey!")
+            displayMessage(userMessage: NSLocalizedString("changeShipErrorHandler1", comment: ""))
             return
             
         }
         if shipName == currentShipName {
-            displayMessage(userMessage: "The new ship name field should be different than the previous one Matey!")
+            displayMessage(userMessage: NSLocalizedString("changeShipErrorHandler2", comment: ""))
             return
             
         } else {
@@ -395,7 +396,7 @@ class InformationViewController: UIViewController {
         let email = self.emailStacked
         // error checking
         if (password?.isEmpty)! {
-            displayMessage(userMessage: "Yo ho ho, if you really want to leave us, you will need to fill your password field Matey!")
+            displayMessage(userMessage: NSLocalizedString("deleteAccountAdvice", comment: ""))
             return
             
         } else {
@@ -405,7 +406,7 @@ class InformationViewController: UIViewController {
             self.currentUser?.reauthenticate(with: credential) { authResult, error in
                 if let error = error {
                     print("X", error)
-                    self.displayMessage(userMessage: "We are unable to check if you really are the captain.")
+                    self.displayMessage(userMessage: NSLocalizedString("reAuthErrorMessage", comment: ""))
                     trace?.stop()
                     return
                     
@@ -421,7 +422,7 @@ class InformationViewController: UIViewController {
                     self.currentUser?.delete { error in
                         if let error = error {
                             print("X", error)
-                            self.displayMessage(userMessage: "We are unable to delete your account now Captain, please try later.")
+                            self.displayMessage(userMessage: NSLocalizedString("deleteAccountErrorMessage", comment: ""))
                             trace?.stop()
                             
                         } else {

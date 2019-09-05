@@ -24,34 +24,34 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
 
     // MARK: - Variables
     
-    // firebase
+    /* firebase */
     var ref: DatabaseReference!
     let storageRef = Storage.storage().reference()
     
-    // view
+    /* view */
     var effect: UIVisualEffect!
     var viewStacked: UIView?
     var overViewStacked: UIView?
     var cordinate: CLLocationCoordinate2D!
     let locationManager = CLLocationManager()
     
-    // map properties
+    /* map properties */
     var isInside = false
     var mapView: MGLMapView!
     
-    // tag properties
+    /* tag properties */
     var tagProperties = Tag(description: "", id: 0, latitude: 0.0, longitude: 0.0, time: "", user: "", timestamp: "", upvote: 0, downvote: 0, contributors: ["":0])
     var tagIds = [String]()
     var tagHashs = [Int]()
     
-    // saved tag
+    /* saved tag */
     var selectedTag: MGLAnnotation?
     var selectedTagId: String?
     var selectedTagUserId: String?
     var selectedTagUserName: String?
     var isUserDeletingTag = false
     
-    // globals
+    /* globals */
     var uvGlobal: String!
     var droppedIconNumber: Int! = 0
     let registry = Registry()
@@ -60,29 +60,47 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
 
     // MARK: - Outlets
     
-    // map view
+    /* map view */
     @IBOutlet weak var centerIcon: UIImageView!
     @IBOutlet weak var centerView: DesignableButton!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var oceanShareLogo: UIImageView!
-    @IBOutlet weak var messageLabel: UILabel!
+
+    @IBOutlet weak var messageLabel: UITextView!
+    
     @IBOutlet weak var longitudeView: DesignableView!
+    @IBOutlet weak var longitudeIndicatorLabel: UILabel!
     @IBOutlet weak var currentLongitudeLabel: UILabel!
     @IBOutlet weak var latitudeView: DesignableView!
+    @IBOutlet weak var latitudeIndicatorLabel: UILabel!
     @IBOutlet weak var currentLatitudeLabel: UILabel!
+    @IBOutlet weak var mapItem: UITabBarItem!
     
-    // icon view
+    /* icon view */
     @IBOutlet weak var iconView: UIView!
+    @IBOutlet weak var iconViewEventTextView: UITextView!
+    @IBOutlet weak var iconViewJellyfishs: UILabel!
+    @IBOutlet weak var iconViewDivers: UILabel!
+    @IBOutlet weak var iconViewWaste: UILabel!
+    @IBOutlet weak var iconViewWarning: UILabel!
+    @IBOutlet weak var iconViewDolphins: UILabel!
+    @IBOutlet weak var iconViewDestination: UILabel!
+    @IBOutlet weak var iconViewWeatherTextView: UITextView!
+    @IBOutlet weak var iconViewWeather: UILabel!
     @IBOutlet weak var closeIcon: UIImageView!
     @IBOutlet weak var buttonMenu: DesignableButton!
     
-    // comment view
+    /* comment view */
     @IBOutlet weak var commentView: UIView!
+    @IBOutlet weak var commentViewDescription: UITextView!
     @IBOutlet weak var descriptionTextField: UITextField!
+    @IBOutlet weak var commentViewSubmit: DesignableButton!
+    @IBOutlet weak var commentViewCancel: DesignableButton!
     
-    // description view
+    /* description view */
     @IBOutlet weak var descriptionView: UIView!
-    @IBOutlet weak var ratedLabel: UILabel!
+    @IBOutlet weak var ratedLabel: UITextView!
+    @IBOutlet weak var ratingStackView: UIStackView!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var eventImage: UIImageView!
     @IBOutlet weak var eventLabel: UILabel!
@@ -94,15 +112,18 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var thumbUpView: DesignableView!
     @IBOutlet weak var upVoteButton: UIButton!
     @IBOutlet weak var thumbUpIcon: UIImageView!
-    @IBOutlet weak var editIcon: UIImageView!
-    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var editButton: DesignableButton!
     @IBOutlet weak var closeDescriptionIcon: UIImageView!
     
-    // edition view
+    /* edition view */
     @IBOutlet weak var editionView: UIView!
+    @IBOutlet weak var editionViewDescription: UITextView!
     @IBOutlet weak var newDescriptionTextField: UITextField!
+    @IBOutlet weak var editionViewSave: DesignableButton!
+    @IBOutlet weak var editionViewCancel: DesignableButton!
+    @IBOutlet weak var editionViewDelete: DesignableButton!
     
-    // wheater icon view
+    /* wheater icon view */
     @IBOutlet weak var weatherIconView: UIView!
     @IBOutlet weak var weatherImage: UIImageView!
     @IBOutlet weak var airTemperatureLabel: UILabel!
@@ -118,7 +139,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var visibilityLabel: UILabel!
     @IBOutlet weak var uvLabel: UILabel!
     
-    // visual effect
+    /* visual effect */
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
     
     // MARK: - View's Managers
@@ -144,11 +165,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     // MARK: - Setup
     
     func setupView() {
-        // blur effect
+        /* blur effect */
         effect = visualEffectView.effect
         visualEffectView.effect = nil
         visualEffectView.isHidden = true
-        // mapview setup
+        /* mapview setup */
         mapView = MGLMapView(frame: view.bounds)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.delegate = self
@@ -157,9 +178,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         mapView.userTrackingMode = .followWithHeading
         mapView.showsUserHeadingIndicator = true
         getTagsFromServer(mapView: self.mapView)
-        // icon setup
+        /* icon setup */
         setupCustomIcons()
-        // add the layers in the right order
+        /* set localized labels */
+        setupLocalizedStrings()
+        /* add the layers in the right order */
         view.addSubview(mapView)
         view.addSubview(headerView)
         view.addSubview(longitudeView)
@@ -171,7 +194,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     func setupInfo() {
-        // setup the location manager
+        /* setup the location manager */
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
@@ -180,21 +203,50 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             locationManager.startUpdatingLocation()
             
         }
-        // update the number of icon's user'
+        /* update the number of icon's user' */
         getDroppedIconByUser()
         
     }
     
+    func setupLocalizedStrings() {
+        /* view */
+        longitudeIndicatorLabel.text = NSLocalizedString("longitude", comment: "")
+        latitudeIndicatorLabel.text = NSLocalizedString("latitude", comment: "")
+        mapItem.title = NSLocalizedString("mapItem", comment: "")
+        /* icon view */
+        iconViewEventTextView.text = NSLocalizedString("iconViewEventTextView", comment: "")
+        iconViewJellyfishs.text = NSLocalizedString("iconViewJellyfishs", comment: "")
+        iconViewDivers.text = NSLocalizedString("iconViewDivers", comment: "")
+        iconViewWaste.text = NSLocalizedString("iconViewWaste", comment: "")
+        iconViewWarning.text = NSLocalizedString("iconViewWarning", comment: "")
+        iconViewDolphins.text = NSLocalizedString("iconViewDolphins", comment: "")
+        iconViewDestination.text = NSLocalizedString("iconViewDestination", comment: "")
+        iconViewWeatherTextView.text = NSLocalizedString("iconViewWeatherTextView", comment: "")
+        iconViewWeather.text = NSLocalizedString("iconViewWeather", comment: "")
+        /* comment view */
+        commentViewDescription.text = NSLocalizedString("commentViewDescription", comment: "")
+        descriptionTextField.placeholder = NSLocalizedString("commentViewDescriptionTextField", comment: "")
+        commentViewSubmit.setTitle(NSLocalizedString("commentViewSubmit", comment: ""), for: .normal)
+        commentViewCancel.setTitle(NSLocalizedString("commentViewCancel", comment: ""), for: .normal)
+        /* edition view */
+        editionViewDescription.text = NSLocalizedString("editionViewDescription", comment: "")
+        newDescriptionTextField.placeholder = NSLocalizedString("newDescriptionTextField", comment: "")
+        editionViewSave.setTitle(NSLocalizedString("editionViewSave", comment: ""), for: .normal)
+        editionViewCancel.setTitle(NSLocalizedString("editionViewCancel", comment: ""), for: .normal)
+        editionViewDelete.setTitle(NSLocalizedString("editionViewDelete", comment: ""), for: .normal)
+        /* description view */
+        editButton.setTitle(NSLocalizedString("edit", comment: ""), for: .normal)
+    }
+    
+    
     func setupCustomIcons() {
-        // map view
+        /* map view */
         centerIcon.image = centerIcon.image!.withRenderingMode(.alwaysTemplate)
         centerIcon.tintColor = registry.customWhite
-        // icon view
+        /* icon view */
         closeIcon.image = closeIcon.image!.withRenderingMode(.alwaysTemplate)
         closeIcon.tintColor = registry.customBlack
-        // description view
-        editIcon.image = editIcon.image!.withRenderingMode(.alwaysTemplate)
-        editIcon.tintColor = registry.customGrey
+        /* description view */
         closeDescriptionIcon.image = closeDescriptionIcon.image!.withRenderingMode(.alwaysTemplate)
         closeDescriptionIcon.tintColor = registry.customBlack
         thumbUpIcon.image = thumbUpIcon.image!.withRenderingMode(.alwaysTemplate)
@@ -290,7 +342,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBAction func openMenu(_ sender: Any) {
         viewStacked = iconView
         animateInWithOptionalEffect(view: iconView, effect: true)
-        getDroppedIconByUser() // update icon nbr
+        /* update icon nbr */
+        getDroppedIconByUser()
         
     }
     
@@ -402,7 +455,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         thumbDownIcon.tintColor = registry.customWhite
         upVoteButton.isEnabled = false
         downVoteButton.isEnabled = false
-        ratedLabel.text = "You've downvoted this event."
+        ratedLabel.text = NSLocalizedString("hasBeenDownvoted", comment: "")
         
         let uid = Auth.auth().currentUser!.uid
         let markerData: [String: Int] = [uid: 2]
@@ -428,7 +481,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         thumbUpIcon.tintColor = registry.customWhite
         upVoteButton.isEnabled = false
         downVoteButton.isEnabled = false
-        ratedLabel.text = "You've upvoted this event."
+        ratedLabel.text = NSLocalizedString("hasBeenUpvoted", comment: "")
         
         let uid = Auth.auth().currentUser!.uid
         let markerData: [String: Int] = [uid: 1]
@@ -457,7 +510,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         descriptionTextField.text = ""
         PutMessageOnHeader(msg: registry.msgDropSuccess, color: registry.customGreen)
         putIconOnMap(activate: false)
-        getDroppedIconByUser() // update icon nbr
+        /* update icon nbr */
+        getDroppedIconByUser()
         
     }
     
@@ -484,7 +538,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         animateOutWithOptionalEffect(effect: false)
         animateOutWithOptionalEffect(effect: true)
         PutMessageOnHeader(msg: registry.msgDeleteSuccess, color: registry.customGreen)
-        getDroppedIconByUser() // update icon nbr
+        /* update icon nbr */
+        getDroppedIconByUser()
         
     }
     
@@ -502,22 +557,22 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
         switch Tag.id {
         case 0:
-            marker.title = "Jellyfishs"
+            marker.title = NSLocalizedString("jellyfishs", comment: "")
             mapView.addAnnotation(marker)
         case 1:
-            marker.title = "Divers"
+            marker.title = NSLocalizedString("divers", comment: "")
             mapView.addAnnotation(marker)
         case 2:
-            marker.title = "Waste"
+            marker.title = NSLocalizedString("waste", comment: "")
             mapView.addAnnotation(marker)
         case 3:
-            marker.title = "Warning"
+            marker.title = NSLocalizedString("warning", comment: "")
             mapView.addAnnotation(marker)
         case 4:
-            marker.title = "Dolphins"
+            marker.title = NSLocalizedString("dolphins", comment: "")
             mapView.addAnnotation(marker)
         case 5:
-            marker.title = "Destination"
+            marker.title = NSLocalizedString("destination", comment: "")
             mapView.addAnnotation(marker)
         default:
             print("Error in func putTag")
@@ -635,20 +690,23 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                         
                         if user != Auth.auth().currentUser?.uid {
                             self.editButton.isEnabled = false
-                            self.editIcon.isHidden = true
+                            self.editButton.isHidden = true
                             self.getUserNameById(userId: user!)
-                            // unrated event
+                            /* unrated event */
                             self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: false, isUserEvent: false, isUnrated: true)
                             for contributor in contributors! {
                                 if contributor.key == Auth.auth().currentUser?.uid {
                                     switch contributor.value {
-                                    case 1: // upvoted event
+                                    /* upvoted event */
+                                    case 1:
                                         self.setDescriptionViewFromRatingState(isUpvoted: true, isDownvoted: false, isUserEvent: false, isUnrated: false)
                                         break
-                                    case 2: // downvoted event
+                                    /* downvoted event */
+                                    case 2:
                                         self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: true, isUserEvent: false, isUnrated: false)
                                         break
-                                    default: // user event
+                                    /* user event */
+                                    default:
                                         print("Error: uid does not fit.")
                                         self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: false, isUserEvent: true, isUnrated: false)
                                         break
@@ -657,7 +715,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                                 }
                             }
                         } else {
-                            // user event
+                            /* user event */
                             self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: false, isUserEvent: true, isUnrated: false)
                             
                         }
@@ -680,7 +738,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             self.thumbDownIcon.tintColor = self.registry.customDarkGrey
             self.upVoteButton.isEnabled = false
             self.downVoteButton.isEnabled = false
-            self.ratedLabel.text = "You've already rated this event."
+            self.ratedLabel.text = NSLocalizedString("alreadyRated", comment: "")
+            self.ratingStackView.isHidden = false
+            self.editButton.isHidden = true
             
         }
         if (isDownvoted == true) {
@@ -690,20 +750,23 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             self.thumbUpIcon.tintColor = self.registry.customDarkGrey
             self.upVoteButton.isEnabled = false
             self.downVoteButton.isEnabled = false
-            self.ratedLabel.text = "You've already rated this event."
+            self.ratedLabel.text = NSLocalizedString("alreadyRated", comment: "")
+            self.ratingStackView.isHidden = false
+            self.editButton.isHidden = true
             
         }
         if (isUserEvent == true) {
-            self.userLabel.text = "You have dropped this event."
+            self.userLabel.text = NSLocalizedString("userDroppedIt", comment: "")
             self.editButton.isEnabled = true
-            self.editIcon.isHidden = false
+            self.editButton.isHidden = false
             self.thumbDownView.backgroundColor = self.registry.customLightGrey
             self.thumbUpView.backgroundColor = self.registry.customLightGrey
             self.thumbDownIcon.tintColor = self.registry.customDarkGrey
             self.thumbUpIcon.tintColor = self.registry.customDarkGrey
             self.upVoteButton.isEnabled = false
             self.downVoteButton.isEnabled = false
-            self.ratedLabel.text = "You can't rate your own event."
+            self.ratedLabel.isHidden = true
+            self.ratingStackView.isHidden = true
             
         }
         if (isUnrated == true) {
@@ -714,6 +777,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             self.upVoteButton.isEnabled = true
             self.downVoteButton.isEnabled = true
             self.ratedLabel.text = ""
+            self.ratingStackView.isHidden = false
+            self.editButton.isHidden = true
             
         }
     }
@@ -722,37 +787,37 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         switch id {
         case 0:
             self.eventImage.image = self.registry.eventJellyfishs
-            self.eventLabel.text = "Jellyfish"
+            self.eventLabel.text = NSLocalizedString("jellyfishs", comment: "")
             if description.isEmpty {
                 self.descriptionLabel.text = self.registry.descJellyfishs
             }
         case 1:
             self.eventImage.image = self.registry.eventDivers
-            self.eventLabel.text = "Divers"
+            self.eventLabel.text = NSLocalizedString("divers", comment: "")
             if description.isEmpty {
                 self.descriptionLabel.text = self.registry.descDivers
             }
         case 2:
             self.eventImage.image = self.registry.eventWaste
-            self.eventLabel.text = "Waste"
+            self.eventLabel.text = NSLocalizedString("waste", comment: "")
             if description.isEmpty {
                 self.descriptionLabel.text = self.registry.descWaste
             }
         case 3:
             self.eventImage.image = self.registry.eventWarning
-            self.eventLabel.text = "Warning"
+            self.eventLabel.text = NSLocalizedString("warning", comment: "")
             if description.isEmpty {
                 self.descriptionLabel.text = self.registry.descWarning
             }
         case 4:
             self.eventImage.image = self.registry.eventDolphins
-            self.eventLabel.text = "Dolphins"
+            self.eventLabel.text = NSLocalizedString("dolphins", comment: "")
             if description.isEmpty {
                 self.descriptionLabel.text = self.registry.descDolphins
             }
         case 5:
             self.eventImage.image = self.registry.eventDestination
-            self.eventLabel.text = "Destination"
+            self.eventLabel.text = NSLocalizedString("destination", comment: "")
             if description.isEmpty {
                 self.descriptionLabel.text = self.registry.descDestination
             }
@@ -778,7 +843,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 return
                 
             }
-            self.userLabel.text = "Dropped by: " + userNameFromData + "."
+            self.userLabel.text = NSLocalizedString("droppedBy", comment: "") + userNameFromData + "."
             trace?.stop()
             
         }
@@ -862,27 +927,27 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
         var marker = MGLAnnotationImage()
         
-        if annotation.title == "Dolphins" {
+        if annotation.title == NSLocalizedString("dolphins", comment: "") {
             var image = UIImage(named: "pin_dolphins")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             marker = MGLAnnotationImage(image: image, reuseIdentifier: "Dolphins")
             
-        } else if annotation.title == "Jellyfishs" {
+        } else if annotation.title == NSLocalizedString("jellyfishs", comment: "") {
             var image = UIImage(named: "pin_jellyfishs")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             marker = MGLAnnotationImage(image: image, reuseIdentifier: "Jellyfishs")
             
-        } else if annotation.title == "Divers" {
+        } else if annotation.title == NSLocalizedString("divers", comment: "") {
             var image = UIImage(named: "pin_divers")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             marker = MGLAnnotationImage(image: image, reuseIdentifier: "Divers")
             
-        } else if annotation.title == "Destination" {
+        } else if annotation.title == NSLocalizedString("destination", comment: "") {
             var image = UIImage(named: "pin_destination")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             marker = MGLAnnotationImage(image: image, reuseIdentifier: "Destination")
             
-        } else if annotation.title == "Warning" {
+        } else if annotation.title == NSLocalizedString("warning", comment: "") {
             var image = UIImage(named: "pin_warning")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             marker = MGLAnnotationImage(image: image, reuseIdentifier: "Warning")
@@ -1066,6 +1131,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         DispatchQueue.main.async {
             self.weatherImage.image = self.weather.analyseDescription(weather: weather, registry: self.registry)
             
+            // TODO: °F
             self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
             self.weatherLabel.text = weather.weatherDescription
             
@@ -1129,14 +1195,18 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     var dot: CALayer!
     var arrow: CAShapeLayer!
     
-    // -update is a method inherited from MGLUserLocationAnnotationView. It updates the appearance of the user location annotation when needed. This can be called many times a second, so be careful to keep it lightweight.
+    /*
+     * Update is a method inherited from MGLUserLocationAnnotationView. It updates the appearance
+     * of the user location annotation when needed. This can be called many times a second, so be
+     * careful to keep it lightweight.
+     */
     override func update() {
         if frame.isNull {
             frame = CGRect(x: 0, y: 0, width: size, height: size)
             return setNeedsLayout()
             
         }
-        // check whether we have the user’s location yet.
+        /* check whether we have the user’s location yet. */
         if CLLocationCoordinate2DIsValid(userLocation!.coordinate) {
             setupLayers()
             updateHeading()
@@ -1164,11 +1234,11 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     }
     
     private func setupLayers() {
-        // This dot forms the base of the annotation.
+        /* This dot forms the base of the annotation. */
         if dot == nil {
             dot = CALayer()
             dot.bounds = CGRect(x: 0, y: 0, width: size, height: size)
-            // Use CALayer’s corner radius to turn this layer into a circle.
+            /* Use CALayer’s corner radius to turn this layer into a circle. */
             dot.cornerRadius = size / 2
             dot.backgroundColor = super.tintColor.cgColor
             dot.borderWidth = 4
@@ -1177,7 +1247,7 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
             
         }
         
-        // This arrow overlays the dot and is rotated with the user’s heading.
+        /* This arrow overlays the dot and is rotated with the user’s heading. */
         if arrow == nil {
             arrow = CAShapeLayer()
             arrow.path = arrowPath()
@@ -1189,7 +1259,9 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
         }
     }
     
-    // Calculate the vector path for an arrow, for use in a shape layer.
+    /*
+     * Calculate the vector path for an arrow, for use in a shape layer.
+     */
     private func arrowPath() -> CGPath {
         let max: CGFloat = size / 2
         let pad: CGFloat = 3

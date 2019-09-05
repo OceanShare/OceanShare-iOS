@@ -14,6 +14,7 @@
 		BF13F79E21DB512C0086F24B /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13F79D21DB512C0086F24B /* UIViewExtensions.swift */; };
 		BF1F80A122705B84004F8144 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F80A022705B84004F8144 /* SettingsViewController.swift */; };
 		BF212F55225F3C390030771F /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF212F54225F3C390030771F /* InformationViewController.swift */; };
+		BF223959231D5C3C003F1F9A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF223957231D5C3C003F1F9A /* Localizable.strings */; };
 		BF3306FD21DF599000433264 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3306FC21DF599000433264 /* Helper.swift */; };
 		BF48EC3E220EEAE00097A64C /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF48EC3D220EEAE00097A64C /* images.xcassets */; };
 		BF5195472314255600E46FB4 /* Slide.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF5195462314255600E46FB4 /* Slide.xib */; };
@@ -76,6 +77,10 @@
 		BF13F79D21DB512C0086F24B /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		BF1F80A022705B84004F8144 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BF212F54225F3C390030771F /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
+		BF22394E231D5282003F1F9A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
+		BF22394F231D5282003F1F9A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		BF223958231D5C3C003F1F9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BF22395A231D5C4D003F1F9A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BF3306FC21DF599000433264 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		BF48EC3D220EEAE00097A64C /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
 		BF5195462314255600E46FB4 /* Slide.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Slide.xib; sourceTree = "<group>"; };
@@ -193,6 +198,7 @@
 				BF92737121D1D57600BDCC16 /* LaunchScreen.storyboard */,
 				BF92737421D1D57600BDCC16 /* Info.plist */,
 				BF56CDEB21D5E9F7003707A9 /* GoogleService-Info.plist */,
+				BF223957231D5C3C003F1F9A /* Localizable.strings */,
 			);
 			path = OceanShare;
 			sourceTree = "<group>";
@@ -383,6 +389,7 @@
 			knownRegions = (
 				en,
 				Base,
+				fr,
 			);
 			mainGroup = BF92735C21D1D57500BDCC16;
 			productRefGroup = BF92736621D1D57500BDCC16 /* Products */;
@@ -402,6 +409,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF5195472314255600E46FB4 /* Slide.xib in Resources */,
+				BF223959231D5C3C003F1F9A /* Localizable.strings in Resources */,
 				BF92737321D1D57600BDCC16 /* LaunchScreen.storyboard in Resources */,
 				BF48EC3E220EEAE00097A64C /* images.xcassets in Resources */,
 				BF56CDEC21D5E9F7003707A9 /* GoogleService-Info.plist in Resources */,
@@ -623,10 +631,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		BF223957231D5C3C003F1F9A /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BF223958231D5C3C003F1F9A /* Base */,
+				BF22395A231D5C4D003F1F9A /* fr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		BF92736C21D1D57500BDCC16 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				BF92736D21D1D57500BDCC16 /* Base */,
+				BF22394E231D5282003F1F9A /* fr */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -635,6 +653,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				BF92737221D1D57600BDCC16 /* Base */,
+				BF22394F231D5282003F1F9A /* fr */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -646,6 +665,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -707,6 +727,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

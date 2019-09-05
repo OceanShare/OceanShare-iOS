@@ -18,18 +18,30 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     // MARK: - Outlets
     
+    @IBOutlet weak var weatherTitle: UILabel!
+    @IBOutlet weak var weatherItem: UITabBarItem!
     @IBOutlet weak var weatherImage: UIImageView!
     @IBOutlet weak var airTemperatureLabel: UILabel!
     @IBOutlet weak var weatherDescriptionLabel: UILabel!
+    @IBOutlet weak var longitudeTitle: UILabel!
     @IBOutlet weak var longitudeLabel: UILabel!
+    @IBOutlet weak var latitudeTitle: UILabel!
     @IBOutlet weak var latitudeLabel: UILabel!
+    @IBOutlet weak var sunriseTitle: UILabel!
     @IBOutlet weak var sunriseLabel: UILabel!
+    @IBOutlet weak var sunsetTitle: UILabel!
     @IBOutlet weak var sunsetLabel: UILabel!
+    @IBOutlet weak var rainRiskTitle: UILabel!
     @IBOutlet weak var rainRiskLabel: UILabel!
+    @IBOutlet weak var waterTemperatureTitle: UILabel!
     @IBOutlet weak var waterTemperatureLabel: UILabel!
+    @IBOutlet weak var windTitle: UILabel!
     @IBOutlet weak var windLabel: UILabel!
+    @IBOutlet weak var humidityTitle: UILabel!
     @IBOutlet weak var humidityLabel: UILabel!
+    @IBOutlet weak var visibilityTitle: UILabel!
     @IBOutlet weak var visibilityLabel: UILabel!
+    @IBOutlet weak var uvIndiceTitle: UILabel!
     @IBOutlet weak var uvIndiceLabel: UILabel!
     
     // MARK: - Variables
@@ -49,8 +61,16 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupView()
+        
+    }
+    
+    func setupView() {
+        /* set localized labels */
+        setupLocalizedStrings()
+        /* set localisation */
         self.locationManager.requestAlwaysAuthorization()
-        // For use in foreground
+        /* for use in foreground */
         self.locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
@@ -58,6 +78,22 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             locationManager.startUpdatingLocation()
             
         }
+    }
+    
+    func setupLocalizedStrings() {
+        weatherItem.title = NSLocalizedString("weatherItem", comment: "")
+        weatherTitle.text = NSLocalizedString("weatherTitle", comment: "")
+        longitudeTitle.text = NSLocalizedString("longitudeTitle", comment: "")
+        latitudeTitle.text = NSLocalizedString("latitudeTitle", comment: "")
+        sunriseTitle.text = NSLocalizedString("sunriseTitle", comment: "")
+        sunsetTitle.text = NSLocalizedString("sunsetTitle", comment: "")
+        rainRiskTitle.text = NSLocalizedString("rainRiskTitle", comment: "")
+        waterTemperatureTitle.text = NSLocalizedString("waterTemperatureTitle", comment: "")
+        windTitle.text = NSLocalizedString("windTitle", comment: "")
+        humidityTitle.text = NSLocalizedString("humidityTitle", comment: "")
+        visibilityTitle.text = NSLocalizedString("visibilityTitle", comment: "")
+        uvIndiceTitle.text = NSLocalizedString("uvIndiceTitle", comment: "")
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -144,6 +180,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         DispatchQueue.main.async {
             self.weatherImage.image = self.weather.analyseDescription(weather: weather, registry: self.registry)
             
+            // TODO: °F
             self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
             self.weatherDescriptionLabel.text = weather.weatherDescription
             

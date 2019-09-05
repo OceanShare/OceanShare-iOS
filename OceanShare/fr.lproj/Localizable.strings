@@ -1,0 +1,179 @@
+/* 
+  Localizable.strings
+  OceanShare
+
+  Created by Joseph Pereniguez on 02/09/2019.
+  Copyright © 2019 Joseph Pereniguez. All rights reserved.
+*/
+
+// MARK: - StartViewController
+
+"startButton" = "Commencer";
+"skipWalkthrough" = "Je connais déjà OceanShare";
+
+// MARK: - LoginViewController
+
+/* view */
+"loginTitle" = "Connexion";
+"emailLabel" = "Email";
+"passwordLabel" = "Mot de passe";
+"forgotButton" = "Mot de passe oublié ?";
+"loginButton" = "Connexion";
+"registerFromLogin" = "Pas encore de compte ? S'INSCRIRE";
+/* forgotHandler */
+"emailNeeded" = "Vous devez remplir le champ 'email'.";
+"checkEmailTitle" = "Veuillez vérifier vos mails";
+"checkEmailMessage" = "Vous avez probablement reçu un mail de notre part pour vous aider à trouver un nouveau mot de passe.";
+/* loginButtonTapped */
+"emailNeedsConfirmation" = "Veuillez confirmer votre e-mail.";
+"emailNeedsConfirmationMessage" = "Vous devez confirmer votre adresse e-mail pour terminer votre inscription et accéder à votre profil.";
+"wrongPassword" = "Le mot de passe est invalide ou l'utilisateur n'a pas de mot de passe.";
+
+/* mail handling */
+"sendAnotherMailAction" = "Envoyez-moi un autre mail";
+"checkMailAction" = "Je vais vérifier mes emails";
+
+/* error handling */
+"error" = "Erreur";
+"ok" = "OK";
+"defaultErrorMessage" = "Veuillez remplir les champs correctement.";
+
+// MARK: - SignupViewController
+
+/* view */
+"signupTitle" = "Inscription";
+"usernameTitle" = "Nom";
+"emailTitle" = "Email";
+"passwordTitle" = "Mot de passe";
+"confirmTitle" = "Confirmer le mot de passe";
+"signupButton" = "Inscription";
+"signinFromRegister" = "CONNEXION";
+
+/* registerButtonTapped */
+"registerRequiredFields" = "Tous les champs sont obligatoires.";
+"passwordMatch" = "Veuillez vous assurer que les mots de passe correspondent.";
+
+// MARK: - HomeViewController
+
+/* view */
+"mapItem" = "Carte";
+"longitude" = "Long:";
+"latitude" = "Lat:";
+
+/* upvote / downvote */
+"hasBeenUpvoted" = "Vous avez voté pour cet événement.";
+"hasBeenDownvoted" = "Vous avez voté contre cet événement.";
+"alreadyRated" = "Vous avez déjà évalué cet événement.";
+"userDroppedIt" = "Vous avez posé cet événement.";
+"droppedBy" = "Posé par : ";
+
+/* markers */
+"jellyfishs" = "Méduses";
+"divers" = "Plongeurs";
+"waste" = "Déchets";
+"warning" = "Alerte";
+"dolphins" = "Dauphins";
+"destination" = "Destination";
+
+/* description view */
+"edit" = "MODIFIER";
+
+/* registry's descriptions */
+"descJellyfishs" = "Des méduses ont été repérées à cet endroit.";
+"descDivers" = "Il y a probablement des plongeurs ici.";
+"descWaste" = "L'eau semble polluée ici.";
+"descWarning" = "Quelqu'un a besoin d'aide ou il y a un danger.";
+"descDolphins" = "Des dauphins ont été repérés dans les environs.";
+"descDestination" = "Quelqu'un va y aller.";
+
+/* registry's messages */
+"msgJellyfishs" = "Événement 'méduse' selectionné.";
+"msgDivers" = "Événement 'plongeurs' selectionné.";
+"msgWaste" = "Événement 'déchets' selectionné.";
+"msgWarning" = "Événement 'alerte' selectionné.";
+"msgDolphins" = "Événement 'dauphins' selectionné.";
+"msgDestination" = "Événement 'destination' selectionné.";
+"msgWeather" = "Événement 'météo' selectionné.";
+"msgEventLimit" = "Vous avez déjà posé 5 événements.";
+"msgDistanceLimit" = "Vous ne pouvez pas poser un événement si loin.";
+"msgEarthLimit" = "Vous ne pouvez pas poser un événement sur la terre.";
+"msgDropSuccess" = "Votre événement à été posé.";
+"msgDeleteSuccess" = "Événement correctement supprimé.";
+
+/* icon view */
+"iconViewEventTextView" = "Sélectionnez un événement à poser sur la carte. Tous les utilisateurs le verront.";
+"iconViewJellyfishs" = "Méduses";
+"iconViewDivers" = "Plongeurs";
+"iconViewWaste" = "Déchets";
+"iconViewWarning" = "Alerte";
+"iconViewDolphins" = "Dauphins";
+"iconViewDestination" = "Destination";
+"iconViewWeatherTextView" = "Choisissez l'événement 'météo' pour en savoir plus sur une destination.";
+"iconViewWeather" = "Météo";
+
+/* comment view */
+"commentViewDescription" = "Vous pouvez ajouter une description optionnelle à votre événement.";
+"commentViewDescriptionTextField" = "Que se passe-t-il ?";
+"commentViewSubmit" = "Envoyer";
+"commentViewCancel" = "Annuler";
+
+/* edition view */
+"editionViewDescription" = "Vous pouvez modifier la description de votre événement ou le supprimer.";
+"newDescriptionTextField" = "Que se passe-t-il ?";
+"editionViewSave" = "Sauvegarder";
+"editionViewCancel" = "Annuler";
+"editionViewDelete" = "Supprimer";
+
+// MARK: - ProfileViewController
+
+
+
+// MARK: - WeatherViewController
+
+/* view */
+"weatherItem" = "Météo";
+"weatherTitle" = "Météo";
+"longitudeTitle" = "LONG.";
+"latitudeTitle" = "LAT.";
+"sunriseTitle" = "LEVER";
+"sunsetTitle" = "COUCHER";
+"rainRiskTitle" = "NUAGES";
+"waterTemperatureTitle" = "TEMP. EAU";
+"windTitle" = "VENT";
+"humidityTitle" = "HUMIDITÉ";
+"visibilityTitle" = "VISIBILITÉ";
+"uvIndiceTitle" = "INDICE UV";
+
+// MARK: - InformationViewController
+
+// acceptChangeName
+"changeNameErrorHandler1" = "Tous les champs sont obligatoire si vous voulez changer votre nom, moussaillon !";
+"changeNameErrorHandler2" = "Le nouveau nom doit être différent de l'ancien, moussaillon !";
+// acceptChangeEmail
+"changeEmailErrorHandler1" = "Tous les champs sont obligatoires si vous voulez changer votre email, moussaillon !";
+"changeEmailErrorHandler2" = "Le nouvel email doit être différent du précédent, moussaillon !";
+"changeEmailErrorMessage" = "Nous ne sommes pas en mesure de mettre à jour votre email maintenant Capitaine, veuillez essayer plus tard.";
+// acceptChangePassword
+"changePasswordErrorHandler1" = "Tous les champs sont obligatoires si vous voulez changer votre mot de passe, moussaillon !";
+"changePasswordErrorHandler2" = "Le nouveau mot de passe doit être différent du précédent, moussaillon !";
+"changePasswordErrorMessage" = "Nous ne sommes pas en mesure de mettre à jour votre mot de passe maintenant Capitaine, veuillez essayer plus tard.";
+// aceptChangeShipName
+"changeShipErrorHandler1" = "Tous les champs sont obligatoires si vous voulez changer le nom de votre navire, moussaillon !";
+"changeShipErrorHandler2" = "Le nouveau nom de navire doit être différent du précédent, moussaillon !";
+// deleteAccount
+"deleteAccountAdvice" = "Yo ho ho ho, si vous voulez vraiment nous quitter, vous devrez remplir votre mot de passe moussaillon !";
+"deleteAccountErrorMessage" = "Nous ne sommes pas en mesure de supprimer votre compte maintenant Capitaine, veuillez essayer plus tard.";
+// error handling
+"reAuthErrorMessage" = "Nous ne pouvons pas vérifier si vous êtes vraiment le capitaine.";
+
+// MARK: - Weather Model
+
+"droppedNow" = "Maintenant.";
+"droppedB" = "Il y a ";
+"droppedSecondsA" = " secondes.";
+"droppedMinuteA" = " minute.";
+"droppedMinutesA" = " minutes.";
+"droppedHourA" = " heure.";
+"droppedHoursA" = " heures.";
+"droppedDayA" = " jour.";
+"droppedDaysA" = " jours.";

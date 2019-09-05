@@ -218,37 +218,37 @@ struct Weather {
         
         if secondsAgo < minute  {
             if secondsAgo < 2 {
-                return "Just now."
+                return NSLocalizedString("droppedNow", comment: "")
                 
             } else {
-                return "\(secondsAgo) seconds ago."
+                return NSLocalizedString("droppedB", comment: "") + "\(secondsAgo)" + NSLocalizedString("droppedSecondsA", comment: "")
                 
             }
         } else if secondsAgo < hour {
             let min = secondsAgo/minute
             if min == 1{
-                return "\(min) minutes ago."
+                return NSLocalizedString("droppedB", comment: "") + "\(min)" + NSLocalizedString("droppedMinuteA", comment: "")
                 
             } else {
-                return "\(min) minutes ago."
+                return NSLocalizedString("droppedB", comment: "") + "\(min)" + NSLocalizedString("droppedMinutesA", comment: "")
                 
             }
         } else if secondsAgo < day {
             let hr = secondsAgo/hour
             if hr == 1{
-                return "\(hr) hour ago."
+                return NSLocalizedString("droppedB", comment: "") + "\(hr)" + NSLocalizedString("droppedHourA", comment: "")
                 
             } else {
-                return "\(hr) hours ago."
+                return NSLocalizedString("droppedB", comment: "") + "\(hr)" + NSLocalizedString("droppedHoursA", comment: "")
                 
             }
         } else if secondsAgo < week {
             let day = secondsAgo/day
             if day == 1{
-                return "\(day) day ago."
+                return NSLocalizedString("droppedB", comment: "") + "\(day)" + NSLocalizedString("droppedDayA", comment: "")
                 
             } else {
-                return "\(day) days ago."
+                return NSLocalizedString("droppedB", comment: "") + "\(day)" + NSLocalizedString("droppedDaysA", comment: "")
                 
             }
         } else {
