@@ -2739,11 +2739,16 @@
                     <connections>
                         <outlet property="addEditIcon" destination="OUc-9V-fLo" id="ML0-2J-lYQ"/>
                         <outlet property="editIcon" destination="Rch-dg-ZhV" id="JKn-jv-xR2"/>
+                        <outlet property="editingLabel" destination="RAh-ry-gVK" id="uZX-iW-Z2S"/>
                         <outlet property="infoContainer" destination="HgF-K2-QcN" id="LEc-Om-pl2"/>
+                        <outlet property="logoutButton" destination="X2k-3d-dfe" id="aiL-6F-Uee"/>
+                        <outlet property="mediaLabel" destination="XPX-8f-iSQ" id="quH-YL-YJJ"/>
                         <outlet property="pictureContainer" destination="xIc-sf-hLQ" id="BGO-bl-dIn"/>
                         <outlet property="pictureIcon" destination="X2c-Pj-XiT" id="peY-p3-1ww"/>
+                        <outlet property="profileItem" destination="qrl-R6-HuZ" id="KeJ-i0-lIt"/>
                         <outlet property="profilePicture" destination="B4X-LW-9fV" id="gqp-IO-r7b"/>
                         <outlet property="settingsIcon" destination="6UG-z3-Fmz" id="8tF-33-dnD"/>
+                        <outlet property="settingsLabel" destination="Z8G-Co-FED" id="JdI-xQ-toa"/>
                         <outlet property="shipName" destination="e2P-PI-Szi" id="1v9-5v-Ukp"/>
                         <outlet property="titleLabel" destination="oVO-u3-elw" id="EBQ-1a-zX8"/>
                     </connections>
@@ -2760,129 +2765,47 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="maintenance" translatesAutoresizingMaskIntoConstraints="NO" id="map-RI-jPh">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                            </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bHD-d1-86v" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
-                                <rect key="frame" x="57" y="188" width="300" height="380"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hum Hum..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eC8-k5-fKZ">
-                                        <rect key="frame" x="20" y="20" width="260" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="6BP-bg-MuS"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="25"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7qk-lA-GSW">
-                                        <rect key="frame" x="20" y="90" width="260" height="230"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="230" id="Ld3-bH-AsQ"/>
-                                        </constraints>
-                                        <string key="text">This feature is not yet available, please check our website and subscribe to our newsletter to know about the future of OceanShare.</string>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="23"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tCR-Yy-7eZ" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="320" width="300" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="F59-rw-AxB"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
-                                        <state key="normal" title="Learn More">
-                                            <color key="titleColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="learnMore:" destination="spY-lt-BDS" eventType="touchUpInside" id="Xhg-n8-atc"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cjc-OU-IJW">
+                                <rect key="frame" x="20" y="48" width="50" height="50"/>
                                 <constraints>
-                                    <constraint firstItem="eC8-k5-fKZ" firstAttribute="leading" secondItem="bHD-d1-86v" secondAttribute="leading" constant="20" id="2SQ-lb-t1Z"/>
-                                    <constraint firstItem="tCR-Yy-7eZ" firstAttribute="leading" secondItem="bHD-d1-86v" secondAttribute="leading" id="BH0-pT-OoO"/>
-                                    <constraint firstAttribute="trailing" secondItem="7qk-lA-GSW" secondAttribute="trailing" constant="20" id="DY4-AO-Csn"/>
-                                    <constraint firstItem="eC8-k5-fKZ" firstAttribute="top" secondItem="bHD-d1-86v" secondAttribute="top" constant="20" id="EYi-qO-DTK"/>
-                                    <constraint firstAttribute="width" constant="300" id="HyZ-Vh-Z4m"/>
-                                    <constraint firstAttribute="height" constant="380" id="KOi-PF-qhb"/>
-                                    <constraint firstItem="7qk-lA-GSW" firstAttribute="top" secondItem="eC8-k5-fKZ" secondAttribute="bottom" constant="20" id="a2L-Mg-Wb6"/>
-                                    <constraint firstItem="7qk-lA-GSW" firstAttribute="leading" secondItem="bHD-d1-86v" secondAttribute="leading" constant="20" id="csE-FO-ZzY"/>
-                                    <constraint firstAttribute="trailing" secondItem="eC8-k5-fKZ" secondAttribute="trailing" constant="20" id="dbV-QK-DuQ"/>
-                                    <constraint firstItem="tCR-Yy-7eZ" firstAttribute="top" secondItem="7qk-lA-GSW" secondAttribute="bottom" id="imE-Zf-98Z"/>
-                                    <constraint firstAttribute="trailing" secondItem="tCR-Yy-7eZ" secondAttribute="trailing" id="trl-zQ-Wja"/>
+                                    <constraint firstAttribute="width" constant="50" id="Zqf-h1-P4m"/>
+                                    <constraint firstAttribute="height" constant="50" id="jae-Kw-TYe"/>
                                 </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="15"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                        <real key="value" value="0.0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                        <color key="value" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
-                                        <real key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
-                                        <real key="value" value="0.29999999999999999"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
-                                        <size key="value" width="0.0" height="3"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kbi-zx-9sO" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
-                                <rect key="frame" x="57" y="576" width="300" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="waw-tm-Yub"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
-                                <state key="normal" title="Dismiss">
-                                    <color key="titleColor" red="0.98431372549999996" green="0.37647058820000001" blue="0.37647058820000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="15"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
-                                        <real key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
-                                        <real key="value" value="0.29999999999999999"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
-                                        <size key="value" width="0.0" height="3"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                        <real key="value" value="0.0"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
+                                <state key="normal" image="chevronLeft"/>
                                 <connections>
-                                    <action selector="handleBack:" destination="spY-lt-BDS" eventType="touchUpInside" id="6vb-wX-uaM"/>
+                                    <action selector="handleBack:" destination="cIM-eW-Aei" eventType="touchUpInside" id="yLV-Ny-z2I"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k90-xh-hu0">
+                                <rect key="frame" x="170" y="59" width="75" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
+                                <color key="textColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Uex-if-fDY">
+                                <rect key="frame" x="114" y="164" width="187" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="°Celsius"/>
+                                    <segment title="°Fahrenheit"/>
+                                </segments>
+                                <color key="tintColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="degreeChanged:" destination="spY-lt-BDS" eventType="valueChanged" id="wJ9-bF-pJE"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="0.95686274509803915" green="0.97254901960784312" blue="0.98431372549019602" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="kbi-zx-9sO" firstAttribute="leading" secondItem="bHD-d1-86v" secondAttribute="leading" id="31M-3d-hrk"/>
-                            <constraint firstItem="map-RI-jPh" firstAttribute="leading" secondItem="vjM-07-0BP" secondAttribute="leading" id="9Hx-K8-eIv"/>
-                            <constraint firstAttribute="trailing" secondItem="map-RI-jPh" secondAttribute="trailing" id="BrO-ju-SyY"/>
-                            <constraint firstItem="kbi-zx-9sO" firstAttribute="top" secondItem="bHD-d1-86v" secondAttribute="bottom" constant="8" id="CMA-tH-zXY"/>
-                            <constraint firstItem="kbi-zx-9sO" firstAttribute="trailing" secondItem="bHD-d1-86v" secondAttribute="trailing" id="Qel-yE-tvN"/>
-                            <constraint firstItem="map-RI-jPh" firstAttribute="top" secondItem="vjM-07-0BP" secondAttribute="top" id="Y6M-aG-b0Q"/>
-                            <constraint firstAttribute="bottom" secondItem="map-RI-jPh" secondAttribute="bottom" id="biM-UD-pI9"/>
-                            <constraint firstItem="bHD-d1-86v" firstAttribute="centerY" secondItem="7OY-8C-Icp" secondAttribute="centerY" id="dqf-9G-vWz"/>
-                            <constraint firstItem="bHD-d1-86v" firstAttribute="centerX" secondItem="7OY-8C-Icp" secondAttribute="centerX" id="eBT-i0-24H"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="7OY-8C-Icp"/>
                     </view>
+                    <connections>
+                        <outlet property="degreeSegmentedControl" destination="Uex-if-fDY" id="1kR-B1-KqK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pSc-LO-GM8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-500" y="-1013"/>
+            <point key="canvasLocation" x="-500.00000000000006" y="-1013.3152173913044"/>
         </scene>
         <!--Information View Controller-->
         <scene sceneID="7aK-5P-L8P">
@@ -3092,16 +3015,16 @@
                                 <rect key="frame" x="0.0" y="513" width="414" height="133"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mIH-Rl-WCI">
-                                        <rect key="frame" x="50" y="36.666666666666629" width="314" height="60"/>
+                                        <rect key="frame" x="50" y="34" width="314" height="65"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="kJa-Fc-Q9x"/>
+                                            <constraint firstAttribute="height" constant="65" id="kJa-Fc-Q9x"/>
                                         </constraints>
                                         <string key="text">OceanShare does not use user data under any circumstances. User data is confidential and does not generate any transactions on our part.</string>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="12"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoBlack" translatesAutoresizingMaskIntoConstraints="NO" id="10c-te-8jx">
-                                        <rect key="frame" x="147" y="-13.333333333333314" width="120" height="70"/>
+                                        <rect key="frame" x="147" y="-21" width="120" height="70"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="70" id="OoR-MT-DuE"/>
                                             <constraint firstAttribute="width" constant="120" id="meO-hS-aSJ"/>
@@ -3110,7 +3033,7 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="10c-te-8jx" firstAttribute="centerX" secondItem="BLL-zU-8Ig" secondAttribute="centerX" id="Gc1-HV-b3T"/>
-                                    <constraint firstItem="mIH-Rl-WCI" firstAttribute="top" secondItem="10c-te-8jx" secondAttribute="bottom" constant="-20" id="QU3-Cv-7b0"/>
+                                    <constraint firstItem="mIH-Rl-WCI" firstAttribute="top" secondItem="10c-te-8jx" secondAttribute="bottom" constant="-15" id="QU3-Cv-7b0"/>
                                     <constraint firstItem="mIH-Rl-WCI" firstAttribute="centerY" secondItem="BLL-zU-8Ig" secondAttribute="centerY" id="Qam-US-vtk"/>
                                     <constraint firstItem="mIH-Rl-WCI" firstAttribute="leading" secondItem="BLL-zU-8Ig" secondAttribute="leading" constant="50" id="SdP-Pq-xAb"/>
                                     <constraint firstAttribute="trailing" secondItem="mIH-Rl-WCI" secondAttribute="trailing" constant="50" id="aKI-Xe-s0e"/>
@@ -3184,29 +3107,51 @@
                     </view>
                     <connections>
                         <outlet property="currentPasswordFieldPasswordMofidier" destination="Qcx-2O-pR9" id="ht8-DB-eb4"/>
+                        <outlet property="deleteButton" destination="CrL-Z6-Ao9" id="Ijs-FI-3Ft"/>
+                        <outlet property="deletePopUpAccept" destination="2rD-6s-iAD" id="oWI-aG-kAc"/>
+                        <outlet property="deletePopUpCancel" destination="lGl-GJ-KtP" id="HCF-XN-YNh"/>
+                        <outlet property="deletePopUpDescription" destination="8da-vd-DPc" id="tqI-qw-btW"/>
                         <outlet property="deletionPopUp" destination="9P1-l3-Lja" id="AuY-Uw-RWN"/>
                         <outlet property="emailContainer" destination="FjO-2e-ODS" id="BrF-Xs-2wu"/>
                         <outlet property="emailFieldEmailModifier" destination="ekZ-MC-MFD" id="T51-iy-zwS"/>
+                        <outlet property="emailLabel" destination="bMY-97-bQ6" id="adf-wJ-pJK"/>
                         <outlet property="emailModifierPic" destination="qcA-Bj-GC6" id="Nhl-Fc-FY4"/>
                         <outlet property="emailPopUp" destination="vUK-PG-MTK" id="aoJ-nn-YOL"/>
+                        <outlet property="emailPopUpAccept" destination="tVU-N3-VkR" id="u9L-he-EFo"/>
+                        <outlet property="emailPopUpCancel" destination="qik-bI-tKr" id="voj-A7-RHL"/>
+                        <outlet property="emailPopUpDescription" destination="qUl-bk-htU" id="pkf-PF-llT"/>
+                        <outlet property="legalDescription" destination="mIH-Rl-WCI" id="iLR-D2-4cg"/>
                         <outlet property="nameContainer" destination="3q6-YE-nAq" id="yaj-kV-gon"/>
                         <outlet property="nameFieldNameModifier" destination="d1o-JB-LL8" id="ZaO-qr-No1"/>
+                        <outlet property="nameLabel" destination="Qjx-me-eGF" id="p4C-Be-Uwt"/>
                         <outlet property="nameModifierPic" destination="8vi-rG-oRG" id="chz-C8-ldo"/>
                         <outlet property="namePopUp" destination="d5T-yo-Xp9" id="xfH-LG-MMd"/>
+                        <outlet property="namePopUpAccept" destination="4L0-78-AgZ" id="gn9-oc-D9a"/>
+                        <outlet property="namePopUpCancel" destination="ylM-q1-XBF" id="UGo-d0-5cZ"/>
+                        <outlet property="namePopUpDescription" destination="Z1x-Ch-7hg" id="geL-CE-jlJ"/>
                         <outlet property="passwordContainer" destination="vfA-5c-SdO" id="JbS-Vu-b8c"/>
                         <outlet property="passwordFieldDeleteModifier" destination="G2c-AX-ZMF" id="vCv-8N-G3g"/>
                         <outlet property="passwordFieldEmailModifier" destination="XRU-Zq-EH7" id="Kg3-79-N9E"/>
                         <outlet property="passwordFieldPasswordModifier" destination="9HC-Ke-6qj" id="IY5-bq-bCe"/>
+                        <outlet property="passwordLabel" destination="5Qt-CR-Q6s" id="I7H-qW-kMD"/>
                         <outlet property="passwordModifierPic" destination="oVH-lw-wLD" id="AtW-KG-KBe"/>
                         <outlet property="passwordPopUp" destination="NMZ-zr-Bo3" id="Smo-88-njS"/>
+                        <outlet property="passwordPopUpAccept" destination="zEb-tZ-2f7" id="EV1-Vg-bTX"/>
+                        <outlet property="passwordPopUpCancel" destination="w4g-kv-HqK" id="XUx-Yz-dZG"/>
+                        <outlet property="passwordPopUpDescription" destination="YFT-83-fAJ" id="p8k-yu-9Ah"/>
                         <outlet property="shipContainer" destination="lZm-Ms-gr4" id="YdQ-CZ-AOe"/>
                         <outlet property="shipFieldShipModifier" destination="J7u-Bm-CFq" id="BTY-xD-NXf"/>
                         <outlet property="shipModifierPic" destination="uB4-hL-jUl" id="4vO-Lu-Rqa"/>
+                        <outlet property="shipNameLabel" destination="Ned-np-pRc" id="eSC-VA-tYf"/>
                         <outlet property="shipPopUp" destination="ckG-wV-F3l" id="Be6-HQ-YdT"/>
+                        <outlet property="shipPopUpAccept" destination="Zrc-bZ-u5a" id="3Ow-nQ-wPC"/>
+                        <outlet property="shipPopUpCancel" destination="atT-HQ-2oz" id="aWc-An-It9"/>
+                        <outlet property="shipPopUpDescripiton" destination="kDj-cZ-B4D" id="OyP-rP-utE"/>
                         <outlet property="userEmailAddress" destination="fsP-GS-kTs" id="s0Y-vS-r1x"/>
                         <outlet property="userName" destination="IwX-u2-OwA" id="GZo-jN-3Ku"/>
                         <outlet property="userPassword" destination="Axe-8b-VOv" id="M2t-Hi-UeO"/>
                         <outlet property="userShipName" destination="7nz-ch-OFY" id="9tH-VG-Lxw"/>
+                        <outlet property="viewTitleLabel" destination="6HC-hB-rrt" id="rmZ-ut-Vha"/>
                         <outlet property="visualEffectView" destination="KIe-D3-c5p" id="hqr-Uw-C8e"/>
                     </connections>
                 </viewController>
@@ -4732,7 +4677,6 @@
         <image name="logoBlack" width="459.66665649414062" height="168.33332824707031"/>
         <image name="logoWhite" width="459.66665649414062" height="168.33332824707031"/>
         <image name="mail" width="30" height="30"/>
-        <image name="maintenance" width="633.33331298828125" height="633.33331298828125"/>
         <image name="map" width="30" height="30"/>
         <image name="modify" width="30" height="30"/>
         <image name="picture" width="30" height="30"/>

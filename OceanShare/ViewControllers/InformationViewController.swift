@@ -52,48 +52,72 @@ class InformationViewController: UIViewController {
     
     // MARK: - Outlets
     
-    // icon outlets
+    /* view */
+    @IBOutlet weak var viewTitleLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var passwordLabel: UILabel!
+    @IBOutlet weak var shipNameLabel: UILabel!
+    @IBOutlet weak var legalDescription: UITextView!
+    @IBOutlet weak var deleteButton: UIButton!
+    
+    /* icon outlets */
     @IBOutlet weak var nameModifierPic: UIImageView!
     @IBOutlet weak var emailModifierPic: UIImageView!
     @IBOutlet weak var shipModifierPic: UIImageView!
     @IBOutlet weak var passwordModifierPic: UIImageView!
     
-    // container outlets
+    /* container outlets */
     @IBOutlet weak var nameContainer: UIView!
     @IBOutlet weak var emailContainer: UIView!
     @IBOutlet weak var shipContainer: UIView!
     @IBOutlet weak var passwordContainer: UIView!
     
-    // displayed label oultets
+    /* displayed label oultets */
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var userEmailAddress: UILabel!
     @IBOutlet weak var userShipName: UILabel!
     @IBOutlet weak var userPassword: UILabel!
     
-    // blur effect view
+    /* blur effect view */
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
     
-    // name pop up outlets
+    /* name pop up outlets */
     @IBOutlet var namePopUp: DesignableButton!
+    @IBOutlet weak var namePopUpDescription: UITextView!
     @IBOutlet weak var nameFieldNameModifier: UITextField!
+    @IBOutlet weak var namePopUpAccept: DesignableButton!
+    @IBOutlet weak var namePopUpCancel: DesignableButton!
     
-    // email pop up outlets
+    /* email pop up outlets */
     @IBOutlet var emailPopUp: DesignableButton!
+    @IBOutlet weak var emailPopUpDescription: UITextView!
     @IBOutlet weak var emailFieldEmailModifier: UITextField!
     @IBOutlet weak var passwordFieldEmailModifier: UITextField!
+    @IBOutlet weak var emailPopUpAccept: DesignableButton!
+    @IBOutlet weak var emailPopUpCancel: DesignableButton!
     
-    // password pop up outlets
+    /* password pop up outlets */
     @IBOutlet var passwordPopUp: DesignableButton!
+    @IBOutlet weak var passwordPopUpDescription: UITextView!
     @IBOutlet weak var currentPasswordFieldPasswordMofidier: UITextField!
     @IBOutlet weak var passwordFieldPasswordModifier: UITextField!
+    @IBOutlet weak var passwordPopUpAccept: DesignableButton!
+    @IBOutlet weak var passwordPopUpCancel: DesignableButton!
     
-    // ship pop up outlets
+    /* ship pop up outlets */
     @IBOutlet var shipPopUp: DesignableButton!
+    @IBOutlet weak var shipPopUpDescripiton: UITextView!
     @IBOutlet weak var shipFieldShipModifier: UITextField!
+    @IBOutlet weak var shipPopUpAccept: DesignableButton!
+    @IBOutlet weak var shipPopUpCancel: DesignableButton!
     
-    // deletion pop up outlets
+    /* deletion pop up outlets */
     @IBOutlet var deletionPopUp: DesignableButton!
+    @IBOutlet weak var deletePopUpDescription: UITextView!
     @IBOutlet weak var passwordFieldDeleteModifier: UITextField!
+    @IBOutlet weak var deletePopUpAccept: DesignableButton!
+    @IBOutlet weak var deletePopUpCancel: DesignableButton!
     
     // MARK: - ViewDidLoad
     
@@ -118,7 +142,45 @@ class InformationViewController: UIViewController {
         visualEffectView.alpha = 0.8
         setupCustomIcons()
         turnOnSkeleton()
+        setupLocalizedStrings()
         
+    }
+    
+    func setupLocalizedStrings() {
+        viewTitleLabel.text = NSLocalizedString("informationTitle", comment: "")
+        nameLabel.text = NSLocalizedString("informationNameTitle", comment: "")
+        emailLabel.text = NSLocalizedString("informationEmailTitle", comment: "")
+        passwordLabel.text = NSLocalizedString("informationPasswordTitle", comment: "")
+        shipNameLabel.text = NSLocalizedString("informationShipTitle", comment: "")
+        legalDescription.text = NSLocalizedString("informationLegalDescription", comment: "")
+        deleteButton.setTitle(NSLocalizedString("informationDeleteButton", comment: ""), for: .normal)
+        /* name pop up */
+        namePopUpDescription.text = NSLocalizedString("namePopUpDescripiton", comment: "")
+        nameFieldNameModifier.placeholder = NSLocalizedString("namePopUpPlaceholder", comment: "")
+        namePopUpAccept.setTitle(NSLocalizedString("InformationAccept", comment: ""), for: .normal)
+        namePopUpCancel.setTitle(NSLocalizedString("InformationCancel", comment: ""), for: .normal)
+        /* email pop up */
+        emailPopUpDescription.text = NSLocalizedString("emailPopUpDescription", comment: "")
+        emailFieldEmailModifier.placeholder = NSLocalizedString("emailPopUpPlaceholder", comment: "")
+        passwordFieldEmailModifier.placeholder = NSLocalizedString("passwordPopUpPlaceholder", comment: "")
+        emailPopUpAccept.setTitle(NSLocalizedString("InformationAccept", comment: ""), for: .normal)
+        emailPopUpCancel.setTitle(NSLocalizedString("InformationCancel", comment: ""), for: .normal)
+        /* password pop up */
+        passwordPopUpDescription.text = NSLocalizedString("passwordPopUpDescription", comment: "")
+        passwordFieldPasswordModifier.placeholder = NSLocalizedString("newPasswordPopUpPlaceholder", comment: "")
+        currentPasswordFieldPasswordMofidier.placeholder = NSLocalizedString("currentPasswordPopUpPlaceholder", comment: "")
+        passwordPopUpAccept.setTitle(NSLocalizedString("InformationAccept", comment: ""), for: .normal)
+        passwordPopUpCancel.setTitle(NSLocalizedString("InformationCancel", comment: ""), for: .normal)
+        /* ship name pop up */
+        shipPopUpDescripiton.text = NSLocalizedString("shipPopUpDescripiton", comment: "")
+        shipFieldShipModifier.placeholder = NSLocalizedString("shipPopUpPlaceholder", comment: "")
+        shipPopUpAccept.setTitle(NSLocalizedString("InformationAccept", comment: ""), for: .normal)
+        shipPopUpCancel.setTitle(NSLocalizedString("InformationCancel", comment: ""), for: .normal)
+        /* deletion pop up */
+        deletePopUpDescription.text = NSLocalizedString("deletePopUpDescription", comment: "")
+        passwordFieldDeleteModifier.placeholder = NSLocalizedString("passwordPopUpPlaceholder", comment: "")
+        deletePopUpAccept.setTitle(NSLocalizedString("InformationAccept", comment: ""), for: .normal)
+        deletePopUpCancel.setTitle(NSLocalizedString("InformationCancel", comment: ""), for: .normal)
     }
     
     func setupCustomIcons() {

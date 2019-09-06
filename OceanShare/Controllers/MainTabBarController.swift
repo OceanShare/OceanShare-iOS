@@ -15,17 +15,6 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupView()
-        
-    }
-
-    func setupView() {
-        /* set localized labels */
-        setupLocalizedStrings()
-    }
-    
-    func setupLocalizedStrings() {
-        // TODO
     }
     
 }

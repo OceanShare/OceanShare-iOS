@@ -79,6 +79,15 @@
 
 /* description view */
 "edit" = "EDIT";
+"droppedNow" = "Just now.";
+"droppedB" = "";
+"droppedSecondsA" = " seconds ago.";
+"droppedMinuteA" = " minute ago.";
+"droppedMinutesA" = " minutes ago.";
+"droppedHourA" = " hour ago.";
+"droppedHoursA" = "hours ago.";
+"droppedDayA" = " day ago.";
+"droppedDaysA" = " days ago.";
 
 /* registry's descriptions */
 "descJellyfishs" = "Jellyfish have been spotted at this location.";
@@ -128,7 +137,17 @@
 
 // MARK: - ProfileViewController
 
-// TODO
+"profileSettingsLabel" = "SETTINGS";
+"profileMediaLabel" = "ADD MEDIA";
+"profileEditLabel" = "EDIT";
+"profileLogoutLabel" = "Log Out";
+"profileItem" = "Profile";
+
+// MARK: - SettingViewController
+
+/* degrees */
+"segmentedDegree1" = "°Celsius";
+"segmentedDegree2" = "°Fahrenheit";
 
 // MARK: - WeatherViewController
 
@@ -147,6 +166,40 @@
 "uvIndiceTitle" = "UV INDICE";
 
 // MARK: - InformationViewController
+
+/* view */
+"informationTitle" = "Information";
+"informationNameTitle" = "Name";
+"informationEmailTitle" = "Email Address";
+"informationPasswordTitle" = "Password";
+"informationShipTitle" = "Ship Name";
+"informationLegalDescription" = "OceanShare does not use user data under any circumstances. User data is confidential and does not generate any transactions on our part.";
+"informationDeleteButton" = "Delete My Account";
+
+/* general pop up */
+"InformationAccept" = "Accept";
+"InformationCancel" = "Cancel";
+"passwordPopUpPlaceholder" = "Password";
+
+/* name pop up */
+"namePopUpDescripiton" = "Write a new name in the field below then 'Accept' to change your user name. Only your friends can see your name.";
+"namePopUpPlaceholder" = "New Name";
+
+/* email pop up */
+"emailPopUpDescription" = "Write an email in the field below, complete with your password to confirm then 'Accept' to change your email. You will soon receive a confirmation email.";
+"emailPopUpPlaceholder" = "New Email";
+
+/* password pop up */
+"passwordPopUpDescription" = "Write your current password to check your identity and your new password in the fields below then 'Accept' to change your password.";
+"newPasswordPopUpPlaceholder" = "New Password";
+"currentPasswordPopUpPlaceholder" = "Current Password";
+
+/* ship pop up */
+"shipPopUpDescripiton" = "Write a new name in the field below then 'Accept' to change your ship name. Everybody can see your ship name.";
+"shipPopUpPlaceholder" = "New Ship Name";
+
+/* deletion pop up */
+"deletePopUpDescription" = "Write your password in the field below then 'Accept' to delete your account. This action is irreversible.";
 
 /* acceptChangeName */
 "changeNameErrorHandler1" = "The new name field is required if you want to change yours Matey!";
@@ -170,12 +223,21 @@
 
 // MARK: - Weather Model
 
-"droppedNow" = "Just now.";
-"droppedB" = "";
-"droppedSecondsA" = " seconds ago.";
-"droppedMinuteA" = " minute ago.";
-"droppedMinutesA" = " minutes ago.";
-"droppedHourA" = " hour ago.";
-"droppedHoursA" = "hours ago.";
-"droppedDayA" = " day ago.";
-"droppedDaysA" = " days ago.";
+/* wind direction */
+"N " = "N ";
+"NNE " = "NNE ";
+"NE " = "NE ";
+"ENE " = "ENE ";
+"E " = "E ";
+"ESE " = "ESE ";
+"SE " = "SE ";
+"SSE " = "SSE ";
+"S " = "S ";
+"SSW " = "SSW ";
+"SW " = "SW ";
+"WSW " = "WSW ";
+"W " = "W ";
+"WNW " = "WNW ";
+"NW " = "NW ";
+"NNW " = "NNW ";
+

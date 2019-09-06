@@ -77,6 +77,15 @@
 
 /* description view */
 "edit" = "MODIFIER";
+"droppedNow" = "Maintenant.";
+"droppedB" = "Il y a ";
+"droppedSecondsA" = " secondes.";
+"droppedMinuteA" = " minute.";
+"droppedMinutesA" = " minutes.";
+"droppedHourA" = " heure.";
+"droppedHoursA" = " heures.";
+"droppedDayA" = " jour.";
+"droppedDaysA" = " jours.";
 
 /* registry's descriptions */
 "descJellyfishs" = "Des méduses ont été repérées à cet endroit.";
@@ -126,7 +135,17 @@
 
 // MARK: - ProfileViewController
 
+"profileSettingsLabel" = "PARAMÈTRES";
+"profileMediaLabel" = "PHOTO";
+"profileEditLabel" = "COMPTE";
+"profileLogoutLabel" = "Se Déconnecter";
+"profileItem" = "Profil";
 
+// MARK: - SettingViewController
+
+/* degrees */
+"segmentedDegree1" = "°Celsius";
+"segmentedDegree2" = "°Fahrenheit";
 
 // MARK: - WeatherViewController
 
@@ -146,34 +165,77 @@
 
 // MARK: - InformationViewController
 
-// acceptChangeName
+/* view */
+"informationTitle" = "Compte";
+"informationNameTitle" = "Nom";
+"informationEmailTitle" = "Adresse e-mail";
+"informationPasswordTitle" = "Mot de passe";
+"informationShipTitle" = "Nom du navire";
+"informationLegalDescription" = "OceanShare n'utilise en aucun cas les données des utilisateurs. Les données sont confidentielles et ne génèrent aucune transaction de notre part.";
+"informationDeleteButton" = "Supprimer Mon Compte";
+
+/* general pop up */
+"InformationAccept" = "Sauvegarder";
+"InformationCancel" = "Annuler";
+"passwordPopUpPlaceholder" = "Mot de Passe";
+
+/* name pop up */
+"namePopUpDescripiton" = "test1";
+"namePopUpPlaceholder" = "Nouveau Nom";
+
+/* email pop up */
+"emailPopUpDescription" = "test2";
+"emailPopUpPlaceholder" = "Nouvel Email";
+
+/* password pop up */
+"passwordPopUpDescription" = "test3";
+"newPasswordPopUpPlaceholder" = "Nouveau Mot de Passe";
+"currentPasswordPopUpPlaceholder" = "Mot de Passe Actuel";
+
+/* ship pop up */
+"shipPopUpDescripiton" = "test4";
+"shipPopUpPlaceholder" = "Nouveau Nom de Navire";
+
+/* deletion pop up */
+"deletePopUpDescription" = "test5";
+
+
+/* acceptChangeName */
 "changeNameErrorHandler1" = "Tous les champs sont obligatoire si vous voulez changer votre nom, moussaillon !";
 "changeNameErrorHandler2" = "Le nouveau nom doit être différent de l'ancien, moussaillon !";
-// acceptChangeEmail
+/* acceptChangeEmail */
 "changeEmailErrorHandler1" = "Tous les champs sont obligatoires si vous voulez changer votre email, moussaillon !";
 "changeEmailErrorHandler2" = "Le nouvel email doit être différent du précédent, moussaillon !";
 "changeEmailErrorMessage" = "Nous ne sommes pas en mesure de mettre à jour votre email maintenant Capitaine, veuillez essayer plus tard.";
-// acceptChangePassword
+/* acceptChangePassword */
 "changePasswordErrorHandler1" = "Tous les champs sont obligatoires si vous voulez changer votre mot de passe, moussaillon !";
 "changePasswordErrorHandler2" = "Le nouveau mot de passe doit être différent du précédent, moussaillon !";
 "changePasswordErrorMessage" = "Nous ne sommes pas en mesure de mettre à jour votre mot de passe maintenant Capitaine, veuillez essayer plus tard.";
-// aceptChangeShipName
+/* aceptChangeShipName */
 "changeShipErrorHandler1" = "Tous les champs sont obligatoires si vous voulez changer le nom de votre navire, moussaillon !";
 "changeShipErrorHandler2" = "Le nouveau nom de navire doit être différent du précédent, moussaillon !";
-// deleteAccount
+/* deleteAccount */
 "deleteAccountAdvice" = "Yo ho ho ho, si vous voulez vraiment nous quitter, vous devrez remplir votre mot de passe moussaillon !";
 "deleteAccountErrorMessage" = "Nous ne sommes pas en mesure de supprimer votre compte maintenant Capitaine, veuillez essayer plus tard.";
-// error handling
+/* error handling */
 "reAuthErrorMessage" = "Nous ne pouvons pas vérifier si vous êtes vraiment le capitaine.";
 
 // MARK: - Weather Model
 
-"droppedNow" = "Maintenant.";
-"droppedB" = "Il y a ";
-"droppedSecondsA" = " secondes.";
-"droppedMinuteA" = " minute.";
-"droppedMinutesA" = " minutes.";
-"droppedHourA" = " heure.";
-"droppedHoursA" = " heures.";
-"droppedDayA" = " jour.";
-"droppedDaysA" = " jours.";
+/* wind direction */
+"N " = "N ";
+"NNE " = "NNE ";
+"NE " = "NE ";
+"ENE " = "ENE ";
+"E " = "E ";
+"ESE " = "ESE ";
+"SE " = "SE ";
+"SSE " = "SSE ";
+"S " = "S ";
+"SSW " = "SSO ";
+"SW " = "SO ";
+"WSW "= "OSO ";
+"W " = "O ";
+"WNW " = "ONO ";
+"NW " = "NO ";
+"NNW " = "NNO ";
