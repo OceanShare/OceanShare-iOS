@@ -56,7 +56,6 @@
 // MARK: - HomeViewController
 
 /* view */
-"mapItem" = "Carte";
 "longitude" = "Long:";
 "latitude" = "Lat:";
 
@@ -135,22 +134,25 @@
 
 // MARK: - ProfileViewController
 
+"hello" = "Bonjour ";
 "profileSettingsLabel" = "PARAMÈTRES";
 "profileMediaLabel" = "PHOTO";
 "profileEditLabel" = "COMPTE";
 "profileLogoutLabel" = "Se Déconnecter";
-"profileItem" = "Profil";
 
 // MARK: - SettingViewController
 
+/* view */
+"settingViewTitle" = "Paramètres";
+"settingTemperatureTitle" = "Affichage de la Température";
+
 /* degrees */
-"segmentedDegree1" = "°Celsius";
-"segmentedDegree2" = "°Fahrenheit";
+"segmentedDegree1" = "Celsius";
+"segmentedDegree2" = "Fahrenheit";
 
 // MARK: - WeatherViewController
 
 /* view */
-"weatherItem" = "Météo";
 "weatherTitle" = "Météo";
 "longitudeTitle" = "LONG.";
 "latitudeTitle" = "LAT.";
@@ -175,30 +177,30 @@
 "informationDeleteButton" = "Supprimer Mon Compte";
 
 /* general pop up */
+"errorTitleMessage" = "Oh Oh !";
 "InformationAccept" = "Sauvegarder";
 "InformationCancel" = "Annuler";
 "passwordPopUpPlaceholder" = "Mot de Passe";
 
 /* name pop up */
-"namePopUpDescripiton" = "test1";
+"namePopUpDescripiton" = "Ecrivez un nouveau nom dans le champ ci-dessous pour changer le votre. Seuls vos amis peuvent voir votre nom.";
 "namePopUpPlaceholder" = "Nouveau Nom";
 
 /* email pop up */
-"emailPopUpDescription" = "test2";
+"emailPopUpDescription" = "Ecrivez un email dans le champ ci-dessous, complétez avec votre mot de passe pour changer votre email. Vous recevrez bientôt un courriel de confirmation.";
 "emailPopUpPlaceholder" = "Nouvel Email";
 
 /* password pop up */
-"passwordPopUpDescription" = "test3";
+"passwordPopUpDescription" = "Entrez votre mot de passe actuel pour vérifier votre identité et votre nouveau mot de passe dans les champs ci-dessous pour le modifier.";
 "newPasswordPopUpPlaceholder" = "Nouveau Mot de Passe";
 "currentPasswordPopUpPlaceholder" = "Mot de Passe Actuel";
 
 /* ship pop up */
-"shipPopUpDescripiton" = "test4";
+"shipPopUpDescripiton" = "Inscrivez un nouveau nom dans le champ ci-dessous pour changer le nom de votre navire. Tout le monde peut voir ce nom.";
 "shipPopUpPlaceholder" = "Nouveau Nom de Navire";
 
 /* deletion pop up */
-"deletePopUpDescription" = "test5";
-
+"deletePopUpDescription" = "Saisissez votre mot de passe dans le champ ci-dessous pour supprimer votre compte.";
 
 /* acceptChangeName */
 "changeNameErrorHandler1" = "Tous les champs sont obligatoire si vous voulez changer votre nom, moussaillon !";
@@ -221,6 +223,11 @@
 "reAuthErrorMessage" = "Nous ne pouvons pas vérifier si vous êtes vraiment le capitaine.";
 
 // MARK: - Weather Model
+
+/* date formater */
+"fullDateFormat" = "dd/MM, HH:mm";
+"dateFormat" = "HH:mm";
+"localeIdentifier" = "fr_GP";
 
 /* wind direction */
 "N " = "N ";

@@ -2765,30 +2765,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cjc-OU-IJW">
-                                <rect key="frame" x="20" y="48" width="50" height="50"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cjc-OU-IJW">
+                                <rect key="frame" x="15" y="50" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="Zqf-h1-P4m"/>
                                     <constraint firstAttribute="height" constant="50" id="jae-Kw-TYe"/>
                                 </constraints>
                                 <state key="normal" image="chevronLeft"/>
                                 <connections>
-                                    <action selector="handleBack:" destination="cIM-eW-Aei" eventType="touchUpInside" id="yLV-Ny-z2I"/>
+                                    <action selector="handleBack:" destination="spY-lt-BDS" eventType="touchUpInside" id="76S-JO-vTH"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k90-xh-hu0">
-                                <rect key="frame" x="170" y="59" width="75" height="28"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k90-xh-hu0">
+                                <rect key="frame" x="169.66666666666666" y="61" width="75" height="28"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
                                 <color key="textColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Uex-if-fDY">
-                                <rect key="frame" x="114" y="164" width="187" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Temperature Display" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XwN-fo-brA">
+                                <rect key="frame" x="20" y="130" width="162.66666666666666" height="23.333333333333343"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                                <color key="textColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Uex-if-fDY">
+                                <rect key="frame" x="20" y="161.33333333333334" width="374" height="41"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="hEx-at-bPR"/>
+                                </constraints>
                                 <segments>
-                                    <segment title="°Celsius"/>
-                                    <segment title="°Fahrenheit"/>
+                                    <segment title="Celsius"/>
+                                    <segment title="Fahrenheit"/>
                                 </segments>
                                 <color key="tintColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
@@ -2797,10 +2804,23 @@
                             </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="0.95686274509803915" green="0.97254901960784312" blue="0.98431372549019602" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Uex-if-fDY" firstAttribute="top" secondItem="XwN-fo-brA" secondAttribute="bottom" constant="8" id="8tZ-Hy-Xm2"/>
+                            <constraint firstItem="Cjc-OU-IJW" firstAttribute="leading" secondItem="vjM-07-0BP" secondAttribute="leading" constant="15" id="C37-aB-zpd"/>
+                            <constraint firstItem="Uex-if-fDY" firstAttribute="leading" secondItem="vjM-07-0BP" secondAttribute="leading" constant="20" id="CTY-Ng-8bp"/>
+                            <constraint firstItem="XwN-fo-brA" firstAttribute="top" secondItem="vjM-07-0BP" secondAttribute="top" constant="130" id="LP5-N8-kHn"/>
+                            <constraint firstItem="Cjc-OU-IJW" firstAttribute="top" secondItem="vjM-07-0BP" secondAttribute="top" constant="50" id="XQD-zb-wRd"/>
+                            <constraint firstItem="k90-xh-hu0" firstAttribute="centerY" secondItem="Cjc-OU-IJW" secondAttribute="centerY" id="apL-2I-4cj"/>
+                            <constraint firstAttribute="trailing" secondItem="Uex-if-fDY" secondAttribute="trailing" constant="20" id="jkK-4t-zx7"/>
+                            <constraint firstItem="k90-xh-hu0" firstAttribute="centerX" secondItem="vjM-07-0BP" secondAttribute="centerX" id="kSg-X6-x44"/>
+                            <constraint firstItem="XwN-fo-brA" firstAttribute="leading" secondItem="vjM-07-0BP" secondAttribute="leading" constant="20" id="nG6-IH-R9m"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="7OY-8C-Icp"/>
                     </view>
                     <connections>
                         <outlet property="degreeSegmentedControl" destination="Uex-if-fDY" id="1kR-B1-KqK"/>
+                        <outlet property="temperatureDisplayTitle" destination="XwN-fo-brA" id="y3p-bg-8UM"/>
+                        <outlet property="viewTitleLabel" destination="k90-xh-hu0" id="ZjT-wT-U36"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pSc-LO-GM8" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -31,7 +31,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             guard let ship = appUser?.ship_name else { return }
             
             profilePicture.image = picture
-            titleLabel.text = "Ahoy " + name + " !"
+            titleLabel.text = NSLocalizedString("hello", comment: "") + name + " !"
             shipName.text = "\" " + ship + " \""
         }
     }
@@ -88,7 +88,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         mediaLabel.text = NSLocalizedString("profileMediaLabel", comment: "")
         editingLabel.text = NSLocalizedString("profileEditLabel", comment: "")
         logoutButton.setTitle(NSLocalizedString("profileLogoutLabel", comment: ""), for: .normal)
-        profileItem.title = NSLocalizedString("profileItem", comment: "")
         
     }
     
@@ -162,7 +161,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             guard let userEmail = data["email"] as? String else { return }
             guard let userShipName = data["ship_name"] as? String else {
                 let user = Auth.auth().currentUser
-                let defaultShipName = "My Boat"
+                let defaultShipName = ""
                 let userData: [String: Any] = ["ship_name": defaultShipName as Any]
                 // update the user data on the database
                 guard let uid = user?.uid else { return }

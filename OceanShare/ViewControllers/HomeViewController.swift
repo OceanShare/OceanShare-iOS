@@ -212,7 +212,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         /* view */
         longitudeIndicatorLabel.text = NSLocalizedString("longitude", comment: "")
         latitudeIndicatorLabel.text = NSLocalizedString("latitude", comment: "")
-        mapItem.title = NSLocalizedString("mapItem", comment: "")
         /* icon view */
         iconViewEventTextView.text = NSLocalizedString("iconViewEventTextView", comment: "")
         iconViewJellyfishs.text = NSLocalizedString("iconViewJellyfishs", comment: "")
@@ -1131,23 +1130,29 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         DispatchQueue.main.async {
             self.weatherImage.image = self.weather.analyseDescription(weather: weather, registry: self.registry)
             
-            // TODO: °F
-            self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
+            if (UserDefaults.standard.object(forKey: "choosen_degree") as AnyObject) .isEqual("C") {
+                self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
+            } else if (UserDefaults.standard.object(forKey: "choosen_degree") as AnyObject) .isEqual("F") {
+                self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius) * 1.8 + 32)) °F"
+            } else {
+                self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
+            }
+            
             self.weatherLabel.text = weather.weatherDescription
             
             self.weatherLongitudeLabel.text = String(format:"%f", weather.longitude)
             self.weatherLatitudeLabel.text = String(format:"%f", weather.latitude)
             
             let formatter = DateFormatter()
-            formatter.dateFormat = "hh:mm a"
-            formatter.locale = Locale(identifier: "fr_GP")
+            formatter.dateFormat = NSLocalizedString("dateFormat", comment: "")
+            formatter.locale = Locale(identifier: NSLocalizedString("localeIdentifier", comment: ""))
             let sunriseDate: String = formatter.string(from: weather.sunrise)
             self.sunriseLabel.text = sunriseDate
             let sunsetDate: String = formatter.string(from: weather.sunset)
             self.sunsetLabel.text = sunsetDate
             
             self.rainRiskLabel.text = "\(weather.cloudCover) %"
-            self.waterTemperatureLabel.text = "-- °C"
+            self.waterTemperatureLabel.text = "--"
             
             self.windLabel.text = self.weather.analyseWindDirection(degrees: weather.windSpeed)
             self.humidityLabel.text = "\(weather.humidity) %"
@@ -1171,12 +1176,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     func didNotGetWeather(error: NSError) {
         DispatchQueue.main.async {
-            self.airTemperatureLabel.text = "-- °C"
+            self.airTemperatureLabel.text = "--"
             self.weatherLabel.text = "--"
             self.sunriseLabel.text = "--"
             self.sunsetLabel.text = "--:--"
             self.rainRiskLabel.text = "-- %"
-            self.waterTemperatureLabel.text = "-- °C"
+            self.waterTemperatureLabel.text = "--"
             self.windLabel.text = "-- km/h"
             self.humidityLabel.text = "-- %"
             self.visibilityLabel.text = "-- km"

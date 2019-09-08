@@ -15,6 +15,9 @@ class SettingsViewController: UIViewController {
     // MARK: - Outlets
     
     @IBOutlet weak var degreeSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var viewTitleLabel: UILabel!
+    @IBOutlet weak var temperatureDisplayTitle: UILabel!
+    
     
     // MARK: - ViewDidLoad
     
@@ -29,7 +32,6 @@ class SettingsViewController: UIViewController {
     
     func setupView() {
         guard let choosenDegree = UserDefaults.standard.object(forKey: "choosen_degree") else { return }
-        print(choosenDegree)
         
         if (choosenDegree as AnyObject) .isEqual("C") {
             degreeSegmentedControl.selectedSegmentIndex = 0
@@ -43,12 +45,21 @@ class SettingsViewController: UIViewController {
     }
     
     func setupLocalizedStrings() {
+        viewTitleLabel.text = NSLocalizedString("settingViewTitle", comment: "")
+        temperatureDisplayTitle.text = NSLocalizedString("settingTemperatureTitle", comment: "")
         degreeSegmentedControl.setTitle(NSLocalizedString("segmentedDegree1", comment: ""), forSegmentAt: 0)
         degreeSegmentedControl.setTitle(NSLocalizedString("segmentedDegree2", comment: ""), forSegmentAt: 1)
         
     }
     
     // MARK: - Actions
+    
+    @IBAction func handleBack(_ sender: Any) {
+        let mainTabBarController = storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[2]
+        show(mainTabBarController, sender: self)
+        
+    }
     
     @IBAction func degreeChanged(_ sender: Any) {
         switch degreeSegmentedControl.selectedSegmentIndex
@@ -76,7 +87,5 @@ class SettingsViewController: UIViewController {
         UIApplication.shared.open(url)
         
     }*/
-    
-    // Todo: add settings stuff
     
 }

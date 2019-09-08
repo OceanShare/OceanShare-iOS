@@ -582,7 +582,7 @@ class InformationViewController: UIViewController {
     
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
-            let alertController = UIAlertController(title: "Blimey!", message: userMessage, preferredStyle: .alert)
+            let alertController = UIAlertController(title: NSLocalizedString("errorTitleMessage", comment: ""), message: userMessage, preferredStyle: .alert)
             let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
                 print("~ Action Information: OK pressed.")
                 

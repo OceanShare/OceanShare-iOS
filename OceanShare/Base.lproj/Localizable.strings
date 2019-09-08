@@ -58,7 +58,6 @@
 // MARK: - HomeViewController
 
 /* view */
-"mapItem" = "Map";
 "longitude" = "Long:";
 "latitude" = "Lat:";
 
@@ -137,22 +136,26 @@
 
 // MARK: - ProfileViewController
 
+/* labels */
+"hello" = "Ahoy ";
 "profileSettingsLabel" = "SETTINGS";
 "profileMediaLabel" = "ADD MEDIA";
 "profileEditLabel" = "EDIT";
 "profileLogoutLabel" = "Log Out";
-"profileItem" = "Profile";
 
 // MARK: - SettingViewController
 
+/* view */
+"settingViewTitle" = "Settings";
+"settingTemperatureTitle" = "Temperature Display";
+
 /* degrees */
-"segmentedDegree1" = "°Celsius";
-"segmentedDegree2" = "°Fahrenheit";
+"segmentedDegree1" = "Celsius";
+"segmentedDegree2" = "Fahrenheit";
 
 // MARK: - WeatherViewController
 
 /* view */
-"weatherItem" = "Météo";
 "weatherTitle" = "Weather";
 "longitudeTitle" = "LONG.";
 "latitudeTitle" = "LAT.";
@@ -177,6 +180,7 @@
 "informationDeleteButton" = "Delete My Account";
 
 /* general pop up */
+"errorTitleMessage" = "Blimey!";
 "InformationAccept" = "Accept";
 "InformationCancel" = "Cancel";
 "passwordPopUpPlaceholder" = "Password";
@@ -222,6 +226,11 @@
 "reAuthErrorMessage" = "We are unable to check if you really are the captain.";
 
 // MARK: - Weather Model
+
+/* date formater */
+"fullDateFormat" = "MM/dd, hh:mm a";
+"dateFormat" = "hh:mm a";
+"localeIdentifier" = "en";
 
 /* wind direction */
 "N " = "N ";

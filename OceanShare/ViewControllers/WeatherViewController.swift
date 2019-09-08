@@ -81,7 +81,6 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func setupLocalizedStrings() {
-        weatherItem.title = NSLocalizedString("weatherItem", comment: "")
         weatherTitle.text = NSLocalizedString("weatherTitle", comment: "")
         longitudeTitle.text = NSLocalizedString("longitudeTitle", comment: "")
         latitudeTitle.text = NSLocalizedString("latitudeTitle", comment: "")
@@ -180,23 +179,29 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         DispatchQueue.main.async {
             self.weatherImage.image = self.weather.analyseDescription(weather: weather, registry: self.registry)
             
-            // TODO: °F
-            self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
+            if (UserDefaults.standard.object(forKey: "choosen_degree") as AnyObject) .isEqual("C") {
+                self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
+            } else if (UserDefaults.standard.object(forKey: "choosen_degree") as AnyObject) .isEqual("F") {
+                self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius) * 1.8 + 32)) °F"
+            } else {
+                self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
+            }
+            
             self.weatherDescriptionLabel.text = weather.weatherDescription
             
             self.longitudeLabel.text = String(format:"%f", weather.longitude)
             self.latitudeLabel.text = String(format:"%f", weather.latitude)
             
             let formatter = DateFormatter()
-            formatter.dateFormat = "hh:mm a"
-            formatter.locale = Locale(identifier: "fr_GP")
+            formatter.dateFormat = NSLocalizedString("dateFormat", comment: "")
+            formatter.locale = Locale(identifier: NSLocalizedString("localeIdentifier", comment: ""))
             let sunriseDate: String = formatter.string(from: weather.sunrise)
             self.sunriseLabel.text = sunriseDate
             let sunsetDate: String = formatter.string(from: weather.sunset)
             self.sunsetLabel.text = sunsetDate
             
             self.rainRiskLabel.text = "\(weather.cloudCover) %"
-            self.waterTemperatureLabel.text = "-- °C"
+            self.waterTemperatureLabel.text = "--"
             
             self.windLabel.text = self.weather.analyseWindDirection(degrees: weather.windSpeed)
             self.humidityLabel.text = "\(weather.humidity) %"
@@ -218,14 +223,14 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     func didNotGetWeather(error: NSError) {
         DispatchQueue.main.async {
-            self.airTemperatureLabel.text = "-- °C"
+            self.airTemperatureLabel.text = "--"
             self.weatherDescriptionLabel.text = "--"
             self.longitudeLabel.text = "--"
             self.latitudeLabel.text = "--"
             self.sunriseLabel.text = "--:--"
             self.sunsetLabel.text = "--:--"
             self.rainRiskLabel.text = "-- %"
-            self.waterTemperatureLabel.text = "-- °C"
+            self.waterTemperatureLabel.text = "--"
             self.windLabel.text = "-- km/h"
             self.humidityLabel.text = "-- %"
             self.visibilityLabel.text = "-- km"

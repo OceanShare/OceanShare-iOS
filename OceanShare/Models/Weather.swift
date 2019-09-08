@@ -253,8 +253,8 @@ struct Weather {
             }
         } else {
             let formatter = DateFormatter()
-            formatter.dateFormat = "MM/dd, hh:mm a"
-            formatter.locale = Locale(identifier: "fr_GP")
+            formatter.dateFormat = NSLocalizedString("fullDateFormat", comment: "")
+            formatter.locale = Locale(identifier: NSLocalizedString("localeIdentifier", comment: ""))
             let strDate: String = formatter.string(from: date)
             return strDate
             
