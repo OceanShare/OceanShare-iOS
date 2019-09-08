@@ -10,9 +10,11 @@ import UIKit
 
 class MainTabBarController: UITabBarController {
 
+    @IBOutlet weak var mainBar: UITabBar!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
     }
-
+    
 }

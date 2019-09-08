@@ -31,21 +31,28 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             guard let ship = appUser?.ship_name else { return }
             
             profilePicture.image = picture
-            titleLabel.text = "Ahoy " + name + " !"
+            titleLabel.text = NSLocalizedString("hello", comment: "") + name + " !"
             shipName.text = "\" " + ship + " \""
         }
     }
     
     // MARK: - Outlets
     
-    // user information outlets
+    /* view */
+    @IBOutlet weak var settingsLabel: UILabel!
+    @IBOutlet weak var mediaLabel: UILabel!
+    @IBOutlet weak var editingLabel: UILabel!
+    @IBOutlet weak var logoutButton: DesignableButton!
+    @IBOutlet weak var profileItem: UITabBarItem!
+    
+    /* user information outlets */
     @IBOutlet weak var infoContainer: UIView!
     @IBOutlet weak var pictureContainer: DesignableView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var profilePicture: UIImageView!
     @IBOutlet weak var shipName: UILabel!
     
-    // icon outlets
+    /* icon outlets */
     @IBOutlet weak var pictureIcon: UIImageView!
     @IBOutlet weak var settingsIcon: UIImageView!
     @IBOutlet weak var editIcon: UIImageView!
@@ -64,13 +71,23 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     // MARK: - Setup
     
     func setupView() {
-        // setup the profile picture and its container
+        /* setup the profile picture and its container */
         profilePicture.layer.cornerRadius = 95
         profilePicture.clipsToBounds = true
-        // setup the icons
+        /* setup the icons */
         setupCustomIcons()
-        // setup the skeleton animation
+        /* setup the skeleton animation */
         turnOnSkeleton()
+        /* set localized labels */
+        setupLocalizedStrings()
+        
+    }
+    
+    func setupLocalizedStrings() {
+        settingsLabel.text = NSLocalizedString("profileSettingsLabel", comment: "")
+        mediaLabel.text = NSLocalizedString("profileMediaLabel", comment: "")
+        editingLabel.text = NSLocalizedString("profileEditLabel", comment: "")
+        logoutButton.setTitle(NSLocalizedString("profileLogoutLabel", comment: ""), for: .normal)
         
     }
     
@@ -116,10 +133,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBAction func handleLogout(_ sender: UIButton) {
         do {
             try Auth.auth().signOut()
-            //Todo: find a way to return to pageviewcontroller -> startviewcontroller
             if Auth.auth().currentUser == nil {
                 // Remove User Session from device
                 UserDefaults.standard.removeObject(forKey: "user_uid_key")
+                UserDefaults.standard.removeObject(forKey: "user_logged_by_email")
                 UserDefaults.standard.synchronize()
                 let signInPage = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
                 let appDelegate = UIApplication.shared.delegate
@@ -144,7 +161,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             guard let userEmail = data["email"] as? String else { return }
             guard let userShipName = data["ship_name"] as? String else {
                 let user = Auth.auth().currentUser
-                let defaultShipName = "My Boat"
+                let defaultShipName = ""
                 let userData: [String: Any] = ["ship_name": defaultShipName as Any]
                 // update the user data on the database
                 guard let uid = user?.uid else { return }

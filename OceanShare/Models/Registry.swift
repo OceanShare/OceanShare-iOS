@@ -59,26 +59,26 @@ struct Registry {
     let apiUrl = "http://104.197.254.106:5000/api/weather"
     
     // default event descriptions
-    let descJellyfishs = "Jellyfish have been spotted at this location."
-    let descDivers = "There are probably divers working here."
-    let descWaste = "The water looks polluted here."
-    let descWarning = "Someone needs help or there is a danger."
-    let descDolphins = "Dolphins have been spotted in the vicinity."
-    let descDestination = "Someone is going there."
+    let descJellyfishs = NSLocalizedString("descJellyfishs", comment: "")
+    let descDivers = NSLocalizedString("descDivers", comment: "")
+    let descWaste = NSLocalizedString("descWaste", comment: "")
+    let descWarning = NSLocalizedString("descWarning", comment: "")
+    let descDolphins = NSLocalizedString("descDolphins", comment: "")
+    let descDestination = NSLocalizedString("descDestination", comment: "")
     
     // header messages
-    let msgJellyfishs = "Jellyfishs event selected."
-    let msgDivers = "Divers event selected."
-    let msgWaste = "Waste event selected."
-    let msgWarning = "Warning event selected."
-    let msgDolphins = "Dolphins event selected."
-    let msgDestination = "Destination event selected."
-    let msgWeather = "Weather information selected."
-    let msgEventLimit = "Already dropped 5 events"
-    let msgDistanceLimit = "Can't drop an event so far."
-    let msgEarthLimit = "Can't drop markers on earth."
-    let msgDropSuccess = "Your event has been dropped."
-    let msgDeleteSuccess = "Event correctly deleted."
+    let msgJellyfishs = NSLocalizedString("msgJellyfishs", comment: "")
+    let msgDivers = NSLocalizedString("msgDivers", comment: "")
+    let msgWaste = NSLocalizedString("msgWaste", comment: "")
+    let msgWarning = NSLocalizedString("msgWarning", comment: "")
+    let msgDolphins = NSLocalizedString("msgDolphins", comment: "")
+    let msgDestination = NSLocalizedString("msgDestination", comment: "")
+    let msgWeather = NSLocalizedString("msgWeather", comment: "")
+    let msgEventLimit = NSLocalizedString("msgEventLimit", comment: "")
+    let msgDistanceLimit = NSLocalizedString("msgDistanceLimit", comment: "")
+    let msgEarthLimit = NSLocalizedString("msgEarthLimit", comment: "")
+    let msgDropSuccess = NSLocalizedString("msgDropSuccess", comment: "")
+    let msgDeleteSuccess = NSLocalizedString("msgDeleteSuccess", comment: "")
     
     // tokens
     let apiBearer = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjF9.Vcp2grZ53t_OG3jwSXsRwfc_UUjboNgZarkAGiX0jgM"

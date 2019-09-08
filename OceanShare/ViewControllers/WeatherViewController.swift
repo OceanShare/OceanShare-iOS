@@ -18,18 +18,30 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     // MARK: - Outlets
     
+    @IBOutlet weak var weatherTitle: UILabel!
+    @IBOutlet weak var weatherItem: UITabBarItem!
     @IBOutlet weak var weatherImage: UIImageView!
     @IBOutlet weak var airTemperatureLabel: UILabel!
     @IBOutlet weak var weatherDescriptionLabel: UILabel!
+    @IBOutlet weak var longitudeTitle: UILabel!
     @IBOutlet weak var longitudeLabel: UILabel!
+    @IBOutlet weak var latitudeTitle: UILabel!
     @IBOutlet weak var latitudeLabel: UILabel!
+    @IBOutlet weak var sunriseTitle: UILabel!
     @IBOutlet weak var sunriseLabel: UILabel!
+    @IBOutlet weak var sunsetTitle: UILabel!
     @IBOutlet weak var sunsetLabel: UILabel!
+    @IBOutlet weak var rainRiskTitle: UILabel!
     @IBOutlet weak var rainRiskLabel: UILabel!
+    @IBOutlet weak var waterTemperatureTitle: UILabel!
     @IBOutlet weak var waterTemperatureLabel: UILabel!
+    @IBOutlet weak var windTitle: UILabel!
     @IBOutlet weak var windLabel: UILabel!
+    @IBOutlet weak var humidityTitle: UILabel!
     @IBOutlet weak var humidityLabel: UILabel!
+    @IBOutlet weak var visibilityTitle: UILabel!
     @IBOutlet weak var visibilityLabel: UILabel!
+    @IBOutlet weak var uvIndiceTitle: UILabel!
     @IBOutlet weak var uvIndiceLabel: UILabel!
     
     // MARK: - Variables
@@ -49,8 +61,16 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupView()
+        
+    }
+    
+    func setupView() {
+        /* set localized labels */
+        setupLocalizedStrings()
+        /* set localisation */
         self.locationManager.requestAlwaysAuthorization()
-        // For use in foreground
+        /* for use in foreground */
         self.locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
@@ -58,6 +78,21 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             locationManager.startUpdatingLocation()
             
         }
+    }
+    
+    func setupLocalizedStrings() {
+        weatherTitle.text = NSLocalizedString("weatherTitle", comment: "")
+        longitudeTitle.text = NSLocalizedString("longitudeTitle", comment: "")
+        latitudeTitle.text = NSLocalizedString("latitudeTitle", comment: "")
+        sunriseTitle.text = NSLocalizedString("sunriseTitle", comment: "")
+        sunsetTitle.text = NSLocalizedString("sunsetTitle", comment: "")
+        rainRiskTitle.text = NSLocalizedString("rainRiskTitle", comment: "")
+        waterTemperatureTitle.text = NSLocalizedString("waterTemperatureTitle", comment: "")
+        windTitle.text = NSLocalizedString("windTitle", comment: "")
+        humidityTitle.text = NSLocalizedString("humidityTitle", comment: "")
+        visibilityTitle.text = NSLocalizedString("visibilityTitle", comment: "")
+        uvIndiceTitle.text = NSLocalizedString("uvIndiceTitle", comment: "")
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -144,22 +179,29 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         DispatchQueue.main.async {
             self.weatherImage.image = self.weather.analyseDescription(weather: weather, registry: self.registry)
             
-            self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
+            if (UserDefaults.standard.object(forKey: "choosen_degree") as AnyObject) .isEqual("C") {
+                self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
+            } else if (UserDefaults.standard.object(forKey: "choosen_degree") as AnyObject) .isEqual("F") {
+                self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius) * 1.8 + 32)) °F"
+            } else {
+                self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
+            }
+            
             self.weatherDescriptionLabel.text = weather.weatherDescription
             
             self.longitudeLabel.text = String(format:"%f", weather.longitude)
             self.latitudeLabel.text = String(format:"%f", weather.latitude)
             
             let formatter = DateFormatter()
-            formatter.dateFormat = "hh:mm a"
-            formatter.locale = Locale(identifier: "fr_GP")
+            formatter.dateFormat = NSLocalizedString("dateFormat", comment: "")
+            formatter.locale = Locale(identifier: NSLocalizedString("localeIdentifier", comment: ""))
             let sunriseDate: String = formatter.string(from: weather.sunrise)
             self.sunriseLabel.text = sunriseDate
             let sunsetDate: String = formatter.string(from: weather.sunset)
             self.sunsetLabel.text = sunsetDate
             
             self.rainRiskLabel.text = "\(weather.cloudCover) %"
-            self.waterTemperatureLabel.text = "-- °C"
+            self.waterTemperatureLabel.text = "--"
             
             self.windLabel.text = self.weather.analyseWindDirection(degrees: weather.windSpeed)
             self.humidityLabel.text = "\(weather.humidity) %"
@@ -181,14 +223,14 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     func didNotGetWeather(error: NSError) {
         DispatchQueue.main.async {
-            self.airTemperatureLabel.text = "-- °C"
+            self.airTemperatureLabel.text = "--"
             self.weatherDescriptionLabel.text = "--"
             self.longitudeLabel.text = "--"
             self.latitudeLabel.text = "--"
             self.sunriseLabel.text = "--:--"
             self.sunsetLabel.text = "--:--"
             self.rainRiskLabel.text = "-- %"
-            self.waterTemperatureLabel.text = "-- °C"
+            self.waterTemperatureLabel.text = "--"
             self.windLabel.text = "-- km/h"
             self.humidityLabel.text = "-- %"
             self.visibilityLabel.text = "-- km"

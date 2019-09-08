@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings.strings
+  OceanShare
+
+  Created by Joseph Pereniguez on 02/09/2019.
+  Copyright © 2019 Joseph Pereniguez. All rights reserved.
+*/
+
+"The new name field is required if you want to change yours Matey!" = "Le nouveau nom est requis pour que le changement soit accepté mousaillon !";
+"The new name should be different from the previous one Matey!" = "Le nouveau nom doit être différent de l'ancien, mousaillon !";

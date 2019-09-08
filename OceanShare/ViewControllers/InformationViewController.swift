@@ -52,48 +52,72 @@ class InformationViewController: UIViewController {
     
     // MARK: - Outlets
     
-    // icon outlets
+    /* view */
+    @IBOutlet weak var viewTitleLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var passwordLabel: UILabel!
+    @IBOutlet weak var shipNameLabel: UILabel!
+    @IBOutlet weak var legalDescription: UITextView!
+    @IBOutlet weak var deleteButton: UIButton!
+    
+    /* icon outlets */
     @IBOutlet weak var nameModifierPic: UIImageView!
     @IBOutlet weak var emailModifierPic: UIImageView!
     @IBOutlet weak var shipModifierPic: UIImageView!
     @IBOutlet weak var passwordModifierPic: UIImageView!
     
-    // container outlets
+    /* container outlets */
     @IBOutlet weak var nameContainer: UIView!
     @IBOutlet weak var emailContainer: UIView!
     @IBOutlet weak var shipContainer: UIView!
     @IBOutlet weak var passwordContainer: UIView!
     
-    // displayed label oultets
+    /* displayed label oultets */
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var userEmailAddress: UILabel!
     @IBOutlet weak var userShipName: UILabel!
     @IBOutlet weak var userPassword: UILabel!
     
-    // blur effect view
+    /* blur effect view */
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
     
-    // name pop up outlets
+    /* name pop up outlets */
     @IBOutlet var namePopUp: DesignableButton!
+    @IBOutlet weak var namePopUpDescription: UITextView!
     @IBOutlet weak var nameFieldNameModifier: UITextField!
+    @IBOutlet weak var namePopUpAccept: DesignableButton!
+    @IBOutlet weak var namePopUpCancel: DesignableButton!
     
-    // email pop up outlets
+    /* email pop up outlets */
     @IBOutlet var emailPopUp: DesignableButton!
+    @IBOutlet weak var emailPopUpDescription: UITextView!
     @IBOutlet weak var emailFieldEmailModifier: UITextField!
     @IBOutlet weak var passwordFieldEmailModifier: UITextField!
+    @IBOutlet weak var emailPopUpAccept: DesignableButton!
+    @IBOutlet weak var emailPopUpCancel: DesignableButton!
     
-    // password pop up outlets
+    /* password pop up outlets */
     @IBOutlet var passwordPopUp: DesignableButton!
+    @IBOutlet weak var passwordPopUpDescription: UITextView!
     @IBOutlet weak var currentPasswordFieldPasswordMofidier: UITextField!
     @IBOutlet weak var passwordFieldPasswordModifier: UITextField!
+    @IBOutlet weak var passwordPopUpAccept: DesignableButton!
+    @IBOutlet weak var passwordPopUpCancel: DesignableButton!
     
-    // ship pop up outlets
+    /* ship pop up outlets */
     @IBOutlet var shipPopUp: DesignableButton!
+    @IBOutlet weak var shipPopUpDescripiton: UITextView!
     @IBOutlet weak var shipFieldShipModifier: UITextField!
+    @IBOutlet weak var shipPopUpAccept: DesignableButton!
+    @IBOutlet weak var shipPopUpCancel: DesignableButton!
     
-    // deletion pop up outlets
+    /* deletion pop up outlets */
     @IBOutlet var deletionPopUp: DesignableButton!
+    @IBOutlet weak var deletePopUpDescription: UITextView!
     @IBOutlet weak var passwordFieldDeleteModifier: UITextField!
+    @IBOutlet weak var deletePopUpAccept: DesignableButton!
+    @IBOutlet weak var deletePopUpCancel: DesignableButton!
     
     // MARK: - ViewDidLoad
     
@@ -118,7 +142,45 @@ class InformationViewController: UIViewController {
         visualEffectView.alpha = 0.8
         setupCustomIcons()
         turnOnSkeleton()
+        setupLocalizedStrings()
         
+    }
+    
+    func setupLocalizedStrings() {
+        viewTitleLabel.text = NSLocalizedString("informationTitle", comment: "")
+        nameLabel.text = NSLocalizedString("informationNameTitle", comment: "")
+        emailLabel.text = NSLocalizedString("informationEmailTitle", comment: "")
+        passwordLabel.text = NSLocalizedString("informationPasswordTitle", comment: "")
+        shipNameLabel.text = NSLocalizedString("informationShipTitle", comment: "")
+        legalDescription.text = NSLocalizedString("informationLegalDescription", comment: "")
+        deleteButton.setTitle(NSLocalizedString("informationDeleteButton", comment: ""), for: .normal)
+        /* name pop up */
+        namePopUpDescription.text = NSLocalizedString("namePopUpDescripiton", comment: "")
+        nameFieldNameModifier.placeholder = NSLocalizedString("namePopUpPlaceholder", comment: "")
+        namePopUpAccept.setTitle(NSLocalizedString("InformationAccept", comment: ""), for: .normal)
+        namePopUpCancel.setTitle(NSLocalizedString("InformationCancel", comment: ""), for: .normal)
+        /* email pop up */
+        emailPopUpDescription.text = NSLocalizedString("emailPopUpDescription", comment: "")
+        emailFieldEmailModifier.placeholder = NSLocalizedString("emailPopUpPlaceholder", comment: "")
+        passwordFieldEmailModifier.placeholder = NSLocalizedString("passwordPopUpPlaceholder", comment: "")
+        emailPopUpAccept.setTitle(NSLocalizedString("InformationAccept", comment: ""), for: .normal)
+        emailPopUpCancel.setTitle(NSLocalizedString("InformationCancel", comment: ""), for: .normal)
+        /* password pop up */
+        passwordPopUpDescription.text = NSLocalizedString("passwordPopUpDescription", comment: "")
+        passwordFieldPasswordModifier.placeholder = NSLocalizedString("newPasswordPopUpPlaceholder", comment: "")
+        currentPasswordFieldPasswordMofidier.placeholder = NSLocalizedString("currentPasswordPopUpPlaceholder", comment: "")
+        passwordPopUpAccept.setTitle(NSLocalizedString("InformationAccept", comment: ""), for: .normal)
+        passwordPopUpCancel.setTitle(NSLocalizedString("InformationCancel", comment: ""), for: .normal)
+        /* ship name pop up */
+        shipPopUpDescripiton.text = NSLocalizedString("shipPopUpDescripiton", comment: "")
+        shipFieldShipModifier.placeholder = NSLocalizedString("shipPopUpPlaceholder", comment: "")
+        shipPopUpAccept.setTitle(NSLocalizedString("InformationAccept", comment: ""), for: .normal)
+        shipPopUpCancel.setTitle(NSLocalizedString("InformationCancel", comment: ""), for: .normal)
+        /* deletion pop up */
+        deletePopUpDescription.text = NSLocalizedString("deletePopUpDescription", comment: "")
+        passwordFieldDeleteModifier.placeholder = NSLocalizedString("passwordPopUpPlaceholder", comment: "")
+        deletePopUpAccept.setTitle(NSLocalizedString("InformationAccept", comment: ""), for: .normal)
+        deletePopUpCancel.setTitle(NSLocalizedString("InformationCancel", comment: ""), for: .normal)
     }
     
     func setupCustomIcons() {
@@ -228,12 +290,13 @@ class InformationViewController: UIViewController {
         let currentName = self.appUser?.name
         // error checking
         if (name?.isEmpty)! {
-            displayMessage(userMessage: "The new name field is required if you want to change yours Matey!")
+            //displayMessage(userMessage: "The new name field is required if you want to change yours Matey!")
+            displayMessage(userMessage: NSLocalizedString("changeNameErrorHandler1", comment: ""))
             return
             
         }
         if currentName == name {
-            displayMessage(userMessage: "The new name should be different from the previous one Matey!")
+            displayMessage(userMessage: NSLocalizedString("changeNameErrorHandler2", comment: ""))
             return
             
         } else {
@@ -262,12 +325,12 @@ class InformationViewController: UIViewController {
         let newEmail = self.emailFieldEmailModifier.text
         // error checking
         if (password?.isEmpty)! || (newEmail?.isEmpty)! {
-            displayMessage(userMessage: "The new email field and password field are required if you want to change yours Matey!")
+            displayMessage(userMessage: NSLocalizedString("changeEmailErrorHandler1", comment: ""))
             return
             
         }
         if newEmail == currentEmail {
-            displayMessage(userMessage: "The new email should be different from previous one Matey!")
+            displayMessage(userMessage: NSLocalizedString("changeEmailErrorHandler2", comment: ""))
             return
             
         } else {
@@ -277,7 +340,7 @@ class InformationViewController: UIViewController {
             self.currentUser?.reauthenticate(with: credential) { authResult, error in
                 if let error = error {
                     print("X", error)
-                    self.displayMessage(userMessage: "We are unable to check if you really are the captain.")
+                    self.displayMessage(userMessage: NSLocalizedString("reAuthErrorMessage", comment: ""))
                     trace?.stop()
                     return
                     
@@ -286,7 +349,7 @@ class InformationViewController: UIViewController {
                     self.currentUser?.updateEmail(to: newEmail!) { (error) in
                         if error != nil {
                             print("X", error!)
-                            self.displayMessage(userMessage: "We are unable to update your email now Captain, please try later.")
+                            self.displayMessage(userMessage: NSLocalizedString("changeEmailErrorMessage", comment: ""))
                             trace?.stop()
                             
                         } else {
@@ -318,12 +381,12 @@ class InformationViewController: UIViewController {
         let newPassword = self.passwordFieldPasswordModifier.text
         // error checking
         if (currentPassword?.isEmpty)! || (newPassword?.isEmpty)! {
-            displayMessage(userMessage: "The current password field and new password field are required if you want to change yours Matey!")
+            displayMessage(userMessage: NSLocalizedString("changePasswordErrorHandler1", comment: ""))
             return
             
         }
         if currentPassword == newPassword {
-            displayMessage(userMessage: "The new password should be different than previous one Matey!")
+            displayMessage(userMessage: NSLocalizedString("changePasswordErrorHandler2", comment: ""))
             return
             
         } else {
@@ -333,7 +396,7 @@ class InformationViewController: UIViewController {
             self.currentUser?.reauthenticate(with: credential) { authResult, error in
                 if let error = error {
                     print ("X", error)
-                    self.displayMessage(userMessage: "We are unable to check if you really are the captain.")
+                    self.displayMessage(userMessage: NSLocalizedString("reAuthErrorMessage", comment: ""))
                     trace?.stop()
                     return
                     
@@ -342,7 +405,7 @@ class InformationViewController: UIViewController {
                     self.currentUser?.updatePassword(to: newPassword!) { (error) in
                         if error != nil {
                             print("X", error!)
-                            self.displayMessage(userMessage: "We are unable to update your password now Captain, please try later.")
+                            self.displayMessage(userMessage: NSLocalizedString("changePasswordErrorMessage", comment: ""))
                             trace?.stop()
                             
                         } else {
@@ -363,12 +426,12 @@ class InformationViewController: UIViewController {
         let shipName = self.shipFieldShipModifier.text
         // error checking
         if (shipName?.isEmpty)! {
-            displayMessage(userMessage: "The new ship name field is required if you want to change yours Matey!")
+            displayMessage(userMessage: NSLocalizedString("changeShipErrorHandler1", comment: ""))
             return
             
         }
         if shipName == currentShipName {
-            displayMessage(userMessage: "The new ship name field should be different than the previous one Matey!")
+            displayMessage(userMessage: NSLocalizedString("changeShipErrorHandler2", comment: ""))
             return
             
         } else {
@@ -395,7 +458,7 @@ class InformationViewController: UIViewController {
         let email = self.emailStacked
         // error checking
         if (password?.isEmpty)! {
-            displayMessage(userMessage: "Yo ho ho, if you really want to leave us, you will need to fill your password field Matey!")
+            displayMessage(userMessage: NSLocalizedString("deleteAccountAdvice", comment: ""))
             return
             
         } else {
@@ -405,7 +468,7 @@ class InformationViewController: UIViewController {
             self.currentUser?.reauthenticate(with: credential) { authResult, error in
                 if let error = error {
                     print("X", error)
-                    self.displayMessage(userMessage: "We are unable to check if you really are the captain.")
+                    self.displayMessage(userMessage: NSLocalizedString("reAuthErrorMessage", comment: ""))
                     trace?.stop()
                     return
                     
@@ -421,7 +484,7 @@ class InformationViewController: UIViewController {
                     self.currentUser?.delete { error in
                         if let error = error {
                             print("X", error)
-                            self.displayMessage(userMessage: "We are unable to delete your account now Captain, please try later.")
+                            self.displayMessage(userMessage: NSLocalizedString("deleteAccountErrorMessage", comment: ""))
                             trace?.stop()
                             
                         } else {
@@ -519,7 +582,7 @@ class InformationViewController: UIViewController {
     
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
-            let alertController = UIAlertController(title: "Blimey!", message: userMessage, preferredStyle: .alert)
+            let alertController = UIAlertController(title: NSLocalizedString("errorTitleMessage", comment: ""), message: userMessage, preferredStyle: .alert)
             let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
                 print("~ Action Information: OK pressed.")
                 

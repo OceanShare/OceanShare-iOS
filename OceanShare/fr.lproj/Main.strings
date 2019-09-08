@@ -1,0 +1,294 @@
+
+/* Class = "UILabel"; text = "UV INDICE"; ObjectID = "0i1-St-SZF"; */
+"0i1-St-SZF.text" = "UV INDICE";
+
+/* Class = "UITextView"; text = "You can add an optional description yo your event."; ObjectID = "1X3-7K-0Fu"; */
+"1X3-7K-0Fu.text" = "You can add an optional description yo your event.";
+
+/* Class = "UIButton"; normalTitle = "Accept"; ObjectID = "2rD-6s-iAD"; */
+"2rD-6s-iAD.normalTitle" = "Accept";
+
+/* Class = "UILabel"; text = "Destination"; ObjectID = "3Ef-6p-1Hh"; */
+"3Ef-6p-1Hh.text" = "Destination";
+
+/* Class = "UILabel"; text = "--"; ObjectID = "3HF-R2-xaT"; */
+"3HF-R2-xaT.text" = "--";
+
+/* Class = "UIButton"; normalTitle = "OK"; ObjectID = "3xk-1K-QVN"; */
+"3xk-1K-QVN.normalTitle" = "OK";
+
+/* Class = "UIButton"; normalTitle = "Accept"; ObjectID = "4L0-78-AgZ"; */
+"4L0-78-AgZ.normalTitle" = "Accept";
+
+/* Class = "UIButton"; normalTitle = "Delete This Event"; ObjectID = "5MF-5K-g8P"; */
+"5MF-5K-g8P.normalTitle" = "Delete This Event";
+
+/* Class = "UILabel"; text = "Password"; ObjectID = "5Qt-CR-Q6s"; */
+"5Qt-CR-Q6s.text" = "Password";
+
+/* Class = "UILabel"; text = "Information"; ObjectID = "6HC-hB-rrt"; */
+"6HC-hB-rrt.text" = "Information";
+
+/* Class = "UILabel"; text = "LAT."; ObjectID = "6aD-Ho-hdl"; */
+"6aD-Ho-hdl.text" = "LAT.";
+
+/* Class = "UIButton"; normalTitle = "Submit"; ObjectID = "6vx-ye-zxY"; */
+"6vx-ye-zxY.normalTitle" = "Submit";
+
+/* Class = "UITextView"; text = "This feature is not yet available, please check our website and subscribe to our newsletter to know about the future of OceanShare."; ObjectID = "7qk-lA-GSW"; */
+"7qk-lA-GSW.text" = "This feature is not yet available, please check our website and subscribe to our newsletter to know about the future of OceanShare.";
+
+/* Class = "UITextView"; text = "Write your password in the field below then 'Accept' to delete your account. This action is irreversible."; ObjectID = "8da-vd-DPc"; */
+"8da-vd-DPc.text" = "Write your password in the field below then 'Accept' to delete your account. This action is irreversible.";
+
+/* Class = "UILabel"; text = "LONG."; ObjectID = "9EX-hj-kKh"; */
+"9EX-hj-kKh.text" = "LONG.";
+
+/* Class = "UITextField"; placeholder = "New Password"; ObjectID = "9HC-Ke-6qj"; */
+"9HC-Ke-6qj.placeholder" = "New Password";
+
+/* Class = "UIButton"; normalTitle = "Crash"; ObjectID = "AXJ-by-cXn"; */
+"AXJ-by-cXn.normalTitle" = "Crash";
+
+/* Class = "UILabel"; text = "Weather"; ObjectID = "AYu-gG-EUz"; */
+"AYu-gG-EUz.text" = "Weather";
+
+/* Class = "UILabel"; text = "SUNSET"; ObjectID = "AlC-zo-59k"; */
+"AlC-zo-59k.text" = "SUNSET";
+
+/* Class = "UILabel"; text = "WIND"; ObjectID = "BR6-y7-w9e"; */
+"BR6-y7-w9e.text" = "WIND";
+
+/* Class = "UILabel"; text = "Waste"; ObjectID = "Bcv-r0-fKD"; */
+"Bcv-r0-fKD.text" = "Waste";
+
+/* Class = "UIButton"; normalTitle = "Delete My Account"; ObjectID = "CrL-Z6-Ao9"; */
+"CrL-Z6-Ao9.normalTitle" = "Delete My Account";
+
+/* Class = "UITabBarItem"; title = "Weather"; ObjectID = "DGj-Re-bVk"; */
+"DGj-Re-bVk.title" = "Weather";
+
+/* Class = "UILabel"; text = "--"; ObjectID = "F1C-8J-Ob9"; */
+"F1C-8J-Ob9.text" = "--";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "G2c-AX-ZMF"; */
+"G2c-AX-ZMF.placeholder" = "Password";
+
+/* Class = "UILabel"; text = "Long:"; ObjectID = "GYM-TR-274"; */
+"GYM-TR-274.text" = "Long:";
+
+/* Class = "UILabel"; text = "WATER TEMP."; ObjectID = "GZW-OO-vyp"; */
+"GZW-OO-vyp.text" = "WATER TEMP.";
+
+/* Class = "UILabel"; text = "Sign Up"; ObjectID = "HAy-io-7hA"; */
+"HAy-io-7hA.text" = "Sign Up";
+
+/* Class = "UITextField"; placeholder = "New Ship Name"; ObjectID = "J7u-Bm-CFq"; */
+"J7u-Bm-CFq.placeholder" = "New Ship Name";
+
+/* Class = "UILabel"; text = "32 °C"; ObjectID = "KXI-hI-OQT"; */
+"KXI-hI-OQT.text" = "32 °C";
+
+/* Class = "UILabel"; text = "Jellyfishs"; ObjectID = "Ke2-nh-ZCo"; */
+"Ke2-nh-ZCo.text" = "Jellyfishs";
+
+/* Class = "UILabel"; text = "Confirm Password"; ObjectID = "LaY-a3-Fo7"; */
+"LaY-a3-Fo7.text" = "Confirm Password";
+
+/* Class = "UILabel"; text = "Divers"; ObjectID = "MTf-LM-o6r"; */
+"MTf-LM-o6r.text" = "Divers";
+
+/* Class = "UILabel"; text = "Warning"; ObjectID = "Mup-7N-kDl"; */
+"Mup-7N-kDl.text" = "Warning";
+
+/* Class = "UITextField"; placeholder = "What's happening ?"; ObjectID = "NXd-fb-7C3"; */
+"NXd-fb-7C3.placeholder" = "What's happening ?";
+
+/* Class = "UILabel"; text = "Ship Name"; ObjectID = "Ned-np-pRc"; */
+"Ned-np-pRc.text" = "Ship Name";
+
+/* Class = "UITextField"; placeholder = "Current Password"; ObjectID = "Qcx-2O-pR9"; */
+"Qcx-2O-pR9.placeholder" = "Current Password";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "Qjx-me-eGF"; */
+"Qjx-me-eGF.text" = "Name";
+
+/* Class = "UILabel"; text = "EDIT INFO"; ObjectID = "RAh-ry-gVK"; */
+"RAh-ry-gVK.text" = "EDIT INFO";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "RpM-jm-a0Z"; */
+"RpM-jm-a0Z.normalTitle" = "Cancel";
+
+/* Class = "UIButton"; normalTitle = "OK"; ObjectID = "S3h-By-OBE"; */
+"S3h-By-OBE.normalTitle" = "OK";
+
+/* Class = "UILabel"; text = "SUNRISE"; ObjectID = "Sg3-aP-xt5"; */
+"Sg3-aP-xt5.text" = "SUNRISE";
+
+/* Class = "UIButton"; normalTitle = "Forgot Password ?"; ObjectID = "Ts1-lW-8fa"; */
+"Ts1-lW-8fa.normalTitle" = "Forgot Password ?";
+
+/* Class = "UITextView"; text = "Select an event to add on the map. All users will be able to see it."; ObjectID = "U2Y-ol-rPl"; */
+"U2Y-ol-rPl.text" = "Select an event to add on the map. All users will be able to see it.";
+
+/* Class = "UITextField"; placeholder = "What's happening ?"; ObjectID = "UEy-MI-z4Y"; */
+"UEy-MI-z4Y.placeholder" = "What's happening ?";
+
+/* Class = "UILabel"; text = "overcast clouds"; ObjectID = "UWm-aW-PsD"; */
+"UWm-aW-PsD.text" = "overcast clouds";
+
+/* Class = "UITextView"; text = "This is your event. You can change its description or delete it."; ObjectID = "Um4-Ed-oun"; */
+"Um4-Ed-oun.text" = "This is your event. You can change its description or delete it.";
+
+/* Class = "UILabel"; text = "User Name"; ObjectID = "WFK-t0-O12"; */
+"WFK-t0-O12.text" = "User Name";
+
+/* Class = "UIButton"; normalTitle = "Log Out"; ObjectID = "X2k-3d-dfe"; */
+"X2k-3d-dfe.normalTitle" = "Log Out";
+
+/* Class = "UIButton"; normalTitle = "Save Changes"; ObjectID = "XNF-nO-Yjn"; */
+"XNF-nO-Yjn.normalTitle" = "Save Changes";
+
+/* Class = "UILabel"; text = "ADD MEDIA"; ObjectID = "XPX-8f-iSQ"; */
+"XPX-8f-iSQ.text" = "ADD MEDIA";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "XRU-Zq-EH7"; */
+"XRU-Zq-EH7.placeholder" = "Password";
+
+/* Class = "UILabel"; text = "Dolphins"; ObjectID = "XgP-Wy-Fim"; */
+"XgP-Wy-Fim.text" = "Dolphins";
+
+/* Class = "UITextView"; text = "Write your current password to check your identity and your new password in the fields below then 'Accept' to change your password."; ObjectID = "YFT-83-fAJ"; */
+"YFT-83-fAJ.text" = "Write your current password to check your identity and your new password in the fields below then 'Accept' to change your password.";
+
+/* Class = "UILabel"; text = "HUMIDITY"; ObjectID = "Ymi-mc-l2b"; */
+"Ymi-mc-l2b.text" = "HUMIDITY";
+
+/* Class = "UILabel"; text = "Lat"; ObjectID = "Yn5-H3-tTF"; */
+"Yn5-H3-tTF.text" = "Lat";
+
+/* Class = "UITextView"; text = "Write a new name in the field below then 'Accept' to change your user name. Only your friends can see your name."; ObjectID = "Z1x-Ch-7hg"; */
+"Z1x-Ch-7hg.text" = "Write a new name in the field below then 'Accept' to change your user name. Only your friends can see your name.";
+
+/* Class = "UILabel"; text = "SETTINGS"; ObjectID = "Z8G-Co-FED"; */
+"Z8G-Co-FED.text" = "SETTINGS";
+
+/* Class = "UIButton"; normalTitle = "Accept"; ObjectID = "Zrc-bZ-u5a"; */
+"Zrc-bZ-u5a.normalTitle" = "Accept";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "atT-HQ-2oz"; */
+"atT-HQ-2oz.normalTitle" = "Cancel";
+
+/* Class = "UITextView"; text = "You can also add a \"weather\" event to know more about a location."; ObjectID = "bF7-rk-bfT"; */
+"bF7-rk-bfT.text" = "You can also add a \"weather\" event to know more about a location.";
+
+/* Class = "UILabel"; text = "Email Address"; ObjectID = "bMY-97-bQ6"; */
+"bMY-97-bQ6.text" = "Email Address";
+
+/* Class = "UILabel"; text = "Password"; ObjectID = "bOk-aN-6bg"; */
+"bOk-aN-6bg.text" = "Password";
+
+/* Class = "UITabBarItem"; title = "Map"; ObjectID = "bRW-5l-FGI"; */
+"bRW-5l-FGI.title" = "Map";
+
+/* Class = "UITextField"; placeholder = "New Name"; ObjectID = "d1o-JB-LL8"; */
+"d1o-JB-LL8.placeholder" = "New Name";
+
+/* Class = "UILabel"; text = "Hum Hum..."; ObjectID = "eC8-k5-fKZ"; */
+"eC8-k5-fKZ.text" = "Hum Hum...";
+
+/* Class = "UIButton"; normalTitle = "OK"; ObjectID = "eIp-yU-AeA"; */
+"eIp-yU-AeA.normalTitle" = "OK";
+
+/* Class = "UITextField"; placeholder = "New Email"; ObjectID = "ekZ-MC-MFD"; */
+"ekZ-MC-MFD.placeholder" = "New Email";
+
+/* Class = "UIButton"; normalTitle = "I already know OceanShare"; ObjectID = "gax-vd-r3j"; */
+"gax-vd-r3j.normalTitle" = "I already know OceanShare";
+
+/* Class = "UILabel"; text = "Login"; ObjectID = "gc9-tF-Ms2"; */
+"gc9-tF-Ms2.text" = "Login";
+
+/* Class = "UIButton"; normalTitle = "Don't have an account ? SIGN UP"; ObjectID = "hTx-qv-fzy"; */
+"hTx-qv-fzy.normalTitle" = "Don't have an account ? SIGN UP";
+
+/* Class = "UIButton"; normalTitle = "Login"; ObjectID = "iHj-dX-4gJ"; */
+"iHj-dX-4gJ.normalTitle" = "Login";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "iSS-j2-WIu"; */
+"iSS-j2-WIu.normalTitle" = "Cancel";
+
+/* Class = "UILabel"; text = "20 °C"; ObjectID = "j1d-eR-sty"; */
+"j1d-eR-sty.text" = "20 °C";
+
+/* Class = "UILabel"; text = "Email"; ObjectID = "jzW-yG-LGk"; */
+"jzW-yG-LGk.text" = "Email";
+
+/* Class = "UITextView"; text = "Write a new name in the field below then 'Accept' to change your ship name. Everybody can see your ship name."; ObjectID = "kDj-cZ-B4D"; */
+"kDj-cZ-B4D.text" = "Write a new name in the field below then 'Accept' to change your ship name. Everybody can see your ship name.";
+
+/* Class = "UIButton"; normalTitle = "Dismiss"; ObjectID = "kbi-zx-9sO"; */
+"kbi-zx-9sO.normalTitle" = "Dismiss";
+
+/* Class = "UILabel"; text = "Long"; ObjectID = "kgy-Vj-o00"; */
+"kgy-Vj-o00.text" = "Long";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "lGl-GJ-KtP"; */
+"lGl-GJ-KtP.normalTitle" = "Cancel";
+
+/* Class = "UITextView"; text = "OceanShare does not use user data under any circumstances. User data is confidential and does not generate any transactions on our part."; ObjectID = "mIH-Rl-WCI"; */
+"mIH-Rl-WCI.text" = "OceanShare does not use user data under any circumstances. User data is confidential and does not generate any transactions on our part.";
+
+/* Class = "UILabel"; text = "VISIBILITY"; ObjectID = "mlH-pb-dNZ"; */
+"mlH-pb-dNZ.text" = "VISIBILITY";
+
+/* Class = "UILabel"; text = "Email"; ObjectID = "mrM-vm-iMk"; */
+"mrM-vm-iMk.text" = "Email";
+
+/* Class = "UILabel"; text = "Password"; ObjectID = "nL7-bw-ysa"; */
+"nL7-bw-ysa.text" = "Password";
+
+/* Class = "UIButton"; normalTitle = "Let's Start"; ObjectID = "oTn-bL-iIH"; */
+"oTn-bL-iIH.normalTitle" = "Let's Start";
+
+/* Class = "UIButton"; normalTitle = "Sign Up"; ObjectID = "pBQ-zF-gbt"; */
+"pBQ-zF-gbt.normalTitle" = "Sign Up";
+
+/* Class = "UIButton"; normalTitle = "SIGN IN"; ObjectID = "q8P-39-3UN"; */
+"q8P-39-3UN.normalTitle" = "SIGN IN";
+
+/* Class = "UITextView"; text = "Write a new email in the field below, complete with your password to confirm then 'Accept' to change your email. You will soon receive a confirmation email."; ObjectID = "qUl-bk-htU"; */
+"qUl-bk-htU.text" = "Write a new email in the field below, complete with your password to confirm then 'Accept' to change your email. You will soon receive a confirmation email.";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "qik-bI-tKr"; */
+"qik-bI-tKr.normalTitle" = "Cancel";
+
+/* Class = "UITabBarItem"; title = "Profile"; ObjectID = "qrl-R6-HuZ"; */
+"qrl-R6-HuZ.title" = "Profile";
+
+/* Class = "UILabel"; text = "Lat:"; ObjectID = "rZj-gh-KjJ"; */
+"rZj-gh-KjJ.text" = "Lat:";
+
+/* Class = "UIButton"; normalTitle = "Learn More"; ObjectID = "tCR-Yy-7eZ"; */
+"tCR-Yy-7eZ.normalTitle" = "Learn More";
+
+/* Class = "UIButton"; normalTitle = "Accept"; ObjectID = "tVU-N3-VkR"; */
+"tVU-N3-VkR.normalTitle" = "Accept";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "w4g-kv-HqK"; */
+"w4g-kv-HqK.normalTitle" = "Cancel";
+
+/* Class = "UILabel"; text = "Weather"; ObjectID = "wf4-Zm-VoG"; */
+"wf4-Zm-VoG.text" = "Weather";
+
+/* Class = "UILabel"; text = "CLOUD COVER"; ObjectID = "y35-gZ-w5L"; */
+"y35-gZ-w5L.text" = "CLOUD COVER";
+
+/* Class = "UILabel"; text = "OceanShare Limited Company (Pty Ltd)"; ObjectID = "yIh-bw-pLn"; */
+"yIh-bw-pLn.text" = "OceanShare Limited Company (Pty Ltd)";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "ylM-q1-XBF"; */
+"ylM-q1-XBF.normalTitle" = "Cancel";
+
+/* Class = "UIButton"; normalTitle = "Accept"; ObjectID = "zEb-tZ-2f7"; */
+"zEb-tZ-2f7.normalTitle" = "Accept";

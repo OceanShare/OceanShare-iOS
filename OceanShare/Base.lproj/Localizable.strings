@@ -1,0 +1,252 @@
+/* 
+  Localizable.strings
+  OceanShare
+
+  Created by Joseph Pereniguez on 02/09/2019.
+  Copyright © 2019 Joseph Pereniguez. All rights reserved.
+*/
+
+// MARK: - StartViewController
+
+"startButton" = "Let's Start";
+"skipWalkthrough" = "I already know OceanShare";
+
+// MARK: - LoginViewController
+
+/* view */
+"loginTitle" = "Login";
+"emailLabel" = "Email";
+"passwordLabel" = "Password";
+"forgotButton" = "Forgot Password ?";
+"loginButton" = "Login";
+"registerFromLogin" = "Don't have an account ? SIGN UP";
+
+/* forgotHandler */
+"emailNeeded" = "You need to fill the email field.";
+"checkEmailTitle" = "Please Check Your Emails.";
+"checkEmailMessage" = "You probably recieved a mail from us to help you finding a new password.";
+
+/* loginButtonTapped */
+"emailNeedsConfirmation" = "Please Confirm Your Email.";
+"emailNeedsConfirmationMessage" = "You need to confirm your email address to finish your inscription and access to your profile.";
+"wrongPassword" = "The password is invalid or the user does not have a password.";
+
+/* mail handling */
+"sendAnotherMailAction" = "Send me an other mail";
+"checkMailAction" = "I'll check my emails";
+
+/* error handling */
+"error" = "Error.";
+"ok" = "OK";
+"defaultErrorMessage" = "Please Fill The Fields Correctly.";
+
+// MARK: - SignupViewController
+
+/* view */
+"signupTitle" = "Sign Up";
+"usernameTitle" = "User Name";
+"emailTitle" = "Email";
+"passwordTitle" = "Password";
+"confirmTitle" = "Confirm Password";
+"signupButton" = "Sign Up";
+"signinFromRegister" = "SIGN IN";
+
+/* registerButtonTapped */
+"registerRequiredFields" = "All Fields are required.";
+"passwordMatch" = "Please make sure that passwords match.";
+
+// MARK: - HomeViewController
+
+/* view */
+"longitude" = "Long:";
+"latitude" = "Lat:";
+
+/* upvote / downvote */
+"hasBeenUpvoted" = "You've upvoted this event.";
+"hasBeenDownvoted" = "You've downvoted this event.";
+"alreadyRated" = "You've already rated this event.";
+"userDroppedIt" = "You have dropped this event.";
+"droppedBy" = "Dropped by: ";
+
+/* markers */
+"jellyfishs" = "Jellyfishs";
+"divers" = "Divers";
+"waste" = "Waste";
+"warning" = "Warning";
+"dolphins" = "Dolphins";
+"destination" = "Destination";
+
+/* description view */
+"edit" = "EDIT";
+"droppedNow" = "Just now.";
+"droppedB" = "";
+"droppedSecondsA" = " seconds ago.";
+"droppedMinuteA" = " minute ago.";
+"droppedMinutesA" = " minutes ago.";
+"droppedHourA" = " hour ago.";
+"droppedHoursA" = "hours ago.";
+"droppedDayA" = " day ago.";
+"droppedDaysA" = " days ago.";
+
+/* registry's descriptions */
+"descJellyfishs" = "Jellyfish have been spotted at this location.";
+"descDivers" = "There are probably divers working here.";
+"descWaste" = "The water looks polluted here.";
+"descWarning" = "Someone needs help or there is a danger.";
+"descDolphins" = "Dolphins have been spotted in the vicinity.";
+"descDestination" = "Someone is going there.";
+
+/* registry's messages */
+"msgJellyfishs" = "Jellyfishs event selected.";
+"msgDivers" = "Divers event selected.";
+"msgWaste" = "Waste event selected.";
+"msgWarning" = "Warning event selected.";
+"msgDolphins" = "Dolphins event selected.";
+"msgDestination" = "Destination event selected.";
+"msgWeather" = "Weather information selected.";
+"msgEventLimit" = "Already dropped 5 events.";
+"msgDistanceLimit" = "Can't drop an event so far.";
+"msgEarthLimit" = "Can't drop markers on earth.";
+"msgDropSuccess" = "Your event has been dropped.";
+"msgDeleteSuccess" = "Event correctly deleted.";
+
+/* icon view */
+"iconViewEventTextView" = "Select an event to add on the map. All users will be able to see it.";
+"iconViewJellyfishs" = "Jellyfishs";
+"iconViewDivers" = "Divers";
+"iconViewWaste" = "Waste";
+"iconViewWarning" = "Warning";
+"iconViewDolphins" = "Dolphins";
+"iconViewDestination" = "Destination";
+"iconViewWeatherTextView" = "Drop a 'weather' event to know more about a location.";
+"iconViewWeather" = "Weather";
+
+/* comment view */
+"commentViewDescription" = "You can add an optional description on your event.";
+"commentViewDescriptionTextField" = "What's happening ?";
+"commentViewSubmit" = "Submit";
+"commentViewCancel" = "Cancel";
+
+/* edition view */
+"editionViewDescription" = "This is your event. You can change its description or delete it.";
+"newDescriptionTextField" = "What's happening ?";
+"editionViewSave" = "Save Changes";
+"editionViewCancel" = "Cancel";
+"editionViewDelete" = "Delete This Event";
+
+// MARK: - ProfileViewController
+
+/* labels */
+"hello" = "Ahoy ";
+"profileSettingsLabel" = "SETTINGS";
+"profileMediaLabel" = "ADD MEDIA";
+"profileEditLabel" = "EDIT";
+"profileLogoutLabel" = "Log Out";
+
+// MARK: - SettingViewController
+
+/* view */
+"settingViewTitle" = "Settings";
+"settingTemperatureTitle" = "Temperature Display";
+
+/* degrees */
+"segmentedDegree1" = "Celsius";
+"segmentedDegree2" = "Fahrenheit";
+
+// MARK: - WeatherViewController
+
+/* view */
+"weatherTitle" = "Weather";
+"longitudeTitle" = "LONG.";
+"latitudeTitle" = "LAT.";
+"sunriseTitle" = "SUNRISE";
+"sunsetTitle" = "SUNSET";
+"rainRiskTitle" = "CLOUD COVER";
+"waterTemperatureTitle" = "WATER TEMP.";
+"windTitle" = "WIND";
+"humidityTitle" = "HUMIDITY";
+"visibilityTitle" = "VISIBILITY";
+"uvIndiceTitle" = "UV INDICE";
+
+// MARK: - InformationViewController
+
+/* view */
+"informationTitle" = "Information";
+"informationNameTitle" = "Name";
+"informationEmailTitle" = "Email Address";
+"informationPasswordTitle" = "Password";
+"informationShipTitle" = "Ship Name";
+"informationLegalDescription" = "OceanShare does not use user data under any circumstances. User data is confidential and does not generate any transactions on our part.";
+"informationDeleteButton" = "Delete My Account";
+
+/* general pop up */
+"errorTitleMessage" = "Blimey!";
+"InformationAccept" = "Accept";
+"InformationCancel" = "Cancel";
+"passwordPopUpPlaceholder" = "Password";
+
+/* name pop up */
+"namePopUpDescripiton" = "Write a new name in the field below then 'Accept' to change your user name. Only your friends can see your name.";
+"namePopUpPlaceholder" = "New Name";
+
+/* email pop up */
+"emailPopUpDescription" = "Write an email in the field below, complete with your password to confirm then 'Accept' to change your email. You will soon receive a confirmation email.";
+"emailPopUpPlaceholder" = "New Email";
+
+/* password pop up */
+"passwordPopUpDescription" = "Write your current password to check your identity and your new password in the fields below then 'Accept' to change your password.";
+"newPasswordPopUpPlaceholder" = "New Password";
+"currentPasswordPopUpPlaceholder" = "Current Password";
+
+/* ship pop up */
+"shipPopUpDescripiton" = "Write a new name in the field below then 'Accept' to change your ship name. Everybody can see your ship name.";
+"shipPopUpPlaceholder" = "New Ship Name";
+
+/* deletion pop up */
+"deletePopUpDescription" = "Write your password in the field below then 'Accept' to delete your account. This action is irreversible.";
+
+/* acceptChangeName */
+"changeNameErrorHandler1" = "The new name field is required if you want to change yours Matey!";
+"changeNameErrorHandler2" = "The new name should be different from the previous one Matey!";
+/* acceptChangeEmail */
+"changeEmailErrorHandler1" = "The new email field and password field are required if you want to change yours Matey!";
+"changeEmailErrorHandler2" = "The new email should be different from previous one Matey!";
+"changeEmailErrorMessage2" = "We are unable to update your email now Captain, please try later.";
+/* acceptChangePassword */
+"changePasswordErrorHandler1" = "The current password field and new password field are required if you want to change yours Matey!";
+"changePasswordErrorHandler2" = "The new password should be different than previous one Matey!";
+"changePasswordErrorMessage" = "We are unable to update your password now Captain, please try later.";
+/* aceptChangeShipName */
+"changeShipErrorHandler1" = "The new ship name field is required if you want to change yours Matey!";
+"changeShipErrorHandler2" = "The new ship name field should be different than the previous one Matey!";
+/* deleteAccount */
+"deleteAccountAdvice" = "Yo ho ho, if you really want to leave us, you will need to fill your password field Matey!";
+"deleteAccountErrorMessage" = "We are unable to delete your account now Captain, please try later.";
+/* error handling */
+"reAuthErrorMessage" = "We are unable to check if you really are the captain.";
+
+// MARK: - Weather Model
+
+/* date formater */
+"fullDateFormat" = "MM/dd, hh:mm a";
+"dateFormat" = "hh:mm a";
+"localeIdentifier" = "en";
+
+/* wind direction */
+"N " = "N ";
+"NNE " = "NNE ";
+"NE " = "NE ";
+"ENE " = "ENE ";
+"E " = "E ";
+"ESE " = "ESE ";
+"SE " = "SE ";
+"SSE " = "SSE ";
+"S " = "S ";
+"SSW " = "SSW ";
+"SW " = "SW ";
+"WSW " = "WSW ";
+"W " = "W ";
+"WNW " = "WNW ";
+"NW " = "NW ";
+"NNW " = "NNW ";
+
