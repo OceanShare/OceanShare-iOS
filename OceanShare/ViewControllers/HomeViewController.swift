@@ -114,6 +114,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var thumbUpIcon: UIImageView!
     @IBOutlet weak var editButton: DesignableButton!
     @IBOutlet weak var closeDescriptionIcon: UIImageView!
+    @IBOutlet weak var downvotedCounter: UILabel!
+    @IBOutlet weak var upvotedCounter: UILabel!
     
     /* edition view */
     @IBOutlet weak var editionView: UIView!
@@ -467,6 +469,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             
             let updatedAmount = ["downvote" : voteAmount + 1]
             self.ref.child(self.selectedTagId!).updateChildValues(updatedAmount)
+            self.downvotedCounter.text = "\(voteAmount + 1)"
             if ((voteAmount - upVoteAmount) >= 3) {
                 self.isUserDeletingTag = true
                 self.removeTag()
@@ -490,6 +493,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             guard let data = snapshot.value as? NSDictionary else { return }
             guard let voteAmount = data["upvote"] as? Int else { return }
             let updatedAmount = ["upvote" : voteAmount + 1]
+            self.upvotedCounter.text = "\(voteAmount + 1)"
             self.ref.child(self.selectedTagId!).updateChildValues(updatedAmount)
             
         }
@@ -675,6 +679,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                         let description = data?["description"] as? String
                         let time = data?["time"] as? String
                         let user = data?["user"] as? String
+                        let upvote = data?["upvote"] as? Int
+                        let downvote = data?["downvote"] as? Int
                         let contributors = data?["contributors"] as? [String:Int]
                         
                         if description!.isEmpty == false {
@@ -686,6 +692,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                         self.selectedTagId = tag.key
                         self.selectedTagUserId = user
                         self.descriptionLabel.text = description
+                        self.upvotedCounter.text = "\(upvote ?? 0)"
+                        self.downvotedCounter.text = "\(downvote ?? 0)"
                         
                         if user != Auth.auth().currentUser?.uid {
                             self.editButton.isEnabled = false
