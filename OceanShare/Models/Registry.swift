@@ -50,7 +50,7 @@ struct Registry {
     let eventDestination = UIImage(named: "destination")
     
     // default profile picture urls
-    let defaultPictureUrl = "https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-1/p480x480/29187034_1467064540082381_56763327166021632_n.jpg?_nc_cat=107&_nc_ht=scontent-lax3-2.xx&oh=7c2e6e423e8bd35727d754d1c47059d6&oe=5D33AACC"
+    let defaultPictureUrl = "https://firebasestorage.googleapis.com/v0/b/oceanshare-1519985626980.appspot.com/o/profile_pictures%2FA4JzILjrHFfDQJyR5YrREBDmRzy2.png?alt=media&token=c27ea0fc-dcf2-4acf-a78a-1e49404f9f93"
     
     // oceanshare website url
     let websiteUrl = "https://sagotg.github.io/OceanShare/"

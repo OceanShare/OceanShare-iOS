@@ -45,11 +45,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var tagHashs = [Int]()
     
     /* saved tag */
-    var selectedTag: MGLAnnotation?
+    var selectedTag: MGLAnnotation!
     var selectedTagId: String?
     var selectedTagUserId: String?
     var selectedTagUserName: String?
     var isUserDeletingTag = false
+    var isUserAddingTag = false
     
     /* globals */
     var uvGlobal: String!
@@ -154,7 +155,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         syncData()
         setupView()
         setupInfo()
-        
+
     }
     
     override func viewDidLayoutSubviews() {
@@ -505,7 +506,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         var firebaseId: String
         var markerHash: Int
         
+        self.isUserAddingTag = true // test
+        
         tagProperties.description = descriptionTextField.text
+        
         firebaseId = saveTags(Tag: tagProperties)
         markerHash = putTag(mapView: mapView, Tag: tagProperties)
         putTagsinArray(MarkerHash: markerHash, FirebaseID: firebaseId)
@@ -529,14 +533,41 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     @IBAction func changeDescription(_ sender: Any) {
         ref.child(selectedTagId!).updateChildValues(["description": newDescriptionTextField.text!])
-        fetchTag(MarkerHash: selectedTag!.hash)
+        fetchTag(MarkerHash: selectedTag.hash)
         animateOutWithOptionalEffect(effect: false)
         
     }
     
+    func reloadData() {
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.childrenCount > 0 {
+                    for tag in snapshot.children.allObjects as! [DataSnapshot] {
+                        let data = tag.value as? NSDictionary
+                        let description  = data?["description"] as? String
+                        let id  = data?["groupId"] as? Int
+                        let x = data?["latitude"] as? Double
+                        let y = data?["longitude"] as? Double
+                        let time = data?["time"] as? String
+                        let user = data?["user"] as? String
+                        let timestamp = data?["timestamp"] as? String
+                        let upvote = data?["upvote"] as? Int
+                        let downvote = data?["downvote"] as? Int
+                        let contributors = data?["contributors"] as? [String:Int]
+                        self.putTag(mapView: self.mapView, Tag: Tag(description: description, id: id, latitude: x, longitude: y, time: time, user: user, timestamp: timestamp, upvote: upvote, downvote: downvote, contributors: contributors))
+    
+                    }
+                }
+            }) { (error) in
+                print(error.localizedDescription)
+    
+            }
+        }
+    
     @IBAction func deleteEvent(_ sender: Any) {
         isUserDeletingTag = true
-        mapView.removeAnnotation(selectedTag!)
+        let allanno = self.mapView.annotations!
+        self.mapView.removeAnnotations(allanno)
+        // self.mapView.removeAnnotation(selectedTag)
         removeTag()
         animateOutWithOptionalEffect(effect: false)
         animateOutWithOptionalEffect(effect: true)
@@ -621,15 +652,20 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     func syncData() {
-        ref.observeSingleEvent(of: .childAdded) { (snapshot) in
-            self.tagProperties.description = snapshot.childSnapshot(forPath:"description").value as? String
-            self.tagProperties.id = snapshot.childSnapshot(forPath:"groupId").value as? Int
-            self.tagProperties.latitude = snapshot.childSnapshot(forPath:"latitude").value as? Double
-            self.tagProperties.longitude = snapshot.childSnapshot(forPath:"longitude").value as? Double
-            _ = self.putTag(mapView: self.mapView, Tag: self.tagProperties)
+        ref.observe(.childAdded, with: { (snapshot) -> Void in
+            if (self.isUserAddingTag == false) {
+                self.tagProperties.description = snapshot.childSnapshot(forPath:"description").value as? String
+                self.tagProperties.id = snapshot.childSnapshot(forPath:"groupId").value as? Int
+                self.tagProperties.latitude = snapshot.childSnapshot(forPath:"latitude").value as? Double
+                self.tagProperties.longitude = snapshot.childSnapshot(forPath:"longitude").value as? Double
+                let markerHash = self.putTag(mapView: self.mapView, Tag: self.tagProperties)
+                self.putTagsinArray(MarkerHash: markerHash, FirebaseID: snapshot.key)
+                
+            }
+            self.isUserAddingTag = false
+        })
             
-        }
-        ref.observeSingleEvent(of: .childRemoved) { (snapshot) in
+        ref.observe(.childRemoved, with: { (snapshot) -> Void in
             if (self.isUserDeletingTag == false) {
                 print("sync delete by server")
                 let Tag_id = snapshot.key
@@ -656,8 +692,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 }
             }
             self.isUserDeletingTag = false
-            self.syncData()
-        }
+            
+        })
     }
     
     // MARK: - Description View
@@ -899,6 +935,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 
             }
         }
+        reloadData()
     }
     
     // MARK: - Annotation
