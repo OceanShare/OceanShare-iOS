@@ -36,6 +36,9 @@ PODS:
   - Firebase/Database (6.5.0):
     - Firebase/CoreOnly
     - FirebaseDatabase (~> 6.0.0)
+  - Firebase/Functions (6.5.0):
+    - Firebase/CoreOnly
+    - FirebaseFunctions (~> 2.5.1)
   - Firebase/Performance (6.5.0):
     - Firebase/CoreOnly
     - FirebasePerformance (~> 3.1.1)
@@ -68,6 +71,10 @@ PODS:
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.0)
     - leveldb-library (~> 1.18)
+  - FirebaseFunctions (2.5.1):
+    - FirebaseAuthInterop (~> 1.0)
+    - FirebaseCore (~> 6.0)
+    - GTMSessionFetcher/Core (~> 1.1)
   - FirebaseInstanceID (4.2.2):
     - FirebaseCore (~> 6.0)
     - GoogleUtilities/Environment (~> 6.0)
@@ -165,6 +172,7 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
+  - Firebase/Functions
   - Firebase/Performance
   - Firebase/Storage
   - GoogleSignIn
@@ -193,6 +201,7 @@ SPEC REPOS:
     - FirebaseAuthInterop
     - FirebaseCore
     - FirebaseDatabase
+    - FirebaseFunctions
     - FirebaseInstanceID
     - FirebasePerformance
     - FirebaseRemoteConfig
@@ -230,6 +239,7 @@ SPEC CHECKSUMS:
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
   FirebaseCore: aecf02fb2274ec361b9bebeac112f5daa18273bd
   FirebaseDatabase: f48e067716864be2b855cf716b927ef375d6cfa0
+  FirebaseFunctions: 5af7c35d1c5e41608fecbb667eb6c4e672e318d0
   FirebaseInstanceID: 662b8108a09fe9ed01aafdedba100fde8536b0f6
   FirebasePerformance: bd3666700af4d43caf2a13b93718f3b532b8a5ff
   FirebaseRemoteConfig: ed74d16d7e5b19e77a4c3e3eee4fe363039b0834
@@ -250,6 +260,6 @@ SPEC CHECKSUMS:
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: 12e991c26b8ee4212648f1e4f833cd73b11aa076
+PODFILE CHECKSUM: cd465c05dbd8cb4ce4e07f9675ac5fc90d8a7f92
 
 COCOAPODS: 1.7.2

@@ -32,7 +32,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             
             profilePicture.image = picture
             titleLabel.text = NSLocalizedString("hello", comment: "") + name + " !"
-            shipName.text = "\" " + ship + " \""
+            if ship.isEmpty {
+                shipName.text = ""
+            } else {
+                shipName.text = "\" " + ship + " \""
+            }
         }
     }
     

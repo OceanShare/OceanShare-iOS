@@ -29,6 +29,7 @@ target 'OceanShare' do
   pod 'Crashlytics', '~> 3.13.1'
   pod 'SwiftyJSON', '~> 4.0'
   pod 'Turf', '~> 0.3'
+  pod 'Firebase/Functions'
 
   target 'OceanShareTests' do
     inherit! :search_paths
