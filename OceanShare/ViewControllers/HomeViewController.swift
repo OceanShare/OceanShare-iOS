@@ -479,9 +479,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             guard let upVoteAmount = data["upvote"] as? Int else { return }
             
             let updatedAmount = ["downvote" : downVoteAmount + 1]
+            self.downvotedCounter.text = "\(downVoteAmount + 1)" // todo -> test
             downVoteAmount = downVoteAmount + 1
             self.ref.child(self.selectedTagId!).updateChildValues(updatedAmount)
-            self.downvotedCounter.text = "\(downVoteAmount + 1)"
             if ((downVoteAmount - upVoteAmount) >= 3) {
                 let annotations = self.mapView.annotations!
                 
