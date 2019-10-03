@@ -21,7 +21,7 @@ struct Registry {
     let customLightGrey = UIColor(rgb: 0xEFEFF4)
     let customGrey = UIColor(rgb: 0xC5C7D2)
     let customDarkGrey = UIColor(rgb: 0x606060)
-    let customMilkyWhite = UIColor(rgb: 0xD3F2FF)
+    let customMilkyWhite = UIColor(rgb: 0xECF2FF)
     let customWhite = UIColor(rgb: 0xFFFFFF)
     let customBlack = UIColor(rgb: 0x000000)
     

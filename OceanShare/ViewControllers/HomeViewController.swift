@@ -838,23 +838,25 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                             self.getUserNameById(userId: user!)
                             /* unrated event */
                             self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: false, isUserEvent: false, isUnrated: true)
-                            for contributor in contributors! {
-                                if contributor.key == Auth.auth().currentUser?.uid {
-                                    switch contributor.value {
-                                    /* upvoted event */
-                                    case 1:
-                                        self.setDescriptionViewFromRatingState(isUpvoted: true, isDownvoted: false, isUserEvent: false, isUnrated: false)
-                                        break
-                                    /* downvoted event */
-                                    case 2:
-                                        self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: true, isUserEvent: false, isUnrated: false)
-                                        break
-                                    /* user event */
-                                    default:
-                                        print("Error: uid does not fit.")
-                                        self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: false, isUserEvent: true, isUnrated: false)
-                                        break
-                                        
+                            if (contributors != nil) {
+                                for contributor in contributors! {
+                                    if contributor.key == Auth.auth().currentUser?.uid {
+                                        switch contributor.value {
+                                        /* upvoted event */
+                                        case 1:
+                                            self.setDescriptionViewFromRatingState(isUpvoted: true, isDownvoted: false, isUserEvent: false, isUnrated: false)
+                                            break
+                                        /* downvoted event */
+                                        case 2:
+                                            self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: true, isUserEvent: false, isUnrated: false)
+                                            break
+                                        /* user event */
+                                        default:
+                                            print("Error: uid does not fit.")
+                                            self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: false, isUserEvent: true, isUnrated: false)
+                                            break
+                                            
+                                        }
                                     }
                                 }
                             }
@@ -1156,20 +1158,14 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             let longitude = pressMapCoordinates.longitude
             let latitude = pressMapCoordinates.latitude
             self.getWeatherFromSelectedLocation(long: longitude, lat: latitude)
-            let distance = self.mapView.userLocation!.coordinate.distance(to: pressMapCoordinates)
-
-            if distance < 100000 {
-                let point = mapView.convert(pressMapCoordinates, toPointTo: mapView)
-                let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
-                if (features.description != "[]") {
-                    self.viewStacked = self.weatherIconView
-                    self.animateInWithOptionalEffect(view: weatherIconView, effect: true)
-                    self.putWeatherOnMap(activate: false)
-                    
-                } else {
-                    self.PutMessageOnHeader(msg: self.registry.msgEarthLimit, color: self.registry.customRed)
-                    
-                }
+            
+            let point = mapView.convert(pressMapCoordinates, toPointTo: mapView)
+            let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
+            if (features.description != "[]") {
+                self.viewStacked = self.weatherIconView
+                self.animateInWithOptionalEffect(view: weatherIconView, effect: true)
+                self.putWeatherOnMap(activate: false)
+                
             } else {
                 self.PutMessageOnHeader(msg: self.registry.msgDistanceLimit, color: self.registry.customRed)
                 
