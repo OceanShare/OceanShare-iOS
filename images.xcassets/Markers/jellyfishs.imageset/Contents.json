@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "meduse - copie 2.png",
+      "filename" : "jellyfish - copie 2.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "meduse - copie.png",
+      "filename" : "jellyfish - copie.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "meduse.png",
+      "filename" : "jellyfish.png",
       "scale" : "3x"
     }
   ],

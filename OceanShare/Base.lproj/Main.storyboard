@@ -826,7 +826,7 @@
                                         <real key="value" value="0.5"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                        <color key="value" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="value" systemColor="opaqueSeparatorColor" red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
@@ -2825,9 +2825,9 @@
         <!--Information View Controller-->
         <scene sceneID="7aK-5P-L8P">
             <objects>
-                <viewController id="cIM-eW-Aei" customClass="InformationViewController" customModule="OceanShare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="cIM-eW-Aei" customClass="InformationViewController" customModule="OceanShare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ucr-mp-mP6">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3q6-YE-nAq" userLabel="Name">
@@ -2972,7 +2972,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bVq-6z-s6L" userLabel="Delete Account">
-                                <rect key="frame" x="0.0" y="626" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="646" width="414" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CrL-Z6-Ao9">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
@@ -3027,10 +3027,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BLL-zU-8Ig" userLabel="OceanShare">
-                                <rect key="frame" x="0.0" y="513" width="414" height="113"/>
+                                <rect key="frame" x="0.0" y="513" width="414" height="133"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mIH-Rl-WCI">
-                                        <rect key="frame" x="50" y="24" width="314" height="65"/>
+                                        <rect key="frame" x="50" y="34" width="314" height="65"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="65" id="kJa-Fc-Q9x"/>
                                         </constraints>
@@ -3039,7 +3039,7 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoBlack" translatesAutoresizingMaskIntoConstraints="NO" id="10c-te-8jx">
-                                        <rect key="frame" x="147" y="-31" width="120" height="70"/>
+                                        <rect key="frame" x="147" y="-21" width="120" height="70"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="70" id="OoR-MT-DuE"/>
                                             <constraint firstAttribute="width" constant="120" id="meO-hS-aSJ"/>
@@ -3056,16 +3056,16 @@
                                 </constraints>
                             </view>
                             <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KIe-D3-c5p">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="XA3-QQ-wcS">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="07v-46-sRA">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="wS3-0j-Ghs">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             </view>
                                             <vibrancyEffect>
@@ -3805,7 +3805,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jhe-kk-5yX" customClass="DesignableView" customModule="OceanShare" customModuleProvider="target">
                                 <rect key="frame" x="-293" y="170" width="1000" height="1000"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="32 °C" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KXI-hI-OQT">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KXI-hI-OQT">
                                         <rect key="frame" x="323" y="90" width="354" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="MBE-R8-Mgk"/>
@@ -4642,7 +4642,7 @@
         <image name="googleLogo" width="170.66667175292969" height="170.66667175292969"/>
         <image name="grenage" width="30" height="30"/>
         <image name="humidity" width="30" height="30"/>
-        <image name="jellyfishs" width="31.666666030883789" height="30"/>
+        <image name="jellyfishs" width="30" height="30"/>
         <image name="key" width="30" height="30"/>
         <image name="logo" width="459.66665649414062" height="168.33332824707031"/>
         <image name="logoBlack" width="459.66665649414062" height="168.33332824707031"/>
