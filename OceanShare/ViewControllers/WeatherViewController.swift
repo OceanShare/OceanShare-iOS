@@ -106,7 +106,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     func transformData(rawData: JSON) {
         // get uv index
-        if let uvData = rawData["uv"].string {
+        /*if let uvData = rawData["uv"].string {
             let uvAsData = uvData.data(using: .utf8)!
             let uvAsJson = JSON(uvAsData)
             
@@ -117,9 +117,19 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
                 print(uvAsJson["value"].error!)
                 
             }
+        }*/
+        let uvData = rawData["uv"]
+        let uvAsJson = JSON(uvData)
+        if let uvIndex = uvAsJson["value"].double {
+            self.uvGlobal = self.weather.analyseUvIndex(uvIndex: uvIndex)
+            
+        } else {
+            print(uvAsJson["value"].error!)
+            
         }
+        
         // get weather
-        if let data = rawData["weather"].string {
+        /*if let data = rawData["weather"].string {
             let dataAsData = data.data(using: .utf8)!
             let dataAsJson = JSON(dataAsData)
 
@@ -136,6 +146,16 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             }
         } else {
             print(rawData["weather"].error!)
+            
+        }*/
+        
+        let data = rawData["weather"]
+        let dataAsJson = JSON(data)
+        do {
+            let weather = Weather(weatherData: dataAsJson)
+            self.didGetWeather(weather: weather)
+        } catch let jsonError as NSError {
+            self.didNotGetWeather(error: jsonError)
             
         }
     }

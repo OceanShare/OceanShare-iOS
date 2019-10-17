@@ -1193,6 +1193,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             switch response.result {
             case .success(let value):
                 let jsonObject = JSON(value)
+                print(jsonObject)
                 self.transformData(rawData: jsonObject)
             case .failure(let error):
                 print(error)
@@ -1205,7 +1206,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      * Get uv and weather data from json.
      */
     func transformData(rawData: JSON) {
-        if let uvData = rawData["uv"].string {
+       // get uv index
+        /*if let uvData = rawData["uv"].string {
             let uvAsData = uvData.data(using: .utf8)!
             let uvAsJson = JSON(uvAsData)
             
@@ -1216,11 +1218,22 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 print(uvAsJson["value"].error!)
                 
             }
+        }*/
+        let uvData = rawData["uv"]
+        let uvAsJson = JSON(uvData)
+        if let uvIndex = uvAsJson["value"].double {
+            self.uvGlobal = self.weather.analyseUvIndex(uvIndex: uvIndex)
+            
+        } else {
+            print(uvAsJson["value"].error!)
+            
         }
-        if let data = rawData["weather"].string {
+        
+        // get weather
+        /*if let data = rawData["weather"].string {
             let dataAsData = data.data(using: .utf8)!
             let dataAsJson = JSON(dataAsData)
-            
+
             do {
                 _ = try JSONSerialization.jsonObject(
                     with: dataAsData,
@@ -1234,6 +1247,16 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             }
         } else {
             print(rawData["weather"].error!)
+            
+        }*/
+        
+        let data = rawData["weather"]
+        let dataAsJson = JSON(data)
+        do {
+            let weather = Weather(weatherData: dataAsJson)
+            self.didGetWeather(weather: weather)
+        } catch let jsonError as NSError {
+            self.didNotGetWeather(error: jsonError)
             
         }
     }

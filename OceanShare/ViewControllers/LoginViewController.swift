@@ -16,7 +16,7 @@ import GoogleSignIn
 import FBSDKLoginKit
 import Alamofire
 
-class LoginViewController: UIViewController, GIDSignInUIDelegate {
+class LoginViewController: UIViewController {
     
     // MARK: - Outlets
     
@@ -220,7 +220,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
     // MARK: - Google Login
 
     @IBAction func googleLogin(_ sender: Any) {
-        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance()?.signIn()
     }
     
