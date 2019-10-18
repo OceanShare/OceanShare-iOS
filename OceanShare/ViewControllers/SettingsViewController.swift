@@ -17,7 +17,8 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var degreeSegmentedControl: UISegmentedControl!
     @IBOutlet weak var viewTitleLabel: UILabel!
     @IBOutlet weak var temperatureDisplayTitle: UILabel!
-    
+    @IBOutlet weak var showProfileSwitch: UISwitch!
+    @IBOutlet weak var ghostModeSwitch: UISwitch!
     
     // MARK: - ViewDidLoad
     
@@ -32,6 +33,8 @@ class SettingsViewController: UIViewController {
     
     func setupView() {
         guard let choosenDegree = UserDefaults.standard.object(forKey: "choosen_degree") else { return }
+        guard let isGhostModeActive = UserDefaults.standard.object(forKey: "ghost_mode") else { return }
+        guard let isPPAllowed = UserDefaults.standard.object(forKey: "show_pp") else { return }
         
         if (choosenDegree as AnyObject) .isEqual("C") {
             degreeSegmentedControl.selectedSegmentIndex = 0
@@ -40,6 +43,23 @@ class SettingsViewController: UIViewController {
         } else {
             degreeSegmentedControl.selectedSegmentIndex = 0
         }
+        
+        if (isGhostModeActive as AnyObject) .isEqual(1) {
+            ghostModeSwitch.isOn = true
+        } else if (isGhostModeActive as AnyObject) .isEqual(0) {
+            ghostModeSwitch.isOn = false
+        } else {
+            ghostModeSwitch.isOn = true
+        }
+        
+        if (isPPAllowed as AnyObject) .isEqual(0) {
+            showProfileSwitch.isOn = false
+        } else if (isPPAllowed as AnyObject) .isEqual(1) {
+            showProfileSwitch.isOn = true
+        } else {
+            showProfileSwitch.isOn = false
+        }
+        
         /* set localized labels */
         setupLocalizedStrings()
     }
@@ -75,17 +95,28 @@ class SettingsViewController: UIViewController {
         }
     }
     
-    
-    /*@IBAction func handleBack(_ sender: Any) {
-        navigationController?.popViewController(animated: true)
-        dismiss(animated: true, completion: nil)
+    @IBAction func showProfilePicture(_ sender: Any) {
         
     }
     
-    @IBAction func learnMore(_ sender: Any) {
-        guard let url = URL(string: self.registry.websiteUrl) else { return }
-        UIApplication.shared.open(url)
+    @IBAction func ghostMode(_ sender: Any) {
         
-    }*/
+    }
+    
+    @IBAction func sailingBoatActivate(_ sender: Any) {
+        
+    }
+    
+    @IBAction func gondolaActivate(_ sender: Any) {
+        
+    }
+    
+    @IBAction func miniYachtActivate(_ sender: Any) {
+        
+    }
+    
+    @IBAction func yachtActivate(_ sender: Any) {
+        
+    }
     
 }

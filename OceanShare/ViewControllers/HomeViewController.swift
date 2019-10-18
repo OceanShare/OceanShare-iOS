@@ -27,6 +27,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     /* firebase */
     var ref: DatabaseReference!
+    var userRef: DatabaseReference!
     let storageRef = Storage.storage().reference()
     
     /* view */
@@ -66,7 +67,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var droppedIconNumber: Int! = 0
     let registry = Registry()
     let weather = Weather.self
-    let appUser = AppUser.self
+    let currentUser = AppUser.self
 
     // MARK: - Outlets
     
@@ -125,6 +126,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var downvotedCounter: UILabel!
     @IBOutlet weak var upvotedCounter: UILabel!
     
+    /* user description view */
+    @IBOutlet weak var userDescriptionView: UIView!
+    @IBOutlet weak var userAvatar: UIImageView!
+    @IBOutlet weak var userAvatarName: UILabel!
+    
     /* edition view */
     @IBOutlet weak var editionView: UIView!
     @IBOutlet weak var editionViewDescription: UITextView!
@@ -158,6 +164,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         super.viewDidLoad()
         
         ref = Database.database().reference().child("markers")
+        userRef = Database.database().reference().child("users")
         
         syncData()
         setupView()
@@ -423,11 +430,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             tagProperties.id = eventId
             tagProperties.description = eventDescription
             tagProperties.time = weather.getCurrentTime()
-            tagProperties.user = appUser.getCurrentUser()
+            tagProperties.user = currentUser.getCurrentUser()
             tagProperties.timestamp = ServerValue.timestamp()
             tagProperties.upvote = 0
             tagProperties.downvote = 0
-            tagProperties.contributors = [appUser.getCurrentUser() : 0]
+            tagProperties.contributors = [currentUser.getCurrentUser() : 0]
             putIconOnMap(activate: true)
             animateOutWithOptionalEffect(effect: true)
             PutMessageOnHeader(msg: eventMessage, color: registry.customGreen)
@@ -437,6 +444,29 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             self.PutMessageOnHeader(msg: self.registry.msgEventLimit, color: self.registry.customRed)
             
         }
+    }
+    
+    // MARK: - User Description View
+    
+    /*
+    * Close the user description view.
+    */
+    @IBAction func closeUserDescription(_ sender: Any) {
+        animateOutWithOptionalEffect(effect: true)
+    }
+    
+    func fetchUserDescription() {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        
+        userRef.child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot == snapshot {
+                guard let data = snapshot.value as? NSDictionary else { return }
+                guard let name = data["name"] as? String else { return }
+            
+                self.userAvatarName.text = name
+            
+            }
+        })
     }
     
     // MARK: - Description View
@@ -804,9 +834,19 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         let hasDoneWork = false
         
         while (tagHashs[count] != MarkerHash) {
-            count = count + 1
-            
+            if (tagHashs[count] != tagHashs.last) {
+                count = count + 1
+            } else {
+                viewStacked = userDescriptionView
+                animateInWithOptionalEffect(view: userDescriptionView, effect: true)
+                fetchUserDescription()
+                return
+            }
         }
+        
+        viewStacked = descriptionView
+        animateInWithOptionalEffect(view: descriptionView, effect: true)
+        
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.childrenCount > 0 {
                 for tag in snapshot.children.allObjects as! [DataSnapshot] {
@@ -1019,8 +1059,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
         mapView.deselectAnnotation(annotation, animated: false)
-        viewStacked = descriptionView
-        animateInWithOptionalEffect(view: descriptionView, effect: true)
+        /*viewStacked = descriptionView // todo
+        animateInWithOptionalEffect(view: descriptionView, effect: true)*/
         selectedTag = annotation
         fetchTag(MarkerHash: annotation.hash)
         
@@ -1206,19 +1246,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      * Get uv and weather data from json.
      */
     func transformData(rawData: JSON) {
-       // get uv index
-        /*if let uvData = rawData["uv"].string {
-            let uvAsData = uvData.data(using: .utf8)!
-            let uvAsJson = JSON(uvAsData)
-            
-            if let uvIndex = uvAsJson["value"].double {
-                self.uvGlobal = self.weather.analyseUvIndex(uvIndex: uvIndex)
-                
-            } else {
-                print(uvAsJson["value"].error!)
-                
-            }
-        }*/
+        // get uv index
         let uvData = rawData["uv"]
         let uvAsJson = JSON(uvData)
         if let uvIndex = uvAsJson["value"].double {
@@ -1228,33 +1256,13 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             print(uvAsJson["value"].error!)
             
         }
-        
         // get weather
-        /*if let data = rawData["weather"].string {
-            let dataAsData = data.data(using: .utf8)!
-            let dataAsJson = JSON(dataAsData)
-
-            do {
-                _ = try JSONSerialization.jsonObject(
-                    with: dataAsData,
-                    options: .mutableContainers) as! [String: AnyObject]
-                
-                let weather = Weather(weatherData: dataAsJson)
-                self.didGetWeather(weather: weather)
-            } catch let jsonError as NSError {
-                self.didNotGetWeather(error: jsonError)
-                
-            }
-        } else {
-            print(rawData["weather"].error!)
-            
-        }*/
-        
         let data = rawData["weather"]
         let dataAsJson = JSON(data)
         do {
             let weather = Weather(weatherData: dataAsJson)
             self.didGetWeather(weather: weather)
+            
         } catch let jsonError as NSError {
             self.didNotGetWeather(error: jsonError)
             
@@ -1393,7 +1401,6 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
             layer.addSublayer(dot)
             
         }
-        
         /* This arrow overlays the dot and is rotated with the user’s heading. */
         if arrow == nil {
             arrow = CAShapeLayer()
