@@ -14,11 +14,9 @@ import FirebaseCore
 import FirebaseDatabase
 import GoogleSignIn
 import FBSDKLoginKit
-import TwitterKit
-import TwitterCore_Private
 import Alamofire
 
-class SignupViewController: UIViewController, GIDSignInUIDelegate {
+class SignupViewController: UIViewController {
     
     // MARK: - Outlets
     
@@ -230,65 +228,8 @@ class SignupViewController: UIViewController, GIDSignInUIDelegate {
     // MARK: - Google Registration
     
     @IBAction func googleLogin(_ sender: Any) {
-        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance().signIn()
-        
-    }
-    
-    // MARK: - Twitter Registration
-    
-    @IBAction func twitterLogin(_ sender: UIButton) {
-        configureTwitter()
-        
-    }
-    
-    fileprivate func configureTwitter() {
-        let twitterSignInButton = TWTRLogInButton(logInCompletion: { session, error in
-            if (error != nil) {
-                print("(1) Twitter authentication failed: ", error!.localizedDescription)
-            
-            } else {
-                /* get the twitter credentials */
-                guard let token = session?.authToken else {return}
-                guard let secret = session?.authTokenSecret else {return}
-                let credential = TwitterAuthProvider.credential(withToken: token, secret: secret)
-                
-                Auth.auth().signIn(with: credential, completion: { (authResult, err) in
-                    if let err = err {
-                        print("(2) Twitter authentication failed: ", err.localizedDescription)
-                    
-                    } else {
-                        let user = Auth.auth().currentUser
-                        
-                        /* define the database structure */
-                        let userData: [String: Any] = [
-                            "name": user?.displayName as Any,
-                            "email": user?.email as Any
-                            
-                        ]
-                        
-                        /* push the user datas on the database */
-                        guard let uid = authResult?.user.uid else { return }
-                        self.ref.child("users/\(uid)").setValue(userData)
-                        
-                        print("-> Twitter Authentication Success.")
-                        /* set the userdefaults data */
-                        UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
-                        UserDefaults.standard.synchronize()
-                        /* access to the homeviewcontroller */
-                        let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
-                        self.present(mainTabBarController, animated: true,completion: nil)
-                        
-                    }
-                })
-            }
-        })
-        /* hide the true and unconfigurable twitter button */
-        twitterSignInButton.frame = CGRect(x: 300, y: 200, width: 73, height: 65)
-        view.addSubview(twitterSignInButton)
-        twitterSignInButton.isHidden = true
-        twitterSignInButton.accessibilityActivate()
         
     }
     

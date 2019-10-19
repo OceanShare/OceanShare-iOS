@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "wasteP - copie 2.png",
+      "filename" : "waste - copie 2.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "wasteP - copie.png",
+      "filename" : "waste - copie.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "wasteP.png",
+      "filename" : "waste.png",
       "scale" : "3x"
     }
   ],

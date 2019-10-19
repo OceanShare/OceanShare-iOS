@@ -10,7 +10,6 @@ import UIKit
 import Firebase
 import GoogleSignIn
 import FBSDKCoreKit
-import TwitterKit
 import FirebaseDatabase
 
 @UIApplicationMain
@@ -28,20 +27,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
         
-        TWTRTwitter.sharedInstance().start(withConsumerKey: "jYXRAPhB2S1GDVtZbs57uOtcl", consumerSecret: "nuhpnL3cSEWHIN4ydwjl6nXp9OHu9sWyA5wHxCcpbcYDo0q2Lj")
-        
         return true
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         
-        let googleAuthentication = GIDSignIn.sharedInstance().handle(url, sourceApplication:options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String, annotation: [:])
+        let googleAuthentication = GIDSignIn.sharedInstance().handle(url)
         
         let facebookAuthentication = FBSDKApplicationDelegate.sharedInstance().application(app, open: url, sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplication.OpenURLOptionsKey.annotation])
         
-        let twitterAuthentication = TWTRTwitter.sharedInstance().application(app, open: url, options: options)
         
-        return facebookAuthentication || googleAuthentication || twitterAuthentication
+        return facebookAuthentication || googleAuthentication
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

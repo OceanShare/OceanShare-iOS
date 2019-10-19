@@ -23,7 +23,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         return [vc1, vc2, vc3]
     }()
     
-    // MARK: - ViewDidLoad
+    // MARK: - View Manager
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +34,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         // define the first view of the RootViewController
         if let firstViewController = viewControllerList.first {
             setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
+            
         }
         // apply the design stuff to the view
         configurePageControl()

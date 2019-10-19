@@ -13,6 +13,7 @@ import Turf
 import SwiftyJSON
 import Alamofire
 import CoreLocation
+import FirebaseFunctions
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseCore
@@ -26,6 +27,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     /* firebase */
     var ref: DatabaseReference!
+    var userRef: DatabaseReference!
     let storageRef = Storage.storage().reference()
     
     /* view */
@@ -38,25 +40,36 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     /* map properties */
     var isInside = false
     var mapView: MGLMapView!
+    var stackedLongitude: String!
+    var stackedLatitude: String!
     
     /* tag properties */
-    var tagProperties = Tag(description: "", id: 0, latitude: 0.0, longitude: 0.0, time: "", user: "", timestamp: "", upvote: 0, downvote: 0, contributors: ["":0])
     var tagIds = [String]()
     var tagHashs = [Int]()
+    var tagProperties = Tag(description: "",
+                            id: 0, latitude: 0.0,
+                            longitude: 0.0,
+                            time: "",
+                            user: "",
+                            timestamp: "",
+                            upvote: 0,
+                            downvote: 0,
+                            contributors: ["":0])
     
     /* saved tag */
-    var selectedTag: MGLAnnotation?
+    var selectedTag: MGLAnnotation!
     var selectedTagId: String?
     var selectedTagUserId: String?
     var selectedTagUserName: String?
     var isUserDeletingTag = false
+    var isUserAddingTag = false
     
     /* globals */
     var uvGlobal: String!
     var droppedIconNumber: Int! = 0
     let registry = Registry()
     let weather = Weather.self
-    let appUser = AppUser.self
+    let currentUser = AppUser.self
 
     // MARK: - Outlets
     
@@ -65,9 +78,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var centerView: DesignableButton!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var oceanShareLogo: UIImageView!
-
     @IBOutlet weak var messageLabel: UITextView!
-    
     @IBOutlet weak var longitudeView: DesignableView!
     @IBOutlet weak var longitudeIndicatorLabel: UILabel!
     @IBOutlet weak var currentLongitudeLabel: UILabel!
@@ -114,6 +125,13 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var thumbUpIcon: UIImageView!
     @IBOutlet weak var editButton: DesignableButton!
     @IBOutlet weak var closeDescriptionIcon: UIImageView!
+    @IBOutlet weak var downvotedCounter: UILabel!
+    @IBOutlet weak var upvotedCounter: UILabel!
+    
+    /* user description view */
+    @IBOutlet weak var userDescriptionView: UIView!
+    @IBOutlet weak var userAvatar: UIImageView!
+    @IBOutlet weak var userAvatarName: UILabel!
     
     /* edition view */
     @IBOutlet weak var editionView: UIView!
@@ -142,17 +160,18 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     /* visual effect */
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
     
-    // MARK: - View's Managers
+    // MARK: - View Manager
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         ref = Database.database().reference().child("markers")
+        userRef = Database.database().reference().child("users")
         
         syncData()
         setupView()
         setupInfo()
-        
+
     }
     
     override func viewDidLayoutSubviews() {
@@ -163,7 +182,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     // MARK: - Setup
-    
+
+    /*
+     * Setup embeded views from home view controller.
+     */
     func setupView() {
         /* blur effect */
         effect = visualEffectView.effect
@@ -193,8 +215,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    /*
+     * Setup user's longitude and latitude from location manager.
+     */
     func setupInfo() {
-        /* setup the location manager */
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
@@ -203,11 +227,39 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             locationManager.startUpdatingLocation()
             
         }
-        /* update the number of icon's user' */
-        getDroppedIconByUser()
-        
     }
     
+    /*
+     * Real time location manager.
+     * Update user's lalitude and longitude.
+     */
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        let longitude = Double(round(10000*locValue.longitude)/10000).clean
+        let latitude = Double(round(10000*locValue.latitude)/10000).clean
+        let uid = Auth.auth().currentUser!.uid
+        
+        currentLatitudeLabel.text = latitude
+        currentLongitudeLabel.text = longitude
+
+        if (longitude != stackedLongitude) {
+            let userLongitude: [String: Any] = ["longitude": longitude as Any]
+            self.userRef.child("\(uid)/location").updateChildValues(userLongitude)
+            self.stackedLongitude = longitude
+            
+        }
+        
+        if (latitude != stackedLatitude) {
+            let userLattitude: [String: Any] = ["latitude": latitude as Any]
+            self.userRef.child("\(uid)/location").updateChildValues(userLattitude)
+            self.stackedLatitude = latitude
+            
+        }
+    }
+    
+    /*
+     * Setup labels.
+     */
     func setupLocalizedStrings() {
         /* view */
         longitudeIndicatorLabel.text = NSLocalizedString("longitude", comment: "")
@@ -237,7 +289,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         editButton.setTitle(NSLocalizedString("edit", comment: ""), for: .normal)
     }
     
-    
+    /*
+     * Setup custom icons.
+     */
     func setupCustomIcons() {
         /* map view */
         centerIcon.image = centerIcon.image!.withRenderingMode(.alwaysTemplate)
@@ -255,6 +309,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    /*
+     * Setup the compass from mapview.
+     */
     func setupCompass() {
         var centerPoint = mapView.compassView.center
         centerPoint.y = 130
@@ -262,15 +319,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        currentLatitudeLabel.text = String(format:"%f", locValue.latitude)
-        currentLongitudeLabel.text = String(format:"%f", locValue.longitude)
-        
-    }
-    
     // MARK: - Animations
     
+    /*
+     * Display a message on the header depending of interactions the user has with markers.
+     * It takes the message to display and the alert type color as parameters.
+     */
     func PutMessageOnHeader(msg: String, color: UIColor) {
         oceanShareLogo.isHidden = true
         headerView.backgroundColor = color
@@ -341,7 +395,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBAction func openMenu(_ sender: Any) {
         viewStacked = iconView
         animateInWithOptionalEffect(view: iconView, effect: true)
-        /* update icon nbr */
+
         getDroppedIconByUser()
         
     }
@@ -395,11 +449,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             tagProperties.id = eventId
             tagProperties.description = eventDescription
             tagProperties.time = weather.getCurrentTime()
-            tagProperties.user = appUser.getCurrentUser()
+            tagProperties.user = currentUser.getCurrentUser()
             tagProperties.timestamp = ServerValue.timestamp()
             tagProperties.upvote = 0
             tagProperties.downvote = 0
-            tagProperties.contributors = [appUser.getCurrentUser() : 0]
+            tagProperties.contributors = [currentUser.getCurrentUser() : 0]
             putIconOnMap(activate: true)
             animateOutWithOptionalEffect(effect: true)
             PutMessageOnHeader(msg: eventMessage, color: registry.customGreen)
@@ -411,6 +465,165 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    // MARK: - User Description View
+    
+    /*
+    * Close the user description view.
+    */
+    @IBAction func closeUserDescription(_ sender: Any) {
+        animateOutWithOptionalEffect(effect: true)
+    }
+    
+    func fetchUserDescription() {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        
+        userRef.child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot == snapshot {
+                guard let data = snapshot.value as? NSDictionary else { return }
+                guard let name = data["name"] as? String else { return }
+            
+                self.userAvatarName.text = name
+            
+            }
+        })
+    }
+    
+    // MARK: - Description View
+    
+    /*
+     * Close the description view.
+     */
+    @IBAction func closeDescription(_ sender: Any) {
+        animateOutWithOptionalEffect(effect: true)
+        
+    }
+    
+    /*
+     * Open the edition view to modify the event.
+     */
+    @IBAction func editEvent(_ sender: Any) {
+        overViewStacked = editionView
+        animateInWithOptionalEffect(view: editionView, effect: false)
+        
+    }
+    
+    /*
+     * Downvote an event and check if the event has 3 or more downvotes.
+     * If it has, the function delete this event.
+     */
+    @IBAction func downVoteEvent(_ sender: Any) {
+        thumbDownView.backgroundColor = registry.customRed
+        thumbDownIcon.tintColor = registry.customWhite
+        upVoteButton.isEnabled = false
+        downVoteButton.isEnabled = false
+        ratedLabel.text = NSLocalizedString("hasBeenDownvoted", comment: "")
+        
+        let uid = Auth.auth().currentUser!.uid
+        let markerData: [String: Int] = [uid: 2]
+        
+        ref.child(selectedTagId!).child("contributors").updateChildValues(markerData)
+        ref.child(selectedTagId!).observeSingleEvent(of: .value) { (snapshot) in
+            guard let data = snapshot.value as? NSDictionary else { return }
+            guard var downVoteAmount = data["downvote"] as? Int else { return }
+            guard let upVoteAmount = data["upvote"] as? Int else { return }
+            
+            let updatedAmount = ["downvote" : downVoteAmount + 1]
+            self.downvotedCounter.text = "\(downVoteAmount + 1)" // todo -> test
+            downVoteAmount = downVoteAmount + 1
+            self.ref.child(self.selectedTagId!).updateChildValues(updatedAmount)
+            if ((downVoteAmount - upVoteAmount) >= 3) {
+                let annotations = self.mapView.annotations!
+                
+                self.mapView.removeAnnotations(annotations)
+                self.isUserDeletingTag = true
+                self.removeTag()
+                self.getDroppedIconByUser()
+            }
+        }
+    }
+    
+    /*
+     * Upvote an event.
+     */
+    @IBAction func upVoteEvent(_ sender: Any) {
+        thumbUpView.backgroundColor = registry.customFlashGreen
+        thumbUpIcon.tintColor = registry.customWhite
+        upVoteButton.isEnabled = false
+        downVoteButton.isEnabled = false
+        ratedLabel.text = NSLocalizedString("hasBeenUpvoted", comment: "")
+        
+        let uid = Auth.auth().currentUser!.uid
+        let markerData: [String: Int] = [uid: 1]
+        
+        ref.child(selectedTagId!).child("contributors").updateChildValues(markerData)
+        ref.child(selectedTagId!).observeSingleEvent(of: .value) { (snapshot) in
+            guard let data = snapshot.value as? NSDictionary else { return }
+            guard let voteAmount = data["upvote"] as? Int else { return }
+            let updatedAmount = ["upvote" : voteAmount + 1]
+            self.upvotedCounter.text = "\(voteAmount + 1)"
+            self.ref.child(self.selectedTagId!).updateChildValues(updatedAmount)
+            
+        }
+    }
+    
+    // MARK: - Comment View
+    
+    @IBAction func submitComment(_ sender: Any) {
+        var firebaseId: String
+        var markerHash: Int
+        isUserAddingTag = true
+        
+        tagProperties.description = descriptionTextField.text
+        firebaseId = saveTags(Tag: tagProperties)
+        markerHash = putTag(mapView: mapView, Tag: tagProperties)
+        putTagsinArray(MarkerHash: markerHash, FirebaseID: firebaseId)
+        animateOutWithOptionalEffect(effect: true)
+        descriptionTextField.text = ""
+        PutMessageOnHeader(msg: registry.msgDropSuccess, color: registry.customGreen)
+        putIconOnMap(activate: false)
+        getDroppedIconByUser()
+        
+    }
+    
+    @IBAction func cancelComment(_ sender: Any) {
+        animateOutWithOptionalEffect(effect: true)
+        descriptionTextField.text = ""
+        putIconOnMap(activate: false)
+        
+    }
+    
+    // MARK: - Edition View
+    
+    @IBAction func changeDescription(_ sender: Any) {
+        ref.child(selectedTagId!).updateChildValues(["description": newDescriptionTextField.text!])
+        fetchTag(MarkerHash: selectedTag.hash)
+        animateOutWithOptionalEffect(effect: false)
+        
+    }
+    
+    @IBAction func deleteEvent(_ sender: Any) {
+        let annotations = self.mapView.annotations!
+        
+        mapView.removeAnnotations(annotations)
+        isUserDeletingTag = true
+        removeTag()
+        animateOutWithOptionalEffect(effect: false)
+        animateOutWithOptionalEffect(effect: true)
+        PutMessageOnHeader(msg: registry.msgDeleteSuccess, color: registry.customGreen)
+        getDroppedIconByUser()
+        
+    }
+    
+    @IBAction func closeEdition(_ sender: Any) {
+        animateOutWithOptionalEffect(effect: false)
+
+    }
+
+    // MARK: - Online Tags
+    
+    /*
+     * Get the amount of markers dropped by the current logged user.
+     */
     func getDroppedIconByUser() {
         let currentUser = Auth.auth().currentUser?.uid
         let trace = Performance.startTrace(name: registry.trace11)
@@ -436,119 +649,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-    // MARK: - Description View
-    
-    @IBAction func closeDescription(_ sender: Any) {
-        animateOutWithOptionalEffect(effect: true)
-        
-    }
-    
-    @IBAction func editEvent(_ sender: Any) {
-        overViewStacked = editionView
-        animateInWithOptionalEffect(view: editionView, effect: false)
-        
-    }
-    
-    @IBAction func downVoteEvent(_ sender: Any) {
-        thumbDownView.backgroundColor = registry.customRed
-        thumbDownIcon.tintColor = registry.customWhite
-        upVoteButton.isEnabled = false
-        downVoteButton.isEnabled = false
-        ratedLabel.text = NSLocalizedString("hasBeenDownvoted", comment: "")
-        
-        let uid = Auth.auth().currentUser!.uid
-        let markerData: [String: Int] = [uid: 2]
-        
-        ref.child(selectedTagId!).child("contributors").updateChildValues(markerData)
-        ref.child(selectedTagId!).observeSingleEvent(of: .value) { (snapshot) in
-            guard let data = snapshot.value as? NSDictionary else { return }
-            guard let voteAmount = data["downvote"] as? Int else { return }
-            guard let upVoteAmount = data["upvote"] as? Int else { return }
-            
-            let updatedAmount = ["downvote" : voteAmount + 1]
-            self.ref.child(self.selectedTagId!).updateChildValues(updatedAmount)
-            if ((voteAmount - upVoteAmount) >= 3) {
-                self.isUserDeletingTag = true
-                self.removeTag()
-                // TODO: show message + check removetag
-            }
-        }
-    }
-    
-    @IBAction func upVoteEvent(_ sender: Any) {
-        thumbUpView.backgroundColor = registry.customFlashGreen
-        thumbUpIcon.tintColor = registry.customWhite
-        upVoteButton.isEnabled = false
-        downVoteButton.isEnabled = false
-        ratedLabel.text = NSLocalizedString("hasBeenUpvoted", comment: "")
-        
-        let uid = Auth.auth().currentUser!.uid
-        let markerData: [String: Int] = [uid: 1]
-        
-        ref.child(selectedTagId!).child("contributors").updateChildValues(markerData)
-        ref.child(selectedTagId!).observeSingleEvent(of: .value) { (snapshot) in
-            guard let data = snapshot.value as? NSDictionary else { return }
-            guard let voteAmount = data["upvote"] as? Int else { return }
-            let updatedAmount = ["upvote" : voteAmount + 1]
-            self.ref.child(self.selectedTagId!).updateChildValues(updatedAmount)
-            
-        }
-    }
-    
-    // MARK: - Comment View
-    
-    @IBAction func submitComment(_ sender: Any) {
-        var firebaseId: String
-        var markerHash: Int
-        
-        tagProperties.description = descriptionTextField.text
-        firebaseId = saveTags(Tag: tagProperties)
-        markerHash = putTag(mapView: mapView, Tag: tagProperties)
-        putTagsinArray(MarkerHash: markerHash, FirebaseID: firebaseId)
-        animateOutWithOptionalEffect(effect: true)
-        descriptionTextField.text = ""
-        PutMessageOnHeader(msg: registry.msgDropSuccess, color: registry.customGreen)
-        putIconOnMap(activate: false)
-        /* update icon nbr */
-        getDroppedIconByUser()
-        
-    }
-    
-    @IBAction func cancelComment(_ sender: Any) {
-        animateOutWithOptionalEffect(effect: true)
-        descriptionTextField.text = ""
-        putIconOnMap(activate: false)
-        
-    }
-    
-    // MARK: - Edition View
-    
-    @IBAction func changeDescription(_ sender: Any) {
-        ref.child(selectedTagId!).updateChildValues(["description": newDescriptionTextField.text!])
-        fetchTag(MarkerHash: selectedTag!.hash)
-        animateOutWithOptionalEffect(effect: false)
-        
-    }
-    
-    @IBAction func deleteEvent(_ sender: Any) {
-        isUserDeletingTag = true
-        mapView.removeAnnotation(selectedTag!)
-        removeTag()
-        animateOutWithOptionalEffect(effect: false)
-        animateOutWithOptionalEffect(effect: true)
-        PutMessageOnHeader(msg: registry.msgDeleteSuccess, color: registry.customGreen)
-        /* update icon nbr */
-        getDroppedIconByUser()
-        
-    }
-    
-    @IBAction func closeEdition(_ sender: Any) {
-        animateOutWithOptionalEffect(effect: false)
-
-    }
-
-    // MARK: - Online Tags
-    
+    /*
+     * Add markers on the map depending of its type from a tag id.
+     */
     @discardableResult func putTag(mapView: MGLMapView, Tag: Tag) -> Int {
         let marker = MGLPointAnnotation()
         marker.coordinate.latitude = Tag.latitude!
@@ -580,12 +683,18 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         return marker.hash
     }
     
+    /*
+     * Add the marker hash to the hash list and the marker id from the id list.
+     */
     func putTagsinArray(MarkerHash: Int, FirebaseID: String) {
         tagIds.append(FirebaseID)
         tagHashs.append(MarkerHash)
         
     }
     
+    /*
+     * Retrieve all the markers from database.
+     */
     func getTagsFromServer(mapView: MGLMapView) {
         let trace = Performance.startTrace(name: registry.trace12)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -616,18 +725,25 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    /*
+     * Observe child addition or deletion from background.
+     */
     func syncData() {
-        ref.observeSingleEvent(of: .childAdded) { (snapshot) in
-            self.tagProperties.description = snapshot.childSnapshot(forPath:"description").value as? String
-            self.tagProperties.id = snapshot.childSnapshot(forPath:"groupId").value as? Int
-            self.tagProperties.latitude = snapshot.childSnapshot(forPath:"latitude").value as? Double
-            self.tagProperties.longitude = snapshot.childSnapshot(forPath:"longitude").value as? Double
-            _ = self.putTag(mapView: self.mapView, Tag: self.tagProperties)
+        ref.observe(.childAdded, with: { (snapshot) -> Void in
+            if (self.isUserAddingTag == false) {
+                self.tagProperties.description = snapshot.childSnapshot(forPath:"description").value as? String
+                self.tagProperties.id = snapshot.childSnapshot(forPath:"groupId").value as? Int
+                self.tagProperties.latitude = snapshot.childSnapshot(forPath:"latitude").value as? Double
+                self.tagProperties.longitude = snapshot.childSnapshot(forPath:"longitude").value as? Double
+                let markerHash = self.putTag(mapView: self.mapView, Tag: self.tagProperties)
+                self.putTagsinArray(MarkerHash: markerHash, FirebaseID: snapshot.key)
+                
+            }
+            self.isUserAddingTag = false
+        })
             
-        }
-        ref.observeSingleEvent(of: .childRemoved) { (snapshot) in
+        ref.observe(.childRemoved, with: { (snapshot) -> Void in
             if (self.isUserDeletingTag == false) {
-                print("sync delete by server")
                 let Tag_id = snapshot.key
                 
                 var count = 0
@@ -635,37 +751,121 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     count = count + 1
                 
                 }
-                print(count) // test
                 let annotations = self.mapView.annotations
-                print(annotations!) // test
-                print(self.tagHashs) // test
-                print(self.tagIds) // test
                 for annotation in annotations! {
-                    if annotation.hash == self.tagHashs[count] {
-                        print("ENTER BEFORE RMannotation") // test
-                        self.mapView.removeAnnotation(annotation)
+                    if annotation.hash == self.tagHashs[count] { // TODO correct bug
+                        let allAnnotations = self.mapView.annotations!
+                        
+                        self.mapView.removeAnnotations(allAnnotations)
                         self.tagHashs.remove(at: count)
                         self.tagIds.remove(at: count)
+                        self.reloadData()
                         break
                         
                     }
                 }
             }
             self.isUserDeletingTag = false
-            self.syncData()
+            
+        })
+    }
+    
+    /*
+     * Create the marker on the database and return its firebase id.
+     */
+    func saveTags(Tag: Tag) -> String {
+        let key = self.ref.childByAutoId().key
+        let TagFirebase: [String: Any] = [
+            "groupId": Tag.id as Any,
+            "description": Tag.description as Any,
+            "latitude": Tag.latitude as Any,
+            "longitude": Tag.longitude as Any,
+            "time": Tag.time as Any,
+            "user": Tag.user as Any,
+            "timestamp": Tag.timestamp as Any,
+            "upvote": Tag.upvote as Any,
+            "downvote": Tag.downvote as Any,
+            "contributors": Tag.contributors as Any
+        ]
+        
+        self.ref.child(key!).setValue(TagFirebase)
+        return key!
+        
+    }
+    
+    /*
+     * Remove a marker from the hash list and the tag id list then reload data.
+     */
+    func removeTag() {
+        var count = 0
+        while (tagIds[count] != selectedTagId!) {
+            count = count + 1
+        
+        }
+        self.tagHashs.remove(at: count)
+        self.tagIds.remove(at: count)
+        ref.child(selectedTagId!).removeValue { (error, ref) in
+            if error != nil {
+                print("Failed to delete tag: ", error!)
+                return
+                
+            }
+        }
+        reloadData()
+    }
+    
+    /*
+     * Put every markers from the database on the map.
+     */
+    func reloadData() {
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.childrenCount > 0 {
+                for tag in snapshot.children.allObjects as! [DataSnapshot] {
+                    let data = tag.value as? NSDictionary
+                    let description  = data?["description"] as? String
+                    let id  = data?["groupId"] as? Int
+                    let x = data?["latitude"] as? Double
+                    let y = data?["longitude"] as? Double
+                    let time = data?["time"] as? String
+                    let user = data?["user"] as? String
+                    let timestamp = data?["timestamp"] as? String
+                    let upvote = data?["upvote"] as? Int
+                    let downvote = data?["downvote"] as? Int
+                    let contributors = data?["contributors"] as? [String:Int]
+                    self.putTag(mapView: self.mapView, Tag: Tag(description: description, id: id, latitude: x, longitude: y, time: time, user: user, timestamp: timestamp, upvote: upvote, downvote: downvote, contributors: contributors))
+
+                }
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+
         }
     }
     
     // MARK: - Description View
     
+    /*
+     * Retrieve marker's data from its hash and determine if the logged user
+     * has already rate it.
+     */
     func fetchTag(MarkerHash: Int) {
         var count = 0
         let hasDoneWork = false
         
         while (tagHashs[count] != MarkerHash) {
-            count = count + 1
-            
+            if (tagHashs[count] != tagHashs.last) {
+                count = count + 1
+            } else {
+                viewStacked = userDescriptionView
+                animateInWithOptionalEffect(view: userDescriptionView, effect: true)
+                fetchUserDescription()
+                return
+            }
         }
+        
+        viewStacked = descriptionView
+        animateInWithOptionalEffect(view: descriptionView, effect: true)
+        
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.childrenCount > 0 {
                 for tag in snapshot.children.allObjects as! [DataSnapshot] {
@@ -675,6 +875,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                         let description = data?["description"] as? String
                         let time = data?["time"] as? String
                         let user = data?["user"] as? String
+                        let upvote = data?["upvote"] as? Int
+                        let downvote = data?["downvote"] as? Int
                         let contributors = data?["contributors"] as? [String:Int]
                         
                         if description!.isEmpty == false {
@@ -686,6 +888,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                         self.selectedTagId = tag.key
                         self.selectedTagUserId = user
                         self.descriptionLabel.text = description
+                        self.upvotedCounter.text = "\(upvote ?? 0)"
+                        self.downvotedCounter.text = "\(downvote ?? 0)"
                         
                         if user != Auth.auth().currentUser?.uid {
                             self.editButton.isEnabled = false
@@ -693,23 +897,25 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                             self.getUserNameById(userId: user!)
                             /* unrated event */
                             self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: false, isUserEvent: false, isUnrated: true)
-                            for contributor in contributors! {
-                                if contributor.key == Auth.auth().currentUser?.uid {
-                                    switch contributor.value {
-                                    /* upvoted event */
-                                    case 1:
-                                        self.setDescriptionViewFromRatingState(isUpvoted: true, isDownvoted: false, isUserEvent: false, isUnrated: false)
-                                        break
-                                    /* downvoted event */
-                                    case 2:
-                                        self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: true, isUserEvent: false, isUnrated: false)
-                                        break
-                                    /* user event */
-                                    default:
-                                        print("Error: uid does not fit.")
-                                        self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: false, isUserEvent: true, isUnrated: false)
-                                        break
-                                        
+                            if (contributors != nil) {
+                                for contributor in contributors! {
+                                    if contributor.key == Auth.auth().currentUser?.uid {
+                                        switch contributor.value {
+                                        /* upvoted event */
+                                        case 1:
+                                            self.setDescriptionViewFromRatingState(isUpvoted: true, isDownvoted: false, isUserEvent: false, isUnrated: false)
+                                            break
+                                        /* downvoted event */
+                                        case 2:
+                                            self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: true, isUserEvent: false, isUnrated: false)
+                                            break
+                                        /* user event */
+                                        default:
+                                            print("Error: uid does not fit.")
+                                            self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: false, isUserEvent: true, isUnrated: false)
+                                            break
+                                            
+                                        }
                                     }
                                 }
                             }
@@ -729,6 +935,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    /*
+     * Set the rating button and the description view of an icon depending of its owner.
+     */
     func setDescriptionViewFromRatingState(isUpvoted: Bool, isDownvoted: Bool, isUserEvent: Bool, isUnrated: Bool) {
         if (isUpvoted == true) {
             self.thumbUpView.backgroundColor = self.registry.customFlashGreen
@@ -782,6 +991,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    /*
+     * Set the image and a default label of a description's icon depending of its groupId.
+     */
     func setDescriptionViewById(id: Int, description: String) {
         switch id {
         case 0:
@@ -827,6 +1039,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     }
     
+    /*
+     * Retrieve the icon's owner from the userID in order to display
+     * it on the description view of the icon.
+     */
     func getUserNameById(userId: String) {
         let trace = Performance.startTrace(name: registry.trace1)
         let userRef = Database.database().reference().child("users")
@@ -848,51 +1064,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-    // MARK: - Tag's Interaction
-    
-    func saveTags(Tag: Tag) -> String {
-        let key = self.ref.childByAutoId().key
-        let TagFirebase: [String: Any] = [
-            "groupId": Tag.id as Any,
-            "description": Tag.description as Any,
-            "latitude": Tag.latitude as Any,
-            "longitude": Tag.longitude as Any,
-            "time": Tag.time as Any,
-            "user": Tag.user as Any,
-            "timestamp": Tag.timestamp as Any,
-            "upvote": Tag.upvote as Any,
-            "downvote": Tag.downvote as Any,
-            "contributors": Tag.contributors as Any
-        ]
-        
-        self.ref.child(key!).setValue(TagFirebase)
-        return key!
-        
-    }
-    
-    func removeTag() {
-        print("Enter RM Tag") // test
-        print(selectedTagId!) // test
-        print(tagIds) // test
-        var count = 0
-        while (tagIds[count] != selectedTagId!) {
-            count = count + 1
-        
-        }
-        print(count) // test
-        self.tagHashs.remove(at: count)
-        self.tagIds.remove(at: count)
-        print(tagHashs) // test
-        print(tagIds) // test
-        ref.child(selectedTagId!).removeValue { (error, ref) in
-            if error != nil {
-                print("Failed to delete tag: ", error!)
-                return
-                
-            }
-        }
-    }
-    
     // MARK: - Annotation
     
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
@@ -907,8 +1078,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
         mapView.deselectAnnotation(annotation, animated: false)
-        viewStacked = descriptionView
-        animateInWithOptionalEffect(view: descriptionView, effect: true)
+        /*viewStacked = descriptionView // todo
+        animateInWithOptionalEffect(view: descriptionView, effect: true)*/
         selectedTag = annotation
         fetchTag(MarkerHash: annotation.hash)
         
@@ -1046,20 +1217,14 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             let longitude = pressMapCoordinates.longitude
             let latitude = pressMapCoordinates.latitude
             self.getWeatherFromSelectedLocation(long: longitude, lat: latitude)
-            let distance = self.mapView.userLocation!.coordinate.distance(to: pressMapCoordinates)
-
-            if distance < 100000 {
-                let point = mapView.convert(pressMapCoordinates, toPointTo: mapView)
-                let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
-                if (features.description != "[]") {
-                    self.viewStacked = self.weatherIconView
-                    self.animateInWithOptionalEffect(view: weatherIconView, effect: true)
-                    self.putWeatherOnMap(activate: false)
-                    
-                } else {
-                    self.PutMessageOnHeader(msg: self.registry.msgEarthLimit, color: self.registry.customRed)
-                    
-                }
+            
+            let point = mapView.convert(pressMapCoordinates, toPointTo: mapView)
+            let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
+            if (features.description != "[]") {
+                self.viewStacked = self.weatherIconView
+                self.animateInWithOptionalEffect(view: weatherIconView, effect: true)
+                self.putWeatherOnMap(activate: false)
+                
             } else {
                 self.PutMessageOnHeader(msg: self.registry.msgDistanceLimit, color: self.registry.customRed)
                 
@@ -1069,6 +1234,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     // MARK: - Weather
     
+    /*
+     * Get weather from latitude and longitude.
+     */
     func getWeatherFromSelectedLocation(long: Double, lat: Double) {
         let param: Parameters = [
             "lat": String(lat),
@@ -1084,6 +1252,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             switch response.result {
             case .success(let value):
                 let jsonObject = JSON(value)
+                print(jsonObject)
                 self.transformData(rawData: jsonObject)
             case .failure(let error):
                 print(error)
@@ -1092,40 +1261,36 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    /*
+     * Get uv and weather data from json.
+     */
     func transformData(rawData: JSON) {
-        if let uvData = rawData["uv"].string {
-            let uvAsData = uvData.data(using: .utf8)!
-            let uvAsJson = JSON(uvAsData)
+        // get uv index
+        let uvData = rawData["uv"]
+        let uvAsJson = JSON(uvData)
+        if let uvIndex = uvAsJson["value"].double {
+            self.uvGlobal = self.weather.analyseUvIndex(uvIndex: uvIndex)
             
-            if let uvIndex = uvAsJson["value"].double {
-                self.uvGlobal = self.weather.analyseUvIndex(uvIndex: uvIndex)
-                
-            } else {
-                print(uvAsJson["value"].error!)
-                
-            }
-        }
-        if let data = rawData["weather"].string {
-            let dataAsData = data.data(using: .utf8)!
-            let dataAsJson = JSON(dataAsData)
-            
-            do {
-                _ = try JSONSerialization.jsonObject(
-                    with: dataAsData,
-                    options: .mutableContainers) as! [String: AnyObject]
-                
-                let weather = Weather(weatherData: dataAsJson)
-                self.didGetWeather(weather: weather)
-            } catch let jsonError as NSError {
-                self.didNotGetWeather(error: jsonError)
-                
-            }
         } else {
-            print(rawData["weather"].error!)
+            print(uvAsJson["value"].error!)
+            
+        }
+        // get weather
+        let data = rawData["weather"]
+        let dataAsJson = JSON(data)
+        do {
+            let weather = Weather(weatherData: dataAsJson)
+            self.didGetWeather(weather: weather)
+            
+        } catch let jsonError as NSError {
+            self.didNotGetWeather(error: jsonError)
             
         }
     }
     
+    /*
+     * If the weather data are gotten, set the labels of the weather marker.
+     */
     func didGetWeather(weather: Weather) {
         DispatchQueue.main.async {
             self.weatherImage.image = self.weather.analyseDescription(weather: weather, registry: self.registry)
@@ -1174,6 +1339,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    /*
+     * If the weather data aren't gotten, set the labels of the weather marker
+     * with default values.
+     */
     func didNotGetWeather(error: NSError) {
         DispatchQueue.main.async {
             self.airTemperatureLabel.text = "--"
@@ -1194,6 +1363,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
 }
 
 // MARK: - Custom Class
+
+extension Double {
+    var clean: String {
+       return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+    }
+}
 
 class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     let size: CGFloat = 48
@@ -1251,7 +1426,6 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
             layer.addSublayer(dot)
             
         }
-        
         /* This arrow overlays the dot and is rotated with the user’s heading. */
         if arrow == nil {
             arrow = CAShapeLayer()

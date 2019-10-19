@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "pin_warning - copie 2.png",
+      "filename" : "pin_warning_1x.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "pin_warning - copie.png",
+      "filename" : "pin_warning_2x.png",
       "scale" : "2x"
     },
     {

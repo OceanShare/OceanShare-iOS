@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "pin_meduse - copie 2.png",
+      "filename" : "pin_jellyfish_1x.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "pin_meduse - copie.png",
+      "filename" : "pin_jellyfish_2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "pin_meduse.png",
+      "filename" : "pin_jellyfish.png",
       "scale" : "3x"
     }
   ],
