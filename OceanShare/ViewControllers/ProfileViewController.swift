@@ -204,7 +204,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                         // set the custom profile picture if the user has one
                         let pictureData = NSData(contentsOf: url!)
                         let finalPicture = UIImage(data: pictureData! as Data)
-                        
                         self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
                         
                     }

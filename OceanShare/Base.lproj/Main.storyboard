@@ -114,7 +114,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="450"/>
                                 </scrollView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3xk-1K-QVN" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
-                                    <rect key="frame" x="25" y="140" width="75" height="40"/>
+                                    <rect key="frame" x="25" y="145" width="75" height="40"/>
                                     <color key="backgroundColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="0Rn-DI-Dm9"/>
@@ -154,7 +154,7 @@
                                     </connections>
                                 </button>
                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eIp-yU-AeA" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
-                                    <rect key="frame" x="25" y="130" width="75" height="40"/>
+                                    <rect key="frame" x="30" y="140" width="75" height="40"/>
                                     <color key="backgroundColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="R0Z-W7-nGY"/>
@@ -183,12 +183,12 @@
                                 <constraint firstItem="SBR-Wr-hGU" firstAttribute="top" secondItem="aDz-Ok-4j7" secondAttribute="top" constant="15" id="A8p-tn-TJL"/>
                                 <constraint firstAttribute="bottom" secondItem="mSO-hu-0u2" secondAttribute="bottom" id="CJW-Hj-IXh"/>
                                 <constraint firstAttribute="height" constant="450" id="JQX-QK-5y0"/>
-                                <constraint firstItem="eIp-yU-AeA" firstAttribute="top" secondItem="aDz-Ok-4j7" secondAttribute="top" constant="130" id="PF3-ur-6fT"/>
+                                <constraint firstItem="eIp-yU-AeA" firstAttribute="top" secondItem="aDz-Ok-4j7" secondAttribute="top" constant="140" id="PF3-ur-6fT"/>
                                 <constraint firstItem="S3h-By-OBE" firstAttribute="top" secondItem="aDz-Ok-4j7" secondAttribute="top" constant="90" id="Qbk-0I-PjH"/>
-                                <constraint firstItem="3xk-1K-QVN" firstAttribute="top" secondItem="aDz-Ok-4j7" secondAttribute="top" constant="140" id="SF6-BT-Fwq"/>
+                                <constraint firstItem="3xk-1K-QVN" firstAttribute="top" secondItem="aDz-Ok-4j7" secondAttribute="top" constant="145" id="SF6-BT-Fwq"/>
                                 <constraint firstAttribute="trailing" secondItem="mSO-hu-0u2" secondAttribute="trailing" id="TCA-Vd-wPa"/>
                                 <constraint firstItem="mSO-hu-0u2" firstAttribute="top" secondItem="aDz-Ok-4j7" secondAttribute="top" id="VxA-Df-eiT"/>
-                                <constraint firstItem="eIp-yU-AeA" firstAttribute="leading" secondItem="aDz-Ok-4j7" secondAttribute="leading" constant="25" id="YC6-ew-lBl"/>
+                                <constraint firstItem="eIp-yU-AeA" firstAttribute="leading" secondItem="aDz-Ok-4j7" secondAttribute="leading" constant="30" id="YC6-ew-lBl"/>
                                 <constraint firstAttribute="width" constant="300" id="eHw-3H-mC1"/>
                                 <constraint firstItem="S3h-By-OBE" firstAttribute="leading" secondItem="aDz-Ok-4j7" secondAttribute="leading" constant="55" id="huA-P4-iEi"/>
                                 <constraint firstItem="SBR-Wr-hGU" firstAttribute="centerX" secondItem="aDz-Ok-4j7" secondAttribute="centerX" id="ikI-Pp-Ywt"/>
@@ -1850,7 +1850,7 @@
                                     <color key="textColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d9e-51-84H" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
+                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d9e-51-84H" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
                                     <rect key="frame" x="10" y="100.00000000000003" width="280" height="40"/>
                                     <color key="backgroundColor" red="0.3411764705882353" green="0.63137254901960782" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
@@ -1945,7 +1945,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nJd-Cp-cHz" customClass="DesignableView" customModule="OceanShare" customModuleProvider="target">
                             <rect key="frame" x="130" y="189.66666666666666" width="90" height="89.999999999999972"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pFj-i2-4U2">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pFj-i2-4U2">
                                     <rect key="frame" x="4" y="4" width="82" height="82"/>
                                 </imageView>
                             </subviews>
@@ -2139,7 +2139,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9kE-qG-chR" customClass="DesignableView" customModule="OceanShare" customModuleProvider="target">
                             <rect key="frame" x="25" y="90" width="250" height="320"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20 °C" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j1d-eR-sty">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j1d-eR-sty">
                                     <rect key="frame" x="95" y="50" width="60" height="25"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="60" id="lr0-jT-If7"/>
@@ -2149,7 +2149,7 @@
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="overcast clouds" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UWm-aW-PsD">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UWm-aW-PsD">
                                     <rect key="frame" x="0.0" y="83" width="250" height="25"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="25" id="NaK-1G-5fd"/>
@@ -2428,7 +2428,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RnW-CB-PQF" customClass="DesignableView" customModule="OceanShare" customModuleProvider="target">
                             <rect key="frame" x="107.66666666666669" y="57.666666666666657" width="85" height="85"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sunny" translatesAutoresizingMaskIntoConstraints="NO" id="Y5i-6K-ADr">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y5i-6K-ADr">
                                     <rect key="frame" x="10" y="10.000000000000007" width="65" height="65"/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -5139,7 +5139,6 @@
         <image name="rain_risk" width="30" height="30"/>
         <image name="sailing_boat" width="512" height="512"/>
         <image name="sun" width="30" height="30"/>
-        <image name="sunny" width="512" height="512"/>
         <image name="sunrise" width="30" height="30"/>
         <image name="sunset" width="30" height="30"/>
         <image name="target" width="30" height="30"/>

@@ -237,19 +237,21 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         let longitude = Double(round(10000*locValue.longitude)/10000).clean
         let latitude = Double(round(10000*locValue.latitude)/10000).clean
-        let uid = Auth.auth().currentUser!.uid
-        
+
         currentLatitudeLabel.text = latitude
         currentLongitudeLabel.text = longitude
 
-        if (longitude != stackedLongitude) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        
+        if (longitude != self.stackedLongitude) {
             let userLongitude: [String: Any] = ["longitude": longitude as Any]
             self.userRef.child("\(uid)/location").updateChildValues(userLongitude)
             self.stackedLongitude = longitude
             
         }
         
-        if (latitude != stackedLatitude) {
+        if (latitude != self.stackedLatitude) {
             let userLattitude: [String: Any] = ["latitude": latitude as Any]
             self.userRef.child("\(uid)/location").updateChildValues(userLattitude)
             self.stackedLatitude = latitude
@@ -474,6 +476,31 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         animateOutWithOptionalEffect(effect: true)
     }
     
+    func attributePicture(showPicture: Bool, boatCategorie: Int, finalPicture: UIImage) {
+        userAvatar.layer.cornerRadius = 41
+        userAvatar.clipsToBounds = true
+        
+        if (showPicture == true) {
+            self.userAvatar.image = finalPicture
+        } else {
+            switch boatCategorie {
+            case 1:
+                self.userAvatar.image = UIImage(named: "sailing_boat")
+            case 2:
+                self.userAvatar.image = UIImage(named: "mini_gondola")
+            case 3:
+                self.userAvatar.image = UIImage(named: "mini_yacht")
+            case 4:
+                self.userAvatar.image = UIImage(named: "yacht")
+            default:
+                return
+            }
+        }
+    }
+    
+    /*
+     * Fetch user data to display it on the user description view.
+     */
     func fetchUserDescription() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         
@@ -481,7 +508,34 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             if snapshot == snapshot {
                 guard let data = snapshot.value as? NSDictionary else { return }
                 guard let name = data["name"] as? String else { return }
+                guard let preferences = data["preferences"] as? [String: Any] else { return }
+                guard let showPicture = preferences["show_picture"] as? Bool else { return }
+                guard let boatCategorie = preferences["boatId"] as? Int else { return }
             
+                let user = Auth.auth().currentUser
+                if let user = user {
+                    _ = Storage.storage().reference().child("profile_pictures").child("\(String(describing: user.uid)).png").downloadURL(completion: { (url, error) in
+                        if error != nil {
+                            // check if the user has a network profile picture
+                            if let userPicture = data["picture"] as? String {
+                                let pictureURL = URL(string: userPicture)
+                                let pictureData = NSData(contentsOf: pictureURL!)
+                                let finalPicture = UIImage(data: pictureData! as Data)
+                                self.attributePicture(showPicture: showPicture, boatCategorie: boatCategorie, finalPicture: finalPicture!)
+                            } else {
+                                // set a default avatar
+                                let pictureURL = URL(string: self.registry.defaultPictureUrl)
+                                let pictureData = NSData(contentsOf: pictureURL!)
+                                let finalPicture = UIImage(data: pictureData! as Data)
+                                self.attributePicture(showPicture: showPicture, boatCategorie: boatCategorie, finalPicture: finalPicture!)
+                            }
+                        } else {
+                            let pictureData = NSData(contentsOf: url!)
+                            let finalPicture = UIImage(data: pictureData! as Data)
+                            self.attributePicture(showPicture: showPicture, boatCategorie: boatCategorie, finalPicture: finalPicture!)
+                        }
+                    })
+                }
                 self.userAvatarName.text = name
             
             }
@@ -528,7 +582,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             guard let upVoteAmount = data["upvote"] as? Int else { return }
             
             let updatedAmount = ["downvote" : downVoteAmount + 1]
-            self.downvotedCounter.text = "\(downVoteAmount + 1)" // todo -> test
+            self.downvotedCounter.text = "\(downVoteAmount + 1)"
             downVoteAmount = downVoteAmount + 1
             self.ref.child(self.selectedTagId!).updateChildValues(updatedAmount)
             if ((downVoteAmount - upVoteAmount) >= 3) {
@@ -911,7 +965,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                                             break
                                         /* user event */
                                         default:
-                                            print("Error: uid does not fit.")
+                                            print("Error in function fetchTag(): uid (\(String(describing: user))) does not fit.")
                                             self.setDescriptionViewFromRatingState(isUpvoted: false, isDownvoted: false, isUserEvent: true, isUnrated: false)
                                             break
                                             
@@ -930,7 +984,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 }
             }
         }) { (error) in
-            print("Error: ", error.localizedDescription)
+            print("Error in function fetchTag(): ", error.localizedDescription)
             
         }
     }
@@ -1278,14 +1332,14 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         // get weather
         let data = rawData["weather"]
         let dataAsJson = JSON(data)
-        do {
+        //do {
             let weather = Weather(weatherData: dataAsJson)
             self.didGetWeather(weather: weather)
             
-        } catch let jsonError as NSError {
-            self.didNotGetWeather(error: jsonError)
+        //} catch let jsonError as NSError {
+        //    self.didNotGetWeather(error: jsonError)
             
-        }
+        //}
     }
     
     /*

@@ -10,6 +10,9 @@
 
 "startButton" = "Let's Start";
 "skipWalkthrough" = "I already know OceanShare";
+"slide1" = "wtslide1_en";
+"slide2" = "wtslide2_en";
+"slide3" = "wtslide3_en";
 
 // MARK: - LoginViewController
 

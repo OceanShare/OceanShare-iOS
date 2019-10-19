@@ -139,13 +139,13 @@ class StartViewController: UIViewController, UIPageViewControllerDelegate, UIScr
     
     func createSlides() -> [Slide] {
         let slide1:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-        slide1.imageView.image = UIImage(named: "wtslide1")
+        slide1.imageView.image = registry.slide1
         
         let slide2:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-        slide2.imageView.image = UIImage(named: "wtslide2")
+        slide2.imageView.image = registry.slide2
         
         let slide3:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
-        slide3.imageView.image = UIImage(named: "wtslide3")
+        slide3.imageView.image = registry.slide3
         
         return [slide1, slide2, slide3]
         

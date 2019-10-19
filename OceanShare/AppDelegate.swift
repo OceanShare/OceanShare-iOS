@@ -97,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 // access to the homeviewcontroller
                 let mainStoryBoard: UIStoryboard = UIStoryboard(name:"Main", bundle:nil)
                 let protectedPage = mainStoryBoard.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                protectedPage.selectedViewController = protectedPage.viewControllers?[1]
+                protectedPage.selectedViewController = protectedPage.viewControllers?[0]
                 let appDelegate = UIApplication.shared.delegate
                 appDelegate?.window??.rootViewController = protectedPage
             }
