@@ -26,6 +26,7 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
         
         setupView()
+        fetchSettings()
         
     }
     
@@ -69,6 +70,12 @@ class SettingsViewController: UIViewController {
         temperatureDisplayTitle.text = NSLocalizedString("settingTemperatureTitle", comment: "")
         degreeSegmentedControl.setTitle(NSLocalizedString("segmentedDegree1", comment: ""), forSegmentAt: 0)
         degreeSegmentedControl.setTitle(NSLocalizedString("segmentedDegree2", comment: ""), forSegmentAt: 1)
+        
+    }
+    
+    // MARK: - Functions
+    
+    func fetchSettings() {
         
     }
     

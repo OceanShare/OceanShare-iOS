@@ -236,6 +236,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         currentLatitudeLabel.text = String(format:"%f", locValue.latitude)
         currentLongitudeLabel.text = String(format:"%f", locValue.longitude)
         
+        let userLongitude: [String: Any] = ["longitude": String(format:"%f", locValue.longitude) as Any]
+        let userLattitude: [String: Any] = ["latitude": String(format:"%f", locValue.latitude) as Any]
+        let uid = Auth.auth().currentUser!.uid
+        
+        self.userRef.child("\(uid)/location").updateChildValues(userLongitude)
+        self.userRef.child("\(uid)/location").updateChildValues(userLattitude)
     }
     
     /*
