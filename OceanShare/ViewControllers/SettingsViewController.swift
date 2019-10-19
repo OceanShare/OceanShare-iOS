@@ -16,9 +16,7 @@ import FirebaseStorage
 import FirebasePerformance
 
 class SettingsViewController: UIViewController {
-    
-    let registry = Registry()
-    
+
     // MARK: - Variables
     
     /* default values */
@@ -27,26 +25,32 @@ class SettingsViewController: UIViewController {
     let boatIdDefault = 1
     let isUserActiveDefault = true
 
-    /* firebase */
+    /* database */
     var userRef: DatabaseReference!
+    let registry = Registry()
     
     // MARK: - Outlets
     
+    /* objects */
     @IBOutlet weak var degreeSegmentedControl: UISegmentedControl!
     @IBOutlet weak var viewTitleLabel: UILabel!
     @IBOutlet weak var temperatureDisplayTitle: UILabel!
     @IBOutlet weak var showProfileSwitch: UISwitch!
     @IBOutlet weak var ghostModeSwitch: UISwitch!
+    
+    /* boat type filter */
     @IBOutlet weak var sailingBoatView: DesignableView!
     @IBOutlet weak var gondolaView: DesignableButton!
     @IBOutlet weak var miniYachtView: DesignableButton!
     @IBOutlet weak var yachtView: DesignableButton!
+    
+    /* boat type avatar */
     @IBOutlet weak var sailingBoatButton: UIButton!
     @IBOutlet weak var gondolaButton: UIButton!
     @IBOutlet weak var miniYachtButton: UIButton!
     @IBOutlet weak var yachtButton: UIButton!
     
-    // MARK: - ViewDidLoad
+    // MARK: - View Manager
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,14 +87,18 @@ class SettingsViewController: UIViewController {
     func setupPreferences(ghostMode: Bool, showPicture: Bool, boatId: Int) {
         if (ghostMode == true) {
             ghostModeSwitch.isOn = true
+            
         } else {
             ghostModeSwitch.isOn = false
+            
         }
         
         if (showPicture == true) {
             showProfileSwitch.isOn = true
+            
         } else {
             showProfileSwitch.isOn = false
+            
         }
         
         switch boatId {
@@ -98,18 +106,46 @@ class SettingsViewController: UIViewController {
             sailingBoatView.isHidden = false
             sailingBoatButton.isEnabled = false
             
+            gondolaView.isHidden = true
+            gondolaButton.isEnabled = true
+            miniYachtView.isHidden = true
+            miniYachtButton.isEnabled = true
+            yachtView.isHidden = true
+            yachtButton.isEnabled = true
         case 2:
             gondolaView.isHidden = false
             gondolaButton.isEnabled = false
+            
+            sailingBoatView.isHidden = true
+            sailingBoatButton.isEnabled = true
+            miniYachtView.isHidden = true
+            miniYachtButton.isEnabled = true
+            yachtView.isHidden = true
+            yachtButton.isEnabled = true
         case 3:
             miniYachtView.isHidden = false
             miniYachtButton.isEnabled = false
+            
+            gondolaView.isHidden = true
+            gondolaButton.isEnabled = true
+            gondolaView.isHidden = true
+            gondolaButton.isEnabled = true
+            yachtView.isHidden = true
+            yachtButton.isEnabled = true
         case 4:
             yachtView.isHidden = false
             yachtButton.isEnabled = false
+            
+            sailingBoatView.isHidden = true
+            sailingBoatButton.isEnabled = true
+            gondolaView.isHidden = true
+            gondolaButton.isEnabled = true
+            miniYachtView.isHidden = true
+            miniYachtButton.isEnabled = true
         default:
-            sailingBoatView.isHidden = false
-            sailingBoatButton.isEnabled = false
+            print("Error in function setupPreferences: boatId not found.")
+            return
+            
         }
     }
     
@@ -188,6 +224,9 @@ class SettingsViewController: UIViewController {
     
     // MARK: - Actions
     
+    /*
+     * Go back to the profileViewController.
+     */
     @IBAction func handleBack(_ sender: Any) {
         let mainTabBarController = storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
         mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[2]
@@ -195,6 +234,9 @@ class SettingsViewController: UIViewController {
         
     }
     
+    /*
+     * Update local memory to setup temperature type choosen by users.
+     */
     @IBAction func degreeChanged(_ sender: Any) {
         switch degreeSegmentedControl.selectedSegmentIndex
         {
@@ -209,47 +251,79 @@ class SettingsViewController: UIViewController {
         }
     }
     
+    /*
+     * Activate or desactivate the possibility to display user's profile picture
+     * on the map. When showProfileSwitch is off, the boat type avatar is shown
+     * on the map instead of profile picture.
+     */
     @IBAction func showProfilePicture(_ sender: Any) {
-        
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+               
+        userRef.child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
+           if snapshot == snapshot {
+                if (self.showProfileSwitch.isOn == true) {
+                       let data: [String: Any] = ["show_picture": true as Bool]
+                       self.userRef.child("\(userId)/preferences").updateChildValues(data)
+                       self.fetchSettings()
+                       
+                   } else {
+                       let data: [String: Any] = ["show_picture": false as Bool]
+                       self.userRef.child("\(userId)/preferences").updateChildValues(data)
+                       self.fetchSettings()
+                       
+                   }
+               }
+        })
     }
     
+    /*
+     * When ghost mode is active, the user is completly invisible on the
+     * map and other users can't see its location.
+     */
     @IBAction func ghostMode(_ sender: Any) {
         guard let userId = Auth.auth().currentUser?.uid else { return }
                
-               userRef.child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
-                   if snapshot == snapshot {
-                       guard let data = snapshot.value as? NSDictionary else { return }
-                       guard let preferences = data["preferences"] as? [String : AnyObject] else { return }
-                   
-                       guard let ghostMode = preferences["ghost_mode"] as? Bool else { return }
-                   
-                    if (self.ghostModeSwitch.isOn == true) {
-                           let data: [String: Any] = ["ghost_mode": false as Bool]
-                           self.userRef.child("\(userId)/preferences").updateChildValues(data)
-                           self.fetchSettings()
-                           
-                       } else {
-                           let data: [String: Any] = ["ghost_mode": true as Bool]
-                           self.userRef.child("\(userId)/preferences").updateChildValues(data)
-                           self.fetchSettings()
-                           
-                       }
+        userRef.child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
+           if snapshot == snapshot {
+                if (self.ghostModeSwitch.isOn == false) {
+                       let data: [String: Any] = ["ghost_mode": false as Bool]
+                       self.userRef.child("\(userId)/preferences").updateChildValues(data)
+                       self.fetchSettings()
+                       
+                   } else {
+                       let data: [String: Any] = ["ghost_mode": true as Bool]
+                       self.userRef.child("\(userId)/preferences").updateChildValues(data)
+                       self.fetchSettings()
+                       
                    }
-               })
+               }
+        })
     }
     
+    /*
+     * Select the sailing boat as boat type and user avatar.
+     */
     @IBAction func sailingBoatActivate(_ sender: Any) {
         updateBoatId(newBoatId: 1)
     }
     
+    /*
+    * Select the gondola as boat type and user avatar.
+    */
     @IBAction func gondolaActivate(_ sender: Any) {
         updateBoatId(newBoatId: 2)
     }
     
+    /*
+    * Select the mini yacht as boat type and user avatar.
+    */
     @IBAction func miniYachtActivate(_ sender: Any) {
         updateBoatId(newBoatId: 3)
     }
     
+    /*
+    * Select the yacht as boat type and user avatar.
+    */
     @IBAction func yachtActivate(_ sender: Any) {
         updateBoatId(newBoatId: 4)
     }
