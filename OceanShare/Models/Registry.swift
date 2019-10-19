@@ -10,6 +10,11 @@ import Foundation
 import UIKit
 
 struct Registry {
+    // walkthrough images
+    let slide1 = UIImage(named: NSLocalizedString("slide1", comment: ""))
+    let slide2 = UIImage(named: NSLocalizedString("slide2", comment: ""))
+    let slide3 = UIImage(named: NSLocalizedString("slide3", comment: ""))
+    
     // custom colors
     let customClearBlue = UIColor(rgb: 0x57A1FF)
     let customWhiteBlue = UIColor(rgb: 0x6dd5ed)
