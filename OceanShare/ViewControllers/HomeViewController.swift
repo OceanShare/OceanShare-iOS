@@ -40,6 +40,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     /* map properties */
     var isInside = false
     var mapView: MGLMapView!
+    var stackedLongitude: String!
+    var stackedLatitude: String!
     
     /* tag properties */
     var tagIds = [String]()
@@ -233,15 +235,26 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      */
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        currentLatitudeLabel.text = String(format:"%f", locValue.latitude)
-        currentLongitudeLabel.text = String(format:"%f", locValue.longitude)
-        
-        let userLongitude: [String: Any] = ["longitude": String(format:"%f", locValue.longitude) as Any]
-        let userLattitude: [String: Any] = ["latitude": String(format:"%f", locValue.latitude) as Any]
+        let longitude = Double(round(10000*locValue.longitude)/10000).clean
+        let latitude = Double(round(10000*locValue.latitude)/10000).clean
         let uid = Auth.auth().currentUser!.uid
         
-        self.userRef.child("\(uid)/location").updateChildValues(userLongitude)
-        self.userRef.child("\(uid)/location").updateChildValues(userLattitude)
+        currentLatitudeLabel.text = latitude
+        currentLongitudeLabel.text = longitude
+
+        if (longitude != stackedLongitude) {
+            let userLongitude: [String: Any] = ["longitude": longitude as Any]
+            self.userRef.child("\(uid)/location").updateChildValues(userLongitude)
+            self.stackedLongitude = longitude
+            
+        }
+        
+        if (latitude != stackedLatitude) {
+            let userLattitude: [String: Any] = ["latitude": latitude as Any]
+            self.userRef.child("\(uid)/location").updateChildValues(userLattitude)
+            self.stackedLatitude = latitude
+            
+        }
     }
     
     /*
@@ -1350,6 +1363,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
 }
 
 // MARK: - Custom Class
+
+extension Double {
+    var clean: String {
+       return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+    }
+}
 
 class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     let size: CGFloat = 48

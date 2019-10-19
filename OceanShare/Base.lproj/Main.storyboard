@@ -690,10 +690,10 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G5g-zv-WIS" customClass="DesignableView" customModule="OceanShare" customModuleProvider="target">
-                                <rect key="frame" x="8" y="107" width="130" height="25"/>
+                                <rect key="frame" x="8" y="107" width="120" height="25"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="JZo-g1-aCl">
-                                        <rect key="frame" x="7.6666666666666643" y="3" width="114.66666666666669" height="19.333333333333332"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="JZo-g1-aCl">
+                                        <rect key="frame" x="5.6666666666666643" y="3" width="108.66666666666669" height="19.333333333333332"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GYM-TR-274">
                                                 <rect key="frame" x="0.0" y="0.0" width="36.666666666666664" height="19.333333333333332"/>
@@ -701,8 +701,8 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3HF-R2-xaT">
-                                                <rect key="frame" x="44.666666666666671" y="0.0" width="70" height="19.333333333333332"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3HF-R2-xaT">
+                                                <rect key="frame" x="38.666666666666671" y="0.0" width="70" height="19.333333333333332"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="PXO-R2-Hl1"/>
                                                 </constraints>
@@ -717,7 +717,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="8ni-VV-SVF"/>
                                     <constraint firstItem="JZo-g1-aCl" firstAttribute="centerY" secondItem="G5g-zv-WIS" secondAttribute="centerY" id="cok-1X-EjH"/>
-                                    <constraint firstAttribute="width" constant="130" id="kx4-Ue-vUy"/>
+                                    <constraint firstAttribute="width" constant="120" id="kx4-Ue-vUy"/>
                                     <constraint firstItem="JZo-g1-aCl" firstAttribute="centerX" secondItem="G5g-zv-WIS" secondAttribute="centerX" id="oJ9-jp-Ipu"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -730,13 +730,22 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
                                         <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                        <real key="value" value="0.29999999999999999"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
+                                        <size key="value" width="0.0" height="3"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RLh-gC-l5G" customClass="DesignableView" customModule="OceanShare" customModuleProvider="target">
-                                <rect key="frame" x="8" y="140" width="130" height="25"/>
+                                <rect key="frame" x="8" y="140" width="120" height="25"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="368-zh-s2H">
-                                        <rect key="frame" x="7.6666666666666643" y="3" width="114.66666666666669" height="19.333333333333332"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="368-zh-s2H">
+                                        <rect key="frame" x="5.6666666666666643" y="3" width="108.66666666666669" height="19.333333333333332"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lat:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rZj-gh-KjJ">
                                                 <rect key="frame" x="0.0" y="0.0" width="36.666666666666664" height="19.333333333333332"/>
@@ -744,8 +753,8 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F1C-8J-Ob9">
-                                                <rect key="frame" x="44.666666666666671" y="0.0" width="70" height="19.333333333333332"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F1C-8J-Ob9">
+                                                <rect key="frame" x="38.666666666666671" y="0.0" width="70" height="19.333333333333332"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="70" id="I53-uT-uOy"/>
                                                 </constraints>
@@ -770,6 +779,15 @@
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
                                         <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                        <real key="value" value="0.29999999999999999"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
+                                        <size key="value" width="0.0" height="3"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
@@ -826,7 +844,7 @@
                                         <real key="value" value="0.5"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                        <color key="value" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="value" systemColor="opaqueSeparatorColor" red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
@@ -3268,9 +3286,17 @@
                     <connections>
                         <outlet property="degreeSegmentedControl" destination="Uex-if-fDY" id="1kR-B1-KqK"/>
                         <outlet property="ghostModeSwitch" destination="9nZ-Z9-e6s" id="mbF-Mf-KHz"/>
+                        <outlet property="gondolaButton" destination="QCc-QC-nSu" id="h9H-AV-M9a"/>
+                        <outlet property="gondolaView" destination="L4M-UO-qPe" id="ifW-Ke-MTE"/>
+                        <outlet property="miniYachtButton" destination="ZfH-F3-4Rj" id="RhT-Me-6Lb"/>
+                        <outlet property="miniYachtView" destination="FTb-rz-NtD" id="Cw7-Xh-cpr"/>
+                        <outlet property="sailingBoatButton" destination="dk8-tx-hY2" id="I2x-4B-k9h"/>
+                        <outlet property="sailingBoatView" destination="672-yq-bNb" id="fke-6t-Asv"/>
                         <outlet property="showProfileSwitch" destination="Q5F-W5-TeJ" id="Yds-jl-qSb"/>
                         <outlet property="temperatureDisplayTitle" destination="XwN-fo-brA" id="y3p-bg-8UM"/>
                         <outlet property="viewTitleLabel" destination="k90-xh-hu0" id="ZjT-wT-U36"/>
+                        <outlet property="yachtButton" destination="SSZ-dE-cKZ" id="Bkr-E2-51j"/>
+                        <outlet property="yachtView" destination="vGf-lx-y9X" id="LDn-oO-UGP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pSc-LO-GM8" userLabel="First Responder" sceneMemberID="firstResponder"/>
