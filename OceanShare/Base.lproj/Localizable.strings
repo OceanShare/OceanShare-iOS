@@ -151,6 +151,11 @@
 /* view */
 "settingViewTitle" = "Settings";
 "settingTemperatureTitle" = "Temperature Display";
+"showProfileLabel" = "Show Profile Picture";
+"showProfileTextView" = "Show your profile picture on the map instead of your boat type!";
+"ghostModeLabel" = "Ghost Mode";
+"ghostModeTextView" = "You are invisible on the map!";
+"boatTypeLabel" = "Show Your Boat Type";
 
 /* degrees */
 "segmentedDegree1" = "Celsius";
@@ -234,6 +239,11 @@
 "fullDateFormat" = "MM/dd, hh:mm a";
 "dateFormat" = "hh:mm a";
 "localeIdentifier" = "en";
+
+/* uv type */
+"low" = "(Low)";
+"medium" = "(Medium)";
+"high" = "(High)";
 
 /* wind direction */
 "N " = "N ";

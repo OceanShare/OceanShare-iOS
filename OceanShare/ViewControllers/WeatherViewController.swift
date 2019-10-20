@@ -118,13 +118,9 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         // get weather
         let data = rawData["weather"]
         let dataAsJson = JSON(data)
-        do {
-            let weather = Weather(weatherData: dataAsJson)
-            self.didGetWeather(weather: weather)
-        } catch let jsonError as NSError {
-            self.didNotGetWeather(error: jsonError)
-            
-        }
+        let weather = Weather(weatherData: dataAsJson)
+        self.didGetWeather(weather: weather)
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -207,25 +203,4 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             }
         }
     }
-    
-    func didNotGetWeather(error: NSError) {
-        DispatchQueue.main.async {
-            self.airTemperatureLabel.text = "--"
-            self.weatherDescriptionLabel.text = "--"
-            self.longitudeLabel.text = "--"
-            self.latitudeLabel.text = "--"
-            self.sunriseLabel.text = "--:--"
-            self.sunsetLabel.text = "--:--"
-            self.rainRiskLabel.text = "-- %"
-            self.waterTemperatureLabel.text = "--"
-            self.windLabel.text = "-- km/h"
-            self.humidityLabel.text = "-- %"
-            self.visibilityLabel.text = "-- km"
-            self.uvIndiceLabel.text = "--"
-            
-        }
-        print(error)
-        
-    }
-    
 }

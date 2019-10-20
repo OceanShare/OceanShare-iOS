@@ -33,10 +33,17 @@ class SettingsViewController: UIViewController {
     
     /* objects */
     @IBOutlet weak var degreeSegmentedControl: UISegmentedControl!
-    @IBOutlet weak var viewTitleLabel: UILabel!
-    @IBOutlet weak var temperatureDisplayTitle: UILabel!
     @IBOutlet weak var showProfileSwitch: UISwitch!
     @IBOutlet weak var ghostModeSwitch: UISwitch!
+    
+    /* localized strings */
+    @IBOutlet weak var viewTitleLabel: UILabel!
+    @IBOutlet weak var temperatureDisplayTitle: UILabel!
+    @IBOutlet weak var showProfileLabel: UILabel!
+    @IBOutlet weak var showProfileTextView: UITextView!
+    @IBOutlet weak var ghostModeLabel: UILabel!
+    @IBOutlet weak var ghostModeTextView: UITextView!
+    @IBOutlet weak var boatTypeLabel: UILabel!
     
     /* boat type filter */
     @IBOutlet weak var sailingBoatView: DesignableView!
@@ -157,7 +164,11 @@ class SettingsViewController: UIViewController {
         temperatureDisplayTitle.text = NSLocalizedString("settingTemperatureTitle", comment: "")
         degreeSegmentedControl.setTitle(NSLocalizedString("segmentedDegree1", comment: ""), forSegmentAt: 0)
         degreeSegmentedControl.setTitle(NSLocalizedString("segmentedDegree2", comment: ""), forSegmentAt: 1)
-        
+        showProfileLabel.text = NSLocalizedString("showProfileLabel", comment: "")
+        showProfileTextView.text = NSLocalizedString("showProfileTextView", comment: "")
+        ghostModeLabel.text = NSLocalizedString("ghostModeLabel", comment: "")
+        ghostModeTextView.text = NSLocalizedString("ghostModeTextView", comment: "")
+        boatTypeLabel.text = NSLocalizedString("boatTypeLabel", comment: "")
     }
     
     // MARK: - Functions

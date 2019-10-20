@@ -147,7 +147,12 @@
 
 /* view */
 "settingViewTitle" = "Paramètres";
-"settingTemperatureTitle" = "Affichage de la Température";
+"settingTemperatureTitle" = "Affichage De La Température";
+"showProfileLabel" = "Afficher Sa Photo De Profil";
+"showProfileTextView" = "Affichez votre photo de profil à la place de votre type de bateau !";
+"ghostModeLabel" = "Mode Fantôme";
+"ghostModeTextView" = "Vous êtes invisible sur la carte !";
+"boatTypeLabel" = "Afficher Son Type De Bateau";
 
 /* degrees */
 "segmentedDegree1" = "Celsius";
@@ -176,7 +181,7 @@
 "informationEmailTitle" = "Adresse e-mail";
 "informationPasswordTitle" = "Mot de passe";
 "informationShipTitle" = "Nom du navire";
-"informationLegalDescription" = "OceanShare n'utilise en aucun cas les données des utilisateurs. Les données sont confidentielles et ne génèrent aucune transaction de notre part.";
+"informationLegalDescription" = "Les données des utilisateurs sont confidentielles et ne génèrent aucune transaction de la part d'OceanShare.";
 "informationDeleteButton" = "Supprimer Mon Compte";
 
 /* general pop up */
@@ -231,6 +236,11 @@
 "fullDateFormat" = "dd/MM, HH:mm";
 "dateFormat" = "HH:mm";
 "localeIdentifier" = "fr_GP";
+
+/* uv type */
+"low" = "(Faible)";
+"medium" = "(Moyen)";
+"high" = "(Élevé)";
 
 /* wind direction */
 "N " = "N ";
