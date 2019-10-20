@@ -84,39 +84,39 @@ struct Weather {
         var windDirection: String
         
         if (348.75 <= degrees && degrees <= 360) {
-            windDirection = "N ";
+            windDirection = NSLocalizedString("N ", comment: "");
         } else if (0 <= degrees && degrees <= 11.25) {
-            windDirection = "N ";
+            windDirection = NSLocalizedString("N ", comment: "");
         } else if (11.25 < degrees && degrees <= 33.75) {
-            windDirection = "NNE ";
+            windDirection = NSLocalizedString("NNE ", comment: "");
         } else if (33.75 < degrees && degrees <= 56.25) {
-            windDirection = "NE ";
+            windDirection = NSLocalizedString("NE ", comment: "");
         } else if (56.25 < degrees && degrees <= 78.75) {
-            windDirection = "ENE ";
+            windDirection = NSLocalizedString("ENE ", comment: "");
         } else if (78.75 < degrees && degrees <= 101.25) {
-            windDirection = "E ";
+            windDirection = NSLocalizedString("E ", comment: "");
         } else if (101.25 < degrees && degrees <= 123.75) {
-            windDirection = "ESE ";
+            windDirection = NSLocalizedString("ESE ", comment: "");
         } else if (123.75 < degrees && degrees <= 146.25) {
-            windDirection = "SE ";
+            windDirection = NSLocalizedString("SE ", comment: "");
         } else if (146.25 < degrees && degrees <= 168.75) {
-            windDirection = "SSE ";
+            windDirection = NSLocalizedString("SSE ", comment: "");
         } else if (168.75 < degrees && degrees <= 191.25) {
-            windDirection = "S ";
+            windDirection = NSLocalizedString("S ", comment: "");
         } else if (191.25 < degrees && degrees <= 213.75) {
-            windDirection = "SSW ";
+            windDirection = NSLocalizedString("SSW ", comment: "");
         } else if (213.75 < degrees && degrees <= 236.25) {
-            windDirection = "SW ";
+            windDirection = NSLocalizedString("SW ", comment: "");
         } else if (236.25 < degrees && degrees <= 258.75) {
-            windDirection = "WSW ";
+            windDirection = NSLocalizedString("WSW ", comment: "");
         } else if (258.75 < degrees && degrees <= 281.25) {
-            windDirection = "W ";
+            windDirection = NSLocalizedString("W ", comment: "");
         } else if (281.25 < degrees && degrees <= 303.75) {
-            windDirection = "WNW ";
+            windDirection = NSLocalizedString("WNW ", comment: "");
         } else if (303.75 < degrees && degrees <= 326.25) {
-            windDirection = "NW ";
+            windDirection = NSLocalizedString("NW ", comment: "");
         } else if (326.25 < degrees && degrees < 348.75) {
-            windDirection = "NNW ";
+            windDirection = NSLocalizedString("NNW ", comment: "");
         } else {
             windDirection  = ""
         }
@@ -127,13 +127,13 @@ struct Weather {
         let uvRank: String
         
         if uvIndex < 2 {
-            uvRank = "\(round(100 * uvIndex) / 100) (Low)"
+            uvRank = "\(round(100 * uvIndex) / 100) \(NSLocalizedString("low", comment: ""))"
             
         } else if uvIndex > 6 {
-            uvRank = "\(round(100 * uvIndex) / 100) (High)"
+            uvRank = "\(round(100 * uvIndex) / 100) \(NSLocalizedString("high", comment: ""))"
             
         } else {
-            uvRank = "\(round(100 * uvIndex) / 100) (Medium)"
+            uvRank = "\(round(100 * uvIndex) / 100) \(NSLocalizedString("medium", comment: ""))"
             
         }
         return uvRank

@@ -1133,7 +1133,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
         mapView.deselectAnnotation(annotation, animated: false)
         /*viewStacked = descriptionView // todo
-        animateInWithOptionalEffect(view: descriptionView, effect: true)*/
+        animateInWithOptionalEffect(view: descriptionView, effect: true)*/ // todo
         selectedTag = annotation
         fetchTag(MarkerHash: annotation.hash)
         
@@ -1306,7 +1306,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             switch response.result {
             case .success(let value):
                 let jsonObject = JSON(value)
-                print(jsonObject)
                 self.transformData(rawData: jsonObject)
             case .failure(let error):
                 print(error)
@@ -1332,14 +1331,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         // get weather
         let data = rawData["weather"]
         let dataAsJson = JSON(data)
-        //do {
-            let weather = Weather(weatherData: dataAsJson)
-            self.didGetWeather(weather: weather)
-            
-        //} catch let jsonError as NSError {
-        //    self.didNotGetWeather(error: jsonError)
-            
-        //}
+        let weather = Weather(weatherData: dataAsJson)
+        self.didGetWeather(weather: weather)
     }
     
     /*
@@ -1391,28 +1384,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 
             }
         }
-    }
-    
-    /*
-     * If the weather data aren't gotten, set the labels of the weather marker
-     * with default values.
-     */
-    func didNotGetWeather(error: NSError) {
-        DispatchQueue.main.async {
-            self.airTemperatureLabel.text = "--"
-            self.weatherLabel.text = "--"
-            self.sunriseLabel.text = "--"
-            self.sunsetLabel.text = "--:--"
-            self.rainRiskLabel.text = "-- %"
-            self.waterTemperatureLabel.text = "--"
-            self.windLabel.text = "-- km/h"
-            self.humidityLabel.text = "-- %"
-            self.visibilityLabel.text = "-- km"
-            self.uvLabel.text = "--"
-            
-        }
-        print(error)
-        
     }
 }
 
