@@ -61,8 +61,7 @@ struct Registry {
     let websiteUrl = "https://sagotg.github.io/OceanShare/"
     
     // oceanshare api url
-    
-    let apiUrl = "http://35.202.135.150:5000/api/weather"
+    let apiUrl = "https://oceanshare.cleverapps.io/api/weather"
     
     // default event descriptions
     let descJellyfishs = NSLocalizedString("descJellyfishs", comment: "")
