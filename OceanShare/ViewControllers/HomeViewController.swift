@@ -76,8 +76,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     /* map view */
     @IBOutlet weak var centerIcon: UIImageView!
     @IBOutlet weak var centerView: DesignableButton!
+    @IBOutlet weak var speedView: DesignableView!
     @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var oceanShareLogo: UIImageView!
     @IBOutlet weak var messageLabel: UITextView!
     @IBOutlet weak var longitudeView: DesignableView!
     @IBOutlet weak var longitudeIndicatorLabel: UILabel!
@@ -192,7 +192,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         visualEffectView.effect = nil
         visualEffectView.isHidden = true
         /* mapview setup */
-        mapView = MGLMapView(frame: view.bounds)
+        mapView = MGLMapView(frame: view.bounds, styleURL: URL(string: "mapbox://styles/oceanshare06/ck266a67z0azk1dnzvvj6jz4k"))
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.delegate = self
         mapView.logoView.isHidden = true
@@ -211,6 +211,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         view.addSubview(latitudeView)
         view.addSubview(centerView)
         view.addSubview(buttonMenu)
+        view.addSubview(speedView)
         view.addSubview(visualEffectView)
         
     }
@@ -297,7 +298,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     func setupCustomIcons() {
         /* map view */
         centerIcon.image = centerIcon.image!.withRenderingMode(.alwaysTemplate)
-        centerIcon.tintColor = registry.customWhite
+        centerIcon.tintColor = registry.customDarkBlue
         /* icon view */
         closeIcon.image = closeIcon.image!.withRenderingMode(.alwaysTemplate)
         closeIcon.tintColor = registry.customBlack
@@ -316,7 +317,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      */
     func setupCompass() {
         var centerPoint = mapView.compassView.center
-        centerPoint.y = 130
+        centerPoint.y = 65
         mapView.compassView.center = centerPoint
         
     }
@@ -328,15 +329,14 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      * It takes the message to display and the alert type color as parameters.
      */
     func PutMessageOnHeader(msg: String, color: UIColor) {
-        oceanShareLogo.isHidden = true
+        headerView.isHidden = false
         headerView.backgroundColor = color
         messageLabel.text = msg
         messageLabel.isHidden = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             self.messageLabel.isHidden = true
-            self.oceanShareLogo.isHidden = false
             self.headerView.backgroundColor = self.registry.customMilkyWhite
-            
+            self.headerView.isHidden = true
         }
     }
     
@@ -1122,7 +1122,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
         return true
-        
+
     }
     
     func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
