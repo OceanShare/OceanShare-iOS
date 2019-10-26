@@ -78,6 +78,9 @@
 "warning" = "Warning";
 "dolphins" = "Dolphins";
 "destination" = "Destination";
+"buoys" = "Buoys";
+"patrols" = "Patrols";
+"fishes" = "Fishes";
 
 /* description view */
 "edit" = "EDIT";
@@ -98,6 +101,9 @@
 "descWarning" = "Someone needs help or there is a danger.";
 "descDolphins" = "Dolphins have been spotted in the vicinity.";
 "descDestination" = "Someone is going there.";
+"descBuoys" = "Docking buoys can be found here.";
+"descPatrols" = "Some patrols are working around.";
+"descFishes" = "Fishes have been spoted there.";
 
 /* registry's messages */
 "msgJellyfishs" = "Jellyfishs event selected.";
@@ -106,6 +112,9 @@
 "msgWarning" = "Warning event selected.";
 "msgDolphins" = "Dolphins event selected.";
 "msgDestination" = "Destination event selected.";
+"msgBuoys" = "Buoys event selected.";
+"msgPatrols" = "Patrols event selected.";
+"msgFishes" = "Fishes event selected.";
 "msgWeather" = "Weather information selected.";
 "msgEventLimit" = "Already dropped 5 events.";
 "msgDistanceLimit" = "Can't drop an event so far.";
@@ -114,15 +123,16 @@
 "msgDeleteSuccess" = "Event correctly deleted.";
 
 /* icon view */
-"iconViewEventTextView" = "Select an event to add on the map. All users will be able to see it.";
 "iconViewJellyfishs" = "Jellyfishs";
 "iconViewDivers" = "Divers";
 "iconViewWaste" = "Waste";
 "iconViewWarning" = "Warning";
 "iconViewDolphins" = "Dolphins";
 "iconViewDestination" = "Destination";
-"iconViewWeatherTextView" = "Drop a 'weather' event to know more about a location.";
 "iconViewWeather" = "Weather";
+"iconViewBuoys" = "Buoys";
+"iconViewPatrols" = "Patrols";
+"iconViewFishes" = "Fishes";
 
 /* comment view */
 "commentViewDescription" = "You can add an optional description on your event.";

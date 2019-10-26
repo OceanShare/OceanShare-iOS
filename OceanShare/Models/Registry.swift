@@ -54,6 +54,9 @@ struct Registry {
     let eventWarning = UIImage(named: "warning_black")
     let eventDolphins = UIImage(named: "dolphins")
     let eventDestination = UIImage(named: "destination")
+    let eventBuoys = UIImage(named: "Buoy")
+    let eventPatrols = UIImage(named: "coast_guards")
+    let eventFishes = UIImage(named: "fishes")
     
     // default profile picture urls
     let defaultPictureUrl = "https://firebasestorage.googleapis.com/v0/b/oceanshare-1519985626980.appspot.com/o/profile_pictures%2FA4JzILjrHFfDQJyR5YrREBDmRzy2.png?alt=media&token=c27ea0fc-dcf2-4acf-a78a-1e49404f9f93"
@@ -64,6 +67,9 @@ struct Registry {
     // oceanshare api url
     let apiUrl = "https://oceanshare.cleverapps.io/api/weather"
     
+    // oceanshare map url
+    let mapUrl = "mapbox://styles/oceanshare06/ck266a67z0azk1dnzvvj6jz4k"
+    
     // default event descriptions
     let descJellyfishs = NSLocalizedString("descJellyfishs", comment: "")
     let descDivers = NSLocalizedString("descDivers", comment: "")
@@ -71,6 +77,9 @@ struct Registry {
     let descWarning = NSLocalizedString("descWarning", comment: "")
     let descDolphins = NSLocalizedString("descDolphins", comment: "")
     let descDestination = NSLocalizedString("descDestination", comment: "")
+    let descBuoys = NSLocalizedString("descBuoys", comment: "")
+    let descPatrols = NSLocalizedString("descPatrols", comment: "")
+    let descFishes = NSLocalizedString("descFishes", comment: "")
     
     // header messages
     let msgJellyfishs = NSLocalizedString("msgJellyfishs", comment: "")
@@ -79,6 +88,9 @@ struct Registry {
     let msgWarning = NSLocalizedString("msgWarning", comment: "")
     let msgDolphins = NSLocalizedString("msgDolphins", comment: "")
     let msgDestination = NSLocalizedString("msgDestination", comment: "")
+    let msgBuoys = NSLocalizedString("msgBuoys", comment: "")
+    let msgPatrols = NSLocalizedString("msgPatrols", comment: "")
+    let msgFishes = NSLocalizedString("msgFishes", comment: "")
     let msgWeather = NSLocalizedString("msgWeather", comment: "")
     let msgEventLimit = NSLocalizedString("msgEventLimit", comment: "")
     let msgDistanceLimit = NSLocalizedString("msgDistanceLimit", comment: "")

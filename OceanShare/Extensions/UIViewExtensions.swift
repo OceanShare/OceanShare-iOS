@@ -58,7 +58,6 @@ class DesignableLabel: UILabel {
 }
 
 extension UIView {
-    
     // MARK: interface building
     
     @IBInspectable
@@ -143,6 +142,28 @@ extension UIView {
                 layer.shadowColor = nil
             }
         }
+    }
+    
+    // MARK: animations
+    
+    func animShow() {
+        self.isHidden = false
+        UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseIn],
+                       animations: {
+                        self.center.y += (self.bounds.height - 1)
+                        self.layoutIfNeeded()
+        }, completion: nil)
+    }
+
+    func animHide() {
+        UIView.animate(withDuration: 0.2, delay: 0, options: [.curveLinear],
+                       animations: {
+                        self.center.y -= (self.bounds.height - 1)
+                        self.layoutIfNeeded()
+
+        },  completion: {(_ completed: Bool) -> Void in
+        self.isHidden = true
+            })
     }
     
     // MARK: gradient functions

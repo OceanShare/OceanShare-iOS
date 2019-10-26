@@ -76,6 +76,9 @@
 "warning" = "Alerte";
 "dolphins" = "Dauphins";
 "destination" = "Destination";
+"buoys" = "Bouées";
+"patrols" = "Contrôles";
+"fishes" = "Poissons";
 
 /* description view */
 "edit" = "MODIFIER";
@@ -96,6 +99,9 @@
 "descWarning" = "Quelqu'un a besoin d'aide ou il y a un danger.";
 "descDolphins" = "Des dauphins ont été repérés dans les environs.";
 "descDestination" = "Quelqu'un va y aller.";
+"descBuoys" = "Des bouées d'amarage se trouvent ici.";
+"descPatrols" = "Possibles contrôles de gardes côtes.";
+"descFishes" = "Bancs de poissons dans les environs.";
 
 /* registry's messages */
 "msgJellyfishs" = "Événement 'méduse' selectionné.";
@@ -104,6 +110,9 @@
 "msgWarning" = "Événement 'alerte' selectionné.";
 "msgDolphins" = "Événement 'dauphins' selectionné.";
 "msgDestination" = "Événement 'destination' selectionné.";
+"msgBuoys" = "Événement 'bouées' selectionné.";
+"msgPatrols" = "Événement 'contrôles' selectionné.";
+"msgFishes" = "Événement 'poissons' selectionné.";
 "msgWeather" = "Événement 'météo' selectionné.";
 "msgEventLimit" = "Vous avez déjà posé 5 événements.";
 "msgDistanceLimit" = "Vous ne pouvez pas poser un événement si loin.";
@@ -112,15 +121,16 @@
 "msgDeleteSuccess" = "Événement correctement supprimé.";
 
 /* icon view */
-"iconViewEventTextView" = "Sélectionnez un événement à poser sur la carte. Tous les utilisateurs le verront.";
 "iconViewJellyfishs" = "Méduses";
 "iconViewDivers" = "Plongeurs";
 "iconViewWaste" = "Déchets";
 "iconViewWarning" = "Alerte";
 "iconViewDolphins" = "Dauphins";
 "iconViewDestination" = "Destination";
-"iconViewWeatherTextView" = "Choisissez l'événement 'météo' pour en savoir plus sur une destination.";
 "iconViewWeather" = "Météo";
+"iconViewBuoys" = "Bouées";
+"iconViewPatrols" = "Contrôles";
+"iconViewFishes" = "Poissons";
 
 /* comment view */
 "commentViewDescription" = "Vous pouvez ajouter une description optionnelle à votre événement.";

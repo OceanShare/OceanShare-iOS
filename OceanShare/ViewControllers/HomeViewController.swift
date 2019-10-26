@@ -86,14 +86,15 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     /* icon view */
     @IBOutlet weak var iconView: UIView!
-    @IBOutlet weak var iconViewEventTextView: UITextView!
     @IBOutlet weak var iconViewJellyfishs: UILabel!
     @IBOutlet weak var iconViewDivers: UILabel!
     @IBOutlet weak var iconViewWaste: UILabel!
     @IBOutlet weak var iconViewWarning: UILabel!
     @IBOutlet weak var iconViewDolphins: UILabel!
     @IBOutlet weak var iconViewDestination: UILabel!
-    @IBOutlet weak var iconViewWeatherTextView: UITextView!
+    @IBOutlet weak var iconViewBuoys: UILabel!
+    @IBOutlet weak var iconViewPatrols: UILabel!
+    @IBOutlet weak var iconViewFishes: UILabel!
     @IBOutlet weak var iconViewWeather: UILabel!
     @IBOutlet weak var closeIcon: UIImageView!
     @IBOutlet weak var buttonMenu: DesignableButton!
@@ -189,7 +190,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         visualEffectView.effect = nil
         visualEffectView.isHidden = true
         /* mapview setup */
-        mapView = MGLMapView(frame: view.bounds, styleURL: URL(string: "mapbox://styles/oceanshare06/ck266a67z0azk1dnzvvj6jz4k"))
+        mapView = MGLMapView(frame: view.bounds, styleURL: URL(string: registry.mapUrl))
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.delegate = self
         mapView.logoView.isHidden = true
@@ -244,7 +245,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 //locationManager.stopUpdatingLocation()
                 let speedKilometersHours = location.speed * 3.6
                 let speedNds = speedKilometersHours * 0.54
-                print(round(speedNds).clean)
                 speedValue.text = String(round(speedNds).clean)
                 speedMetric.text = "Nds"
                 
@@ -273,15 +273,16 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      */
     func setupLocalizedStrings() {
         /* icon view */
-        iconViewEventTextView.text = NSLocalizedString("iconViewEventTextView", comment: "")
         iconViewJellyfishs.text = NSLocalizedString("iconViewJellyfishs", comment: "")
         iconViewDivers.text = NSLocalizedString("iconViewDivers", comment: "")
         iconViewWaste.text = NSLocalizedString("iconViewWaste", comment: "")
         iconViewWarning.text = NSLocalizedString("iconViewWarning", comment: "")
         iconViewDolphins.text = NSLocalizedString("iconViewDolphins", comment: "")
         iconViewDestination.text = NSLocalizedString("iconViewDestination", comment: "")
-        iconViewWeatherTextView.text = NSLocalizedString("iconViewWeatherTextView", comment: "")
         iconViewWeather.text = NSLocalizedString("iconViewWeather", comment: "")
+        iconViewBuoys.text = NSLocalizedString("iconViewBuoys", comment: "")
+        iconViewPatrols.text = NSLocalizedString("iconViewPatrols", comment: "")
+        iconViewFishes.text = NSLocalizedString("iconViewFishes", comment: "")
         /* comment view */
         commentViewDescription.text = NSLocalizedString("commentViewDescription", comment: "")
         descriptionTextField.placeholder = NSLocalizedString("commentViewDescriptionTextField", comment: "")
@@ -333,17 +334,20 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      * Display a message on the header depending of interactions the user has with markers.
      * It takes the message to display and the alert type color as parameters.
      */
-    func PutMessageOnHeader(msg: String, color: UIColor) {
-        headerView.isHidden = false
+    func PutMessageOnHeader(msg: String, color: UIColor, error: Bool) {
         headerView.backgroundColor = color
         messageLabel.text = msg
-        messageLabel.isHidden = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            self.messageLabel.isHidden = true
-            self.headerView.backgroundColor = self.registry.customMilkyWhite
-            self.headerView.isHidden = true
+        if (error == false) {
+            // todo: stop header sliding to the bottom before the previous one disapear
+
+        }
+        headerView.animShow()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.headerView.animHide()
         }
     }
+    
+    
     
     func animateInWithOptionalEffect(view: UIView, effect: Bool) {
         if effect == true {
@@ -444,10 +448,27 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    @IBAction func buoyActivate(_ sender: Any) {
+        eventActivator(eventId: 6, eventDescription: "Buoys", eventMessage: self.registry.msgBuoys)
+        
+    }
+    
+    @IBAction func patrolActivate(_ sender: Any) {
+        eventActivator(eventId: 7, eventDescription: "Patrols", eventMessage: self.registry.msgPatrols)
+        
+    }
+    
+    @IBAction func fishActivate(_ sender: Any) {
+        eventActivator(eventId: 8, eventDescription: "Fishes", eventMessage: self.registry.msgFishes)
+        
+    }
+    
     @IBAction func weatherActivate(_ sender: Any) {
         animateOutWithOptionalEffect(effect: true)
         putWeatherOnMap(activate: true)
-        PutMessageOnHeader(msg: self.registry.msgWeather, color: registry.customGreen)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.PutMessageOnHeader(msg: self.registry.msgWeather, color: self.registry.customGreen, error: false)
+        }
 
     }
     
@@ -463,11 +484,15 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             tagProperties.contributors = [currentUser.getCurrentUser() : 0]
             putIconOnMap(activate: true)
             animateOutWithOptionalEffect(effect: true)
-            PutMessageOnHeader(msg: eventMessage, color: registry.customGreen)
-            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.PutMessageOnHeader(msg: eventMessage, color: self.registry.customGreen, error: false)
+                
+            }
         } else {
             animateOutWithOptionalEffect(effect: true)
-            self.PutMessageOnHeader(msg: self.registry.msgEventLimit, color: self.registry.customRed)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.PutMessageOnHeader(msg: self.registry.msgEventLimit, color: self.registry.customRed, error: true)
+            }
             
         }
     }
@@ -638,7 +663,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         putTagsinArray(MarkerHash: markerHash, FirebaseID: firebaseId)
         animateOutWithOptionalEffect(effect: true)
         descriptionTextField.text = ""
-        PutMessageOnHeader(msg: registry.msgDropSuccess, color: registry.customGreen)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.PutMessageOnHeader(msg: self.registry.msgDropSuccess, color: self.registry.customGreen, error: false)
+        }
         putIconOnMap(activate: false)
         getDroppedIconByUser()
         
@@ -668,7 +695,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         removeTag()
         animateOutWithOptionalEffect(effect: false)
         animateOutWithOptionalEffect(effect: true)
-        PutMessageOnHeader(msg: registry.msgDeleteSuccess, color: registry.customGreen)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.PutMessageOnHeader(msg: self.registry.msgDeleteSuccess, color: self.registry.customGreen, error: false)
+        }
         getDroppedIconByUser()
         
     }
@@ -734,6 +763,15 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             mapView.addAnnotation(marker)
         case 5:
             marker.title = NSLocalizedString("destination", comment: "")
+            mapView.addAnnotation(marker)
+        case 6:
+            marker.title = NSLocalizedString("buoys", comment: "")
+            mapView.addAnnotation(marker)
+        case 7:
+            marker.title = NSLocalizedString("patrols", comment: "")
+            mapView.addAnnotation(marker)
+        case 8:
+            marker.title = NSLocalizedString("fishes", comment: "")
             mapView.addAnnotation(marker)
         default:
             print("Error in func putTag")
@@ -1091,6 +1129,24 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             if description.isEmpty {
                 self.descriptionLabel.text = self.registry.descDestination
             }
+        case 6:
+            self.eventImage.image = self.registry.eventBuoys
+            self.eventLabel.text = NSLocalizedString("Buoys", comment: "")
+            if description.isEmpty {
+                self.descriptionLabel.text = self.registry.descBuoys
+        }
+        case 7:
+            self.eventImage.image = self.registry.eventPatrols
+            self.eventLabel.text = NSLocalizedString("Patrols", comment: "")
+            if description.isEmpty {
+                self.descriptionLabel.text = self.registry.descPatrols
+        }
+        case 8:
+            self.eventImage.image = self.registry.eventFishes
+            self.eventLabel.text = NSLocalizedString("Fishes", comment: "")
+            if description.isEmpty {
+                self.descriptionLabel.text = self.registry.descFishes
+        }
         default:
             print("Error deprecated tag.")
             
@@ -1181,12 +1237,25 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             marker = MGLAnnotationImage(image: image, reuseIdentifier: "Warning")
             
-        } else {
+        } else if annotation.title == NSLocalizedString("waste", comment: "") {
             var image = UIImage(named: "pin_waste")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             marker = MGLAnnotationImage(image: image, reuseIdentifier: "Waste")
             
+        } else if annotation.title == NSLocalizedString("buoys", comment: "") {
+            var image = UIImage(named: "pin_buoy")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Buoys")
+        } else if annotation.title == NSLocalizedString("patrols", comment: "") {
+            var image = UIImage(named: "pin_guards")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Patrols")
+        } else {
+            var image = UIImage(named: "pin_fishes")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Fishes")
         }
+        
         return marker
     
     }
@@ -1234,11 +1303,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     self.animateInWithOptionalEffect(view: commentView, effect: true)
                     
                 } else {
-                    self.PutMessageOnHeader(msg: self.registry.msgEarthLimit, color: self.registry.customRed)
+                    self.PutMessageOnHeader(msg: self.registry.msgEarthLimit, color: self.registry.customRed, error: true)
                     
                 }
             } else {
-                self.PutMessageOnHeader(msg: self.registry.msgDistanceLimit, color: self.registry.customRed)
+                self.PutMessageOnHeader(msg: self.registry.msgDistanceLimit, color: self.registry.customRed, error: true)
                 
             }
         }
@@ -1285,7 +1354,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 self.putWeatherOnMap(activate: false)
                 
             } else {
-                self.PutMessageOnHeader(msg: self.registry.msgDistanceLimit, color: self.registry.customRed)
+                self.PutMessageOnHeader(msg: self.registry.msgDistanceLimit, color: self.registry.customRed, error: true)
                 
             }
         }
