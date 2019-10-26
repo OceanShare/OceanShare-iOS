@@ -77,14 +77,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var centerIcon: UIImageView!
     @IBOutlet weak var centerView: DesignableButton!
     @IBOutlet weak var speedView: DesignableView!
+    @IBOutlet weak var speedValue: UILabel!
+    @IBOutlet weak var speedMetric: UILabel!
+    @IBOutlet weak var speedIcon: UIImageView!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var messageLabel: UITextView!
-    @IBOutlet weak var longitudeView: DesignableView!
-    @IBOutlet weak var longitudeIndicatorLabel: UILabel!
-    @IBOutlet weak var currentLongitudeLabel: UILabel!
-    @IBOutlet weak var latitudeView: DesignableView!
-    @IBOutlet weak var latitudeIndicatorLabel: UILabel!
-    @IBOutlet weak var currentLatitudeLabel: UILabel!
     @IBOutlet weak var mapItem: UITabBarItem!
     
     /* icon view */
@@ -207,8 +204,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         /* add the layers in the right order */
         view.addSubview(mapView)
         view.addSubview(headerView)
-        view.addSubview(longitudeView)
-        view.addSubview(latitudeView)
         view.addSubview(centerView)
         view.addSubview(buttonMenu)
         view.addSubview(speedView)
@@ -225,8 +220,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            //locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
             locationManager.startUpdatingLocation()
-            
         }
     }
     
@@ -238,12 +233,25 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         let longitude = Double(round(10000*locValue.longitude)/10000).clean
         let latitude = Double(round(10000*locValue.latitude)/10000).clean
-
-        currentLatitudeLabel.text = latitude
-        currentLongitudeLabel.text = longitude
+        let location = locations[locations.count - 1]
+        
+        if location.horizontalAccuracy > 0 {
+            if (location.speed <= 0) {
+                speedView.isHidden = true
+                
+            } else {
+                speedView.isHidden = false
+                //locationManager.stopUpdatingLocation()
+                let speedKilometersHours = location.speed * 3.6
+                let speedNds = speedKilometersHours * 0.54
+                print(round(speedNds).clean)
+                speedValue.text = String(round(speedNds).clean)
+                speedMetric.text = "Nds"
+                
+            }
+        }
 
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        
         
         if (longitude != self.stackedLongitude) {
             let userLongitude: [String: Any] = ["longitude": longitude as Any]
@@ -264,9 +272,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      * Setup labels.
      */
     func setupLocalizedStrings() {
-        /* view */
-        longitudeIndicatorLabel.text = NSLocalizedString("longitude", comment: "")
-        latitudeIndicatorLabel.text = NSLocalizedString("latitude", comment: "")
         /* icon view */
         iconViewEventTextView.text = NSLocalizedString("iconViewEventTextView", comment: "")
         iconViewJellyfishs.text = NSLocalizedString("iconViewJellyfishs", comment: "")
@@ -1388,6 +1393,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
 }
 
 // MARK: - Custom Class
+
+extension Float {
+    var clean: String {
+       return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+    }
+}
 
 extension Double {
     var clean: String {
