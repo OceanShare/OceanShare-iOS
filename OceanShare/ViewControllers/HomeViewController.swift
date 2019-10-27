@@ -56,6 +56,20 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                             downvote: 0,
                             contributors: ["":0])
     
+    /* user properties */
+    var userIds = [String]()
+    var userHashs = [Int]()
+    var displayableUsers = Users(name: "",
+                                 uid: "",
+                                 picture: nil,
+                                 shipName: "",
+                                 longitude: 0.0,
+                                 latitude: 0.0,
+                                 ghostMode: true,
+                                 boatId: 0,
+                                 showPicture: false,
+                                 isActive: false)
+    
     /* saved tag */
     var selectedTag: MGLAnnotation!
     var selectedTagId: String?
@@ -169,6 +183,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         syncData()
         setupView()
         setupInfo()
+        
+        getDisplayableUsers()
 
     }
     
@@ -253,18 +269,27 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
 
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        if (longitude != self.stackedLongitude) {
-            let userLongitude: [String: Any] = ["longitude": longitude as Any]
-            self.userRef.child("\(uid)/location").updateChildValues(userLongitude)
-            self.stackedLongitude = longitude
+        if (UIApplication.shared.applicationState == .active) {
+            let userActive = ["user_active": true]
+            self.userRef.child("\(uid)/preferences").updateChildValues(userActive)
             
-        }
-        
-        if (latitude != self.stackedLatitude) {
-            let userLattitude: [String: Any] = ["latitude": latitude as Any]
-            self.userRef.child("\(uid)/location").updateChildValues(userLattitude)
-            self.stackedLatitude = latitude
+            if (longitude != self.stackedLongitude) {
+                let userLongitude: [String: Any] = ["longitude": longitude as Any]
+                self.userRef.child("\(uid)/location").updateChildValues(userLongitude)
+                self.stackedLongitude = longitude
+                
+            }
             
+            if (latitude != self.stackedLatitude) {
+                let userLattitude: [String: Any] = ["latitude": latitude as Any]
+                self.userRef.child("\(uid)/location").updateChildValues(userLattitude)
+                self.stackedLatitude = latitude
+                
+            }
+        } else {
+            let userActive = ["user_active": false]
+            self.userRef.child("\(uid)/preferences").updateChildValues(userActive)
+
         }
     }
     
@@ -1459,21 +1484,101 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             }
         }
     }
+    
+    // MARK: - Users Handlers
+    
+    func isDisplayable(User: Users) -> Bool {
+        if (User.uid != Auth.auth().currentUser?.uid) {
+            if (User.isActive == true) {
+                if (User.ghostMode == false) {
+                    if ((User.longitude != nil) && (User.latitude != nil)) {
+                        if ((User.longitude != 0.0) && (User.latitude != 0.0)) {
+                            print("\(String(describing: User.uid)) is displayable.")
+                            return true
+                        }
+                    }
+                }
+            }
+        }
+        return false
+        
+    }
+    
+    /*
+     * Retrives displayable users from database.
+     */
+    func getDisplayableUsers() {
+        userRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.childrenCount > 0 {
+                for user in snapshot.children.allObjects as! [DataSnapshot] {
+                    let data = user.value as? NSDictionary
+                    let userName = data?["name"] as? String
+                    let uid = user.key
+                    let picture = data?["picture"] as? String
+                    let shipName = data?["ship_name"] as? String
+                    let location = data?["location"] as? [String: AnyObject]
+                    let longitute = location?["longitude"] as? String
+                    let latitude = location?["latitude"] as? String
+                    let preferences = data?["preferences"] as? [String: AnyObject]
+                    let ghostMode = preferences?["ghost_mode"] as? Bool
+                    let boatId = preferences?["boatId"] as? Int
+                    let showPicture = preferences?["show_picture"] as? Bool
+                    let isActive = preferences?["user_active"] as? Bool
+                    
+                    let doubleLong = longitute?.toDouble()
+                    let doubleLat = latitude?.toDouble()
+        
+                    if (self.isDisplayable(User: Users(name: userName, uid: uid, picture: picture, shipName: shipName, longitude: doubleLong, latitude: doubleLat, ghostMode: ghostMode, boatId: boatId, showPicture: showPicture, isActive: isActive)) == true) {
+                        var userHash: Int
+                        userHash = self.putUsers(mapView: self.mapView, User: Users(name: userName, uid: uid, picture: picture, shipName: shipName, longitude: doubleLong, latitude: doubleLat, ghostMode: ghostMode, boatId: boatId, showPicture: showPicture, isActive: isActive))
+                        self.putUsersInArray(UserHash: userHash, FirebaseID: user.key)
+                        
+                    }
+                }
+            }
+        })
+    }
+    
+    @discardableResult func putUsers(mapView: MGLMapView, User: Users) -> Int {
+        let user = MGLPointAnnotation()
+        user.coordinate.latitude = User.latitude!
+        user.coordinate.longitude = User.longitude!
+        
+        switch User.boatId {
+        case 1:
+            user.title = "sailing_boat"
+            mapView.addAnnotation(user)
+        case 2:
+            user.title = "gondola"
+            mapView.addAnnotation(user)
+        case 3:
+            user.title = "mini_yacht"
+            mapView.addAnnotation(user)
+        case 4:
+            user.title = "yacht"
+            mapView.addAnnotation(user)
+        default:
+            print("Error in function putUsers(): no boat id found.")
+            
+        }
+        return user.hash
+    }
+    
+    func putUsersInArray(UserHash: Int, FirebaseID: String) {
+        userIds.append(FirebaseID)
+        userHashs.append(UserHash)
+        
+    }
 }
 
+extension String {
+    func toDouble() -> Double? {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale(identifier: "en_US_POSIX")
+        return numberFormatter.number(from: self)?.doubleValue
+    }
+}
 // MARK: - Custom Class
-
-extension Float {
-    var clean: String {
-       return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
-    }
-}
-
-extension Double {
-    var clean: String {
-       return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
-    }
-}
 
 class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     let size: CGFloat = 48

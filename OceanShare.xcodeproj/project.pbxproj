@@ -36,6 +36,9 @@
 		BF92738921D1D57600BDCC16 /* OceanShareUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92738821D1D57600BDCC16 /* OceanShareUITests.swift */; };
 		BF92739D21D231BB00BDCC16 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */; };
 		BFAFEF042313D4090023BD0C /* Slide.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAFEF032313D4090023BD0C /* Slide.swift */; };
+		BFE633B923658DFD00DE4EFC /* FloatExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE633B823658DFD00DE4EFC /* FloatExtensions.swift */; };
+		BFE633BB23658E4300DE4EFC /* DoubleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE633BA23658E4300DE4EFC /* DoubleExtensions.swift */; };
+		BFE633BD2365FA2800DE4EFC /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE633BC2365FA2800DE4EFC /* Users.swift */; };
 		BFF9641C22E8FEDE00CAB149 /* Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF9641B22E8FEDE00CAB149 /* Registry.swift */; };
 		EA5ABE72D7963E2AEB820984 /* Pods_OceanShareUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A0292141E4382E098436B6 /* Pods_OceanShareUITests.framework */; };
 /* End PBXBuildFile section */
@@ -108,6 +111,9 @@
 		BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		BFAFEF032313D4090023BD0C /* Slide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slide.swift; sourceTree = "<group>"; };
 		BFCF47C021DE4B3C00F18016 /* OceanShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OceanShare.entitlements; sourceTree = "<group>"; };
+		BFE633B823658DFD00DE4EFC /* FloatExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatExtensions.swift; sourceTree = "<group>"; };
+		BFE633BA23658E4300DE4EFC /* DoubleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleExtensions.swift; sourceTree = "<group>"; };
+		BFE633BC2365FA2800DE4EFC /* Users.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
 		BFF9641B22E8FEDE00CAB149 /* Registry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registry.swift; sourceTree = "<group>"; };
 		E3BCBE1CA27A9FBC058526E4 /* Pods-OceanShareTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests.release.xcconfig"; sourceTree = "<group>"; };
 		F3A46E28483D16D19D3A09C2 /* Pods-OceanShareUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareUITests.release.xcconfig"; path = "Target Support Files/Pods-OceanShareUITests/Pods-OceanShareUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -241,6 +247,8 @@
 				BF92739921D231BB00BDCC16 /* UIColorExtensions.swift */,
 				BF13F79D21DB512C0086F24B /* UIViewExtensions.swift */,
 				201E152A21E4C0E500050361 /* UITextFieldExtensions.swift */,
+				BFE633B823658DFD00DE4EFC /* FloatExtensions.swift */,
+				BFE633BA23658E4300DE4EFC /* DoubleExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -253,6 +261,7 @@
 				BF8CCE3A2274729B000863AC /* Tag.swift */,
 				BF0FE36D22D8C32600615109 /* Weather.swift */,
 				BFF9641B22E8FEDE00CAB149 /* Registry.swift */,
+				BFE633BC2365FA2800DE4EFC /* Users.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -582,6 +591,7 @@
 				201E152B21E4C0E500050361 /* UITextFieldExtensions.swift in Sources */,
 				BF3306FD21DF599000433264 /* Helper.swift in Sources */,
 				BF1F80A122705B84004F8144 /* SettingsViewController.swift in Sources */,
+				BFE633BB23658E4300DE4EFC /* DoubleExtensions.swift in Sources */,
 				BF7563D621DA0BB300F8166B /* ProfileViewController.swift in Sources */,
 				BF56CDE621D5CB17003707A9 /* HomeViewController.swift in Sources */,
 				BF89D36F21D3152800E522AC /* RootViewController.swift in Sources */,
@@ -589,9 +599,11 @@
 				BF92739D21D231BB00BDCC16 /* UIColorExtensions.swift in Sources */,
 				BF0FE36E22D8C32600615109 /* Weather.swift in Sources */,
 				BF92736B21D1D57500BDCC16 /* StartViewController.swift in Sources */,
+				BFE633B923658DFD00DE4EFC /* FloatExtensions.swift in Sources */,
 				BFAFEF042313D4090023BD0C /* Slide.swift in Sources */,
 				BF92736921D1D57500BDCC16 /* AppDelegate.swift in Sources */,
 				BF212F55225F3C390030771F /* InformationViewController.swift in Sources */,
+				BFE633BD2365FA2800DE4EFC /* Users.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

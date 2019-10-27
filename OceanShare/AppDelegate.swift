@@ -55,6 +55,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
     }
     
+    // MARK: - Authentication
+    
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if (error) != nil {
             print("(1) Google Authentification Failed: ", error!)
@@ -116,6 +118,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             print ("(1) Error While Signing Out: %@", signOutError)
         }
     }
-    
 }
 
