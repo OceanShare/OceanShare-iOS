@@ -60,16 +60,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     weak var timer: Timer?
     var userIds = [String]()
     var userHashs = [Int]()
-    var displayableUsers = Users(name: "",
-                                 uid: "",
-                                 picture: nil,
-                                 shipName: "",
-                                 longitude: 0.0,
-                                 latitude: 0.0,
-                                 ghostMode: true,
-                                 boatId: 0,
-                                 showPicture: false,
-                                 isActive: false)
     
     /* saved tag */
     var selectedTag: MGLAnnotation!
@@ -507,8 +497,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         putWeatherOnMap(activate: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.PutMessageOnHeader(msg: self.registry.msgWeather, color: self.registry.customGreen, error: false)
+            
         }
-
     }
     
     func eventActivator (eventId: Int, eventDescription: String, eventMessage: String) {
@@ -531,8 +521,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             animateOutWithOptionalEffect(effect: true)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.PutMessageOnHeader(msg: self.registry.msgEventLimit, color: self.registry.customRed, error: true)
+                
             }
-            
         }
     }
     
@@ -543,28 +533,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     */
     @IBAction func closeUserDescription(_ sender: Any) {
         animateOutWithOptionalEffect(effect: true)
-    }
-    
-    func attributePicture(showPicture: Bool, boatCategorie: Int, finalPicture: UIImage) {
-        userAvatar.layer.cornerRadius = 41
-        userAvatar.clipsToBounds = true
         
-        if (showPicture == true) {
-            self.userAvatar.image = finalPicture
-        } else {
-            switch boatCategorie {
-            case 1:
-                self.userAvatar.image = UIImage(named: "sailing_boat")
-            case 2:
-                self.userAvatar.image = UIImage(named: "mini_gondola")
-            case 3:
-                self.userAvatar.image = UIImage(named: "mini_yacht")
-            case 4:
-                self.userAvatar.image = UIImage(named: "yacht")
-            default:
-                return
-            }
-        }
     }
     
     /*
@@ -572,45 +541,36 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      */
     func fetchUserDescription() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
-        
+        viewStacked = userDescriptionView
+        animateInWithOptionalEffect(view: userDescriptionView, effect: true)
         userRef.child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot == snapshot {
-                guard let data = snapshot.value as? NSDictionary else { return }
-                guard let name = data["name"] as? String else { return }
-                guard let preferences = data["preferences"] as? [String: Any] else { return }
-                guard let showPicture = preferences["show_picture"] as? Bool else { return }
-                guard let boatCategorie = preferences["boatId"] as? Int else { return }
-            
-                let user = Auth.auth().currentUser
-                if let user = user {
-                    _ = Storage.storage().reference().child("profile_pictures").child("\(String(describing: user.uid)).png").downloadURL(completion: { (url, error) in
-                        if error != nil {
-                            // check if the user has a network profile picture
-                            if let userPicture = data["picture"] as? String {
-                                let pictureURL = URL(string: userPicture)
-                                let pictureData = NSData(contentsOf: pictureURL!)
-                                let finalPicture = UIImage(data: pictureData! as Data)
-                                self.attributePicture(showPicture: showPicture, boatCategorie: boatCategorie, finalPicture: finalPicture!)
-                            } else {
-                                // set a default avatar
-                                let pictureURL = URL(string: self.registry.defaultPictureUrl)
-                                let pictureData = NSData(contentsOf: pictureURL!)
-                                let finalPicture = UIImage(data: pictureData! as Data)
-                                self.attributePicture(showPicture: showPicture, boatCategorie: boatCategorie, finalPicture: finalPicture!)
-                            }
-                        } else {
-                            let pictureData = NSData(contentsOf: url!)
-                            let finalPicture = UIImage(data: pictureData! as Data)
-                            self.attributePicture(showPicture: showPicture, boatCategorie: boatCategorie, finalPicture: finalPicture!)
-                        }
-                    })
-                }
-                self.userAvatarName.text = name
-            
+                let userData = Users(dataSnapshot: snapshot as DataSnapshot)
+                self.userAvatarName.text = userData.name
+                self.userAvatar.layer.cornerRadius = 41
+                self.userAvatar.clipsToBounds = true
+                
+                _ = Storage.storage().reference()
+                .child("profile_pictures")
+                .child("\(String(describing: snapshot.key)).png")
+                .downloadURL(completion: { (url, error) in
+                if error != nil {
+                    if userData.picture != nil {
+                        self.userAvatar.image = userData.getUserPictureFromDatabase(user: userData)
+                        
+                    } else {
+                        self.userAvatar.image = userData.getUserPictureFromNowhere(user: userData)
+                        
+                    }
+                } else {
+                    self.userAvatar.image = userData.getUserPictureFromStorage(user: userData, url: url!)
+                    
+                }})
             }
         })
+        
     }
-    
+
     // MARK: - Description View
     
     /*
@@ -986,14 +946,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      */
     func fetchTag(MarkerHash: Int) {
         var count = 0
-        let hasDoneWork = false
         
         while (tagHashs[count] != MarkerHash) {
             if (tagHashs[count] != tagHashs.last) {
                 count = count + 1
             } else {
-                viewStacked = userDescriptionView
-                animateInWithOptionalEffect(view: userDescriptionView, effect: true)
                 fetchUserDescription()
                 return
             }
@@ -1005,7 +962,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.childrenCount > 0 {
                 for tag in snapshot.children.allObjects as! [DataSnapshot] {
-                    if (self.tagIds[count] == tag.key && hasDoneWork == false) {
+                    if (self.tagIds[count] == tag.key) {
                         let data = tag.value as? NSDictionary
                         let id  = data?["groupId"] as? Int
                         let description = data?["description"] as? String
@@ -1247,12 +1204,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
         mapView.deselectAnnotation(annotation, animated: false)
-        /*viewStacked = descriptionView // todo
-        animateInWithOptionalEffect(view: descriptionView, effect: true)*/ // todo
         if (isUserAnnotation(title: annotation.title!!)) {
-            print(annotation.hash)
             selectedTag = annotation
-            // fetchUserTag(MarkerHash: annotation.hash) // TODO
+            fetchUserTag(MarkerHash: annotation.hash)
             
         } else {
             selectedTag = annotation
@@ -1549,13 +1503,62 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     // MARK: - Users Handlers
     
+    func fetchUserTag(MarkerHash: Int) {
+        var count = 0
+        
+        while (userHashs[count] != MarkerHash) {
+            if (userHashs[count] != userHashs.last) {
+                count = count + 1
+            } else {
+                fetchUserDescription()
+                return
+            }
+        }
+        viewStacked = userDescriptionView
+        animateInWithOptionalEffect(view: userDescriptionView, effect: true)
+        
+        userRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.childrenCount > 0 {
+                for user in snapshot.children.allObjects as! [DataSnapshot] {
+                    if (self.userIds[count] == user.key) {
+                        let userData = Users(dataSnapshot: user as DataSnapshot)
+                        self.userAvatarName.text = userData.name
+                        self.userAvatar.layer.cornerRadius = 41
+                        self.userAvatar.clipsToBounds = true
+                        
+                        _ = Storage.storage().reference()
+                        .child("profile_pictures")
+                        .child("\(String(describing: user.key)).png")
+                        .downloadURL(completion: { (url, error) in
+                        if error != nil {
+                            if userData.picture != nil {
+                                self.userAvatar.image = userData.getUserPictureFromDatabase(user: userData)
+                                
+                            } else {
+                                self.userAvatar.image = userData.getUserPictureFromNowhere(user: userData)
+                                
+                            }
+                        } else {
+                            self.userAvatar.image = userData.getUserPictureFromStorage(user: userData, url: url!)
+                            
+                        }})
+                    }
+                }
+            }
+        })
+    }
+    
     func isDisplayable(User: Users) -> Bool {
         if (User.uid != Auth.auth().currentUser?.uid) {
             if (User.isActive == true) {
                 if (User.ghostMode == false) {
                     if ((User.longitude != nil) && (User.latitude != nil)) {
                         if ((User.longitude != 0.0) && (User.latitude != 0.0)) {
-                            // TODO: check if user is on water or not
+                            //let location = CLLocationCoordinate2D.init(latitude: User.latitude!, longitude: User.longitude!)
+                            //let point = mapView.convert(location, toPointTo: mapView)
+                            //if (self.mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"]).isEmpty != false) {
+                            //}
+                            // TODO: check if users are on water
                             return true
                         }
                     }
@@ -1574,26 +1577,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         userRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.childrenCount > 0 {
                 for user in snapshot.children.allObjects as! [DataSnapshot] {
-                    let data = user.value as? NSDictionary
-                    let userName = data?["name"] as? String
-                    let uid = user.key
-                    let picture = data?["picture"] as? String
-                    let shipName = data?["ship_name"] as? String
-                    let location = data?["location"] as? [String: AnyObject]
-                    let longitute = location?["longitude"] as? String
-                    let latitude = location?["latitude"] as? String
-                    let preferences = data?["preferences"] as? [String: AnyObject]
-                    let ghostMode = preferences?["ghost_mode"] as? Bool
-                    let boatId = preferences?["boatId"] as? Int
-                    let showPicture = preferences?["show_picture"] as? Bool
-                    let isActive = preferences?["user_active"] as? Bool
-                    
-                    let doubleLong = longitute?.toDouble()
-                    let doubleLat = latitude?.toDouble()
+                    let userData = Users(dataSnapshot: user as DataSnapshot)
         
-                    if (self.isDisplayable(User: Users(name: userName, uid: uid, picture: picture, shipName: shipName, longitude: doubleLong, latitude: doubleLat, ghostMode: ghostMode, boatId: boatId, showPicture: showPicture, isActive: isActive)) == true) {
+                    if (self.isDisplayable(User: userData) == true) {
                         var userHash: Int
-                        userHash = self.putUsers(mapView: self.mapView, User: Users(name: userName, uid: uid, picture: picture, shipName: shipName, longitude: doubleLong, latitude: doubleLat, ghostMode: ghostMode, boatId: boatId, showPicture: showPicture, isActive: isActive))
+                        userHash = self.putUsers(mapView: self.mapView, User: userData)
                         self.putUsersInArray(UserHash: userHash, FirebaseID: user.key)
                         
                     }
@@ -1654,13 +1642,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
 }
 
-extension String {
-    func toDouble() -> Double? {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.locale = Locale(identifier: "en_US_POSIX")
-        return numberFormatter.number(from: self)?.doubleValue
-    }
-}
 // MARK: - Custom Class
 
 class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {

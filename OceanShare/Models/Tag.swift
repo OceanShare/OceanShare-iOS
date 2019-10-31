@@ -22,4 +22,11 @@ struct Tag {
     var downvote: Int?
     var contributors: [String:Int]?
     
+//    init(dataSnapshot: DataSnapshot) {
+//        id = dataSnapshot.key
+//
+//        
+//
+//    }
+    
 }
