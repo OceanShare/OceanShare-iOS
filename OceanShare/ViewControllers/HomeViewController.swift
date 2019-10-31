@@ -57,6 +57,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                             contributors: ["":0])
     
     /* user properties */
+    weak var timer: Timer?
     var userIds = [String]()
     var userHashs = [Int]()
     var displayableUsers = Users(name: "",
@@ -183,9 +184,22 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         syncData()
         setupView()
         setupInfo()
-        
-        getDisplayableUsers()
 
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        getDisplayableUsers()
+        timer = Timer.scheduledTimer(timeInterval: 180, target: self, selector: #selector(HomeViewController.getDisplayableUsers), userInfo: nil, repeats: true)
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        timer?.invalidate()
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -1216,13 +1230,35 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    /*
+     * Return true if the annotation is a user location, else return false.
+     */
+    func isUserAnnotation(title: String) -> Bool {
+        if (title == NSLocalizedString("gondola", comment: "")) ||
+            (title == NSLocalizedString("sailing_boat", comment: "")) ||
+            (title == NSLocalizedString("mini_yacht", comment: "")) ||
+            (title == NSLocalizedString("yacht", comment: "")) {
+            return true
+            
+        }
+        return false
+        
+    }
+    
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
         mapView.deselectAnnotation(annotation, animated: false)
         /*viewStacked = descriptionView // todo
         animateInWithOptionalEffect(view: descriptionView, effect: true)*/ // todo
-        selectedTag = annotation
-        fetchTag(MarkerHash: annotation.hash)
-        
+        if (isUserAnnotation(title: annotation.title!!)) {
+            print(annotation.hash)
+            selectedTag = annotation
+            // fetchUserTag(MarkerHash: annotation.hash) // TODO
+            
+        } else {
+            selectedTag = annotation
+            fetchTag(MarkerHash: annotation.hash)
+            
+        }
     }
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
@@ -1271,14 +1307,40 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             var image = UIImage(named: "pin_buoy")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             marker = MGLAnnotationImage(image: image, reuseIdentifier: "Buoys")
+            
         } else if annotation.title == NSLocalizedString("patrols", comment: "") {
             var image = UIImage(named: "pin_guards")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             marker = MGLAnnotationImage(image: image, reuseIdentifier: "Patrols")
-        } else {
+            
+        } else if annotation.title == NSLocalizedString("fishes", comment: "") {
             var image = UIImage(named: "pin_fishes")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             marker = MGLAnnotationImage(image: image, reuseIdentifier: "Fishes")
+            
+        } else if annotation.title == NSLocalizedString("gondola", comment: "") {
+            var image = UIImage(named: "pin_gondola")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/15, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Gondola")
+            
+        } else if annotation.title == NSLocalizedString("sailing_boat", comment: "") {
+            var image = UIImage(named: "pin_sailing_boat")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/15, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Sailboat")
+            
+        } else if annotation.title == NSLocalizedString("mini_yacht", comment: "") {
+            var image = UIImage(named: "pin_mini_yacht")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/15, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Yacht")
+            
+        } else if annotation.title == NSLocalizedString("yacht", comment: "") {
+            var image = UIImage(named: "pin_yacht")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/15, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Mega yacht")
+            
+        } else {
+            print()
+            
         }
         
         return marker
@@ -1493,7 +1555,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 if (User.ghostMode == false) {
                     if ((User.longitude != nil) && (User.latitude != nil)) {
                         if ((User.longitude != 0.0) && (User.latitude != 0.0)) {
-                            print("\(String(describing: User.uid)) is displayable.")
+                            // TODO: check if user is on water or not
                             return true
                         }
                     }
@@ -1507,7 +1569,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     /*
      * Retrives displayable users from database.
      */
-    func getDisplayableUsers() {
+    @objc func getDisplayableUsers() {
+        removeUsersFromMap()
         userRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.childrenCount > 0 {
                 for user in snapshot.children.allObjects as! [DataSnapshot] {
@@ -1546,16 +1609,16 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
         switch User.boatId {
         case 1:
-            user.title = "sailing_boat"
+            user.title = NSLocalizedString("sailing_boat", comment: "")
             mapView.addAnnotation(user)
         case 2:
-            user.title = "gondola"
+            user.title = NSLocalizedString("gondola", comment: "")
             mapView.addAnnotation(user)
         case 3:
-            user.title = "mini_yacht"
+            user.title = NSLocalizedString("mini_yacht", comment: "")
             mapView.addAnnotation(user)
         case 4:
-            user.title = "yacht"
+            user.title = NSLocalizedString("yacht", comment: "")
             mapView.addAnnotation(user)
         default:
             print("Error in function putUsers(): no boat id found.")
@@ -1567,6 +1630,26 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     func putUsersInArray(UserHash: Int, FirebaseID: String) {
         userIds.append(FirebaseID)
         userHashs.append(UserHash)
+        
+    }
+    
+    func removeUsersFromMap() {
+        let annotations = self.mapView.annotations
+        
+        if (userHashs.isEmpty == false) {
+            for hash in userHashs {
+                if ((annotations) != nil) {
+                    for annotation in annotations! {
+                        if (hash == annotation.hash) {
+                            self.mapView.removeAnnotation(annotation)
+
+                        }
+                    }
+                }
+            }
+        }
+        userHashs.removeAll()
+        userIds.removeAll()
         
     }
 }

@@ -81,6 +81,10 @@
 "buoys" = "Buoys";
 "patrols" = "Patrols";
 "fishes" = "Fishes";
+"gondola" = "Boat";
+"sailing_boat" = "Sailboat";
+"mini_yacht" = "Yacht";
+"yacht" = "Mega yacht";
 
 /* description view */
 "edit" = "EDIT";
