@@ -131,10 +131,18 @@ class SignupViewController: UIViewController {
                     self.present(alert, animated: true, completion: nil)
                     
                 } else {
+                    let userPreferencesData: [String: Any] = [
+                        "ghost_mode": false as Bool,
+                        "show_picture": false as Bool,
+                        "boatId": 1 as Int,
+                        "user_active": true as Bool
+                    ]
                     /* define the database structure */
                     let userData: [String: Any] = [
                         "name": name as Any,
-                        "email": email as Any
+                        "email": email as Any,
+                        "ship_name": "" as String,
+                        "preferences": userPreferencesData as [String: Any]
                         ]
                     
                     /* push the user datas on the database */
@@ -199,11 +207,19 @@ class SignupViewController: UIViewController {
                         }
                         let user = Auth.auth().currentUser
                         
+                        let userPreferencesData: [String: Any] = [
+                            "ghost_mode": false as Bool,
+                            "show_picture": false as Bool,
+                            "boatId": 1 as Int,
+                            "user_active": true as Bool
+                        ]
                         /* define the database structure and upload the profile picture from facebook */
                         let userData: [String: Any] = [
                             "name": user?.displayName as Any,
                             "email": user?.email as Any,
-                            "picture": self.imageURL as Any
+                            "picture": self.imageURL as Any,
+                            "ship_name": "" as String,
+                            "preferences": userPreferencesData as [String: Any]
                         ]
                         
                         /* push the user datas on the database */

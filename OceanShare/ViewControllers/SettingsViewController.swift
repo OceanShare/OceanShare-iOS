@@ -18,12 +18,6 @@ import FirebasePerformance
 class SettingsViewController: UIViewController {
 
     // MARK: - Variables
-    
-    /* default values */
-    let ghostModeDefault = true
-    let showPictureDefault = false
-    let boatIdDefault = 1
-    let isUserActiveDefault = true
 
     /* database */
     var userRef: DatabaseReference!
@@ -182,20 +176,7 @@ class SettingsViewController: UIViewController {
         userRef.child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot == snapshot {
                 guard let data = snapshot.value as? NSDictionary else { return }
-                guard let preferences = data["preferences"] as? [String : AnyObject] else {
-                    
-                    let userPreferencesData: [String: Any] = [
-                        "ghost_mode": self.ghostModeDefault as Bool,
-                        "show_picture": self.showPictureDefault as Bool,
-                        "boatId": self.boatIdDefault as Int,
-                        "user_active": self.isUserActiveDefault as Bool
-                        ]
-                    
-                    self.userRef.child("\(userId)/preferences").updateChildValues(userPreferencesData)
-                    self.fetchSettings()
-                    return
-                }
-            
+                guard let preferences = data["preferences"] as? [String : AnyObject] else { return }
                 guard let ghostMode = preferences["ghost_mode"] as? Bool else { return }
                 guard let showPicture = preferences["show_picture"] as? Bool else { return }
                 guard let boatId = preferences["boatId"] as? Int else { return }
@@ -216,7 +197,6 @@ class SettingsViewController: UIViewController {
             if snapshot == snapshot {
                 guard let data = snapshot.value as? NSDictionary else { return }
                 guard let preferences = data["preferences"] as? [String : AnyObject] else { return }
-            
                 guard let boatId = preferences["boatId"] as? Int else { return }
             
                 if (boatId != newBoatId) {

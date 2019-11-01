@@ -82,7 +82,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
                 }
             } else {
                 
-                print("-> User logged bu social networks.")
+                print("-> User logged by social networks.")
                 
                 // redirect the user to the map
                 let mainTabBarController = storyboard?.instantiateViewController(withIdentifier:   "MainTabBarController") as! MainTabBarController

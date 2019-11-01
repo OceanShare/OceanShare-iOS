@@ -587,6 +587,90 @@
             </objects>
             <point key="canvasLocation" x="-4297" y="-257"/>
         </scene>
+        <!--Private Message View Controller-->
+        <scene sceneID="k6r-gn-Obz">
+            <objects>
+                <viewController storyboardIdentifier="PrivateMessageViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="oHk-ym-cU9" customClass="PrivateMessageViewController" customModule="OceanShare" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gxU-hE-DNy">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="maintenance" translatesAutoresizingMaskIntoConstraints="NO" id="ofJ-eF-oNt">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lLN-Sk-bKE" customClass="DesignableView" customModule="OceanShare" customModuleProvider="target">
+                                <rect key="frame" x="57" y="168" width="300" height="400"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yhp-vP-7Kk" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="352" width="284" height="40"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="Yhu-A0-5lO"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="19"/>
+                                        <state key="normal" title="Dismiss">
+                                            <color key="titleColor" red="1" green="0.31127719721294633" blue="0.33080873063381555" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                                <real key="value" value="0.29999999999999999"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
+                                                <size key="value" width="0.0" height="3"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="closeView:" destination="oHk-ym-cU9" eventType="touchUpInside" id="qfG-zp-Hyv"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.95686274510000002" green="0.97254901959999995" blue="0.98431372549999996" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="400" id="CDd-qF-IA7"/>
+                                    <constraint firstAttribute="trailing" secondItem="yhp-vP-7Kk" secondAttribute="trailing" constant="8" id="DzD-RQ-ajb"/>
+                                    <constraint firstAttribute="width" constant="300" id="cx3-eG-gQA"/>
+                                    <constraint firstItem="yhp-vP-7Kk" firstAttribute="leading" secondItem="lLN-Sk-bKE" secondAttribute="leading" constant="8" id="f3L-Tt-Jl9"/>
+                                    <constraint firstAttribute="bottom" secondItem="yhp-vP-7Kk" secondAttribute="bottom" constant="8" id="xXa-XS-pkT"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="15"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                        <real key="value" value="0.29999999999999999"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
+                                        <size key="value" width="0.0" height="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="ofJ-eF-oNt" secondAttribute="trailing" id="8Ae-1z-h7T"/>
+                            <constraint firstItem="ofJ-eF-oNt" firstAttribute="top" secondItem="gxU-hE-DNy" secondAttribute="top" id="IXQ-GZ-TGQ"/>
+                            <constraint firstAttribute="bottom" secondItem="ofJ-eF-oNt" secondAttribute="bottom" id="XpU-yo-kyK"/>
+                            <constraint firstItem="lLN-Sk-bKE" firstAttribute="centerY" secondItem="gxU-hE-DNy" secondAttribute="centerY" id="Xuq-IV-ZDl"/>
+                            <constraint firstItem="lLN-Sk-bKE" firstAttribute="centerX" secondItem="gxU-hE-DNy" secondAttribute="centerX" id="mLm-ZL-mBC"/>
+                            <constraint firstItem="ofJ-eF-oNt" firstAttribute="leading" secondItem="gxU-hE-DNy" secondAttribute="leading" id="qLX-uj-tot"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="l49-2e-10H"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Pgq-2P-gLw"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Vj-Zg-bWx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2446.376811594203" y="-1013.3152173913044"/>
+        </scene>
         <!--Home View Controller-->
         <scene sceneID="hhu-UX-Rbw">
             <objects>
@@ -859,6 +943,7 @@
                         <outlet property="rainRiskLabel" destination="0ge-qQ-7Hz" id="Dfx-JU-2dP"/>
                         <outlet property="ratedLabel" destination="aFM-Zl-WP3" id="Q1a-KU-CMP"/>
                         <outlet property="ratingStackView" destination="TSe-Ho-vLM" id="LWw-dI-dQR"/>
+                        <outlet property="skeletonName" destination="zcC-5t-Ij7" id="9Up-bX-9QG"/>
                         <outlet property="speedIcon" destination="rEl-87-X20" id="2ix-l3-01a"/>
                         <outlet property="speedMetric" destination="W97-Bv-CPT" id="jeX-ox-E02"/>
                         <outlet property="speedValue" destination="tKj-GE-cBT" id="bQA-Ru-QfT"/>
@@ -1914,6 +1999,19 @@
                                     <color key="textColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zcC-5t-Ij7" customClass="DesignableView" customModule="OceanShare" customModuleProvider="target">
+                                    <rect key="frame" x="10" y="49" width="280" height="35"/>
+                                    <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="35" id="d5R-Ef-nO7"/>
+                                    </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="15"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
+                                </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d9e-51-84H" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
                                     <rect key="frame" x="10" y="150" width="280" height="40"/>
                                     <color key="backgroundColor" red="0.3411764705882353" green="0.63137254901960782" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1938,15 +2036,21 @@
                                             <real key="value" value="10"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <segue destination="oHk-ym-cU9" kind="show" id="BWo-eZ-sk8"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             <constraints>
                                 <constraint firstItem="d9e-51-84H" firstAttribute="leading" secondItem="5hn-Dn-1Lk" secondAttribute="leading" constant="10" id="25J-Lg-gjc"/>
+                                <constraint firstItem="zcC-5t-Ij7" firstAttribute="trailing" secondItem="d9e-51-84H" secondAttribute="trailing" id="KGJ-oa-0yI"/>
+                                <constraint firstItem="zcC-5t-Ij7" firstAttribute="centerX" secondItem="5hn-Dn-1Lk" secondAttribute="centerX" id="RiY-fD-huO"/>
                                 <constraint firstItem="VV7-tu-cif" firstAttribute="leading" secondItem="d9e-51-84H" secondAttribute="leading" id="dmO-Ac-XBe"/>
                                 <constraint firstAttribute="height" constant="200" id="gfR-QN-feM"/>
                                 <constraint firstAttribute="bottom" secondItem="d9e-51-84H" secondAttribute="bottom" constant="10" id="ir9-ON-CbL"/>
                                 <constraint firstItem="VV7-tu-cif" firstAttribute="trailing" secondItem="d9e-51-84H" secondAttribute="trailing" id="ldQ-oa-did"/>
+                                <constraint firstItem="zcC-5t-Ij7" firstAttribute="leading" secondItem="d9e-51-84H" secondAttribute="leading" id="mjn-m8-yQ4"/>
                                 <constraint firstItem="VV7-tu-cif" firstAttribute="centerX" secondItem="5hn-Dn-1Lk" secondAttribute="centerX" id="qzf-sC-zsb"/>
                                 <constraint firstAttribute="trailing" secondItem="d9e-51-84H" secondAttribute="trailing" constant="10" id="wDu-cU-rsq"/>
                             </constraints>
@@ -2043,6 +2147,7 @@
                         <constraint firstItem="5hn-Dn-1Lk" firstAttribute="leading" secondItem="ts0-WQ-PvV" secondAttribute="leading" constant="25" id="Su0-30-joI"/>
                         <constraint firstItem="nJd-Cp-cHz" firstAttribute="centerX" secondItem="ts0-WQ-PvV" secondAttribute="centerX" id="bSZ-fb-bI2"/>
                         <constraint firstItem="5hn-Dn-1Lk" firstAttribute="centerY" secondItem="ts0-WQ-PvV" secondAttribute="centerY" id="cfZ-lh-ffr"/>
+                        <constraint firstItem="zcC-5t-Ij7" firstAttribute="top" secondItem="pFj-i2-4U2" secondAttribute="bottom" constant="8" id="gN9-Lm-WGe"/>
                     </constraints>
                     <viewLayoutGuide key="safeArea" id="097-TN-Mff"/>
                 </view>
@@ -5201,6 +5306,7 @@
         <image name="logoBlack" width="459.66665649414062" height="168.33332824707031"/>
         <image name="logoWhite" width="459.66665649414062" height="168.33332824707031"/>
         <image name="mail" width="30" height="30"/>
+        <image name="maintenance" width="633.33331298828125" height="633.33331298828125"/>
         <image name="map" width="30" height="30"/>
         <image name="mini_gondola" width="512" height="512"/>
         <image name="mini_yacht" width="512" height="512"/>

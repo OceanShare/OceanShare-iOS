@@ -23,6 +23,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     var ref: DatabaseReference!
     let storageRef = Storage.storage().reference()
     let registry = Registry()
+    let skeleton = Skeleton()
     
     var appUser: AppUser? {
         didSet {
@@ -81,7 +82,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         /* setup the icons */
         setupCustomIcons()
         /* setup the skeleton animation */
-        turnOnSkeleton()
+        skeleton.turnOnSkeleton(image: profilePicture, cornerRadius: 95)
         /* set localized labels */
         setupLocalizedStrings()
         
@@ -104,21 +105,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         pictureIcon.tintColor = registry.customWhite
         addEditIcon.image = addEditIcon.image!.withRenderingMode(.alwaysTemplate)
         addEditIcon.tintColor = registry.customClearBlue
-        
-    }
-    
-    // MARK: - Animations
-    
-    func turnOnSkeleton() {
-        let gradient = SkeletonGradient(baseColor: UIColor.clouds)
-        let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .topLeftBottomRight)
-        profilePicture.isSkeletonable = true
-        profilePicture.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
-        
-    }
-    
-    func turnOffSkeleton() {
-        pictureContainer.hideSkeleton()
         
     }
     
@@ -207,7 +193,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                         self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
                         
                     }
-                    self.turnOffSkeleton()
+                    self.pictureContainer.hideSkeleton()
                     
                 })
             } else {

@@ -73,6 +73,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var uvGlobal: String!
     var droppedIconNumber: Int! = 0
     let registry = Registry()
+    let skeleton = Skeleton()
     let weather = Weather.self
     let currentUser = AppUser.self
 
@@ -135,6 +136,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var userDescriptionView: UIView!
     @IBOutlet weak var userAvatar: UIImageView!
     @IBOutlet weak var userAvatarName: UILabel!
+    @IBOutlet weak var skeletonName: DesignableView!
     
     /* edition view */
     @IBOutlet weak var editionView: UIView!
@@ -529,6 +531,15 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     // MARK: - User Description View
     
     /*
+     * Open the message view
+     */
+//    @IBAction func sendPrivateMessage(_ sender: Any) {
+//        let PMViewController = self.storyboard?.instantiateViewController(withIdentifier: "PrivateMessageViewController") as! PrivateMessageViewController
+//        self.present(PMViewController, animated: true,completion: nil)
+//        
+//    }
+    
+    /*
     * Close the user description view.
     */
     @IBAction func closeUserDescription(_ sender: Any) {
@@ -541,8 +552,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      */
     func fetchUserDescription() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
+        
         viewStacked = userDescriptionView
         animateInWithOptionalEffect(view: userDescriptionView, effect: true)
+        
+        
         userRef.child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot == snapshot {
                 let userData = Users(dataSnapshot: snapshot as DataSnapshot)
@@ -1503,6 +1517,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     // MARK: - Users Handlers
     
+    func didFinishFetchingUserTag() {
+        self.skeleton.turnOffSkeleton(image: self.userAvatar)
+        self.skeleton.turnOffSkeletonContainer(view: self.skeletonName)
+
+    }
+    
     func fetchUserTag(MarkerHash: Int) {
         var count = 0
         
@@ -1516,6 +1536,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
         viewStacked = userDescriptionView
         animateInWithOptionalEffect(view: userDescriptionView, effect: true)
+        skeleton.turnOnSkeleton(image: userAvatar, cornerRadius: 41)
+        skeleton.turnOnSkeletonContainer(view: skeletonName, cornerRadius: 15)
         
         userRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.childrenCount > 0 {
@@ -1533,19 +1555,23 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                         if error != nil {
                             if userData.picture != nil {
                                 self.userAvatar.image = userData.getUserPictureFromDatabase(user: userData)
+                                self.didFinishFetchingUserTag()
                                 
                             } else {
                                 self.userAvatar.image = userData.getUserPictureFromNowhere(user: userData)
+                                self.didFinishFetchingUserTag()
                                 
                             }
                         } else {
                             self.userAvatar.image = userData.getUserPictureFromStorage(user: userData, url: url!)
+                            self.didFinishFetchingUserTag()
                             
-                        }})
+                            }})
                     }
                 }
             }
         })
+        
     }
     
     func isDisplayable(User: Users) -> Bool {
