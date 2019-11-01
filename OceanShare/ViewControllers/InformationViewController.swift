@@ -32,6 +32,7 @@ class InformationViewController: UIViewController {
     let storageRef = Storage.storage().reference()
     let currentUser = Auth.auth().currentUser
     let registry = Registry()
+    let skeleton = Skeleton()
     
     // get the user information from the AppUser
     var appUser: AppUser? {
@@ -68,10 +69,10 @@ class InformationViewController: UIViewController {
     @IBOutlet weak var passwordModifierPic: UIImageView!
     
     /* container outlets */
-    @IBOutlet weak var nameContainer: UIView!
-    @IBOutlet weak var emailContainer: UIView!
-    @IBOutlet weak var shipContainer: UIView!
-    @IBOutlet weak var passwordContainer: UIView!
+    @IBOutlet weak var nameContainer: DesignableView!
+    @IBOutlet weak var emailContainer: DesignableView!
+    @IBOutlet weak var shipContainer: DesignableView!
+    @IBOutlet weak var passwordContainer: DesignableView!
     
     /* displayed label oultets */
     @IBOutlet weak var userName: UILabel!
@@ -227,14 +228,10 @@ class InformationViewController: UIViewController {
     }
     
     func turnOnSkeleton() {
-        nameContainer.isSkeletonable = true
-        emailContainer.isSkeletonable = true
-        shipContainer.isSkeletonable = true
-        passwordContainer.isSkeletonable = true
-        nameContainer.showAnimatedSkeleton()
-        emailContainer.showAnimatedSkeleton()
-        shipContainer.showAnimatedSkeleton()
-        passwordContainer.showAnimatedSkeleton()
+        skeleton.turnOnSkeletonContainer(view: nameContainer!, cornerRadius: 0)
+        skeleton.turnOnSkeletonContainer(view: emailContainer!, cornerRadius: 0)
+        skeleton.turnOnSkeletonContainer(view: shipContainer!, cornerRadius: 0)
+        skeleton.turnOnSkeletonContainer(view: passwordContainer!, cornerRadius: 0)
         
     }
     

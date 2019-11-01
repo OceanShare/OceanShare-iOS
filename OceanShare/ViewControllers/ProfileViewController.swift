@@ -47,7 +47,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var settingsLabel: UILabel!
     @IBOutlet weak var mediaLabel: UILabel!
     @IBOutlet weak var editingLabel: UILabel!
-    @IBOutlet weak var logoutButton: DesignableButton!
     @IBOutlet weak var profileItem: UITabBarItem!
     
     /* user information outlets */
@@ -82,7 +81,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         /* setup the icons */
         setupCustomIcons()
         /* setup the skeleton animation */
-        skeleton.turnOnSkeleton(image: profilePicture, cornerRadius: 95)
+        skeleton.turnOnSkeleton(image: profilePicture, cornerRadius: 65)
         /* set localized labels */
         setupLocalizedStrings()
         
@@ -92,7 +91,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         settingsLabel.text = NSLocalizedString("profileSettingsLabel", comment: "")
         mediaLabel.text = NSLocalizedString("profileMediaLabel", comment: "")
         editingLabel.text = NSLocalizedString("profileEditLabel", comment: "")
-        logoutButton.setTitle(NSLocalizedString("profileLogoutLabel", comment: ""), for: .normal)
         
     }
     

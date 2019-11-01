@@ -16,6 +16,10 @@ struct Skeleton {
     
     // MARK: - Functions
     
+    /*
+     * Turn on an animation on the image view given as parameter
+     * and set an optionnal corner radius.
+     */
     func turnOnSkeleton(image: UIImageView, cornerRadius: Double) {
         image.layer.cornerRadius = CGFloat(cornerRadius)
         image.clipsToBounds = true
@@ -24,6 +28,11 @@ struct Skeleton {
         
     }
     
+    /*
+     * Turn on an animation on a view given as parameter
+     * and set an optionnal corner radius. This view can be used
+     * as a laber loading animation.
+     */
     func turnOnSkeletonContainer(view: DesignableView, cornerRadius: Double) {
         view.isHidden = false
         view.cornerRadius = CGFloat(cornerRadius)
@@ -32,11 +41,17 @@ struct Skeleton {
         view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
     }
     
+    /*
+     * Turn off the image loading animation.
+     */
     func turnOffSkeleton(image: UIImageView) {
         image.hideSkeleton()
         
     }
     
+    /*
+     * Turn off the view loading animation.
+     */
     func turnOffSkeletonContainer(view: DesignableView) {
         view.hideSkeleton()
         view.isHidden = true
