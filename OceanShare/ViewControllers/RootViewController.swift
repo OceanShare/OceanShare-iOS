@@ -44,6 +44,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        //UserDefaults.standard.set(nil, forKey: "user_uid_key")
         // check if the user is already logged in
         if UserDefaults.standard.object(forKey: "user_uid_key") != nil {
             print("-> User already logged.")

@@ -58,6 +58,10 @@ struct Users {
         
     }
     
+    /*
+     * Return the user picture url from the database if there is one,
+     * else return the default user picture url.
+     */
     func getUserPictureFromDatabase(user: Users) -> UIImage {
         if (user.picture != nil) {
             let pictureURL = URL(string: user.picture!)
@@ -69,11 +73,19 @@ struct Users {
         
     }
     
+    /*
+     * Return the default user picture url from calling
+     * the function getDefaultPicture.
+     */
     func getUserPictureFromNowhere(user: Users) -> UIImage {
         return self.getAvatarCheckIn(user: user, finalPicture: self.getDefaultPicture())
         
     }
     
+    /*
+     * Return the user picture uploaded in storage if there is one,
+     * else return the default user picture url.
+     */
     func getUserPictureFromStorage(user: Users, url: URL) -> UIImage {
         let pictureData = NSData(contentsOf: url)
         let finalPicture = UIImage(data: pictureData! as Data)
@@ -81,6 +93,9 @@ struct Users {
         
     }
     
+    /*
+     * Return the default user picture url.
+     */
     func getDefaultPicture() -> UIImage {
         let registry = Registry()
         let pictureURL = URL(string: registry.defaultPictureUrl)
@@ -89,6 +104,10 @@ struct Users {
         
     }
     
+    /*
+     * Return the avatar depending of the user boat type if there
+     * is a boatId, else return the default user picture url.
+     */
     func getAvatarCheckIn(user: Users, finalPicture: UIImage) -> UIImage {
         if (user.showPicture == true) {
             return finalPicture
