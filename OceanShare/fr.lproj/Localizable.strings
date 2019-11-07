@@ -246,6 +246,20 @@
 
 // MARK: - Weather Model
 
+/* weather description */
+"thunderstorm" = "Orages";
+"rain" = "Pluie";
+"snow" = "Neige";
+"clouds" = "Nuageux";
+"clear" = "Ciel dégagé";
+"lightrain" = "Pluie légère";
+"heavyrain" = "Pluie de forte intensité";
+"hail" = "Grêle";
+"overcastclouds" = "Couvert";
+"fewclouds" = "Quelques nuages";
+"tornado" = "Tornades";
+"mist" = "Brouillard";
+
 /* date formater */
 "fullDateFormat" = "dd/MM, HH:mm";
 "dateFormat" = "HH:mm";

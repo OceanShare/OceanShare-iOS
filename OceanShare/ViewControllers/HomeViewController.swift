@@ -42,6 +42,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var mapView: MGLMapView!
     var stackedLongitude: String!
     var stackedLatitude: String!
+    var mustBeenDisplayed = true
     
     /* tag properties */
     var tagIds = [String]()
@@ -89,6 +90,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var messageLabel: UITextView!
     @IBOutlet weak var mapItem: UITabBarItem!
+    @IBOutlet weak var warningView: UIView!
     
     /* icon view */
     @IBOutlet weak var iconView: UIView!
@@ -183,7 +185,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         super.viewDidAppear(animated)
 
         getDisplayableUsers()
-        timer = Timer.scheduledTimer(timeInterval: 180, target: self, selector: #selector(HomeViewController.getDisplayableUsers), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(HomeViewController.getDisplayableUsers), userInfo: nil, repeats: true)
         
     }
     
@@ -226,6 +228,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         setupLocalizedStrings()
         /* add the layers in the right order */
         view.addSubview(mapView)
+        view.addSubview(warningView)
         view.addSubview(headerView)
         view.addSubview(centerView)
         view.addSubview(buttonMenu)
@@ -248,6 +251,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    func showWarningOnScreen() {
+        
+    }
+    
     /*
      * Real time location manager.
      * Update user's lalitude and longitude.
@@ -259,8 +266,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         let location = locations[locations.count - 1]
         
         if location.horizontalAccuracy > 0 {
-            if (location.speed <= 0) {
+            if (location.speed < 1) {
                 speedView.isHidden = true
+                warningView.isHidden = true
+                mustBeenDisplayed = true
                 
             } else {
                 speedView.isHidden = false
@@ -269,7 +278,17 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 let speedNds = speedKilometersHours * 0.54
                 speedValue.text = String(round(speedNds).clean)
                 speedMetric.text = "Nds"
-                
+                if (speedNds > 5) {
+                    if (mustBeenDisplayed == true) {
+                        mustBeenDisplayed = false
+                        warningView.isHidden = false
+                        
+                    }
+                } else {
+                    mustBeenDisplayed = true
+                    warningView.isHidden = true
+                    
+                }
             }
         }
 
@@ -428,6 +447,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     // MARK: - Map View
+    
+    @IBAction func hideWarning(_ sender: Any) {
+        warningView.isHidden = true
+        
+    }
     
     @IBAction func centerMapToUser(_ sender: Any) {
         mapView.setCenter(mapView.userLocation!.coordinate, animated: true)
@@ -1479,8 +1503,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
             }
             
-            self.weatherLabel.text = weather.weatherDescription
-            
+            self.weatherLabel.text = self.weather.analyseWeatherDescription(weather: weather, registry: self.registry)
+
             self.weatherLongitudeLabel.text = String(format:"%f", weather.longitude)
             self.weatherLatitudeLabel.text = String(format:"%f", weather.latitude)
             
@@ -1599,6 +1623,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      * Retrives displayable users from database.
      */
     @objc func getDisplayableUsers() {
+        print("~> reload user location")
         removeUsersFromMap()
         userRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.childrenCount > 0 {

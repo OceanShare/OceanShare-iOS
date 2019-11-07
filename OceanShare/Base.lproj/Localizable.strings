@@ -249,6 +249,20 @@
 
 // MARK: - Weather Model
 
+/* weather description */
+"thunderstorm" = "Thunderstorm";
+"rain" = "Rain";
+"snow" = "Snow";
+"clouds" = "Clouds";
+"clear" = "Clear sky";
+"lightrain" = "Light intensity rain";
+"heavyrain" = "Heavy intensity rain";
+"hail" = "Sleet";
+"overcastclouds" = "Overcast clouds";
+"fewclouds" = "Few clouds";
+"tornado" = "Tornado";
+"mist" = "Mist";
+
 /* date formater */
 "fullDateFormat" = "MM/dd, hh:mm a";
 "dateFormat" = "hh:mm a";

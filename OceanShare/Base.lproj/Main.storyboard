@@ -830,6 +830,53 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="01X-g5-h6n">
+                                <rect key="frame" x="105" y="50" width="204" height="50"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="g1p-D6-KrX">
+                                        <rect key="frame" x="0.0" y="0.0" width="204" height="50"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="warning-2" translatesAutoresizingMaskIntoConstraints="NO" id="9CF-kO-Mhe">
+                                                <rect key="frame" x="0.0" y="0.0" width="20" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="20" id="WPb-px-6WM"/>
+                                                </constraints>
+                                            </imageView>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="La vitesse est limitée à 5nds dans la zone des 300 mètres." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="juu-wc-I4w">
+                                                <rect key="frame" x="24" y="0.0" width="180" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="180" id="oUy-B3-lln"/>
+                                                </constraints>
+                                                <color key="textColor" red="0.99156731369999995" green="0.0011509897889999999" blue="0.2264732122" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="12"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="9CF-kO-Mhe" firstAttribute="centerY" secondItem="g1p-D6-KrX" secondAttribute="centerY" id="NxI-ny-6dC"/>
+                                            <constraint firstAttribute="width" constant="204" id="Sl9-30-wFx"/>
+                                            <constraint firstAttribute="height" constant="50" id="b27-E3-FFS"/>
+                                            <constraint firstItem="juu-wc-I4w" firstAttribute="centerY" secondItem="g1p-D6-KrX" secondAttribute="centerY" id="es5-pv-JQN"/>
+                                        </constraints>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZLa-mX-u9n">
+                                        <rect key="frame" x="0.0" y="0.0" width="204" height="50"/>
+                                        <connections>
+                                            <action selector="hideWarning:" destination="uDv-Wy-duU" eventType="touchUpInside" id="mfB-zF-Mei"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="g1p-D6-KrX" firstAttribute="leading" secondItem="01X-g5-h6n" secondAttribute="leading" id="1xa-xC-rS8"/>
+                                    <constraint firstAttribute="bottom" secondItem="g1p-D6-KrX" secondAttribute="bottom" id="4dg-9A-AdZ"/>
+                                    <constraint firstItem="ZLa-mX-u9n" firstAttribute="leading" secondItem="01X-g5-h6n" secondAttribute="leading" id="GOZ-W7-FM6"/>
+                                    <constraint firstItem="ZLa-mX-u9n" firstAttribute="top" secondItem="01X-g5-h6n" secondAttribute="top" id="jHY-YK-B8q"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZLa-mX-u9n" secondAttribute="trailing" id="o1n-eK-usR"/>
+                                    <constraint firstItem="g1p-D6-KrX" firstAttribute="top" secondItem="01X-g5-h6n" secondAttribute="top" id="oc2-GD-nCu"/>
+                                    <constraint firstAttribute="bottom" secondItem="ZLa-mX-u9n" secondAttribute="bottom" id="vR5-yp-VU1"/>
+                                    <constraint firstAttribute="trailing" secondItem="g1p-D6-KrX" secondAttribute="trailing" id="yJt-RD-jQ7"/>
+                                </constraints>
+                            </view>
                             <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ilb-TR-V86">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="687"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Nt1-yg-Wil">
@@ -882,6 +929,7 @@
                         <color key="backgroundColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="ilb-TR-V86" firstAttribute="top" secondItem="fOZ-aS-xJ0" secondAttribute="top" id="06q-Jw-GaQ"/>
+                            <constraint firstItem="01X-g5-h6n" firstAttribute="top" secondItem="fOZ-aS-xJ0" secondAttribute="top" constant="50" id="291-pz-goc"/>
                             <constraint firstAttribute="bottom" secondItem="ilb-TR-V86" secondAttribute="bottom" constant="49" id="6BB-C4-EEA"/>
                             <constraint firstAttribute="trailing" secondItem="26U-SV-mDL" secondAttribute="trailing" constant="-1" id="EAV-RC-j2X"/>
                             <constraint firstItem="7pO-eU-Sn3" firstAttribute="bottom" secondItem="cDm-Xs-2GE" secondAttribute="bottom" constant="10" id="JXm-Mr-lYw"/>
@@ -889,6 +937,7 @@
                             <constraint firstItem="Dkj-9t-sdX" firstAttribute="top" secondItem="BUb-bR-pjE" secondAttribute="bottom" constant="-110" id="SFA-oi-2o9"/>
                             <constraint firstItem="Dkj-9t-sdX" firstAttribute="centerX" secondItem="BUb-bR-pjE" secondAttribute="centerX" id="Zhw-KV-bS0"/>
                             <constraint firstItem="7pO-eU-Sn3" firstAttribute="bottom" secondItem="BUb-bR-pjE" secondAttribute="bottom" constant="10" id="goQ-f7-lgA"/>
+                            <constraint firstItem="01X-g5-h6n" firstAttribute="centerX" secondItem="fOZ-aS-xJ0" secondAttribute="centerX" id="ivr-Ot-QLD"/>
                             <constraint firstItem="26U-SV-mDL" firstAttribute="top" secondItem="fOZ-aS-xJ0" secondAttribute="top" constant="-100" id="l54-Bf-OL9"/>
                             <constraint firstItem="cDm-Xs-2GE" firstAttribute="leading" secondItem="fOZ-aS-xJ0" secondAttribute="leading" constant="10" id="mpf-L1-DO3"/>
                             <constraint firstAttribute="trailing" secondItem="ilb-TR-V86" secondAttribute="trailing" id="rLJ-Xb-d3K"/>
@@ -964,6 +1013,7 @@
                         <outlet property="uvLabel" destination="Xfs-ai-KkW" id="yzD-Up-ae7"/>
                         <outlet property="visibilityLabel" destination="l4k-zd-6KS" id="09d-mw-mHR"/>
                         <outlet property="visualEffectView" destination="ilb-TR-V86" id="fGR-R6-JhS"/>
+                        <outlet property="warningView" destination="01X-g5-h6n" id="Ahr-Ne-Nnd"/>
                         <outlet property="waterTemperatureLabel" destination="eh8-0X-BfL" id="2vj-uz-g9s"/>
                         <outlet property="weatherIconView" destination="wIx-RR-UUb" id="Lni-zo-xm7"/>
                         <outlet property="weatherImage" destination="Y5i-6K-ADr" id="UOP-KV-NlQ"/>
@@ -5323,6 +5373,7 @@
         <image name="uv_indice" width="30" height="30"/>
         <image name="visibility" width="30" height="30"/>
         <image name="vitesse" width="1537" height="1537"/>
+        <image name="warning-2" width="512" height="512"/>
         <image name="warning_black" width="30" height="30"/>
         <image name="waste" width="30" height="30"/>
         <image name="water_temperature" width="30" height="30"/>
