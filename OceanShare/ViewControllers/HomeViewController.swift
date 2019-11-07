@@ -42,6 +42,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var mapView: MGLMapView!
     var stackedLongitude: String!
     var stackedLatitude: String!
+    var mustBeenDisplayed = true
     
     /* tag properties */
     var tagIds = [String]()
@@ -56,6 +57,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                             downvote: 0,
                             contributors: ["":0])
     
+    /* user properties */
+    weak var timer: Timer?
+    var userIds = [String]()
+    var userHashs = [Int]()
+    
     /* saved tag */
     var selectedTag: MGLAnnotation!
     var selectedTagId: String?
@@ -68,6 +74,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var uvGlobal: String!
     var droppedIconNumber: Int! = 0
     let registry = Registry()
+    let skeleton = Skeleton()
     let weather = Weather.self
     let currentUser = AppUser.self
 
@@ -76,27 +83,26 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     /* map view */
     @IBOutlet weak var centerIcon: UIImageView!
     @IBOutlet weak var centerView: DesignableButton!
+    @IBOutlet weak var speedView: DesignableView!
+    @IBOutlet weak var speedValue: UILabel!
+    @IBOutlet weak var speedMetric: UILabel!
+    @IBOutlet weak var speedIcon: UIImageView!
     @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var oceanShareLogo: UIImageView!
     @IBOutlet weak var messageLabel: UITextView!
-    @IBOutlet weak var longitudeView: DesignableView!
-    @IBOutlet weak var longitudeIndicatorLabel: UILabel!
-    @IBOutlet weak var currentLongitudeLabel: UILabel!
-    @IBOutlet weak var latitudeView: DesignableView!
-    @IBOutlet weak var latitudeIndicatorLabel: UILabel!
-    @IBOutlet weak var currentLatitudeLabel: UILabel!
     @IBOutlet weak var mapItem: UITabBarItem!
+    @IBOutlet weak var warningView: UIView!
     
     /* icon view */
     @IBOutlet weak var iconView: UIView!
-    @IBOutlet weak var iconViewEventTextView: UITextView!
     @IBOutlet weak var iconViewJellyfishs: UILabel!
     @IBOutlet weak var iconViewDivers: UILabel!
     @IBOutlet weak var iconViewWaste: UILabel!
     @IBOutlet weak var iconViewWarning: UILabel!
     @IBOutlet weak var iconViewDolphins: UILabel!
     @IBOutlet weak var iconViewDestination: UILabel!
-    @IBOutlet weak var iconViewWeatherTextView: UITextView!
+    @IBOutlet weak var iconViewBuoys: UILabel!
+    @IBOutlet weak var iconViewPatrols: UILabel!
+    @IBOutlet weak var iconViewFishes: UILabel!
     @IBOutlet weak var iconViewWeather: UILabel!
     @IBOutlet weak var closeIcon: UIImageView!
     @IBOutlet weak var buttonMenu: DesignableButton!
@@ -132,6 +138,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var userDescriptionView: UIView!
     @IBOutlet weak var userAvatar: UIImageView!
     @IBOutlet weak var userAvatarName: UILabel!
+    @IBOutlet weak var skeletonName: DesignableView!
     
     /* edition view */
     @IBOutlet weak var editionView: UIView!
@@ -174,6 +181,21 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
 
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        getDisplayableUsers()
+        timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(HomeViewController.getDisplayableUsers), userInfo: nil, repeats: true)
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        timer?.invalidate()
+        
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -192,7 +214,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         visualEffectView.effect = nil
         visualEffectView.isHidden = true
         /* mapview setup */
-        mapView = MGLMapView(frame: view.bounds)
+        mapView = MGLMapView(frame: view.bounds, styleURL: URL(string: registry.mapUrl))
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.delegate = self
         mapView.logoView.isHidden = true
@@ -206,11 +228,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         setupLocalizedStrings()
         /* add the layers in the right order */
         view.addSubview(mapView)
+        view.addSubview(warningView)
         view.addSubview(headerView)
-        view.addSubview(longitudeView)
-        view.addSubview(latitudeView)
         view.addSubview(centerView)
         view.addSubview(buttonMenu)
+        view.addSubview(speedView)
         view.addSubview(visualEffectView)
         
     }
@@ -224,9 +246,13 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            //locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
             locationManager.startUpdatingLocation()
-            
         }
+    }
+    
+    func showWarningOnScreen() {
+        
     }
     
     /*
@@ -237,25 +263,58 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         let longitude = Double(round(10000*locValue.longitude)/10000).clean
         let latitude = Double(round(10000*locValue.latitude)/10000).clean
-
-        currentLatitudeLabel.text = latitude
-        currentLongitudeLabel.text = longitude
+        let location = locations[locations.count - 1]
+        
+        if location.horizontalAccuracy > 0 {
+            if (location.speed < 1) {
+                speedView.isHidden = true
+                warningView.isHidden = true
+                mustBeenDisplayed = true
+                
+            } else {
+                speedView.isHidden = false
+                //locationManager.stopUpdatingLocation()
+                let speedKilometersHours = location.speed * 3.6
+                let speedNds = speedKilometersHours * 0.54
+                speedValue.text = String(round(speedNds).clean)
+                speedMetric.text = "Nds"
+                if (speedNds > 5) {
+                    if (mustBeenDisplayed == true) {
+                        mustBeenDisplayed = false
+                        warningView.isHidden = false
+                        
+                    }
+                } else {
+                    mustBeenDisplayed = true
+                    warningView.isHidden = true
+                    
+                }
+            }
+        }
 
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        
-        if (longitude != self.stackedLongitude) {
-            let userLongitude: [String: Any] = ["longitude": longitude as Any]
-            self.userRef.child("\(uid)/location").updateChildValues(userLongitude)
-            self.stackedLongitude = longitude
+        if (UIApplication.shared.applicationState == .active) {
+            let userActive = ["user_active": true]
+            self.userRef.child("\(uid)/preferences").updateChildValues(userActive)
             
-        }
-        
-        if (latitude != self.stackedLatitude) {
-            let userLattitude: [String: Any] = ["latitude": latitude as Any]
-            self.userRef.child("\(uid)/location").updateChildValues(userLattitude)
-            self.stackedLatitude = latitude
+            if (longitude != self.stackedLongitude) {
+                let userLongitude: [String: Any] = ["longitude": longitude as Any]
+                self.userRef.child("\(uid)/location").updateChildValues(userLongitude)
+                self.stackedLongitude = longitude
+                
+            }
             
+            if (latitude != self.stackedLatitude) {
+                let userLattitude: [String: Any] = ["latitude": latitude as Any]
+                self.userRef.child("\(uid)/location").updateChildValues(userLattitude)
+                self.stackedLatitude = latitude
+                
+            }
+        } else {
+            let userActive = ["user_active": false]
+            self.userRef.child("\(uid)/preferences").updateChildValues(userActive)
+
         }
     }
     
@@ -263,19 +322,17 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      * Setup labels.
      */
     func setupLocalizedStrings() {
-        /* view */
-        longitudeIndicatorLabel.text = NSLocalizedString("longitude", comment: "")
-        latitudeIndicatorLabel.text = NSLocalizedString("latitude", comment: "")
         /* icon view */
-        iconViewEventTextView.text = NSLocalizedString("iconViewEventTextView", comment: "")
         iconViewJellyfishs.text = NSLocalizedString("iconViewJellyfishs", comment: "")
         iconViewDivers.text = NSLocalizedString("iconViewDivers", comment: "")
         iconViewWaste.text = NSLocalizedString("iconViewWaste", comment: "")
         iconViewWarning.text = NSLocalizedString("iconViewWarning", comment: "")
         iconViewDolphins.text = NSLocalizedString("iconViewDolphins", comment: "")
         iconViewDestination.text = NSLocalizedString("iconViewDestination", comment: "")
-        iconViewWeatherTextView.text = NSLocalizedString("iconViewWeatherTextView", comment: "")
         iconViewWeather.text = NSLocalizedString("iconViewWeather", comment: "")
+        iconViewBuoys.text = NSLocalizedString("iconViewBuoys", comment: "")
+        iconViewPatrols.text = NSLocalizedString("iconViewPatrols", comment: "")
+        iconViewFishes.text = NSLocalizedString("iconViewFishes", comment: "")
         /* comment view */
         commentViewDescription.text = NSLocalizedString("commentViewDescription", comment: "")
         descriptionTextField.placeholder = NSLocalizedString("commentViewDescriptionTextField", comment: "")
@@ -297,7 +354,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     func setupCustomIcons() {
         /* map view */
         centerIcon.image = centerIcon.image!.withRenderingMode(.alwaysTemplate)
-        centerIcon.tintColor = registry.customWhite
+        centerIcon.tintColor = registry.customDarkBlue
         /* icon view */
         closeIcon.image = closeIcon.image!.withRenderingMode(.alwaysTemplate)
         closeIcon.tintColor = registry.customBlack
@@ -316,7 +373,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      */
     func setupCompass() {
         var centerPoint = mapView.compassView.center
-        centerPoint.y = 130
+        centerPoint.y = 65
         mapView.compassView.center = centerPoint
         
     }
@@ -327,18 +384,20 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      * Display a message on the header depending of interactions the user has with markers.
      * It takes the message to display and the alert type color as parameters.
      */
-    func PutMessageOnHeader(msg: String, color: UIColor) {
-        oceanShareLogo.isHidden = true
+    func PutMessageOnHeader(msg: String, color: UIColor, error: Bool) {
         headerView.backgroundColor = color
         messageLabel.text = msg
-        messageLabel.isHidden = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            self.messageLabel.isHidden = true
-            self.oceanShareLogo.isHidden = false
-            self.headerView.backgroundColor = self.registry.customMilkyWhite
-            
+        if (error == false) {
+            // todo: stop header sliding to the bottom before the previous one disapear
+
+        }
+        headerView.animShow()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.headerView.animHide()
         }
     }
+    
+    
     
     func animateInWithOptionalEffect(view: UIView, effect: Bool) {
         if effect == true {
@@ -388,6 +447,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     // MARK: - Map View
+    
+    @IBAction func hideWarning(_ sender: Any) {
+        warningView.isHidden = true
+        
+    }
     
     @IBAction func centerMapToUser(_ sender: Any) {
         mapView.setCenter(mapView.userLocation!.coordinate, animated: true)
@@ -439,11 +503,28 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    @IBAction func buoyActivate(_ sender: Any) {
+        eventActivator(eventId: 6, eventDescription: "Buoys", eventMessage: self.registry.msgBuoys)
+        
+    }
+    
+    @IBAction func patrolActivate(_ sender: Any) {
+        eventActivator(eventId: 7, eventDescription: "Patrols", eventMessage: self.registry.msgPatrols)
+        
+    }
+    
+    @IBAction func fishActivate(_ sender: Any) {
+        eventActivator(eventId: 8, eventDescription: "Fishes", eventMessage: self.registry.msgFishes)
+        
+    }
+    
     @IBAction func weatherActivate(_ sender: Any) {
         animateOutWithOptionalEffect(effect: true)
         putWeatherOnMap(activate: true)
-        PutMessageOnHeader(msg: self.registry.msgWeather, color: registry.customGreen)
-
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.PutMessageOnHeader(msg: self.registry.msgWeather, color: self.registry.customGreen, error: false)
+            
+        }
     }
     
     func eventActivator (eventId: Int, eventDescription: String, eventMessage: String) {
@@ -458,44 +539,36 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             tagProperties.contributors = [currentUser.getCurrentUser() : 0]
             putIconOnMap(activate: true)
             animateOutWithOptionalEffect(effect: true)
-            PutMessageOnHeader(msg: eventMessage, color: registry.customGreen)
-            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.PutMessageOnHeader(msg: eventMessage, color: self.registry.customGreen, error: false)
+                
+            }
         } else {
             animateOutWithOptionalEffect(effect: true)
-            self.PutMessageOnHeader(msg: self.registry.msgEventLimit, color: self.registry.customRed)
-            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.PutMessageOnHeader(msg: self.registry.msgEventLimit, color: self.registry.customRed, error: true)
+                
+            }
         }
     }
     
     // MARK: - User Description View
     
     /*
+     * Open the message view
+     */
+//    @IBAction func sendPrivateMessage(_ sender: Any) {
+//        let PMViewController = self.storyboard?.instantiateViewController(withIdentifier: "PrivateMessageViewController") as! PrivateMessageViewController
+//        self.present(PMViewController, animated: true,completion: nil)
+//        
+//    }
+    
+    /*
     * Close the user description view.
     */
     @IBAction func closeUserDescription(_ sender: Any) {
         animateOutWithOptionalEffect(effect: true)
-    }
-    
-    func attributePicture(showPicture: Bool, boatCategorie: Int, finalPicture: UIImage) {
-        userAvatar.layer.cornerRadius = 41
-        userAvatar.clipsToBounds = true
         
-        if (showPicture == true) {
-            self.userAvatar.image = finalPicture
-        } else {
-            switch boatCategorie {
-            case 1:
-                self.userAvatar.image = UIImage(named: "sailing_boat")
-            case 2:
-                self.userAvatar.image = UIImage(named: "mini_gondola")
-            case 3:
-                self.userAvatar.image = UIImage(named: "mini_yacht")
-            case 4:
-                self.userAvatar.image = UIImage(named: "yacht")
-            default:
-                return
-            }
-        }
     }
     
     /*
@@ -504,44 +577,38 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     func fetchUserDescription() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         
+        viewStacked = userDescriptionView
+        animateInWithOptionalEffect(view: userDescriptionView, effect: true)
+        
+        
         userRef.child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot == snapshot {
-                guard let data = snapshot.value as? NSDictionary else { return }
-                guard let name = data["name"] as? String else { return }
-                guard let preferences = data["preferences"] as? [String: Any] else { return }
-                guard let showPicture = preferences["show_picture"] as? Bool else { return }
-                guard let boatCategorie = preferences["boatId"] as? Int else { return }
-            
-                let user = Auth.auth().currentUser
-                if let user = user {
-                    _ = Storage.storage().reference().child("profile_pictures").child("\(String(describing: user.uid)).png").downloadURL(completion: { (url, error) in
-                        if error != nil {
-                            // check if the user has a network profile picture
-                            if let userPicture = data["picture"] as? String {
-                                let pictureURL = URL(string: userPicture)
-                                let pictureData = NSData(contentsOf: pictureURL!)
-                                let finalPicture = UIImage(data: pictureData! as Data)
-                                self.attributePicture(showPicture: showPicture, boatCategorie: boatCategorie, finalPicture: finalPicture!)
-                            } else {
-                                // set a default avatar
-                                let pictureURL = URL(string: self.registry.defaultPictureUrl)
-                                let pictureData = NSData(contentsOf: pictureURL!)
-                                let finalPicture = UIImage(data: pictureData! as Data)
-                                self.attributePicture(showPicture: showPicture, boatCategorie: boatCategorie, finalPicture: finalPicture!)
-                            }
-                        } else {
-                            let pictureData = NSData(contentsOf: url!)
-                            let finalPicture = UIImage(data: pictureData! as Data)
-                            self.attributePicture(showPicture: showPicture, boatCategorie: boatCategorie, finalPicture: finalPicture!)
-                        }
-                    })
-                }
-                self.userAvatarName.text = name
-            
+                let userData = Users(dataSnapshot: snapshot as DataSnapshot)
+                self.userAvatarName.text = userData.name
+                self.userAvatar.layer.cornerRadius = 41
+                self.userAvatar.clipsToBounds = true
+                
+                _ = Storage.storage().reference()
+                .child("profile_pictures")
+                .child("\(String(describing: snapshot.key)).png")
+                .downloadURL(completion: { (url, error) in
+                if error != nil {
+                    if userData.picture != nil {
+                        self.userAvatar.image = userData.getUserPictureFromDatabase(user: userData)
+                        
+                    } else {
+                        self.userAvatar.image = userData.getUserPictureFromNowhere(user: userData)
+                        
+                    }
+                } else {
+                    self.userAvatar.image = userData.getUserPictureFromStorage(user: userData, url: url!)
+                    
+                }})
             }
         })
+        
     }
-    
+
     // MARK: - Description View
     
     /*
@@ -633,7 +700,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         putTagsinArray(MarkerHash: markerHash, FirebaseID: firebaseId)
         animateOutWithOptionalEffect(effect: true)
         descriptionTextField.text = ""
-        PutMessageOnHeader(msg: registry.msgDropSuccess, color: registry.customGreen)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.PutMessageOnHeader(msg: self.registry.msgDropSuccess, color: self.registry.customGreen, error: false)
+        }
         putIconOnMap(activate: false)
         getDroppedIconByUser()
         
@@ -663,7 +732,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         removeTag()
         animateOutWithOptionalEffect(effect: false)
         animateOutWithOptionalEffect(effect: true)
-        PutMessageOnHeader(msg: registry.msgDeleteSuccess, color: registry.customGreen)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.PutMessageOnHeader(msg: self.registry.msgDeleteSuccess, color: self.registry.customGreen, error: false)
+        }
         getDroppedIconByUser()
         
     }
@@ -729,6 +800,15 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             mapView.addAnnotation(marker)
         case 5:
             marker.title = NSLocalizedString("destination", comment: "")
+            mapView.addAnnotation(marker)
+        case 6:
+            marker.title = NSLocalizedString("buoys", comment: "")
+            mapView.addAnnotation(marker)
+        case 7:
+            marker.title = NSLocalizedString("patrols", comment: "")
+            mapView.addAnnotation(marker)
+        case 8:
+            marker.title = NSLocalizedString("fishes", comment: "")
             mapView.addAnnotation(marker)
         default:
             print("Error in func putTag")
@@ -904,14 +984,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
      */
     func fetchTag(MarkerHash: Int) {
         var count = 0
-        let hasDoneWork = false
         
         while (tagHashs[count] != MarkerHash) {
             if (tagHashs[count] != tagHashs.last) {
                 count = count + 1
             } else {
-                viewStacked = userDescriptionView
-                animateInWithOptionalEffect(view: userDescriptionView, effect: true)
                 fetchUserDescription()
                 return
             }
@@ -923,7 +1000,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.childrenCount > 0 {
                 for tag in snapshot.children.allObjects as! [DataSnapshot] {
-                    if (self.tagIds[count] == tag.key && hasDoneWork == false) {
+                    if (self.tagIds[count] == tag.key) {
                         let data = tag.value as? NSDictionary
                         let id  = data?["groupId"] as? Int
                         let description = data?["description"] as? String
@@ -1086,6 +1163,24 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             if description.isEmpty {
                 self.descriptionLabel.text = self.registry.descDestination
             }
+        case 6:
+            self.eventImage.image = self.registry.eventBuoys
+            self.eventLabel.text = NSLocalizedString("Buoys", comment: "")
+            if description.isEmpty {
+                self.descriptionLabel.text = self.registry.descBuoys
+        }
+        case 7:
+            self.eventImage.image = self.registry.eventPatrols
+            self.eventLabel.text = NSLocalizedString("Patrols", comment: "")
+            if description.isEmpty {
+                self.descriptionLabel.text = self.registry.descPatrols
+        }
+        case 8:
+            self.eventImage.image = self.registry.eventFishes
+            self.eventLabel.text = NSLocalizedString("Fishes", comment: "")
+            if description.isEmpty {
+                self.descriptionLabel.text = self.registry.descFishes
+        }
         default:
             print("Error deprecated tag.")
             
@@ -1122,7 +1217,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
         return true
-        
+
     }
     
     func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
@@ -1130,13 +1225,32 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    /*
+     * Return true if the annotation is a user location, else return false.
+     */
+    func isUserAnnotation(title: String) -> Bool {
+        if (title == NSLocalizedString("gondola", comment: "")) ||
+            (title == NSLocalizedString("sailing_boat", comment: "")) ||
+            (title == NSLocalizedString("mini_yacht", comment: "")) ||
+            (title == NSLocalizedString("yacht", comment: "")) {
+            return true
+            
+        }
+        return false
+        
+    }
+    
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
         mapView.deselectAnnotation(annotation, animated: false)
-        /*viewStacked = descriptionView // todo
-        animateInWithOptionalEffect(view: descriptionView, effect: true)*/ // todo
-        selectedTag = annotation
-        fetchTag(MarkerHash: annotation.hash)
-        
+        if (isUserAnnotation(title: annotation.title!!)) {
+            selectedTag = annotation
+            fetchUserTag(MarkerHash: annotation.hash)
+            
+        } else {
+            selectedTag = annotation
+            fetchTag(MarkerHash: annotation.hash)
+            
+        }
     }
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
@@ -1176,12 +1290,51 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             marker = MGLAnnotationImage(image: image, reuseIdentifier: "Warning")
             
-        } else {
+        } else if annotation.title == NSLocalizedString("waste", comment: "") {
             var image = UIImage(named: "pin_waste")!
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
             marker = MGLAnnotationImage(image: image, reuseIdentifier: "Waste")
             
+        } else if annotation.title == NSLocalizedString("buoys", comment: "") {
+            var image = UIImage(named: "pin_buoy")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Buoys")
+            
+        } else if annotation.title == NSLocalizedString("patrols", comment: "") {
+            var image = UIImage(named: "pin_guards")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Patrols")
+            
+        } else if annotation.title == NSLocalizedString("fishes", comment: "") {
+            var image = UIImage(named: "pin_fishes")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Fishes")
+            
+        } else if annotation.title == NSLocalizedString("gondola", comment: "") {
+            var image = UIImage(named: "pin_gondola")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/15, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Gondola")
+            
+        } else if annotation.title == NSLocalizedString("sailing_boat", comment: "") {
+            var image = UIImage(named: "pin_sailing_boat")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/15, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Sailboat")
+            
+        } else if annotation.title == NSLocalizedString("mini_yacht", comment: "") {
+            var image = UIImage(named: "pin_mini_yacht")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/15, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Yacht")
+            
+        } else if annotation.title == NSLocalizedString("yacht", comment: "") {
+            var image = UIImage(named: "pin_yacht")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/15, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Mega yacht")
+            
+        } else {
+            print()
+            
         }
+        
         return marker
     
     }
@@ -1229,11 +1382,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     self.animateInWithOptionalEffect(view: commentView, effect: true)
                     
                 } else {
-                    self.PutMessageOnHeader(msg: self.registry.msgEarthLimit, color: self.registry.customRed)
+                    self.PutMessageOnHeader(msg: self.registry.msgEarthLimit, color: self.registry.customRed, error: true)
                     
                 }
             } else {
-                self.PutMessageOnHeader(msg: self.registry.msgDistanceLimit, color: self.registry.customRed)
+                self.PutMessageOnHeader(msg: self.registry.msgDistanceLimit, color: self.registry.customRed, error: true)
                 
             }
         }
@@ -1280,7 +1433,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 self.putWeatherOnMap(activate: false)
                 
             } else {
-                self.PutMessageOnHeader(msg: self.registry.msgDistanceLimit, color: self.registry.customRed)
+                self.PutMessageOnHeader(msg: self.registry.msgDistanceLimit, color: self.registry.customRed, error: true)
                 
             }
         }
@@ -1350,8 +1503,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
             }
             
-            self.weatherLabel.text = weather.weatherDescription
-            
+            self.weatherLabel.text = self.weather.analyseWeatherDescription(weather: weather, registry: self.registry)
+
             self.weatherLongitudeLabel.text = String(format:"%f", weather.longitude)
             self.weatherLatitudeLabel.text = String(format:"%f", weather.latitude)
             
@@ -1385,15 +1538,162 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             }
         }
     }
+    
+    // MARK: - Users Handlers
+    
+    func didFinishFetchingUserTag() {
+        self.skeleton.turnOffSkeleton(image: self.userAvatar)
+        self.skeleton.turnOffSkeletonContainer(view: self.skeletonName)
+
+    }
+    
+    func fetchUserTag(MarkerHash: Int) {
+        var count = 0
+        
+        while (userHashs[count] != MarkerHash) {
+            if (userHashs[count] != userHashs.last) {
+                count = count + 1
+            } else {
+                fetchUserDescription()
+                return
+            }
+        }
+        viewStacked = userDescriptionView
+        animateInWithOptionalEffect(view: userDescriptionView, effect: true)
+        skeleton.turnOnSkeleton(image: userAvatar, cornerRadius: 41)
+        skeleton.turnOnSkeletonContainer(view: skeletonName, cornerRadius: 15)
+        
+        userRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.childrenCount > 0 {
+                for user in snapshot.children.allObjects as! [DataSnapshot] {
+                    if (self.userIds[count] == user.key) {
+                        let userData = Users(dataSnapshot: user as DataSnapshot)
+                        self.userAvatarName.text = userData.name
+                        self.userAvatar.layer.cornerRadius = 41
+                        self.userAvatar.clipsToBounds = true
+                        
+                        _ = Storage.storage().reference()
+                        .child("profile_pictures")
+                        .child("\(String(describing: user.key)).png")
+                        .downloadURL(completion: { (url, error) in
+                        if error != nil {
+                            if userData.picture != nil {
+                                self.userAvatar.image = userData.getUserPictureFromDatabase(user: userData)
+                                self.didFinishFetchingUserTag()
+                                
+                            } else {
+                                self.userAvatar.image = userData.getUserPictureFromNowhere(user: userData)
+                                self.didFinishFetchingUserTag()
+                                
+                            }
+                        } else {
+                            self.userAvatar.image = userData.getUserPictureFromStorage(user: userData, url: url!)
+                            self.didFinishFetchingUserTag()
+                            
+                            }})
+                    }
+                }
+            }
+        })
+        
+    }
+    
+    func isDisplayable(User: Users) -> Bool {
+        if (User.uid != Auth.auth().currentUser?.uid) {
+            if (User.isActive == true) {
+                if (User.ghostMode == false) {
+                    if ((User.longitude != nil) && (User.latitude != nil)) {
+                        if ((User.longitude != 0.0) && (User.latitude != 0.0)) {
+                            //let location = CLLocationCoordinate2D.init(latitude: User.latitude!, longitude: User.longitude!)
+                            //let point = mapView.convert(location, toPointTo: mapView)
+                            //if (self.mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"]).isEmpty != false) {
+                            //}
+                            // TODO: check if users are on water
+                            return true
+                        }
+                    }
+                }
+            }
+        }
+        return false
+        
+    }
+    
+    /*
+     * Retrives displayable users from database.
+     */
+    @objc func getDisplayableUsers() {
+        print("~> reload user location")
+        removeUsersFromMap()
+        userRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.childrenCount > 0 {
+                for user in snapshot.children.allObjects as! [DataSnapshot] {
+                    let userData = Users(dataSnapshot: user as DataSnapshot)
+        
+                    if (self.isDisplayable(User: userData) == true) {
+                        var userHash: Int
+                        userHash = self.putUsers(mapView: self.mapView, User: userData)
+                        self.putUsersInArray(UserHash: userHash, FirebaseID: user.key)
+                        
+                    }
+                }
+            }
+        })
+    }
+    
+    @discardableResult func putUsers(mapView: MGLMapView, User: Users) -> Int {
+        let user = MGLPointAnnotation()
+        user.coordinate.latitude = User.latitude!
+        user.coordinate.longitude = User.longitude!
+        
+        switch User.boatId {
+        case 1:
+            user.title = NSLocalizedString("sailing_boat", comment: "")
+            mapView.addAnnotation(user)
+        case 2:
+            user.title = NSLocalizedString("gondola", comment: "")
+            mapView.addAnnotation(user)
+        case 3:
+            user.title = NSLocalizedString("mini_yacht", comment: "")
+            mapView.addAnnotation(user)
+        case 4:
+            user.title = NSLocalizedString("yacht", comment: "")
+            mapView.addAnnotation(user)
+        default:
+            print("Error in function putUsers(): no boat id found.")
+            
+        }
+        return user.hash
+    }
+    
+    func putUsersInArray(UserHash: Int, FirebaseID: String) {
+        userIds.append(FirebaseID)
+        userHashs.append(UserHash)
+        
+    }
+    
+    func removeUsersFromMap() {
+        let annotations = self.mapView.annotations
+        
+        if (userHashs.isEmpty == false) {
+            for hash in userHashs {
+                if ((annotations) != nil) {
+                    for annotation in annotations! {
+                        if (hash == annotation.hash) {
+                            self.mapView.removeAnnotation(annotation)
+
+                        }
+                    }
+                }
+            }
+        }
+        userHashs.removeAll()
+        userIds.removeAll()
+        
+    }
 }
 
 // MARK: - Custom Class
-
-extension Double {
-    var clean: String {
-       return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
-    }
-}
 
 class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     let size: CGFloat = 48

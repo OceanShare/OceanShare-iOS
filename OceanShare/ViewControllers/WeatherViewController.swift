@@ -170,7 +170,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
                 self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
             }
             
-            self.weatherDescriptionLabel.text = weather.weatherDescription
+            self.weatherDescriptionLabel.text = self.weather.analyseWeatherDescription(weather: weather, registry: self.registry)
             
             self.longitudeLabel.text = String(format:"%f", weather.longitude)
             self.latitudeLabel.text = String(format:"%f", weather.latitude)

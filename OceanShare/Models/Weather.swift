@@ -139,6 +139,49 @@ struct Weather {
         return uvRank
     }
     
+    static func analyseWeatherDescription(weather: Weather, registry: Registry) -> String {
+        if (weather.dateAndTime < weather.sunrise) || (weather.dateAndTime > weather.sunset) {
+            switch weather.weatherID {
+            case 0...232 :
+                return NSLocalizedString("thunderstorm", comment: "")
+            case 300...321, 500...504, 520...531 :
+                return NSLocalizedString("rain", comment: "")
+            case 511, 600...622 :
+                return NSLocalizedString("snow", comment: "")
+            case 801...804 :
+                return NSLocalizedString("clouds", comment: "")
+            default:
+                return NSLocalizedString("clear", comment: "")
+                
+            }
+        } else {
+            switch weather.weatherID {
+            case 0...232 :
+                return NSLocalizedString("thunderstorm", comment: "")
+            case 300...321, 520...531 :
+                return NSLocalizedString("lightrain", comment: "")
+            case 500...504 :
+                return NSLocalizedString("heavyrain", comment: "")
+            case 511, 600...601, 615...622 :
+                return NSLocalizedString("snow", comment: "")
+            case 611...613 :
+                return NSLocalizedString("hail", comment: "")
+            case 701...771 :
+                return NSLocalizedString("mist", comment: "")
+            case 781 :
+                return NSLocalizedString("tornado", comment: "")
+            case 800 :
+                return NSLocalizedString("clear", comment: "")
+            case 801, 802 :
+                return NSLocalizedString("fewclouds", comment: "")
+            case 803, 804 :
+                return NSLocalizedString("overcastclouds", comment: "")
+            default :
+                return NSLocalizedString("clear", comment: "")
+            }
+        }
+    }
+    
     static func analyseDescription(weather: Weather, registry: Registry) -> UIImage {
         var choosenOne: UIImage
         

@@ -23,6 +23,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     var ref: DatabaseReference!
     let storageRef = Storage.storage().reference()
     let registry = Registry()
+    let skeleton = Skeleton()
     
     var appUser: AppUser? {
         didSet {
@@ -46,7 +47,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var settingsLabel: UILabel!
     @IBOutlet weak var mediaLabel: UILabel!
     @IBOutlet weak var editingLabel: UILabel!
-    @IBOutlet weak var logoutButton: DesignableButton!
     @IBOutlet weak var profileItem: UITabBarItem!
     
     /* user information outlets */
@@ -81,7 +81,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         /* setup the icons */
         setupCustomIcons()
         /* setup the skeleton animation */
-        turnOnSkeleton()
+        skeleton.turnOnSkeleton(image: profilePicture, cornerRadius: 65)
         /* set localized labels */
         setupLocalizedStrings()
         
@@ -91,7 +91,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         settingsLabel.text = NSLocalizedString("profileSettingsLabel", comment: "")
         mediaLabel.text = NSLocalizedString("profileMediaLabel", comment: "")
         editingLabel.text = NSLocalizedString("profileEditLabel", comment: "")
-        logoutButton.setTitle(NSLocalizedString("profileLogoutLabel", comment: ""), for: .normal)
         
     }
     
@@ -104,21 +103,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         pictureIcon.tintColor = registry.customWhite
         addEditIcon.image = addEditIcon.image!.withRenderingMode(.alwaysTemplate)
         addEditIcon.tintColor = registry.customClearBlue
-        
-    }
-    
-    // MARK: - Animations
-    
-    func turnOnSkeleton() {
-        let gradient = SkeletonGradient(baseColor: UIColor.clouds)
-        let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .topLeftBottomRight)
-        profilePicture.isSkeletonable = true
-        profilePicture.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
-        
-    }
-    
-    func turnOffSkeleton() {
-        pictureContainer.hideSkeleton()
         
     }
     
@@ -207,7 +191,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                         self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
                         
                     }
-                    self.turnOffSkeleton()
+                    self.pictureContainer.hideSkeleton()
                     
                 })
             } else {

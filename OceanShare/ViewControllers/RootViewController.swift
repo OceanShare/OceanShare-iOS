@@ -44,6 +44,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        //UserDefaults.standard.set(nil, forKey: "user_uid_key")
         // check if the user is already logged in
         if UserDefaults.standard.object(forKey: "user_uid_key") != nil {
             print("-> User already logged.")
@@ -82,7 +83,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
                 }
             } else {
                 
-                print("-> User logged bu social networks.")
+                print("-> User logged by social networks.")
                 
                 // redirect the user to the map
                 let mainTabBarController = storyboard?.instantiateViewController(withIdentifier:   "MainTabBarController") as! MainTabBarController
