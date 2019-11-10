@@ -113,84 +113,18 @@
                                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mSO-hu-0u2">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="450"/>
                                 </scrollView>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3xk-1K-QVN" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
-                                    <rect key="frame" x="25" y="145" width="75" height="40"/>
-                                    <color key="backgroundColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="0Rn-DI-Dm9"/>
-                                        <constraint firstAttribute="width" constant="75" id="lDh-2z-SvX"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="20"/>
-                                    <state key="normal" title="OK">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </state>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                            <real key="value" value="5"/>
-                                        </userDefinedRuntimeAttribute>
-                                    </userDefinedRuntimeAttributes>
-                                    <connections>
-                                        <action selector="firstPressed:" destination="UcI-SK-gg2" eventType="touchUpInside" id="Jwv-oC-gWa"/>
-                                    </connections>
-                                </button>
-                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S3h-By-OBE" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
-                                    <rect key="frame" x="55" y="90" width="75" height="40"/>
-                                    <color key="backgroundColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="NuP-gU-XQc"/>
-                                        <constraint firstAttribute="width" constant="75" id="wxK-Pq-Rx5"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="20"/>
-                                    <state key="normal" title="OK">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </state>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                            <real key="value" value="5"/>
-                                        </userDefinedRuntimeAttribute>
-                                    </userDefinedRuntimeAttributes>
-                                    <connections>
-                                        <action selector="secondPressed:" destination="UcI-SK-gg2" eventType="touchUpInside" id="qQf-qt-lEz"/>
-                                    </connections>
-                                </button>
-                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eIp-yU-AeA" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
-                                    <rect key="frame" x="30" y="140" width="75" height="40"/>
-                                    <color key="backgroundColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="R0Z-W7-nGY"/>
-                                        <constraint firstAttribute="width" constant="75" id="Tsu-9g-7WK"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="20"/>
-                                    <state key="normal" title="OK">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </state>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                            <real key="value" value="5"/>
-                                        </userDefinedRuntimeAttribute>
-                                    </userDefinedRuntimeAttributes>
-                                    <connections>
-                                        <action selector="closeWalkthrough:" destination="UcI-SK-gg2" eventType="touchUpInside" id="7lT-4u-f3q"/>
-                                    </connections>
-                                </button>
                                 <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="SBR-Wr-hGU">
                                     <rect key="frame" x="130.66666666666666" y="15" width="39" height="37"/>
                                 </pageControl>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="3xk-1K-QVN" firstAttribute="leading" secondItem="aDz-Ok-4j7" secondAttribute="leading" constant="25" id="9io-Uh-uLb"/>
                                 <constraint firstItem="SBR-Wr-hGU" firstAttribute="top" secondItem="aDz-Ok-4j7" secondAttribute="top" constant="15" id="A8p-tn-TJL"/>
                                 <constraint firstAttribute="bottom" secondItem="mSO-hu-0u2" secondAttribute="bottom" id="CJW-Hj-IXh"/>
                                 <constraint firstAttribute="height" constant="450" id="JQX-QK-5y0"/>
-                                <constraint firstItem="eIp-yU-AeA" firstAttribute="top" secondItem="aDz-Ok-4j7" secondAttribute="top" constant="140" id="PF3-ur-6fT"/>
-                                <constraint firstItem="S3h-By-OBE" firstAttribute="top" secondItem="aDz-Ok-4j7" secondAttribute="top" constant="90" id="Qbk-0I-PjH"/>
-                                <constraint firstItem="3xk-1K-QVN" firstAttribute="top" secondItem="aDz-Ok-4j7" secondAttribute="top" constant="145" id="SF6-BT-Fwq"/>
                                 <constraint firstAttribute="trailing" secondItem="mSO-hu-0u2" secondAttribute="trailing" id="TCA-Vd-wPa"/>
                                 <constraint firstItem="mSO-hu-0u2" firstAttribute="top" secondItem="aDz-Ok-4j7" secondAttribute="top" id="VxA-Df-eiT"/>
-                                <constraint firstItem="eIp-yU-AeA" firstAttribute="leading" secondItem="aDz-Ok-4j7" secondAttribute="leading" constant="30" id="YC6-ew-lBl"/>
                                 <constraint firstAttribute="width" constant="300" id="eHw-3H-mC1"/>
-                                <constraint firstItem="S3h-By-OBE" firstAttribute="leading" secondItem="aDz-Ok-4j7" secondAttribute="leading" constant="55" id="huA-P4-iEi"/>
                                 <constraint firstItem="SBR-Wr-hGU" firstAttribute="centerX" secondItem="aDz-Ok-4j7" secondAttribute="centerX" id="ikI-Pp-Ywt"/>
                                 <constraint firstItem="mSO-hu-0u2" firstAttribute="leading" secondItem="aDz-Ok-4j7" secondAttribute="leading" id="s37-3S-msa"/>
                             </constraints>
@@ -215,6 +149,46 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S3h-By-OBE" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
+                            <rect key="frame" x="187.66666666666666" y="690" width="74.999999999999972" height="40"/>
+                            <color key="backgroundColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="NuP-gU-XQc"/>
+                                <constraint firstAttribute="width" constant="75" id="wxK-Pq-Rx5"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="20"/>
+                            <state key="normal" title="OK">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="secondPressed:" destination="UcI-SK-gg2" eventType="touchUpInside" id="qQf-qt-lEz"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3xk-1K-QVN" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
+                            <rect key="frame" x="187.66666666666666" y="690" width="74.999999999999972" height="40"/>
+                            <color key="backgroundColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="0Rn-DI-Dm9"/>
+                                <constraint firstAttribute="width" constant="75" id="lDh-2z-SvX"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="20"/>
+                            <state key="normal" title="OK">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="firstPressed:" destination="UcI-SK-gg2" eventType="touchUpInside" id="Jwv-oC-gWa"/>
+                            </connections>
+                        </button>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoWhite" translatesAutoresizingMaskIntoConstraints="NO" id="qxw-mY-kqV">
                             <rect key="frame" x="120" y="105" width="210" height="100"/>
                             <constraints>
@@ -222,11 +196,11 @@
                             </constraints>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gax-vd-r3j" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
-                            <rect key="frame" x="75" y="695" width="300" height="50"/>
+                            <rect key="frame" x="75" y="730" width="300" height="40"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="300" id="bQf-Pr-8FA"/>
-                                <constraint firstAttribute="height" constant="50" id="rbq-Hp-FUe"/>
+                                <constraint firstAttribute="height" constant="40" id="rbq-Hp-FUe"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                             <state key="normal" title="I already know OceanShare">
@@ -247,16 +221,42 @@
                                 <action selector="closeWalkthrough:" destination="UcI-SK-gg2" eventType="touchUpInside" id="GY0-c9-L0X"/>
                             </connections>
                         </button>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eIp-yU-AeA" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
+                            <rect key="frame" x="187.66666666666666" y="690" width="74.999999999999972" height="40"/>
+                            <color key="backgroundColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="R0Z-W7-nGY"/>
+                                <constraint firstAttribute="width" constant="75" id="Tsu-9g-7WK"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="20"/>
+                            <state key="normal" title="OK">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="closeWalkthrough:" destination="UcI-SK-gg2" eventType="touchUpInside" id="7lT-4u-f3q"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.45336579623287671" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstItem="S3h-By-OBE" firstAttribute="centerX" secondItem="yap-sH-rIv" secondAttribute="centerX" id="0l4-Sa-6Ar"/>
                         <constraint firstItem="qxw-mY-kqV" firstAttribute="leading" secondItem="aDz-Ok-4j7" secondAttribute="leading" constant="45" id="4El-dP-VIi"/>
+                        <constraint firstItem="3xk-1K-QVN" firstAttribute="centerX" secondItem="yap-sH-rIv" secondAttribute="centerX" id="7KD-9h-irB"/>
+                        <constraint firstItem="eIp-yU-AeA" firstAttribute="top" secondItem="mSO-hu-0u2" secondAttribute="bottom" constant="15" id="9hE-GX-blS"/>
                         <constraint firstItem="qxw-mY-kqV" firstAttribute="trailing" secondItem="aDz-Ok-4j7" secondAttribute="trailing" priority="1" constant="45" id="KfJ-ib-GwJ"/>
                         <constraint firstItem="aDz-Ok-4j7" firstAttribute="centerX" secondItem="yap-sH-rIv" secondAttribute="centerX" id="Qk0-pM-UdI"/>
-                        <constraint firstItem="gax-vd-r3j" firstAttribute="top" secondItem="aDz-Ok-4j7" secondAttribute="bottom" constant="20" id="R4I-aP-yUG"/>
                         <constraint firstItem="gax-vd-r3j" firstAttribute="centerX" secondItem="yap-sH-rIv" secondAttribute="centerX" id="TA5-Oo-IQb"/>
                         <constraint firstItem="aDz-Ok-4j7" firstAttribute="centerY" secondItem="yap-sH-rIv" secondAttribute="centerY" id="dRs-F8-hvZ"/>
                         <constraint firstItem="qxw-mY-kqV" firstAttribute="centerX" secondItem="yap-sH-rIv" secondAttribute="centerX" id="g0V-m7-WzL"/>
+                        <constraint firstItem="eIp-yU-AeA" firstAttribute="centerX" secondItem="yap-sH-rIv" secondAttribute="centerX" id="hDE-mw-zyu"/>
+                        <constraint firstItem="gax-vd-r3j" firstAttribute="top" secondItem="3xk-1K-QVN" secondAttribute="bottom" id="hgq-r1-cCd"/>
+                        <constraint firstItem="S3h-By-OBE" firstAttribute="top" secondItem="mSO-hu-0u2" secondAttribute="bottom" constant="15" id="qIO-El-Uma"/>
+                        <constraint firstItem="3xk-1K-QVN" firstAttribute="top" secondItem="mSO-hu-0u2" secondAttribute="bottom" constant="15" id="uok-Kc-DrT"/>
                         <constraint firstItem="aDz-Ok-4j7" firstAttribute="top" secondItem="qxw-mY-kqV" secondAttribute="bottom" constant="20" id="yBM-Lm-Kzp"/>
                     </constraints>
                     <viewLayoutGuide key="safeArea" id="m1x-zQ-56l"/>
