@@ -1,5 +1,5 @@
 //
-//  Users.swift
+//  User.swift
 //  OceanShare
 //
 //  Created by Joseph Pereniguez on 27/10/2019.
@@ -14,9 +14,10 @@ import FirebaseCore
 import FirebaseStorage
 import FirebasePerformance
 
-struct Users {
+struct User {
     var name: String?
     var uid: String?
+    var email: String?
     var picture: String?
     var shipName: String?
     var longitude: Double?
@@ -31,11 +32,12 @@ struct Users {
         
         let data = dataSnapshot.value as? NSDictionary
         name = data?["name"] as? String
+        email = data?["email"] as? String
         
         if let tempShipName = data?["ship_name"] as? String {
             shipName = tempShipName
         } else {
-            shipName = nil
+            shipName = ""
         }
         
         if let tempPicture = data?["picture"] as? String {
@@ -59,10 +61,19 @@ struct Users {
     }
     
     /*
+     * Get the logged user id.
+     */
+    static func getCurrentUser() -> String {
+        let userId = Auth.auth().currentUser?.uid
+        return (userId ?? "Cannot get User")
+        
+    }
+    
+    /*
      * Return the user picture url from the database if there is one,
      * else return the default user picture url.
      */
-    func getUserPictureFromDatabase(user: Users) -> UIImage {
+    func getUserPictureFromDatabase(user: User) -> UIImage {
         if (user.picture != nil) {
             let pictureURL = URL(string: user.picture!)
             let pictureData = NSData(contentsOf: pictureURL!)
@@ -77,7 +88,7 @@ struct Users {
      * Return the default user picture url from calling
      * the function getDefaultPicture.
      */
-    func getUserPictureFromNowhere(user: Users) -> UIImage {
+    func getUserPictureFromNowhere(user: User) -> UIImage {
         return self.getAvatarCheckIn(user: user, finalPicture: self.getDefaultPicture())
         
     }
@@ -86,7 +97,7 @@ struct Users {
      * Return the user picture uploaded in storage if there is one,
      * else return the default user picture url.
      */
-    func getUserPictureFromStorage(user: Users, url: URL) -> UIImage {
+    func getUserPictureFromStorage(user: User, url: URL) -> UIImage {
         let pictureData = NSData(contentsOf: url)
         let finalPicture = UIImage(data: pictureData! as Data)
         return self.getAvatarCheckIn(user: user, finalPicture: finalPicture!)
@@ -108,7 +119,7 @@ struct Users {
      * Return the avatar depending of the user boat type if there
      * is a boatId, else return the default user picture url.
      */
-    func getAvatarCheckIn(user: Users, finalPicture: UIImage) -> UIImage {
+    func getAvatarCheckIn(user: User, finalPicture: UIImage) -> UIImage {
         if (user.showPicture == true) {
             return finalPicture
         } else {

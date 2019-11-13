@@ -24,22 +24,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     let storageRef = Storage.storage().reference()
     let registry = Registry()
     let skeleton = Skeleton()
-    
-    var appUser: AppUser? {
-        didSet {
-            guard let name = appUser?.name else { return }
-            guard let picture = appUser?.picture else { return }
-            guard let ship = appUser?.ship_name else { return }
-            
-            profilePicture.image = picture
-            titleLabel.text = NSLocalizedString("hello", comment: "") + name + " !"
-            if ship.isEmpty {
-                shipName.text = ""
-            } else {
-                shipName.text = "\" " + ship + " \""
-            }
-        }
-    }
+    var userName: String?
     
     // MARK: - Outlets
     
@@ -141,67 +126,58 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     // MARK: - Updater
     
     func fetchUserInfo() {
-        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let userId = User.getCurrentUser()
         
         ref.child("users").child(userId).observeSingleEvent(of: .value) { (snapshot) in
-            guard let data = snapshot.value as? NSDictionary else { return }
-            guard let userName = data["name"] as? String else { return }
-            guard let userEmail = data["email"] as? String else { return }
-            guard let userShipName = data["ship_name"] as? String else {
-                let user = Auth.auth().currentUser
-                let defaultShipName = ""
-                let userData: [String: Any] = ["ship_name": defaultShipName as Any]
-                // update the user data on the database
-                guard let uid = user?.uid else { return }
-                self.ref.child("users/\(uid)").updateChildValues(userData)
-                self.shipName.text = "\" " + defaultShipName + " \""
-                self.fetchUserInfo()
-                return
+            if snapshot == snapshot {
+                let userData = User(dataSnapshot: snapshot as DataSnapshot)
                 
-            }
-            
-            let user = Auth.auth().currentUser
-            let trace = Performance.startTrace(name: self.registry.trace3)
-            
-            if let user = user {
-                _ = Storage.storage().reference().child("profile_pictures").child("\(String(describing: user.uid)).png").downloadURL(completion: { (url, error) in
-                    if error != nil {
-                        // check if the user has a network profile picture
-                        if let userPicture = data["picture"] as? String {
-                            let pictureURL = URL(string: userPicture)
-                            let pictureData = NSData(contentsOf: pictureURL!)
-                            let finalPicture = UIImage(data: pictureData! as Data)
-                            
-                            self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
-                            
+                self.titleLabel.text = NSLocalizedString("hello", comment: "") + userData.name! + " !"
+                if userData.shipName!.isEmpty {
+                    self.shipName.text = ""
+                } else {
+                    self.shipName.text = "\" " + userData.shipName! + " \""
+                }
+                
+                let user = Auth.auth().currentUser
+                let trace = Performance.startTrace(name: self.registry.trace3)
+                
+                if let user = user {
+                    _ = Storage.storage().reference().child("profile_pictures").child("\(String(describing: user.uid)).png").downloadURL(completion: { (url, error) in
+                        if error != nil {
+                            // check if the user has a network profile picture
+                            if let userPicture = userData.picture {
+                                let pictureURL = URL(string: userPicture)
+                                let pictureData = NSData(contentsOf: pictureURL!)
+                                let finalPicture = UIImage(data: pictureData! as Data)
+                                self.profilePicture.image = finalPicture
+
+                            } else {
+                                // set a default avatar
+                                let pictureURL = URL(string: self.registry.defaultPictureUrl)
+                                let pictureData = NSData(contentsOf: pictureURL!)
+                                let finalPicture = UIImage(data: pictureData! as Data)
+                                self.profilePicture.image = finalPicture
+                                
+                            }
                         } else {
-                            // set a default avatar
-                            let pictureURL = URL(string: self.registry.defaultPictureUrl)
-                            // todo, find a better default user profile picture
-                            let pictureData = NSData(contentsOf: pictureURL!)
+                            // set the custom profile picture if the user has one
+                            let pictureData = NSData(contentsOf: url!)
                             let finalPicture = UIImage(data: pictureData! as Data)
-                            
-                            self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
+                            self.profilePicture.image = finalPicture
                             
                         }
-                    } else {
-                        // set the custom profile picture if the user has one
-                        let pictureData = NSData(contentsOf: url!)
-                        let finalPicture = UIImage(data: pictureData! as Data)
-                        self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
+                        self.pictureContainer.hideSkeleton()
                         
-                    }
-                    self.pictureContainer.hideSkeleton()
+                    })
+                } else {
+                    print("X Error: cannot get current user.")
+                    trace?.stop()
+                    return
                     
-                })
-            } else {
-                print("X Error User Not Found In The Storage.")
+                }
                 trace?.stop()
-                return
-                
             }
-            trace?.stop()
-            
         }
     }
     
@@ -224,7 +200,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             profilePicture.image = selectedImage
             // convert the selected image to jpeg and compress it
             let uploadImage = selectedImage.jpegData(compressionQuality: 0.6)
-            updateProfileInfo(withImage: uploadImage, name: appUser!.name)
+            updateProfileInfo(withImage: uploadImage, name: userName!)
         
         }
         dismiss(animated: true, completion: nil)
