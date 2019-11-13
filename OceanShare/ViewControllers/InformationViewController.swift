@@ -24,6 +24,8 @@ class InformationViewController: UIViewController {
     var effect: UIVisualEffect!
     var currentTappedTextField : UITextField?
     var emailStacked: String?
+    var nameStacked: String?
+    var shipStacked: String?
     var viewStacked: UIView?
     
     // MARK: - Databse
@@ -33,23 +35,6 @@ class InformationViewController: UIViewController {
     let currentUser = Auth.auth().currentUser
     let registry = Registry()
     let skeleton = Skeleton()
-    
-    // get the user information from the AppUser
-    var appUser: AppUser? {
-        didSet {
-            guard let name = appUser?.name else { return }
-            guard let emailAddress = appUser?.email else { return }
-            guard let shipName = appUser?.ship_name else { return }
-            // set the displayed information
-            userName.text = name
-            userEmailAddress.text = emailAddress
-            userShipName.text = shipName
-            userPassword.text = "********"
-            // set the email stacked used by popups
-            self.emailStacked = emailAddress
-            
-        }
-    }
     
     // MARK: - Outlets
     
@@ -284,7 +269,7 @@ class InformationViewController: UIViewController {
     
     @IBAction func acceptChangeName(_ sender: Any) {
         let name = nameFieldNameModifier.text
-        let currentName = self.appUser?.name
+        let currentName = self.nameStacked
         // error checking
         if (name?.isEmpty)! {
             //displayMessage(userMessage: "The new name field is required if you want to change yours Matey!")
@@ -419,7 +404,7 @@ class InformationViewController: UIViewController {
     }
 
     @IBAction func acceptChangeShipName(_ sender: Any) {
-        let currentShipName = self.appUser?.ship_name!
+        let currentShipName = self.shipStacked
         let shipName = self.shipFieldShipModifier.text
         // error checking
         if (shipName?.isEmpty)! {
@@ -511,68 +496,34 @@ class InformationViewController: UIViewController {
     // MARK: - Updater
     
     func fetchUserInfo() {
-        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let userId = User.getCurrentUser()
+        let trace = Performance.startTrace(name: self.registry.trace10)
         
         ref.child("users").child(userId).observeSingleEvent(of: .value) { (snapshot) in
-            guard let data = snapshot.value as? NSDictionary else { return }
-            guard let userName = data["name"] as? String else { return }
-            guard let userEmail = data["email"] as? String else { return }
-            guard let userShipName = data["ship_name"] as? String else {
-                let user = Auth.auth().currentUser
-                let defaultShipName = "My Boat"
-                let userData: [String: Any] = ["ship_name": defaultShipName as Any]
-                // update the user data on the database
-                guard let uid = user?.uid else { return }
-                self.ref.child("users/\(uid)").updateChildValues(userData)
-                self.userShipName.text = defaultShipName
-                self.fetchUserInfo()
-                return
-                
-            }
-            
-            let user = Auth.auth().currentUser
-            let trace = Performance.startTrace(name: self.registry.trace10)
-            
-            if let user = user {
-                _ = Storage.storage().reference().child("profile_pictures").child("\(String(describing: user.uid)).png").downloadURL(completion: { (url, error) in
-                    if error != nil {
-                        // check if the user has a network profile picture
-                        if let userPicture = data["picture"] as? String {
-                            let pictureURL = URL(string: userPicture)
-                            let pictureData = NSData(contentsOf: pictureURL!)
-                            let finalPicture = UIImage(data: pictureData! as Data)
-                            
-                            self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
-                            
-                        } else {
-                            // set a default avatar
-                            let pictureURL = URL(string: self.registry.defaultPictureUrl)
-                            // todo, find a better default user profile picture
-                            let pictureData = NSData(contentsOf: pictureURL!)
-                            let finalPicture = UIImage(data: pictureData! as Data)
-                            
-                            self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
-                            
-                        }
-                    } else {
-                        // set the custom profile picture if the user has one
-                        let pictureData = NSData(contentsOf: url!)
-                        let finalPicture = UIImage(data: pictureData! as Data)
-                        
-                        self.appUser = AppUser(name: userName, uid: userId, email: userEmail, picture: finalPicture, ship_name: userShipName)
-                        
-                    }
-                    self.turnOffSkeleton()
+            if snapshot == snapshot {
+                let userData = User(dataSnapshot: snapshot as DataSnapshot)
+
+                self.userName.text = userData.name
+                self.nameStacked = userData.name
+                self.userEmailAddress.text = userData.email
+                self.emailStacked = userData.email
+                if userData.shipName!.isEmpty {
+                    self.userShipName.text = ""
+                    self.shipStacked = ""
                     
-                })
-            } else {
-                print("X Error User Not Found.")
+                } else {
+                    self.userShipName.text = userData.shipName
+                    self.shipStacked = userData.shipName
+                    
+                }
+                self.userPassword.text = "********"
+                self.turnOffSkeleton()
                 trace?.stop()
-                return
                 
             }
-            trace?.stop()
         }
+        trace?.stop()
+        
     }
     
     // MARK: - Error Handling

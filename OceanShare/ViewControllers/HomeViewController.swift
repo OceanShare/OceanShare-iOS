@@ -76,7 +76,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     let registry = Registry()
     let skeleton = Skeleton()
     let weather = Weather.self
-    let currentUser = AppUser.self
+    let currentUser = User.self
 
     // MARK: - Outlets
     
@@ -583,7 +583,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
         userRef.child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot == snapshot {
-                let userData = Users(dataSnapshot: snapshot as DataSnapshot)
+                let userData = User(dataSnapshot: snapshot as DataSnapshot)
                 self.userAvatarName.text = userData.name
                 self.userAvatar.layer.cornerRadius = 41
                 self.userAvatar.clipsToBounds = true
@@ -1567,7 +1567,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             if snapshot.childrenCount > 0 {
                 for user in snapshot.children.allObjects as! [DataSnapshot] {
                     if (self.userIds[count] == user.key) {
-                        let userData = Users(dataSnapshot: user as DataSnapshot)
+                        let userData = User(dataSnapshot: user as DataSnapshot)
                         self.userAvatarName.text = userData.name
                         self.userAvatar.layer.cornerRadius = 41
                         self.userAvatar.clipsToBounds = true
@@ -1598,7 +1598,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
-    func isDisplayable(User: Users) -> Bool {
+    func isDisplayable(User: User) -> Bool {
         if (User.uid != Auth.auth().currentUser?.uid) {
             if (User.isActive == true) {
                 if (User.ghostMode == false) {
@@ -1628,7 +1628,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         userRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.childrenCount > 0 {
                 for user in snapshot.children.allObjects as! [DataSnapshot] {
-                    let userData = Users(dataSnapshot: user as DataSnapshot)
+                    let userData = User(dataSnapshot: user as DataSnapshot)
         
                     if (self.isDisplayable(User: userData) == true) {
                         var userHash: Int
@@ -1641,7 +1641,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         })
     }
     
-    @discardableResult func putUsers(mapView: MGLMapView, User: Users) -> Int {
+    @discardableResult func putUsers(mapView: MGLMapView, User: User) -> Int {
         let user = MGLPointAnnotation()
         user.coordinate.latitude = User.latitude!
         user.coordinate.longitude = User.longitude!
