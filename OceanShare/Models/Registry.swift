@@ -20,7 +20,6 @@ struct Registry {
     let customWhiteBlue = UIColor(rgb: 0x6dd5ed)
     let customDarkBlue = UIColor(rgb: 0x033542)
     let customRed = UIColor(rgb: 0xFB6060)
-    //let customRed = UIColor(rgb: 0xf5365c)
     let customFlashGreen = UIColor(rgb: 0x41E08D)
     let customGreen = UIColor(rgb: 0x5BD999)
     let customClearGrey = UIColor(rgb: 0xF4F8FB)
@@ -98,7 +97,7 @@ struct Registry {
     let msgDropSuccess = NSLocalizedString("msgDropSuccess", comment: "")
     let msgDeleteSuccess = NSLocalizedString("msgDeleteSuccess", comment: "")
     
-    // tokens
+    // token
     let apiBearer = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjF9.Vcp2grZ53t_OG3jwSXsRwfc_UUjboNgZarkAGiX0jgM"
     
     // performance traces

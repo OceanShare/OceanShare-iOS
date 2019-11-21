@@ -900,7 +900,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 }
             }
             self.isUserDeletingTag = false
-            
+            self.getDisplayableUsers()
         })
     }
     

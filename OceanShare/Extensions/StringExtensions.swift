@@ -14,4 +14,11 @@ extension String {
         numberFormatter.locale = Locale(identifier: "en_US_POSIX")
         return numberFormatter.number(from: self)?.doubleValue
     }
+    
+    func safelyLimitedTo(length n: Int)->String {
+        if (self.count <= n) {
+            return self
+        }
+        return String( Array(self).prefix(upTo: n) )
+    }
 }
