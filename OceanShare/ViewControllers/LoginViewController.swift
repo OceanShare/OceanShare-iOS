@@ -54,19 +54,14 @@ class LoginViewController: UIViewController {
     // MARK: - Setup
     
     func setupView() {
-        /* set keybord handler */
         view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
         observeKeyboardNotification()
-        /* set gradiant */
         let color1 = registry.customClearBlue
         let color2 = registry.customWhiteBlue
         loginButton.applyGradient(colours:[color1, color2], corner:27.5)
-        /* set background */
         backgroundImage.layer.cornerRadius = 16
         backgroundImage.clipsToBounds = true
-        /* set localized labels */
         setupLocalizedStrings()
-        /* set icons */
         setupCustomIcons()
         
     }
@@ -164,7 +159,7 @@ class LoginViewController: UIViewController {
                 let accessToken = FBSDKAccessToken.current()
                 guard let accessTokenString = accessToken?.tokenString else { return }
                 let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
-                /* get user datas from the facebook account as the profile picture */
+                /* get user datas from the facebook account. */
                 FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
                     if err != nil {
                         print("(2) Facebook Authentication Failed: ", err as Any)
@@ -230,6 +225,7 @@ class LoginViewController: UIViewController {
     @IBAction func googleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance()?.signIn()
+        
     }
     
     // MARK: - Error Handling
@@ -250,12 +246,14 @@ class LoginViewController: UIViewController {
     func sendEmailVerification(_ callback: ((Error?) -> ())? = nil){
         Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
             callback?(error)
+            
         })
     }
     
     func sendPasswordReset(withEmail email: String, _ callback: ((Error?) -> ())? = nil){
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             callback?(error)
+            
         }
     }
     
@@ -264,11 +262,11 @@ class LoginViewController: UIViewController {
     fileprivate func observeKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
     }
     
     @objc func keyboardShow() {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            
             self.view.frame = CGRect(x: 0, y: -100, width: self.view.frame.width, height: self.view.frame.height)
             
         }, completion: nil)
@@ -276,7 +274,6 @@ class LoginViewController: UIViewController {
     
     @objc func keyboardHide() {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            
             self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
             
         }, completion: nil)

@@ -63,12 +63,3 @@ extension UITextField {
     }
 }
 
-extension String
-{
-    func safelyLimitedTo(length n: Int)->String {
-        if (self.count <= n) {
-            return self
-        }
-        return String( Array(self).prefix(upTo: n) )
-    }
-}

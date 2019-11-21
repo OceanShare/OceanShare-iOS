@@ -137,19 +137,15 @@ class SignupViewController: UIViewController {
                         "boatId": 1 as Int,
                         "user_active": true as Bool
                     ]
-                    /* define the database structure */
                     let userData: [String: Any] = [
                         "name": name as Any,
                         "email": email as Any,
                         "ship_name": "" as String,
                         "preferences": userPreferencesData as [String: Any]
                         ]
-                    
-                    /* push the user datas on the database */
                     guard let uid = authResult?.user.uid else { return }
                     self.ref.child("users/\(uid)").setValue(userData)
                     
-                    print("-> Registration Success.")
                     /* set the userdefaults data */
                     UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
                     UserDefaults.standard.set("yes", forKey: "user_logged_by_email")
@@ -186,7 +182,7 @@ class SignupViewController: UIViewController {
                 /* get user datas from the facebook account as the profile picture */
                 FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
                     if err != nil {
-                        print("X Facebook Authentication Failed: ", err as Any)
+                        print("Facebook Authentication Failed: ", err as Any)
                         return
                         
                     }
@@ -201,19 +197,17 @@ class SignupViewController: UIViewController {
                     
                     Auth.auth().signIn(with: credentials, completion: { (authResult, err) in
                         if let err = err {
-                            print("X Facebook Authentication Failed: ", err)
+                            print("Facebook Authentication Failed: ", err)
                             return
                             
                         }
                         let user = Auth.auth().currentUser
-                        
                         let userPreferencesData: [String: Any] = [
                             "ghost_mode": false as Bool,
                             "show_picture": false as Bool,
                             "boatId": 1 as Int,
                             "user_active": true as Bool
                         ]
-                        /* define the database structure and upload the profile picture from facebook */
                         let userData: [String: Any] = [
                             "name": user?.displayName as Any,
                             "email": user?.email as Any,
@@ -221,14 +215,12 @@ class SignupViewController: UIViewController {
                             "ship_name": "" as String,
                             "preferences": userPreferencesData as [String: Any]
                         ]
-                        
-                        /* push the user datas on the database */
                         guard let uid = authResult?.user.uid else { return }
+                        
                         self.ref.child("users/\(uid)").setValue(userData)
                         
                     })
                 })
-                print("-> Facebook Authentication Success.")
                 /* set the userdefaults data */
                 UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
                 UserDefaults.standard.synchronize()
@@ -275,9 +267,7 @@ class SignupViewController: UIViewController {
         
     }
     
-    /*
-     * Use this method to get tapped textField
-     */
+    // TODO check
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         currentTappedTextField = textField
         return true
