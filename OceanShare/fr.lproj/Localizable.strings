@@ -151,11 +151,13 @@
 
 // MARK: - ProfileViewController
 
+"profileViewTitle" = "Profil";
 "hello" = "Bonjour ";
 "profileSettingsLabel" = "PARAMÈTRES";
 "profileMediaLabel" = "PHOTO";
 "profileEditLabel" = "COMPTE";
 "profileLogoutLabel" = "Se Déconnecter";
+"subButton" = "Abonnement";
 
 // MARK: - SettingViewController
 
@@ -287,3 +289,20 @@
 "WNW " = "ONO ";
 "NW " = "NO ";
 "NNW " = "NNO ";
+
+// MARK: - SubscribtionViewController
+
+/* view */
+"subViewTitle" = "Passez à OceanShare premium !";
+"subPointOne" = "- Tous les événements OceanShare.";
+"subPointTwo" = "- La météo partout dans le monde.";
+"subPointThree" = "- Messages entre amis.";
+"subPointFour" = "- Tous les ports de plaisance.";
+
+/* cells */
+"offerOneTitle" = "1 jour";
+"offerTwoTitle" = "2 jours";
+"offerThreeTitle" = "1 mois";
+"offerOnePrice" = "1,99 €";
+"offerTwoPrice" = "2,99 €";
+"offerThreePrice" = "9,99 €";

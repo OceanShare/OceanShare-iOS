@@ -398,8 +398,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-    
-    
     func animateInWithOptionalEffect(view: UIView, effect: Bool) {
         if effect == true {
             visualEffectView.isHidden = false
@@ -554,15 +552,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     // MARK: - User Description View
-    
-    /*
-     * Open the message view
-     */
-//    @IBAction func sendPrivateMessage(_ sender: Any) {
-//        let PMViewController = self.storyboard?.instantiateViewController(withIdentifier: "PrivateMessageViewController") as! PrivateMessageViewController
-//        self.present(PMViewController, animated: true,completion: nil)
-//        
-//    }
     
     /*
     * Close the user description view.

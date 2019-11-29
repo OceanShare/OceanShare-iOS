@@ -57,9 +57,8 @@ class SignupViewController: UIViewController {
         super.viewDidLoad()
 
         ref = Database.database().reference()
-
-        // apply the design stuff to the view
         setupView()
+        
     }
     
     // MARK: - Setup
@@ -67,17 +66,14 @@ class SignupViewController: UIViewController {
     func setupView() {
         view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
         observeKeyboardNotification()
-        // gradient setup
         let color1 = registry.customClearBlue
         let color2 = registry.customWhiteBlue
         signUpButton.applyGradient(colours:[color1, color2], corner:27.5)
-        // background setup
         background.layer.cornerRadius = 16
         background.clipsToBounds = true
-        /* set localized labels */
         setupLocalizedStrings()
-        /* icon setup */
         setupCustomIcons()
+        
     }
 
     func setupCustomIcons() {
@@ -89,6 +85,7 @@ class SignupViewController: UIViewController {
         password.tintColor = registry.customWhite
         confirm.image = confirm.image!.withRenderingMode(.alwaysTemplate)
         confirm.tintColor = registry.customWhite
+        
     }
     
     func setupLocalizedStrings() {
@@ -264,13 +261,6 @@ class SignupViewController: UIViewController {
             self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
             
         }, completion: nil)
-        
-    }
-    
-    // TODO check
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        currentTappedTextField = textField
-        return true
         
     }
     
