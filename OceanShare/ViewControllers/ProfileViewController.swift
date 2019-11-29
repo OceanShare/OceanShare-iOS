@@ -29,10 +29,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     // MARK: - Outlets
     
     /* view */
+    @IBOutlet weak var viewTitle: UILabel!
     @IBOutlet weak var settingsLabel: UILabel!
     @IBOutlet weak var mediaLabel: UILabel!
     @IBOutlet weak var editingLabel: UILabel!
     @IBOutlet weak var profileItem: UITabBarItem!
+    @IBOutlet weak var subscribeButton: DesignableButton!
     
     /* user information outlets */
     @IBOutlet weak var infoContainer: UIView!
@@ -73,9 +75,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func setupLocalizedStrings() {
+        viewTitle.text = NSLocalizedString("profileViewTitle", comment: "")
         settingsLabel.text = NSLocalizedString("profileSettingsLabel", comment: "")
         mediaLabel.text = NSLocalizedString("profileMediaLabel", comment: "")
         editingLabel.text = NSLocalizedString("profileEditLabel", comment: "")
+        subscribeButton.setTitle(NSLocalizedString("subButton", comment: ""), for: .normal)
         
     }
     

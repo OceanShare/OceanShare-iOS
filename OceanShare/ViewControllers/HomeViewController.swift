@@ -251,19 +251,45 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-    func showWarningOnScreen() {
-        
-    }
-    
     /*
      * Real time location manager.
      * Update user's lalitude and longitude.
      */
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
         let longitude = Double(round(10000*locValue.longitude)/10000).clean
         let latitude = Double(round(10000*locValue.latitude)/10000).clean
         let location = locations[locations.count - 1]
+    
+        switch UIApplication.shared.applicationState {
+            case .background, .inactive:
+                let trace = Performance.startTrace(name: self.registry.trace13)
+                let userActive = ["user_active": false]
+                self.userRef.child("\(uid)/preferences").updateChildValues(userActive)
+                trace?.stop()
+            case .active:
+                let trace = Performance.startTrace(name: self.registry.trace14)
+                let userActive = ["user_active": true]
+                self.userRef.child("\(uid)/preferences").updateChildValues(userActive)
+                
+                if (longitude != self.stackedLongitude) {
+                    let userLongitude: [String: Any] = ["longitude": longitude as Any]
+                    self.userRef.child("\(uid)/location").updateChildValues(userLongitude)
+                    self.stackedLongitude = longitude
+                    
+                }
+                
+                if (latitude != self.stackedLatitude) {
+                    let userLattitude: [String: Any] = ["latitude": latitude as Any]
+                    self.userRef.child("\(uid)/location").updateChildValues(userLattitude)
+                    self.stackedLatitude = latitude
+                    
+                }
+                trace?.stop()
+            default:
+                break
+        }
         
         if location.horizontalAccuracy > 0 {
             if (location.speed < 1) {
@@ -290,31 +316,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     
                 }
             }
-        }
-
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        
-        if (UIApplication.shared.applicationState == .active) {
-            let userActive = ["user_active": true]
-            self.userRef.child("\(uid)/preferences").updateChildValues(userActive)
-            
-            if (longitude != self.stackedLongitude) {
-                let userLongitude: [String: Any] = ["longitude": longitude as Any]
-                self.userRef.child("\(uid)/location").updateChildValues(userLongitude)
-                self.stackedLongitude = longitude
-                
-            }
-            
-            if (latitude != self.stackedLatitude) {
-                let userLattitude: [String: Any] = ["latitude": latitude as Any]
-                self.userRef.child("\(uid)/location").updateChildValues(userLattitude)
-                self.stackedLatitude = latitude
-                
-            }
-        } else {
-            let userActive = ["user_active": false]
-            self.userRef.child("\(uid)/preferences").updateChildValues(userActive)
-
         }
     }
     
@@ -396,8 +397,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             self.headerView.animHide()
         }
     }
-    
-    
     
     func animateInWithOptionalEffect(view: UIView, effect: Bool) {
         if effect == true {
@@ -553,15 +552,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     // MARK: - User Description View
-    
-    /*
-     * Open the message view
-     */
-//    @IBAction func sendPrivateMessage(_ sender: Any) {
-//        let PMViewController = self.storyboard?.instantiateViewController(withIdentifier: "PrivateMessageViewController") as! PrivateMessageViewController
-//        self.present(PMViewController, animated: true,completion: nil)
-//        
-//    }
     
     /*
     * Close the user description view.
@@ -1595,7 +1585,6 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 }
             }
         })
-        
     }
     
     func isDisplayable(User: User) -> Bool {

@@ -47,8 +47,8 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
 
         ref = Database.database().reference()
- 
         setupView()
+        
     }
     
     // MARK: - Setup
@@ -73,6 +73,7 @@ class LoginViewController: UIViewController {
         forgotButton.setTitle(NSLocalizedString("forgotButton", comment: ""), for: .normal)
         loginButton.setTitle(NSLocalizedString("loginButton", comment: ""), for: .normal)
         registerButton.setTitle(NSLocalizedString("registerFromLogin", comment: ""), for: .normal)
+        
     }
     
     func setupCustomIcons() {
@@ -80,17 +81,18 @@ class LoginViewController: UIViewController {
         emailImage.tintColor = registry.customWhite
         passwordImage.image = passwordImage.image!.withRenderingMode(.alwaysTemplate)
         passwordImage.tintColor = registry.customWhite
+        
     }
     
     // MARK: - Email Login
     
     @IBAction func forgotHandler(_ sender: UIButton) {
-        
         let email = emailTextField.text
         
         if (email?.isEmpty)! {
             displayMessage(userMessage: NSLocalizedString("emailNeeded", comment: ""))
             return
+            
         }
         sendPasswordReset(withEmail: email!)
         let alert = UIAlertController(title: NSLocalizedString("checkEmailTitle", comment: ""), message: NSLocalizedString("checkEmailMessage", comment: ""), preferredStyle: .alert)
@@ -102,10 +104,10 @@ class LoginViewController: UIViewController {
             print("~ Action Information: OK Pressed.")
         }))
         present(alert, animated: true, completion: nil)
+        
     }
     
     @IBAction func loginButtonTapped(_ sender: UIButton) {
-        
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         
@@ -141,6 +143,7 @@ class LoginViewController: UIViewController {
                         print("~ Action Information: OK Pressed.")
                     }))
                     self.present(alert, animated: true, completion: nil)
+                    
                 }
             }
         }
@@ -278,5 +281,4 @@ class LoginViewController: UIViewController {
             
         }, completion: nil)
     }
-    
 }

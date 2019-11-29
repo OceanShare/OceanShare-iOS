@@ -113,4 +113,6 @@ struct Registry {
     let trace10 = "fetchUserInfoFromInformationView" // InformationViewController
     let trace11 = "getDroppedIconByUser" // HomeViewController
     let trace12 = "getTagsFromServer" // HomeViewController
+    let trace13 = "applicationStateisInactive"
+    let trace14 = "applicationStateisActive"
 }
