@@ -25,6 +25,7 @@
 		BF5195472314255600E46FB4 /* Slide.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF5195462314255600E46FB4 /* Slide.xib */; };
 		BF56CDE621D5CB17003707A9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56CDE521D5CB17003707A9 /* HomeViewController.swift */; };
 		BF56CDEC21D5E9F7003707A9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF56CDEB21D5E9F7003707A9 /* GoogleService-Info.plist */; };
+		BF5F170D2393DB75001E6C73 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5F170C2393DB75001E6C73 /* Defaults.swift */; };
 		BF7563D621DA0BB300F8166B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7563D521DA0BB300F8166B /* ProfileViewController.swift */; };
 		BF7563D821DA12E700F8166B /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7563D721DA12E700F8166B /* WeatherViewController.swift */; };
 		BF7563DB21DA155B00F8166B /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7563DA21DA155B00F8166B /* MainTabBarController.swift */; };
@@ -98,6 +99,7 @@
 		BF5195462314255600E46FB4 /* Slide.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Slide.xib; sourceTree = "<group>"; };
 		BF56CDE521D5CB17003707A9 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		BF56CDEB21D5E9F7003707A9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BF5F170C2393DB75001E6C73 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		BF7563D521DA0BB300F8166B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		BF7563D721DA12E700F8166B /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
 		BF7563DA21DA155B00F8166B /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				BFE633BC2365FA2800DE4EFC /* User.swift */,
 				BF063B06236C8A1F00C82868 /* Skeleton.swift */,
 				BF45B23523913E5000BDD01B /* Offer.swift */,
+				BF5F170C2393DB75001E6C73 /* Defaults.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -622,6 +625,7 @@
 				BFE633B923658DFD00DE4EFC /* FloatExtensions.swift in Sources */,
 				BFAFEF042313D4090023BD0C /* Slide.swift in Sources */,
 				BF92736921D1D57500BDCC16 /* AppDelegate.swift in Sources */,
+				BF5F170D2393DB75001E6C73 /* Defaults.swift in Sources */,
 				BF212F55225F3C390030771F /* InformationViewController.swift in Sources */,
 				BFE633BD2365FA2800DE4EFC /* User.swift in Sources */,
 			);
