@@ -114,7 +114,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                 // Remove User Session from device
                 UserDefaults.standard.removeObject(forKey: "user_uid_key")
                 UserDefaults.standard.removeObject(forKey: "user_logged_by_email")
-                UserDefaults.standard.synchronize()
                 let signInPage = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
                 let appDelegate = UIApplication.shared.delegate
                 appDelegate?.window??.rootViewController = signInPage

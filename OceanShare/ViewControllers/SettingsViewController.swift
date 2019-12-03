@@ -224,7 +224,6 @@ class SettingsViewController: UIViewController {
                 // Remove User Session from device
                 UserDefaults.standard.removeObject(forKey: "user_uid_key")
                 UserDefaults.standard.removeObject(forKey: "user_logged_by_email")
-                UserDefaults.standard.synchronize()
                 let signInPage = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
                 let appDelegate = UIApplication.shared.delegate
                 appDelegate?.window??.rootViewController = signInPage
@@ -255,10 +254,8 @@ class SettingsViewController: UIViewController {
         {
         case 0:
             UserDefaults.standard.set("C", forKey: "choosen_degree")
-            UserDefaults.standard.synchronize()
         case 1:
             UserDefaults.standard.set("F", forKey: "choosen_degree")
-            UserDefaults.standard.synchronize()
         default:
             break
         }

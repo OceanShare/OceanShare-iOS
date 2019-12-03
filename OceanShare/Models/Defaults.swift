@@ -10,7 +10,7 @@ import Foundation
 
 struct Defaults {
     
-    static let (uidKey, nameKey, emailKey, pictureKey, shipNameKey, boatIdKey, ghostModeKey, showPictureKey) = ("uid", "name", "email", "picture", "shipName", "boatId", "ghostMode", "showPicture")
+    static let (uidKey, nameKey, emailKey, pictureKey, shipNameKey, boatIdKey, ghostModeKey, showPictureKey, isEmailKey, isCelsiusKey) = ("uid", "name", "email", "picture", "shipName", "boatId", "ghostMode", "showPicture", "isEmail", "isCelsius")
     static let userSessionKey = "com.save.usersession"
     private static let userDefault = UserDefaults.standard
     
@@ -27,16 +27,21 @@ struct Defaults {
         let boatId: Int
         let ghostMode: Bool
         let showPicture: Bool
+        let isEmail: Bool
+        let isCelsius: Bool
         
-        init(_ json: [String: String]) {
-            self.uid = json[uidKey] ?? ""
-            self.name = json[nameKey] ?? ""
-            self.email = json[emailKey] ?? ""
-            self.picture = json[pictureKey] ?? ""
-            self.shipName = json[shipNameKey] ?? ""
-            self.boatId = Int(json[boatIdKey]!) ?? 1
-            self.ghostMode = Bool(json[ghostModeKey]!) ?? false
-            self.showPicture = Bool(json[showPictureKey]!) ?? true
+        init(_ json: [String: Any]) {
+            self.uid = json[uidKey] as? String ?? ""
+            self.name = json[nameKey] as? String ?? ""
+            self.email = json[emailKey] as? String ?? ""
+            self.picture = json[pictureKey] as? String ?? ""
+            self.shipName = json[shipNameKey] as? String ?? ""
+            self.boatId = json[boatIdKey] as? Int ?? 1
+            self.ghostMode = json[ghostModeKey] as? Bool ?? false
+            self.showPicture = json[showPictureKey] as? Bool ?? false
+            self.isEmail = json[isEmailKey] as? Bool ?? false
+            self.isCelsius = json[isCelsiusKey] as? Bool ?? true
+        
         }
     }
     
@@ -44,8 +49,8 @@ struct Defaults {
      - Description - Saving user details
      - Inputs - name `String` & email `String` & picture `String` & shipName `String` & boatId `Int` & ghostMode `Bool` & showPicture `Bool`
      */
-    static func save(_ uid: String, name: String, email: String, picture: String, shipName: String, boatId: Int, ghostMode: Bool, showPicture: Bool){
-        userDefault.set([uidKey: uid, nameKey: name, emailKey: email, pictureKey: picture, shipNameKey: shipName, boatIdKey: boatId, ghostModeKey: ghostMode, showPictureKey: showPicture],
+    static func save(_ uid: String, name: String, email: String, picture: String, shipName: String, boatId: Int, ghostMode: Bool, showPicture: Bool, isEmail: Bool, isCelsius: Bool){
+        userDefault.set([uidKey: uid, nameKey: name, emailKey: email, pictureKey: picture, shipNameKey: shipName, boatIdKey: boatId, ghostModeKey: ghostMode, showPictureKey: showPicture, isEmailKey: isEmail, isCelsiusKey: isCelsius],
                         forKey: userSessionKey)
     }
     
@@ -54,7 +59,7 @@ struct Defaults {
      - Output - `UserDetails` model
      */
     static func getUserDetails()-> UserDetails {
-        return UserDetails((userDefault.value(forKey: userSessionKey) as? [String: String]) ?? [:])
+        return UserDetails((userDefault.value(forKey: userSessionKey) as? [String: Any]) ?? [:])
     }
     
     /**

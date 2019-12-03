@@ -44,7 +44,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        //UserDefaults.standard.set(nil, forKey: "user_uid_key")
+        UserDefaults.standard.set(nil, forKey: "user_uid_key")
         // check if the user is already logged in
         if UserDefaults.standard.object(forKey: "user_uid_key") != nil {
             print("-> User already logged.")
@@ -58,7 +58,6 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
                     // set the userdefaults data
                     UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
                     UserDefaults.standard.set("yes", forKey: "user_logged_by_email")
-                    UserDefaults.standard.synchronize()
                     // access to the homeviewcontroller
                     let mainTabBarController = storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                     mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]

@@ -460,7 +460,6 @@ class InformationViewController: UIViewController {
                     // empty the UserDefault
                     let domain = Bundle.main.bundleIdentifier!
                     UserDefaults.standard.removePersistentDomain(forName: domain)
-                    UserDefaults.standard.synchronize()
                     print(Array(UserDefaults.standard.dictionaryRepresentation().keys).count)
                     // delete the user data in the Authentication table
                     self.currentUser?.delete { error in
