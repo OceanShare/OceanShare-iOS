@@ -99,6 +99,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     @IBAction func changeProfilePicture(_ sender: UIButton) {
         let picker = UIImagePickerController()
+        picker.modalPresentationStyle = .fullScreen
         present(picker, animated: true, completion: nil)
         picker.delegate = self
         picker.allowsEditing = true
@@ -202,9 +203,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         if let selectedImage = selectedImageFromPicker {
             profilePicture.image = selectedImage
             // convert the selected image to jpeg and compress it
-            let uploadImage = selectedImage.jpegData(compressionQuality: 0.6)
-            updateProfileInfo(withImage: uploadImage, name: userName!)
-        
+            if let uploadImage = selectedImage.jpegData(compressionQuality: 0.6) {
+                let name = Defaults.getUserDetails().name
+                updateProfileInfo(withImage: uploadImage, name: name)
+            }
         }
         dismiss(animated: true, completion: nil)
         
@@ -258,11 +260,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                     
                 } else {
                     profileImgReference.downloadURL(completion: { (url, error) in
-                        if let url = url{
+                        if let url = url {
                             self.createProfileChangeRequest(photoUrl: url, name: name, { (error) in
                                 callback?(error)
                             })
-                            
+                            Defaults.save(Defaults.getUserDetails().name, name: Defaults.getUserDetails().name, email: Defaults.getUserDetails().email, picture: String(describing: url), shipName: Defaults.getUserDetails().shipName, boatId: Defaults.getUserDetails().boatId, ghostMode: Defaults.getUserDetails().ghostMode, showPicture: Defaults.getUserDetails().showPicture, isEmail: Defaults.getUserDetails().isEmail, isCelsius: Defaults.getUserDetails().isCelsius)
                         } else {
                             callback?(error)
                             

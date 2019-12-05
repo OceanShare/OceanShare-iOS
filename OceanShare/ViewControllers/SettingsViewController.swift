@@ -222,6 +222,7 @@ class SettingsViewController: UIViewController {
             try Auth.auth().signOut()
             if Auth.auth().currentUser == nil {
                 // Remove User Session from device
+                Defaults.clearUserData()
                 UserDefaults.standard.removeObject(forKey: "user_uid_key")
                 UserDefaults.standard.removeObject(forKey: "user_logged_by_email")
                 let signInPage = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")

@@ -78,6 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 refToCheck.child(user!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
                     if snapshot.hasChild("email") {
                         print("-> Google user has already set its data.")
+                        Defaults.feedDefault(uid: user!.uid, isEmail: false)
                     } else {
                         let userPreferencesData: [String: Any] = [
                             "ghost_mode": false as Bool,
@@ -120,6 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             try firebaseAuth.signOut()
             if Auth.auth().currentUser == nil {
                 UserDefaults.standard.removeObject(forKey: "user_uid_key")
+                Defaults.clearUserData()
             }
         } catch let signOutError as NSError {
             print ("(1) Error While Signing Out: %@", signOutError)

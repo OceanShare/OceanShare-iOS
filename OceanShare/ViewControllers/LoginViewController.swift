@@ -126,6 +126,7 @@ class LoginViewController: UIViewController {
                     /* set the userdefaults data */
                     UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
                     UserDefaults.standard.set("yes", forKey: "user_logged_by_email")
+                    Defaults.feedDefault(uid: Auth.auth().currentUser!.uid, isEmail: true)
                     /* access to the homeviewcontroller */
                     let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                     mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
@@ -153,9 +154,9 @@ class LoginViewController: UIViewController {
     @IBAction func facebookLogin(sender: AnyObject){
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self, handler:{(facebookResult, facebookError) -> Void in
             if facebookError != nil {
-                print("(1) Facebook login failed : \(String(describing: facebookError)).")
+                print("Facebook login failed : \(String(describing: facebookError)).")
             } else if facebookResult!.isCancelled {
-                print("(0) Facebook login was cancelled.")
+                print("Facebook login was cancelled.")
             } else {
                 /* get the credentials */
                 let accessToken = FBSDKAccessToken.current()
@@ -187,6 +188,7 @@ class LoginViewController: UIViewController {
                         refToCheck.child(user!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
                             if snapshot.hasChild("email") {
                                 print("-> Facebook user has already set its data.")
+                                Defaults.feedDefault(uid: user!.uid, isEmail: false)
                             } else {
                                 let userPreferencesData: [String: Any] = [
                                     "ghost_mode": false as Bool,
@@ -198,6 +200,7 @@ class LoginViewController: UIViewController {
                                 let userData: [String: Any] = [
                                     "name": user?.displayName as Any,
                                     "email": user?.email as Any,
+                                    "picture": self.imageURL as Any,
                                     "ship_name": "" as String,
                                     "preferences": userPreferencesData as [String: Any]
                                 ]
@@ -206,7 +209,7 @@ class LoginViewController: UIViewController {
                                 /* push the user datas on the database */
                                 guard let uid = authResult?.user.uid else { return }
                                 self.ref.child("users/\(uid)").setValue(userData)
-                                _ = Defaults.save(uid, name: (user?.displayName)!, email: (user?.email)!, picture: "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: true, isCelsius: true)
+                                _ = Defaults.save(uid, name: (user?.displayName)!, email: (user?.email)!, picture: self.imageURL ?? "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: true, isCelsius: true)
                             }
                         })
                     })

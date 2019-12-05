@@ -7,6 +7,12 @@
 //
 
 import Foundation
+import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
+import FirebaseCore
+import GoogleSignIn
+import FBSDKLoginKit
 
 struct Defaults {
     
@@ -46,8 +52,8 @@ struct Defaults {
     }
     
     /**
-     - Description - Saving user details
-     - Inputs - name `String` & email `String` & picture `String` & shipName `String` & boatId `Int` & ghostMode `Bool` & showPicture `Bool`
+        - Description - Saving user details
+        - Inputs - name `String` & email `String` & picture `String` & shipName `String` & boatId `Int` & ghostMode `Bool` & showPicture `Bool`
      */
     static func save(_ uid: String, name: String, email: String, picture: String, shipName: String, boatId: Int, ghostMode: Bool, showPicture: Bool, isEmail: Bool, isCelsius: Bool){
         userDefault.set([uidKey: uid, nameKey: name, emailKey: email, pictureKey: picture, shipNameKey: shipName, boatIdKey: boatId, ghostModeKey: ghostMode, showPictureKey: showPicture, isEmailKey: isEmail, isCelsiusKey: isCelsius],
@@ -55,8 +61,8 @@ struct Defaults {
     }
     
     /**
-     - Description - Fetching Values via Model `UserDetails` you can use it based on your uses.
-     - Output - `UserDetails` model
+        - Description - Fetching Values via Model `UserDetails` you can use it based on your uses.
+        - Output - `UserDetails` model
      */
     static func getUserDetails()-> UserDetails {
         return UserDetails((userDefault.value(forKey: userSessionKey) as? [String: Any]) ?? [:])
@@ -68,4 +74,33 @@ struct Defaults {
     static func clearUserData(){
         userDefault.removeObject(forKey: userSessionKey)
     }
+    
+    
+    /**
+        - Description - Fetching user information from database then feeding `com.save.usersession` with the retrieved information.
+        - Inputs - uid `String` & isEmail `Bool`
+     */
+    static func feedDefault(uid: String, isEmail: Bool) {
+        let userRef = Database.database().reference().child("users")
+        
+        
+        if isEmail == true {
+            userRef.child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot == snapshot {
+                    let userData = User(dataSnapshot: snapshot as DataSnapshot)
+                    _ = Defaults.save(uid, name: userData.name!, email: userData.email!, picture: userData.picture ?? "", shipName: userData.shipName ?? "", boatId: userData.boatId!, ghostMode: userData.ghostMode!, showPicture: userData.showPicture!, isEmail: true, isCelsius: true)
+                
+                }
+            })
+        } else {
+            userRef.child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot == snapshot {
+                    let userData = User(dataSnapshot: snapshot as DataSnapshot)
+                    _ = Defaults.save(uid, name: userData.name!, email: userData.email!, picture: userData.picture ?? "", shipName: userData.shipName ?? "", boatId: userData.boatId!, ghostMode: userData.ghostMode!, showPicture: userData.showPicture!, isEmail: false, isCelsius: true)
+                
+                }
+            })
+        }
+    }
+    
 }
