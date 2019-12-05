@@ -455,13 +455,11 @@ class InformationViewController: UIViewController {
                     return
                     
                 } else {
-                    // delete the user data in the Database table
+                    /* delete the user data in the Database table */
                     self.ref.child("users").child(self.currentUser!.uid).removeValue()
-                    // empty the UserDefault
-                    let domain = Bundle.main.bundleIdentifier!
-                    UserDefaults.standard.removePersistentDomain(forName: domain)
-                    print(Array(UserDefaults.standard.dictionaryRepresentation().keys).count)
-                    // delete the user data in the Authentication table
+                    /* empty the UserDefault */
+                    Defaults.clearUserData()
+                    /* delete the user data in the Authentication table */
                     self.currentUser?.delete { error in
                         if let error = error {
                             print("X", error)

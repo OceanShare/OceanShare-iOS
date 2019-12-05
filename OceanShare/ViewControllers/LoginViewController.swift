@@ -123,9 +123,6 @@ class LoginViewController: UIViewController {
                 /* check if the user has confirmed its email address */
                 if (Auth.auth().currentUser?.isEmailVerified == true) {
                     print("-> Email Authentication Success.")
-                    /* set the userdefaults data */
-                    UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
-                    UserDefaults.standard.set("yes", forKey: "user_logged_by_email")
                     Defaults.feedDefault(uid: Auth.auth().currentUser!.uid, isEmail: true)
                     /* access to the homeviewcontroller */
                     let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
@@ -215,8 +212,6 @@ class LoginViewController: UIViewController {
                     })
                 })
                 print("-> Facebook Authentication Success.")
-                /* set the userdefaults data */
-                UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
                 /* access to the homeviewcontroller */
                 let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                 mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]

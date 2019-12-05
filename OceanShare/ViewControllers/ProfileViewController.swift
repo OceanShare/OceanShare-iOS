@@ -108,25 +108,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
     }
     
-    @IBAction func handleLogout(_ sender: UIButton) {
-        do {
-            try Auth.auth().signOut()
-            if Auth.auth().currentUser == nil {
-                // Remove User Session from device
-                UserDefaults.standard.removeObject(forKey: "user_uid_key")
-                UserDefaults.standard.removeObject(forKey: "user_logged_by_email")
-                let signInPage = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
-                let appDelegate = UIApplication.shared.delegate
-                appDelegate?.window??.rootViewController = signInPage
-                print("-> User has correctly logged out.")
-                
-            }
-        } catch let signOutError as NSError {
-            print ("X Error signing out: %@", signOutError)
-            
-        }
-    }
-    
     // MARK: - Updater
     
     func fetchUserInfo() {

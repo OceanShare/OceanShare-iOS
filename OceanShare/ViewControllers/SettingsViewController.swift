@@ -70,14 +70,10 @@ class SettingsViewController: UIViewController {
      * Setup the state button and call the function that setup localized strings
      */
     func setupView() {
-        guard let choosenDegree = UserDefaults.standard.object(forKey: "choosen_degree") else { return }
-        
-        if (choosenDegree as AnyObject) .isEqual("C") {
+        if Defaults.getUserDetails().isCelsius == true {
             degreeSegmentedControl.selectedSegmentIndex = 0
-        } else if (choosenDegree as AnyObject) .isEqual("F") {
-            degreeSegmentedControl.selectedSegmentIndex = 1
         } else {
-            degreeSegmentedControl.selectedSegmentIndex = 0
+            degreeSegmentedControl.selectedSegmentIndex = 1
         }
         
         setupLocalizedStrings()
@@ -223,8 +219,6 @@ class SettingsViewController: UIViewController {
             if Auth.auth().currentUser == nil {
                 // Remove User Session from device
                 Defaults.clearUserData()
-                UserDefaults.standard.removeObject(forKey: "user_uid_key")
-                UserDefaults.standard.removeObject(forKey: "user_logged_by_email")
                 let signInPage = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
                 let appDelegate = UIApplication.shared.delegate
                 appDelegate?.window??.rootViewController = signInPage
@@ -254,9 +248,9 @@ class SettingsViewController: UIViewController {
         switch degreeSegmentedControl.selectedSegmentIndex
         {
         case 0:
-            UserDefaults.standard.set("C", forKey: "choosen_degree")
+            Defaults.save(Defaults.getUserDetails().uid, name: Defaults.getUserDetails().name, email: Defaults.getUserDetails().email, picture: Defaults.getUserDetails().picture, shipName: Defaults.getUserDetails().shipName, boatId: Defaults.getUserDetails().boatId, ghostMode: Defaults.getUserDetails().ghostMode, showPicture: Defaults.getUserDetails().showPicture, isEmail: Defaults.getUserDetails().isEmail, isCelsius: true)
         case 1:
-            UserDefaults.standard.set("F", forKey: "choosen_degree")
+            Defaults.save(Defaults.getUserDetails().uid, name: Defaults.getUserDetails().name, email: Defaults.getUserDetails().email, picture: Defaults.getUserDetails().picture, shipName: Defaults.getUserDetails().shipName, boatId: Defaults.getUserDetails().boatId, ghostMode: Defaults.getUserDetails().ghostMode, showPicture: Defaults.getUserDetails().showPicture, isEmail: Defaults.getUserDetails().isEmail, isCelsius: false)
         default:
             break
         }

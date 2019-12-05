@@ -143,9 +143,6 @@ class SignupViewController: UIViewController {
                     guard let uid = authResult?.user.uid else { return }
                     self.ref.child("users/\(uid)").setValue(userData)
                     _ = Defaults.save(uid, name: name!, email: email!, picture: "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: true, isCelsius: true)
-                    /* set the userdefaults data */
-                    UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
-                    UserDefaults.standard.set("yes", forKey: "user_logged_by_email")
                     /* access to the homeviewcontroller */
                     let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                     mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
@@ -225,8 +222,6 @@ class SignupViewController: UIViewController {
                     })
                 })
                 print("-> Facebook Authentication Success.")
-                /* set the userdefaults data */
-                UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
                 /* access to the homeviewcontroller */
                 let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                 mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
