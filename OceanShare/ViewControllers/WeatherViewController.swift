@@ -162,12 +162,10 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         DispatchQueue.main.async {
             self.weatherImage.image = self.weather.analyseDescription(weather: weather, registry: self.registry)
             
-            if (UserDefaults.standard.object(forKey: "choosen_degree") as AnyObject) .isEqual("C") {
+            if Defaults.getUserDetails().isCelsius == true {
                 self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
-            } else if (UserDefaults.standard.object(forKey: "choosen_degree") as AnyObject) .isEqual("F") {
-                self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius) * 1.8 + 32)) °F"
             } else {
-                self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius))) °C"
+                self.airTemperatureLabel.text = "\(Int(round(weather.tempCelsius) * 1.8 + 32)) °F"
             }
             
             self.weatherDescriptionLabel.text = self.weather.analyseWeatherDescription(weather: weather, registry: self.registry)

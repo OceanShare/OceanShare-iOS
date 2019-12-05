@@ -44,45 +44,43 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        //UserDefaults.standard.set(nil, forKey: "user_uid_key")
-        // check if the user is already logged in
-        if UserDefaults.standard.object(forKey: "user_uid_key") != nil {
+        //Defaults.clearUserData()
+        /* check if the user is already logged in */
+        if (Defaults.getUserDetails().uid.isEmpty == false) {
             print("-> User already logged.")
             
-            if UserDefaults.standard.object(forKey : "user_logged_by_email") != nil {
+            if Defaults.getUserDetails().isEmail == true {
                 print("-> User logged by email.")
                 
-                // check if the user has confirmed its email address
-                if (Auth.auth().currentUser?.isEmailVerified == true) {
-                    print("-> Email already validated and user re-logged.")
-                    // set the userdefaults data
-                    UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
-                    UserDefaults.standard.set("yes", forKey: "user_logged_by_email")
-                    UserDefaults.standard.synchronize()
-                    // access to the homeviewcontroller
-                    let mainTabBarController = storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                    mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
-                    present(mainTabBarController, animated: true,completion: nil)
-                    
-                } else {
-                    print("-> Email not validated yet or user not re-logged yet.")
-                    // handle the email confirmation
-                    let alert = UIAlertController(title: "Please Confirm Your Email.", message: "You need to confirm your email address to finish your inscription and access to your profile.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Send me an other mail.", style: .default, handler: { action in
-                        self.sendEmailVerification()
-                        print("~ Action Informations: An Other Mail Has Been Sent.")
-                    }))
-                    alert.addAction(UIAlertAction(title: "Already done, login.", style: .default, handler: { action in
-                        // redirect the user to the map
-                        let loginViewController = self.storyboard?.instantiateViewController(withIdentifier:   "LoginViewController") as! LoginViewController
-                        self.present(loginViewController, animated: true,completion: nil)
-                        print("~ Action Information: OK Pressed.")
-                    }))
-                    present(alert, animated: true, completion: nil)
-                    
-                }
+                Auth.auth().currentUser!.reload(completion: { (error) in
+                    if (Auth.auth().currentUser?.isEmailVerified == true) {
+                        print("-> Email already validated and user re-logged.")
+                        
+                        // access to the homeviewcontroller
+                        let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+                        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
+                        self.present(mainTabBarController, animated: true,completion: nil)
+                        
+                    } else {
+                        print("-> Email not validated yet or user not re-logged yet.")
+                        // handle the email confirmation
+                        
+                        let alert = UIAlertController(title: "Please Confirm Your Email.", message: "You need to confirm your email address to finish your inscription and access to your profile.", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Send me an other mail.", style: .default, handler: { action in
+                            self.sendEmailVerification()
+                            print("~ Action Informations: An Other Mail Has Been Sent.")
+                        }))
+                        alert.addAction(UIAlertAction(title: "Already done, login.", style: .default, handler: { action in
+                            // redirect the user to the map
+                            let loginViewController = self.storyboard?.instantiateViewController(withIdentifier:   "LoginViewController") as! LoginViewController
+                            self.present(loginViewController, animated: true,completion: nil)
+                            print("~ Action Information: OK Pressed.")
+                        }))
+                        self.present(alert, animated: true, completion: nil)
+                        
+                    }
+                })
             } else {
-                
                 print("-> User logged by social networks.")
                 
                 // redirect the user to the map

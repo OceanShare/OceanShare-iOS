@@ -142,11 +142,7 @@ class SignupViewController: UIViewController {
                         ]
                     guard let uid = authResult?.user.uid else { return }
                     self.ref.child("users/\(uid)").setValue(userData)
-                    
-                    /* set the userdefaults data */
-                    UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
-                    UserDefaults.standard.set("yes", forKey: "user_logged_by_email")
-                    UserDefaults.standard.synchronize()
+                    _ = Defaults.save(uid, name: name!, email: email!, picture: "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: true, isCelsius: true)
                     /* access to the homeviewcontroller */
                     let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                     mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
@@ -165,67 +161,71 @@ class SignupViewController: UIViewController {
     @IBAction func facebookLogin(sender: AnyObject){
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self, handler:{(facebookResult, facebookError) -> Void in
             if facebookError != nil {
-                print("X Facebook Authentication Failed: \(String(describing: facebookError)).")
-                
+                print("Facebook login failed : \(String(describing: facebookError)).")
             } else if facebookResult!.isCancelled {
-                print("X Facebook Authentication Was Cancelled.")
-                
+                print("Facebook login was cancelled.")
             } else {
                 /* get the credentials */
                 let accessToken = FBSDKAccessToken.current()
                 guard let accessTokenString = accessToken?.tokenString else { return }
                 let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
-                
-                /* get user datas from the facebook account as the profile picture */
+                /* get user datas from the facebook account. */
                 FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
                     if err != nil {
-                        print("Facebook Authentication Failed: ", err as Any)
+                        print("(2) Facebook Authentication Failed: ", err as Any)
                         return
                         
                     }
-                    
-                    /* retrieve user profile picture */
+                    /* retrieve user profile picture from facebook */
                     let field = result! as? [String: Any]
                     if let retrievedURL = ((field!["picture"] as? [String: Any])?["data"] as? [String: Any])?["url"] as? String {
                         /* set the value of the retrieved picture */
                         self.imageURL = retrievedURL
                         
                     }
-                    
                     Auth.auth().signIn(with: credentials, completion: { (authResult, err) in
                         if let err = err {
-                            print("Facebook Authentication Failed: ", err)
+                            print("(3) Facebook Authentication Failed: ", err)
                             return
-                            
+                        
                         }
                         let user = Auth.auth().currentUser
-                        let userPreferencesData: [String: Any] = [
-                            "ghost_mode": false as Bool,
-                            "show_picture": false as Bool,
-                            "boatId": 1 as Int,
-                            "user_active": true as Bool
-                        ]
-                        let userData: [String: Any] = [
-                            "name": user?.displayName as Any,
-                            "email": user?.email as Any,
-                            "picture": self.imageURL as Any,
-                            "ship_name": "" as String,
-                            "preferences": userPreferencesData as [String: Any]
-                        ]
-                        guard let uid = authResult?.user.uid else { return }
+                        let refToCheck = Database.database().reference().child("users")
                         
-                        self.ref.child("users/\(uid)").setValue(userData)
-                        
+                        refToCheck.child(user!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                            if snapshot.hasChild("email") {
+                                print("-> Facebook user has already set its data.")
+                                Defaults.feedDefault(uid: user!.uid, isEmail: false)
+                            } else {
+                                let userPreferencesData: [String: Any] = [
+                                    "ghost_mode": false as Bool,
+                                    "show_picture": false as Bool,
+                                    "boatId": 1 as Int,
+                                    "user_active": true as Bool
+                                ]
+                                /* define the database structure */
+                                let userData: [String: Any] = [
+                                    "name": user?.displayName as Any,
+                                    "email": user?.email as Any,
+                                    "picture": self.imageURL as Any,
+                                    "ship_name": "" as String,
+                                    "preferences": userPreferencesData as [String: Any]
+                                ]
+                                
+                                self.ref = Database.database().reference()
+                                /* push the user datas on the database */
+                                guard let uid = authResult?.user.uid else { return }
+                                self.ref.child("users/\(uid)").setValue(userData)
+                                _ = Defaults.save(uid, name: (user?.displayName)!, email: (user?.email)!, picture: self.imageURL ?? "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: true, isCelsius: true)
+                            }
+                        })
                     })
                 })
-                /* set the userdefaults data */
-                UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "user_uid_key")
-                UserDefaults.standard.synchronize()
+                print("-> Facebook Authentication Success.")
                 /* access to the homeviewcontroller */
                 let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                 mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
                 self.present(mainTabBarController, animated: true,completion: nil)
-                
             }
         })
     }
