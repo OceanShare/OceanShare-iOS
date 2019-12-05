@@ -26,6 +26,7 @@ class SubscribtionViewController: UIViewController, UITableViewDelegate, UITable
         super.viewDidLoad()
         
         setupView()
+        overrideUserInterfaceStyle = .light
         self.offersTableView.delegate = self
         self.offersTableView.dataSource = self
         

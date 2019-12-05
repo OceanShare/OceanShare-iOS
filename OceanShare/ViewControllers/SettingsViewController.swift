@@ -57,6 +57,8 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        overrideUserInterfaceStyle = .light
+        
         userRef = Database.database().reference().child("users")
         
         fetchSettings()
