@@ -2749,13 +2749,13 @@
                                 <rect key="frame" x="0.0" y="170" width="414" height="566"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kCL-Jl-KbI" customClass="DesignableButton" customModule="OceanShare" customModuleProvider="target">
-                                        <rect key="frame" x="82" y="442.33333333333337" width="250" height="50"/>
+                                        <rect key="frame" x="107" y="442.33333333333337" width="200" height="45"/>
                                         <color key="backgroundColor" red="0.3411764705882353" green="0.63137254901960782" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="FFt-Wo-8nT"/>
-                                            <constraint firstAttribute="width" constant="250" id="nxL-tN-djI"/>
+                                            <constraint firstAttribute="height" constant="45" id="FFt-Wo-8nT"/>
+                                            <constraint firstAttribute="width" constant="200" id="nxL-tN-djI"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="24"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="24"/>
                                         <state key="normal" title="Abonnement">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -2764,7 +2764,7 @@
                                                 <real key="value" value="0.0"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                <real key="value" value="25"/>
+                                                <real key="value" value="22.5"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
                                                 <real key="value" value="5"/>
