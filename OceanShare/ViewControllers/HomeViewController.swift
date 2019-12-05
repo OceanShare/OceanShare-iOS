@@ -172,6 +172,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        overrideUserInterfaceStyle = .light
+        
         ref = Database.database().reference().child("markers")
         userRef = Database.database().reference().child("users")
         

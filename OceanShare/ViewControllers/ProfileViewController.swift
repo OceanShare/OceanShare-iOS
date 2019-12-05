@@ -52,6 +52,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        overrideUserInterfaceStyle = .light
+        
         ref = Database.database().reference()
 
         setupView()

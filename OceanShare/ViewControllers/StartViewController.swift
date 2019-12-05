@@ -40,6 +40,7 @@ class StartViewController: UIViewController, UIPageViewControllerDelegate, UIScr
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        overrideUserInterfaceStyle = .light
         setupView()
 
     }
