@@ -52,7 +52,7 @@ struct Defaults {
     }
     
     /**
-        - Description - Saving user details
+        - Description - Saving user details.
         - Inputs - name `String` & email `String` & picture `String` & shipName `String` & boatId `Int` & ghostMode `Bool` & showPicture `Bool`
      */
     static func save(_ uid: String, name: String, email: String, picture: String, shipName: String, boatId: Int, ghostMode: Bool, showPicture: Bool, isEmail: Bool, isCelsius: Bool){
@@ -69,7 +69,7 @@ struct Defaults {
     }
     
     /**
-        - Description - Clearing user details for the user key `com.save.usersession`
+        - Description - Clearing user details for the user key `com.save.usersession`.
      */
     static func clearUserData(){
         userDefault.removeObject(forKey: userSessionKey)
@@ -77,7 +77,7 @@ struct Defaults {
     
     
     /**
-        - Description - Fetching user information from database then feeding `com.save.usersession` with the retrieved information.
+        - Description - Fetching user information from database then feeding `com.save.usersession` with the retrieved data.
         - Inputs - uid `String` & isEmail `Bool`
      */
     static func feedDefault(uid: String, isEmail: Bool) {

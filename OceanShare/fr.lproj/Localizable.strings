@@ -58,6 +58,12 @@
 
 // MARK: - HomeViewController
 
+/* messages */
+"geolocAlert" = "La localisation est désactivée";
+"geolocAlertDesc" = "Pour utiliser OceanShare vous avez besoin de la localisation activée.";
+"geolocAlertOne" = "Paramètres";
+"geolocAlertTwo" = "Ok";
+
 /* view */
 "longitude" = "Long:";
 "latitude" = "Lat:";
