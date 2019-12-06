@@ -18,7 +18,6 @@
 		BF212F55225F3C390030771F /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF212F54225F3C390030771F /* InformationViewController.swift */; };
 		BF223959231D5C3C003F1F9A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF223957231D5C3C003F1F9A /* Localizable.strings */; };
 		BF2E44322390398800109A78 /* SubscribtionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2E44312390398800109A78 /* SubscribtionViewController.swift */; };
-		BF3306FD21DF599000433264 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3306FC21DF599000433264 /* Helper.swift */; };
 		BF45B23623913E5000BDD01B /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF45B23523913E5000BDD01B /* Offer.swift */; };
 		BF45B23A239174F200BDD01B /* OffersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF45B239239174F200BDD01B /* OffersTableViewCell.swift */; };
 		BF48EC3E220EEAE00097A64C /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF48EC3D220EEAE00097A64C /* images.xcassets */; };
@@ -92,7 +91,6 @@
 		BF223958231D5C3C003F1F9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BF22395A231D5C4D003F1F9A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BF2E44312390398800109A78 /* SubscribtionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribtionViewController.swift; sourceTree = "<group>"; };
-		BF3306FC21DF599000433264 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		BF45B23523913E5000BDD01B /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
 		BF45B239239174F200BDD01B /* OffersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersTableViewCell.swift; sourceTree = "<group>"; };
 		BF48EC3D220EEAE00097A64C /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
@@ -271,7 +269,6 @@
 		BF92739821D2302900BDCC16 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				BF3306FC21DF599000433264 /* Helper.swift */,
 				BF8CCE3A2274729B000863AC /* Tag.swift */,
 				BF0FE36D22D8C32600615109 /* Weather.swift */,
 				BFF9641B22E8FEDE00CAB149 /* Registry.swift */,
@@ -611,7 +608,6 @@
 				BFF9641C22E8FEDE00CAB149 /* Registry.swift in Sources */,
 				BF2E44322390398800109A78 /* SubscribtionViewController.swift in Sources */,
 				201E152B21E4C0E500050361 /* UITextFieldExtensions.swift in Sources */,
-				BF3306FD21DF599000433264 /* Helper.swift in Sources */,
 				BF1F80A122705B84004F8144 /* SettingsViewController.swift in Sources */,
 				BF063B07236C8A1F00C82868 /* Skeleton.swift in Sources */,
 				BFE633BB23658E4300DE4EFC /* DoubleExtensions.swift in Sources */,

@@ -51,6 +51,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     var currentLatitude: Double = 0.0
     var currentLongitude: Double = 0.0
     var uvGlobal: String!
+    var isLocationActivated: Bool!
     
     // classes
     let weather = Weather.self
@@ -61,10 +62,15 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector:#selector(checkLocalisationService), name: UIApplication.willEnterForegroundNotification, object: nil)
         overrideUserInterfaceStyle = .light
         
         setupView()
         
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func setupView() {
@@ -78,6 +84,9 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
+            
+        } else {
+            checkLocalisationService()
             
         }
     }
@@ -100,11 +109,58 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     
+        checkLocalisationService()
         getWeatherFromCurrentLocation()
         
     }
     
-    // MARL: - Data Handlers
+    // MARK: - Location Manager
+    
+    func geolocationAlert() {
+        let alertController = UIAlertController(title: NSLocalizedString("geolocAlert", comment: ""), message: NSLocalizedString("geolocAlertDesc", comment: ""), preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("geolocAlertOne", comment: ""), style: .default) { value in
+            let path = UIApplication.openSettingsURLString
+            guard let settingsURL = URL(string: path), !settingsURL.absoluteString.isEmpty else {
+              return
+                
+            }
+            UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+           
+        })
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("geolocAlertTwo", comment: ""), style: .cancel) { value in
+            self.checkLocalisationService()
+        })
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc func checkLocalisationService() {
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+                case .notDetermined, .restricted, .denied:
+                    isLocationActivated = false
+                    geolocationAlert()
+                    print("-x Localisation disabled.")
+                case .authorizedAlways, .authorizedWhenInUse:
+                    if isLocationActivated == false {
+                        isLocationActivated = true
+                        dismiss(animated: false, completion: nil)
+                        let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+                        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+                        self.present(mainTabBarController, animated: true,completion: nil)
+                        print("~> Location is now activated.")
+                    }
+                    print("-> Localisation enabled.")
+                @unknown default:
+                break
+            }
+            } else {
+                isLocationActivated = false
+                geolocationAlert()
+                print("-x Localisation disabled.")
+        }
+    }
+    
+    // MARK: - Data Handlers
     
     func transformData(rawData: JSON) {
         // get uv index

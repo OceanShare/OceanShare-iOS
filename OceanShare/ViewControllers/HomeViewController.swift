@@ -43,6 +43,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var stackedLongitude: String!
     var stackedLatitude: String!
     var mustBeenDisplayed = true
+    var isLocationActivated: Bool!
     
     /* tag properties */
     var tagIds = [String]()
@@ -174,6 +175,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
         overrideUserInterfaceStyle = .light
         
+        NotificationCenter.default.addObserver(self, selector:#selector(checkLocalisationService), name: UIApplication.willEnterForegroundNotification, object: nil)
+        
         ref = Database.database().reference().child("markers")
         userRef = Database.database().reference().child("users")
         
@@ -183,9 +186,14 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
 
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        checkLocalisationService()
         getDisplayableUsers()
         timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(HomeViewController.getDisplayableUsers), userInfo: nil, repeats: true)
         
@@ -250,6 +258,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             //locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
             locationManager.startUpdatingLocation()
+            
+        } else {
+            checkLocalisationService()
+            
         }
     }
     
@@ -321,6 +333,50 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    func geolocationAlert() {
+        let alertController = UIAlertController(title: NSLocalizedString("geolocAlert", comment: ""), message: NSLocalizedString("geolocAlertDesc", comment: ""), preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("geolocAlertOne", comment: ""), style: .default) { value in
+            let path = UIApplication.openSettingsURLString
+            guard let settingsURL = URL(string: path), !settingsURL.absoluteString.isEmpty else {
+              return
+                
+            }
+            UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+           
+        })
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("geolocTwo", comment: ""), style: .cancel) { value in
+            self.checkLocalisationService()
+        })
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc func checkLocalisationService() {
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+                case .notDetermined, .restricted, .denied:
+                    isLocationActivated = false
+                    geolocationAlert()
+                    print("-x Localisation disabled.")
+                case .authorizedAlways, .authorizedWhenInUse:
+                    if isLocationActivated == false {
+                        isLocationActivated = true
+                        dismiss(animated: false, completion: nil)
+                        let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+                        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
+                        self.present(mainTabBarController, animated: true,completion: nil)
+                        print("~> Location is now activated.")
+                    }
+                    print("-> Localisation enabled.")
+                @unknown default:
+                break
+            }
+            } else {
+                isLocationActivated = false
+                geolocationAlert()
+                print("-x Localisation disabled.")
+        }
+    }
+    
     /*
      * Setup labels.
      */
@@ -383,9 +439,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     // MARK: - Animations
     
-    /*
-     * Display a message on the header depending of interactions the user has with markers.
-     * It takes the message to display and the alert type color as parameters.
+    /**
+      - Description - Display a message on the header depending of interactions the user has with markers.
+      - Inputs - msg `String` & color `UIColor` & error `Bool`
      */
     func PutMessageOnHeader(msg: String, color: UIColor, error: Bool) {
         headerView.backgroundColor = color
