@@ -78,7 +78,7 @@ struct Weather {
         }
     }
     
-    // MARK: - Weather Struct Functions
+    // MARK: - Weather related functions
     
     /**
      - Description - Get cardinal wind direction from degree wind direction.
@@ -249,7 +249,7 @@ struct Weather {
         
     }
     
-    // MARK: - Time Related Functions
+    // MARK: - Time related functions
     
     /**
      - Description - Get the current date and time with the dd-MM-yyyy HH:mm format.
@@ -277,6 +277,11 @@ struct Weather {
         
     }
     
+    /**
+     - Description - Get the past time from the moment given as parameter.
+     - Inputs - date `Date`
+     - Ouput - `String` past time
+     */
     static func getPastTime(for date : Date) -> String {
         var secondsAgo = Int(Date().timeIntervalSince(date))
         if secondsAgo < 0 {

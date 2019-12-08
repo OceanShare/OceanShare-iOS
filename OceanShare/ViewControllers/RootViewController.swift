@@ -44,30 +44,22 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        /* The line below is used for connection tests */
         //Defaults.clearUserData()
-        /* check if the user is already logged in */
         if (Defaults.getUserDetails().uid.isEmpty == false) {
-            print("-> User already logged.")
-            
             if Defaults.getUserDetails().isEmail == true {
-                print("-> User logged by email.")
-                
                 Auth.auth().currentUser!.reload(completion: { (error) in
                     if (Auth.auth().currentUser?.isEmailVerified == true) {
-                        print("-> Email already validated and user re-logged.")
-                        
                         // access to the homeviewcontroller
                         let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
                         mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
                         self.present(mainTabBarController, animated: true,completion: nil)
                         
                     } else {
-                        print("-> Email not validated yet or user not re-logged yet.")
                         // handle the email confirmation
-                        
                         let alert = UIAlertController(title: "Please Confirm Your Email.", message: "You need to confirm your email address to finish your inscription and access to your profile.", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "Send me an other mail.", style: .default, handler: { action in
-                            self.sendEmailVerification()
+                            User.sendEmailVerification()
                             print("~ Action Informations: An Other Mail Has Been Sent.")
                         }))
                         alert.addAction(UIAlertAction(title: "Already done, login.", style: .default, handler: { action in
@@ -129,14 +121,6 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         let pageContentViewController = pageViewController.viewControllers![0]
         pageControl.currentPage = viewControllerList.firstIndex(of: pageContentViewController)!
-    }
-    
-    // MARK: - Email Verification
-    
-    func sendEmailVerification(_ callback: ((Error?) -> ())? = nil){
-        Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
-            callback?(error)
-        })
     }
     
 }

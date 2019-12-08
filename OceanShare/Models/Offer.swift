@@ -13,6 +13,12 @@ struct Offer {
     let title: String
     let price: String
     
+    // MARK: - Functions
+    
+    /**
+     - Description - Fetch all cells from a `UITableViewController` from `Offer` datas.
+     - Output - `[Offer]` offer tab
+     */
     static func fetchOffer() -> [Offer]  {
         let offerOne = Offer(title: NSLocalizedString("offerOneTitle", comment: ""), price: NSLocalizedString("offerOnePrice", comment: ""))
         let offerTwo = Offer(title: NSLocalizedString("offerTwoTitle", comment: ""), price: NSLocalizedString("offerTwoPrice", comment: ""))
