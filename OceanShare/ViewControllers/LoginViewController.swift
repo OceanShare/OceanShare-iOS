@@ -95,10 +95,10 @@ class LoginViewController: UIViewController {
             return
             
         }
-        sendPasswordReset(withEmail: email!)
+        User.sendPasswordReset(withEmail: email!)
         let alert = UIAlertController(title: NSLocalizedString("checkEmailTitle", comment: ""), message: NSLocalizedString("checkEmailMessage", comment: ""), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("sendAnotherMailAction", comment: ""), style: .default, handler: { action in
-            self.sendPasswordReset(withEmail: email!)
+            User.sendPasswordReset(withEmail: email!)
             print("~ Action Informations: An Other Mail Has Been Sent.")
         }))
         alert.addAction(UIAlertAction(title: NSLocalizedString("checkMailAction", comment: ""), style: .default, handler: { action in
@@ -134,7 +134,7 @@ class LoginViewController: UIViewController {
                     /* handle the email confirmation */
                     let alert = UIAlertController(title: NSLocalizedString("emailNeedsConfirmation", comment: ""), message: NSLocalizedString("emailNeedsConfirmationMessage", comment: ""), preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: NSLocalizedString("sendAnotherMailAction", comment: ""), style: .default, handler: { action in
-                        self.sendEmailVerification()
+                        User.sendEmailVerification()
                         print("~ Action Informations: An Other Mail Has Been Sent.")
                     }))
                     alert.addAction(UIAlertAction(title: NSLocalizedString("checkMailAction", comment: ""), style: .default, handler: { action in
@@ -239,22 +239,6 @@ class LoginViewController: UIViewController {
             }
             alertController.addAction(OKAction)
             self.present(alertController, animated: true, completion:nil)
-        }
-    }
-    
-    // MARK: - Email Verification
-    
-    func sendEmailVerification(_ callback: ((Error?) -> ())? = nil){
-        Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
-            callback?(error)
-            
-        })
-    }
-    
-    func sendPasswordReset(withEmail email: String, _ callback: ((Error?) -> ())? = nil){
-        Auth.auth().sendPasswordReset(withEmail: email) { error in
-            callback?(error)
-            
         }
     }
     

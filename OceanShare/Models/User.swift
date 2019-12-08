@@ -155,4 +155,15 @@ struct User {
             callback?(error)
         })
     }
+    
+    /**
+     - Description - Send a mail to reset the user password.
+     - Inputs - email `String`
+     */
+    static func sendPasswordReset(withEmail email: String, _ callback: ((Error?) -> ())? = nil){
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            callback?(error)
+            
+        }
+    }
 }
