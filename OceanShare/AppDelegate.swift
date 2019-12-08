@@ -11,6 +11,7 @@ import Firebase
 import GoogleSignIn
 import FBSDKCoreKit
 import FirebaseDatabase
+import Stripe
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
@@ -20,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        STPPaymentConfiguration.shared().publishableKey = "pk_test_aKG5XmyrMWd17loRBt4W45Vd00nDvn7UF1"
+        Stripe.setDefaultPublishableKey("pk_test_aKG5XmyrMWd17loRBt4W45Vd00nDvn7UF1")
+        
         FirebaseApp.configure()
         
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
