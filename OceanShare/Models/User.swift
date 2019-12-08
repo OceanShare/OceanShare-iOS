@@ -146,4 +146,13 @@ struct User {
             }
         }
     }
+    
+    /**
+     - Description - Send an email verification to the logged user.
+     */
+    static func sendEmailVerification(_ callback: ((Error?) -> ())? = nil) {
+        Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
+            callback?(error)
+        })
+    }
 }

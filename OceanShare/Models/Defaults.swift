@@ -15,13 +15,12 @@ import GoogleSignIn
 import FBSDKLoginKit
 
 struct Defaults {
-    
     static let (uidKey, nameKey, emailKey, pictureKey, shipNameKey, boatIdKey, ghostModeKey, showPictureKey, isEmailKey, isCelsiusKey) = ("uid", "name", "email", "picture", "shipName", "boatId", "ghostMode", "showPicture", "isEmail", "isCelsius")
     static let userSessionKey = "com.save.usersession"
     private static let userDefault = UserDefaults.standard
     
     /**
-     - Description - It's using for the passing and fetching user values from the UserDefaults.
+     - Description - Structure using for the passing and fetching user values from the UserDefaults.
      */
     struct UserDetails {
         let uid: String
