@@ -150,7 +150,7 @@ class SignupViewController: UIViewController {
                     self.present(mainTabBarController, animated: true,completion: nil)
                     
                     /* send an email to the email address mentioned */
-                    self.sendEmailVerification()
+                    User.sendEmailVerification()
                     
                 }
             }
@@ -277,14 +277,5 @@ class SignupViewController: UIViewController {
                 self.present(alertController, animated: true, completion:nil)
         }
     }
-    
-    // MARK: - Email Verification
-    
-    func sendEmailVerification(_ callback: ((Error?) -> ())? = nil){
-        Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
-            callback?(error)
-        })
-        
-    }
-    
+
 }

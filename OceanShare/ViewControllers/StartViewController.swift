@@ -12,9 +12,6 @@ import Crashlytics
 import Fabric
 
 class StartViewController: UIViewController, UIPageViewControllerDelegate, UIScrollViewDelegate {
-    
-    // MARK: - Variables
-    
     let registry = Registry()
     var slides:[Slide] = [];
     
@@ -39,7 +36,6 @@ class StartViewController: UIViewController, UIPageViewControllerDelegate, UIScr
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         overrideUserInterfaceStyle = .light
         setupView()
 
