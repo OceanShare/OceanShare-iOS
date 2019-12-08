@@ -60,6 +60,12 @@
 
 // MARK: - HomeViewController
 
+/* messages */
+"geolocAlert" = "Geolocation is not enabled";
+"geolocAlertDesc" = "For using OceanShare you need to enable geolocation in Settings.";
+"geolocAlertOne" = "Open Settings";
+"geolocAlertTwo" = "Ok";
+
 /* view */
 "longitude" = "Long:";
 "latitude" = "Lat:";

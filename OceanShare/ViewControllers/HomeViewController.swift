@@ -165,21 +165,19 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var visibilityLabel: UILabel!
     @IBOutlet weak var uvLabel: UILabel!
     
-    /* visual effect */
+    /* Visual effects */
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
     
     // MARK: - View Manager
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        /* Force the light mode */
         overrideUserInterfaceStyle = .light
-        
+        /* Check if geolocation is enable */
         NotificationCenter.default.addObserver(self, selector:#selector(checkLocalisationService), name: UIApplication.willEnterForegroundNotification, object: nil)
-        
         ref = Database.database().reference().child("markers")
         userRef = Database.database().reference().child("users")
-        
         syncData()
         setupView()
         setupInfo()
@@ -188,11 +186,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         checkLocalisationService()
         getDisplayableUsers()
         timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(HomeViewController.getDisplayableUsers), userInfo: nil, repeats: true)
@@ -201,22 +199,20 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-
         timer?.invalidate()
         
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
         setupCompass()
         
     }
     
     // MARK: - Setup
 
-    /*
-     * Setup embeded views from home view controller.
+    /**
+     - Description - Setup embeded views from home view controller.
      */
     func setupView() {
         /* blur effect */
@@ -247,8 +243,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
-    /*
-     * Setup user's longitude and latitude from location manager.
+    /**
+     - Description - Setup user's longitude and latitude from location manager.
      */
     func setupInfo() {
         locationManager.requestAlwaysAuthorization()
@@ -265,9 +261,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-    /*
-     * Real time location manager.
-     * Update user's lalitude and longitude.
+    /**
+     - Description - Real time location manager. Update user's lalitude and longitude.
+     - Inputs - manager `CLLocationManager` & locations `[CLLocation]`
      */
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
@@ -333,6 +329,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    /**
+     - Description - Display an alert when geolocation is disable or inactive.
+     */
     func geolocationAlert() {
         let alertController = UIAlertController(title: NSLocalizedString("geolocAlert", comment: ""), message: NSLocalizedString("geolocAlertDesc", comment: ""), preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("geolocAlertOne", comment: ""), style: .default) { value in
@@ -350,6 +349,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         self.present(alertController, animated: true, completion: nil)
     }
     
+    /**
+     - Description - Check if geolocation is enable or active, if not calls the alert displayer function.
+     */
     @objc func checkLocalisationService() {
         if CLLocationManager.locationServicesEnabled() {
             switch CLLocationManager.authorizationStatus() {
@@ -377,8 +379,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-    /*
-     * Setup labels.
+    /**
+     - Description - Setup labels.
      */
     func setupLocalizedStrings() {
         /* icon view */
@@ -407,8 +409,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         editButton.setTitle(NSLocalizedString("edit", comment: ""), for: .normal)
     }
     
-    /*
-     * Setup custom icons.
+    /**
+     - Description - Setup custom icons.
      */
     func setupCustomIcons() {
         /* map view */
@@ -427,8 +429,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
-    /*
-     * Setup the compass from mapview.
+    /**
+     - Description - Setup the compass from mapview.
      */
     func setupCompass() {
         var centerPoint = mapView.compassView.center
@@ -456,6 +458,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    /**
+     - Description - Animate the display of a view with optional blur effects.
+     - Inputs - view `UIView` & effect `Bool`
+     */
     func animateInWithOptionalEffect(view: UIView, effect: Bool) {
         if effect == true {
             visualEffectView.isHidden = false
@@ -479,6 +485,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    /**
+     - Description - Animate the closure of a view with optional blur effects.
+     - Inputs - effect `Bool`
+     */
     func animateOutWithOptionalEffect(effect: Bool) {
         UIView.animate(withDuration: 0.3, animations: {
             if effect == true {

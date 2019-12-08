@@ -14,6 +14,7 @@
 		BF063B07236C8A1F00C82868 /* Skeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF063B06236C8A1F00C82868 /* Skeleton.swift */; };
 		BF0FE36E22D8C32600615109 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0FE36D22D8C32600615109 /* Weather.swift */; };
 		BF13F79E21DB512C0086F24B /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13F79D21DB512C0086F24B /* UIViewExtensions.swift */; };
+		BF1F3717239D1B0600A8ED52 /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F3716239D1B0600A8ED52 /* Connectivity.swift */; };
 		BF1F80A122705B84004F8144 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F80A022705B84004F8144 /* SettingsViewController.swift */; };
 		BF212F55225F3C390030771F /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF212F54225F3C390030771F /* InformationViewController.swift */; };
 		BF223959231D5C3C003F1F9A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF223957231D5C3C003F1F9A /* Localizable.strings */; };
@@ -84,6 +85,7 @@
 		BF063B06236C8A1F00C82868 /* Skeleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skeleton.swift; sourceTree = "<group>"; };
 		BF0FE36D22D8C32600615109 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		BF13F79D21DB512C0086F24B /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
+		BF1F3716239D1B0600A8ED52 /* Connectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
 		BF1F80A022705B84004F8144 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BF212F54225F3C390030771F /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
 		BF22394E231D5282003F1F9A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				BF063B06236C8A1F00C82868 /* Skeleton.swift */,
 				BF45B23523913E5000BDD01B /* Offer.swift */,
 				BF5F170C2393DB75001E6C73 /* Defaults.swift */,
+				BF1F3716239D1B0600A8ED52 /* Connectivity.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -606,6 +609,7 @@
 				BF45B23623913E5000BDD01B /* Offer.swift in Sources */,
 				BF7563D821DA12E700F8166B /* WeatherViewController.swift in Sources */,
 				BFF9641C22E8FEDE00CAB149 /* Registry.swift in Sources */,
+				BF1F3717239D1B0600A8ED52 /* Connectivity.swift in Sources */,
 				BF2E44322390398800109A78 /* SubscribtionViewController.swift in Sources */,
 				201E152B21E4C0E500050361 /* UITextFieldExtensions.swift in Sources */,
 				BF1F80A122705B84004F8144 /* SettingsViewController.swift in Sources */,
