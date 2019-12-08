@@ -30,7 +30,8 @@ target 'OceanShare' do
   pod 'SwiftyJSON', '~> 4.0'
   pod 'Turf', '~> 0.3'
   pod 'Firebase/Functions'
-
+  pod 'Stripe'
+  
   target 'OceanShareTests' do
     inherit! :search_paths
     # Pods for testing
