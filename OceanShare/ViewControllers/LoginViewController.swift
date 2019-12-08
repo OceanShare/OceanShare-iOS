@@ -92,7 +92,7 @@ class LoginViewController: UIViewController {
     // MARK: - Login functions
     
     /**
-     - Description - present the `HomeViewController` when the user is logged.
+     - Description - Present the `HomeViewController` when the user is logged.
      */
     func redirectToHome() {
         let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
