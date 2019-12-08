@@ -47,7 +47,6 @@ class SubscribtionViewController: UIViewController {
     @IBOutlet weak var thirdPointLabel: UILabel!
     @IBOutlet weak var fourthPointLabel: UILabel!
     
-    
     @IBOutlet weak var offerOne: DesignableView!
     @IBOutlet weak var offerTwo: DesignableView!
     @IBOutlet weak var offerThree: DesignableView!

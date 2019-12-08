@@ -85,15 +85,13 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
      - Description - Display an alert if the user has to verify its email.
      */
     func emailConfirmationAlert() {
-        let alert = UIAlertController(title: "Please Confirm Your Email.", message: "You need to confirm your email address to finish your inscription and access to your profile.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Send me an other mail.", style: .default, handler: { action in
+        let alert = UIAlertController(title: NSLocalizedString("alertRootTitle", comment: ""), message: NSLocalizedString("alertRootDesc", comment: ""), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("alertRootActionOne", comment: ""), style: .default, handler: { action in
             User.sendEmailVerification()
-            print("~ Action Informations: An Other Mail Has Been Sent.")
         }))
-        alert.addAction(UIAlertAction(title: "Already done, login.", style: .default, handler: { action in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("alertRootActionTwo", comment: ""), style: .default, handler: { action in
             let loginViewController = self.storyboard?.instantiateViewController(withIdentifier:   "LoginViewController") as! LoginViewController
             self.present(loginViewController, animated: true,completion: nil)
-            print("~ Action Information: OK Pressed.")
         }))
         self.present(alert, animated: true, completion: nil)
         

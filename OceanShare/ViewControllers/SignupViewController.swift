@@ -17,6 +17,11 @@ import FBSDKLoginKit
 import Alamofire
 
 class SignupViewController: UIViewController {
+    var ref: DatabaseReference!
+    var imageURL: String?
+    var currentTappedTextField : UITextField?
+    let storageRef = Storage.storage().reference()
+    let registry = Registry()
     
     // MARK: - Outlets
     
@@ -41,21 +46,11 @@ class SignupViewController: UIViewController {
     
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var signinButton: UIButton!
-    
-    // MARK: - Variables
-    
-    var ref: DatabaseReference!
-    var imageURL: String?
-    var currentTappedTextField : UITextField?
-    
-    let storageRef = Storage.storage().reference()
-    let registry = Registry()
 
     // MARK: - ViewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         overrideUserInterfaceStyle = .light
         ref = Database.database().reference()
         setupView()
