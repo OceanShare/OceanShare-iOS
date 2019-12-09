@@ -14,13 +14,11 @@
 		BF063B07236C8A1F00C82868 /* Skeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF063B06236C8A1F00C82868 /* Skeleton.swift */; };
 		BF0FE36E22D8C32600615109 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0FE36D22D8C32600615109 /* Weather.swift */; };
 		BF13F79E21DB512C0086F24B /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13F79D21DB512C0086F24B /* UIViewExtensions.swift */; };
+		BF1F3717239D1B0600A8ED52 /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F3716239D1B0600A8ED52 /* Connectivity.swift */; };
 		BF1F80A122705B84004F8144 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F80A022705B84004F8144 /* SettingsViewController.swift */; };
 		BF212F55225F3C390030771F /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF212F54225F3C390030771F /* InformationViewController.swift */; };
 		BF223959231D5C3C003F1F9A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF223957231D5C3C003F1F9A /* Localizable.strings */; };
 		BF2E44322390398800109A78 /* SubscribtionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2E44312390398800109A78 /* SubscribtionViewController.swift */; };
-		BF3306FD21DF599000433264 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3306FC21DF599000433264 /* Helper.swift */; };
-		BF45B23623913E5000BDD01B /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF45B23523913E5000BDD01B /* Offer.swift */; };
-		BF45B23A239174F200BDD01B /* OffersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF45B239239174F200BDD01B /* OffersTableViewCell.swift */; };
 		BF48EC3E220EEAE00097A64C /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF48EC3D220EEAE00097A64C /* images.xcassets */; };
 		BF5195472314255600E46FB4 /* Slide.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF5195462314255600E46FB4 /* Slide.xib */; };
 		BF56CDE621D5CB17003707A9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56CDE521D5CB17003707A9 /* HomeViewController.swift */; };
@@ -85,6 +83,7 @@
 		BF063B06236C8A1F00C82868 /* Skeleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skeleton.swift; sourceTree = "<group>"; };
 		BF0FE36D22D8C32600615109 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		BF13F79D21DB512C0086F24B /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
+		BF1F3716239D1B0600A8ED52 /* Connectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
 		BF1F80A022705B84004F8144 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BF212F54225F3C390030771F /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
 		BF22394E231D5282003F1F9A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
@@ -92,9 +91,6 @@
 		BF223958231D5C3C003F1F9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BF22395A231D5C4D003F1F9A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BF2E44312390398800109A78 /* SubscribtionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribtionViewController.swift; sourceTree = "<group>"; };
-		BF3306FC21DF599000433264 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
-		BF45B23523913E5000BDD01B /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
-		BF45B239239174F200BDD01B /* OffersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersTableViewCell.swift; sourceTree = "<group>"; };
 		BF48EC3D220EEAE00097A64C /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
 		BF5195462314255600E46FB4 /* Slide.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Slide.xib; sourceTree = "<group>"; };
 		BF56CDE521D5CB17003707A9 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -271,14 +267,13 @@
 		BF92739821D2302900BDCC16 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				BF3306FC21DF599000433264 /* Helper.swift */,
 				BF8CCE3A2274729B000863AC /* Tag.swift */,
 				BF0FE36D22D8C32600615109 /* Weather.swift */,
 				BFF9641B22E8FEDE00CAB149 /* Registry.swift */,
 				BFE633BC2365FA2800DE4EFC /* User.swift */,
 				BF063B06236C8A1F00C82868 /* Skeleton.swift */,
-				BF45B23523913E5000BDD01B /* Offer.swift */,
 				BF5F170C2393DB75001E6C73 /* Defaults.swift */,
+				BF1F3716239D1B0600A8ED52 /* Connectivity.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -288,7 +283,6 @@
 			children = (
 				BFAFEF032313D4090023BD0C /* Slide.swift */,
 				BF5195462314255600E46FB4 /* Slide.xib */,
-				BF45B239239174F200BDD01B /* OffersTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -599,19 +593,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF45B23A239174F200BDD01B /* OffersTableViewCell.swift in Sources */,
 				BF063B05236C84E900C82868 /* PrivateMessageViewController.swift in Sources */,
 				BFE4DE5E236B905700033DEC /* StringExtensions.swift in Sources */,
 				BF8CCE3B2274729B000863AC /* Tag.swift in Sources */,
 				BF89D37521D32EE900E522AC /* LoginViewController.swift in Sources */,
 				BF13F79E21DB512C0086F24B /* UIViewExtensions.swift in Sources */,
 				BF89D37321D32EBC00E522AC /* SignupViewController.swift in Sources */,
-				BF45B23623913E5000BDD01B /* Offer.swift in Sources */,
 				BF7563D821DA12E700F8166B /* WeatherViewController.swift in Sources */,
 				BFF9641C22E8FEDE00CAB149 /* Registry.swift in Sources */,
+				BF1F3717239D1B0600A8ED52 /* Connectivity.swift in Sources */,
 				BF2E44322390398800109A78 /* SubscribtionViewController.swift in Sources */,
 				201E152B21E4C0E500050361 /* UITextFieldExtensions.swift in Sources */,
-				BF3306FD21DF599000433264 /* Helper.swift in Sources */,
 				BF1F80A122705B84004F8144 /* SettingsViewController.swift in Sources */,
 				BF063B07236C8A1F00C82868 /* Skeleton.swift in Sources */,
 				BFE633BB23658E4300DE4EFC /* DoubleExtensions.swift in Sources */,
@@ -822,6 +814,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 9478G9T3JY;
 				INFOPLIST_FILE = OceanShare/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -845,6 +838,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 9478G9T3JY;
 				INFOPLIST_FILE = OceanShare/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

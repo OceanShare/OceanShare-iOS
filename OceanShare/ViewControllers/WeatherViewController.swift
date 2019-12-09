@@ -15,6 +15,13 @@ import CoreLocation
 import FirebasePerformance
 
 class WeatherViewController: UIViewController, CLLocationManagerDelegate {
+    let locationManager = CLLocationManager()
+    var currentLatitude: Double = 0.0
+    var currentLongitude: Double = 0.0
+    var uvGlobal: String!
+    var isLocationActivated: Bool!
+    let weather = Weather.self
+    let registry = Registry()
     
     // MARK: - Outlets
     
@@ -43,43 +50,50 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var visibilityLabel: UILabel!
     @IBOutlet weak var uvIndiceTitle: UILabel!
     @IBOutlet weak var uvIndiceLabel: UILabel!
-    
-    // MARK: - Variables
-    
-    // globals
-    let locationManager = CLLocationManager()
-    var currentLatitude: Double = 0.0
-    var currentLongitude: Double = 0.0
-    var uvGlobal: String!
-    
-    // classes
-    let weather = Weather.self
-    let registry = Registry()
-    
+
     // MARK: - View's Managers
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        NotificationCenter.default.addObserver(self, selector:#selector(checkLocalisationService), name: UIApplication.willEnterForegroundNotification, object: nil)
+        overrideUserInterfaceStyle = .light
         setupView()
         
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    
+        checkLocalisationService()
+        getWeatherFromCurrentLocation()
+        
+    }
+    
+    /**
+    - Description - Setup the design of the view.
+    */
     func setupView() {
-        /* set localized labels */
         setupLocalizedStrings()
-        /* set localisation */
         self.locationManager.requestAlwaysAuthorization()
-        /* for use in foreground */
         self.locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
             
+        } else {
+            checkLocalisationService()
+            
         }
     }
     
+    /**
+    - Description - Setup the translated labels.
+    */
     func setupLocalizedStrings() {
         weatherTitle.text = NSLocalizedString("weatherTitle", comment: "")
         longitudeTitle.text = NSLocalizedString("longitudeTitle", comment: "")
@@ -95,15 +109,64 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    // MARK: - Location manager
     
-        getWeatherFromCurrentLocation()
-        
+    /**
+     - Description - Diaplays an alert if the geolocation is disable or not working.
+     */
+    func geolocationAlert() {
+        let alertController = UIAlertController(title: NSLocalizedString("geolocAlert", comment: ""), message: NSLocalizedString("geolocAlertDesc", comment: ""), preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("geolocAlertOne", comment: ""), style: .default) { value in
+            let path = UIApplication.openSettingsURLString
+            guard let settingsURL = URL(string: path), !settingsURL.absoluteString.isEmpty else {
+              return
+                
+            }
+            UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+           
+        })
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("geolocAlertTwo", comment: ""), style: .cancel) { value in
+            self.checkLocalisationService()
+        })
+        self.present(alertController, animated: true, completion: nil)
     }
     
-    // MARL: - Data Handlers
+    /**
+     - Description - Check if geolocation is enable or not.
+     */
+    @objc func checkLocalisationService() {
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+                case .notDetermined, .restricted, .denied:
+                    isLocationActivated = false
+                    geolocationAlert()
+                    print("-x Localisation disabled.")
+                case .authorizedAlways, .authorizedWhenInUse:
+                    if isLocationActivated == false {
+                        isLocationActivated = true
+                        dismiss(animated: false, completion: nil)
+                        let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+                        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[1]
+                        self.present(mainTabBarController, animated: true,completion: nil)
+                        print("~> Location is now activated.")
+                    }
+                    print("-> Localisation enabled.")
+                @unknown default:
+                break
+            }
+            } else {
+                isLocationActivated = false
+                geolocationAlert()
+                print("-x Localisation disabled.")
+        }
+    }
     
+    // MARK: - Data handlers
+    
+    /**
+     - Description - Change the raw data into an understandable content.
+     - Inputs - rawData `JSON`
+     */
     func transformData(rawData: JSON) {
         // get uv index
         let uvData = rawData["uv"]
@@ -123,6 +186,10 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         
     }
     
+    /**
+     - Description - Update longitude and latitude in real time.
+     - Inputs - manager `CLLocationManager` & locations `[CLLocation]`
+     */
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         self.currentLatitude = locValue.latitude
@@ -130,6 +197,9 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         
     }
     
+    /**
+     - Description - Get the weather from the current location.
+     */
     func getWeatherFromCurrentLocation() {
         let param: Parameters = [
             "lat": String(self.currentLatitude),
@@ -156,8 +226,12 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         trace?.stop()
     }
     
-    // MARK - Updaters
+    // MARK: - Updaters
     
+    /**
+     - Description - Check if  weather datas have been updated.
+     - Inputs - weather `Weather`
+     */
     func didGetWeather(weather: Weather) {
         DispatchQueue.main.async {
             self.weatherImage.image = self.weather.analyseDescription(weather: weather, registry: self.registry)

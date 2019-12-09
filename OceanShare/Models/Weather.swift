@@ -78,8 +78,13 @@ struct Weather {
         }
     }
     
-    // MARK: - Weather Functions
+    // MARK: - Weather related functions
     
+    /**
+     - Description - Get cardinal wind direction from degree wind direction.
+     - Inputs - degrees `Double`
+     - Output - `String` cardinal wind direction
+     */
     static func analyseWindDirection(degrees: Double) -> String {
         var windDirection: String
         
@@ -123,6 +128,11 @@ struct Weather {
         return windDirection + "\(round(100 * (degrees * (60*60) / 1000)) / 100) km/h"
     }
     
+    /**
+     - Description - Calculate uv index from a weather chanel value.
+     - Inputs - uvIndex `Double`
+     - Output - `String` uv index
+     */
     static func analyseUvIndex(uvIndex: Double) -> String {
         let uvRank: String
         
@@ -139,6 +149,11 @@ struct Weather {
         return uvRank
     }
     
+    /**
+     - Description - Get a weather description depending of a weather chanel code.
+     - Inputs - weather `Weather` & registry `Registry`
+     - Output - `String` weather description
+     */
     static func analyseWeatherDescription(weather: Weather, registry: Registry) -> String {
         if (weather.dateAndTime < weather.sunrise) || (weather.dateAndTime > weather.sunset) {
             switch weather.weatherID {
@@ -182,6 +197,11 @@ struct Weather {
         }
     }
     
+    /**
+     - Description - Get a weather icon depending of a weather chanel code.
+     - Inputs - weather `Weather` & registry `Registry`
+     - Output - `UIImage` weather icon
+     */
     static func analyseDescription(weather: Weather, registry: Registry) -> UIImage {
         var choosenOne: UIImage
         
@@ -229,8 +249,12 @@ struct Weather {
         
     }
     
-    // MARK: - Time Related Functions
+    // MARK: - Time related functions
     
+    /**
+     - Description - Get the current date and time with the dd-MM-yyyy HH:mm format.
+     - Output - `String` date and hour
+     */
     static func getCurrentTime() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
@@ -239,6 +263,11 @@ struct Weather {
         
     }
     
+    /**
+     - Description - Get current date and hour from a string.
+     - Inputs - time `String`
+     - Output - `Date` current date and hour
+     */
     static func getDateFromString(time: String) -> Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
@@ -248,6 +277,11 @@ struct Weather {
         
     }
     
+    /**
+     - Description - Get the past time from the moment given as parameter.
+     - Inputs - date `Date`
+     - Ouput - `String` past time
+     */
     static func getPastTime(for date : Date) -> String {
         var secondsAgo = Int(Date().timeIntervalSince(date))
         if secondsAgo < 0 {

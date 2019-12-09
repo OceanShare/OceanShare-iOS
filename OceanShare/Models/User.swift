@@ -60,8 +60,11 @@ struct User {
         
     }
     
-    /*
-     * Get the logged user id.
+    // MARK: - Functions
+    
+    /**
+     - Description - Get the logged user id.
+     - Output - `String` uid
      */
     static func getCurrentUser() -> String {
         let userId = Auth.auth().currentUser?.uid
@@ -69,9 +72,10 @@ struct User {
         
     }
     
-    /*
-     * Return the user picture url from the database if there is one,
-     * else return the default user picture url.
+    /**
+     - Description - Return the user picture url from the database if there is one, else return the default user picture url.
+     - Inputs - user `User`
+     - Output - `UIImage` profile picture
      */
     func getUserPictureFromDatabase(user: User) -> UIImage {
         if (user.picture != nil) {
@@ -84,18 +88,20 @@ struct User {
         
     }
     
-    /*
-     * Return the default user picture url from calling
-     * the function getDefaultPicture.
+    /**
+     - Description - Return the default user picture url from calling the function getDefaultPicture.
+     - Inputs - user `User`
+     - Output - `UIImage` profile picture
      */
     func getUserPictureFromNowhere(user: User) -> UIImage {
         return self.getAvatarCheckIn(user: user, finalPicture: self.getDefaultPicture())
         
     }
     
-    /*
-     * Return the user picture uploaded in storage if there is one,
-     * else return the default user picture url.
+    /**
+     - Description - Return the user picture uploaded in storage if there is one, else return the default user picture url.
+     - Inputs - user `User` & url `URL`
+     - Output - `UIImage` profile picture
      */
     func getUserPictureFromStorage(user: User, url: URL) -> UIImage {
         let pictureData = NSData(contentsOf: url)
@@ -104,8 +110,9 @@ struct User {
         
     }
     
-    /*
-     * Return the default user picture url.
+    /**
+     - Description - Return the default user picture url.
+     - Output - `UIImage` default profile picture
      */
     func getDefaultPicture() -> UIImage {
         let registry = Registry()
@@ -115,9 +122,10 @@ struct User {
         
     }
     
-    /*
-     * Return the avatar depending of the user boat type if there
-     * is a boatId, else return the default user picture url.
+    /**
+     - Description - Return the avatar depending of the user boat type if there is a boatId, else return the default user picture url.
+     - Inputs - user `User` & finalPicture `UIImage`
+     - Output - `UIImage` avatar image
      */
     func getAvatarCheckIn(user: User, finalPicture: UIImage) -> UIImage {
         if (user.showPicture == true) {
@@ -136,6 +144,26 @@ struct User {
                 return self.getDefaultPicture()
                 
             }
+        }
+    }
+    
+    /**
+     - Description - Send an email verification to the logged user.
+     */
+    static func sendEmailVerification(_ callback: ((Error?) -> ())? = nil) {
+        Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
+            callback?(error)
+        })
+    }
+    
+    /**
+     - Description - Send a mail to reset the user password.
+     - Inputs - email `String`
+     */
+    static func sendPasswordReset(withEmail email: String, _ callback: ((Error?) -> ())? = nil){
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            callback?(error)
+            
         }
     }
 }

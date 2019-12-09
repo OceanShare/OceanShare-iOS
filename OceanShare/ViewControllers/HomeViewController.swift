@@ -22,9 +22,6 @@ import FirebasePerformance
 
 
 class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate {
-
-    // MARK: - Variables
-    
     /* firebase */
     var ref: DatabaseReference!
     var userRef: DatabaseReference!
@@ -43,6 +40,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var stackedLongitude: String!
     var stackedLatitude: String!
     var mustBeenDisplayed = true
+    var isLocationActivated: Bool!
     
     /* tag properties */
     var tagIds = [String]()
@@ -164,26 +162,31 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var visibilityLabel: UILabel!
     @IBOutlet weak var uvLabel: UILabel!
     
-    /* visual effect */
+    /* Visual effects */
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
-    
-    // MARK: - View Manager
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        /* Force the light mode */
+        overrideUserInterfaceStyle = .light
+        /* Check if geolocation is enable */
+        NotificationCenter.default.addObserver(self, selector:#selector(checkLocalisationService), name: UIApplication.willEnterForegroundNotification, object: nil)
         ref = Database.database().reference().child("markers")
         userRef = Database.database().reference().child("users")
-        
         syncData()
         setupView()
         setupInfo()
 
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        checkLocalisationService()
         getDisplayableUsers()
         timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(HomeViewController.getDisplayableUsers), userInfo: nil, repeats: true)
         
@@ -191,22 +194,20 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-
         timer?.invalidate()
         
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
         setupCompass()
         
     }
     
     // MARK: - Setup
 
-    /*
-     * Setup embeded views from home view controller.
+    /**
+     - Description - Setup embeded views from home view controller.
      */
     func setupView() {
         /* blur effect */
@@ -237,8 +238,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
-    /*
-     * Setup user's longitude and latitude from location manager.
+    /**
+     - Description - Setup user's longitude and latitude from location manager.
      */
     func setupInfo() {
         locationManager.requestAlwaysAuthorization()
@@ -248,12 +249,78 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             //locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
             locationManager.startUpdatingLocation()
+            
+        } else {
+            checkLocalisationService()
+            
         }
     }
     
-    /*
-     * Real time location manager.
-     * Update user's lalitude and longitude.
+    /**
+     - Description - Setup translated labels.
+     */
+    func setupLocalizedStrings() {
+        /* icon view */
+        iconViewJellyfishs.text = NSLocalizedString("iconViewJellyfishs", comment: "")
+        iconViewDivers.text = NSLocalizedString("iconViewDivers", comment: "")
+        iconViewWaste.text = NSLocalizedString("iconViewWaste", comment: "")
+        iconViewWarning.text = NSLocalizedString("iconViewWarning", comment: "")
+        iconViewDolphins.text = NSLocalizedString("iconViewDolphins", comment: "")
+        iconViewDestination.text = NSLocalizedString("iconViewDestination", comment: "")
+        iconViewWeather.text = NSLocalizedString("iconViewWeather", comment: "")
+        iconViewBuoys.text = NSLocalizedString("iconViewBuoys", comment: "")
+        iconViewPatrols.text = NSLocalizedString("iconViewPatrols", comment: "")
+        iconViewFishes.text = NSLocalizedString("iconViewFishes", comment: "")
+        /* comment view */
+        commentViewDescription.text = NSLocalizedString("commentViewDescription", comment: "")
+        descriptionTextField.placeholder = NSLocalizedString("commentViewDescriptionTextField", comment: "")
+        commentViewSubmit.setTitle(NSLocalizedString("commentViewSubmit", comment: ""), for: .normal)
+        commentViewCancel.setTitle(NSLocalizedString("commentViewCancel", comment: ""), for: .normal)
+        /* edition view */
+        editionViewDescription.text = NSLocalizedString("editionViewDescription", comment: "")
+        newDescriptionTextField.placeholder = NSLocalizedString("newDescriptionTextField", comment: "")
+        editionViewSave.setTitle(NSLocalizedString("editionViewSave", comment: ""), for: .normal)
+        editionViewCancel.setTitle(NSLocalizedString("editionViewCancel", comment: ""), for: .normal)
+        editionViewDelete.setTitle(NSLocalizedString("editionViewDelete", comment: ""), for: .normal)
+        /* description view */
+        editButton.setTitle(NSLocalizedString("edit", comment: ""), for: .normal)
+    }
+    
+    /**
+     - Description - Setup custom icons.
+     */
+    func setupCustomIcons() {
+        /* map view */
+        centerIcon.image = centerIcon.image!.withRenderingMode(.alwaysTemplate)
+        centerIcon.tintColor = registry.customDarkBlue
+        /* icon view */
+        closeIcon.image = closeIcon.image!.withRenderingMode(.alwaysTemplate)
+        closeIcon.tintColor = registry.customBlack
+        /* description view */
+        closeDescriptionIcon.image = closeDescriptionIcon.image!.withRenderingMode(.alwaysTemplate)
+        closeDescriptionIcon.tintColor = registry.customBlack
+        thumbUpIcon.image = thumbUpIcon.image!.withRenderingMode(.alwaysTemplate)
+        thumbUpIcon.tintColor = registry.customDarkGrey
+        thumbDownIcon.image = thumbDownIcon.image!.withRenderingMode(.alwaysTemplate)
+        thumbDownIcon.tintColor = registry.customDarkGrey
+        
+    }
+    
+    /**
+     - Description - Setup the compass from mapview.
+     */
+    func setupCompass() {
+        var centerPoint = mapView.compassView.center
+        centerPoint.y = 65
+        mapView.compassView.center = centerPoint
+        
+    }
+    
+    // MARK: - Location manager
+    
+    /**
+     - Description - Real time location manager. Update user's lalitude and longitude.
+     - Inputs - manager `CLLocationManager` & locations `[CLLocation]`
      */
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
@@ -319,71 +386,61 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-    /*
-     * Setup labels.
+    /**
+     - Description - Display an alert when geolocation is disable or inactive.
      */
-    func setupLocalizedStrings() {
-        /* icon view */
-        iconViewJellyfishs.text = NSLocalizedString("iconViewJellyfishs", comment: "")
-        iconViewDivers.text = NSLocalizedString("iconViewDivers", comment: "")
-        iconViewWaste.text = NSLocalizedString("iconViewWaste", comment: "")
-        iconViewWarning.text = NSLocalizedString("iconViewWarning", comment: "")
-        iconViewDolphins.text = NSLocalizedString("iconViewDolphins", comment: "")
-        iconViewDestination.text = NSLocalizedString("iconViewDestination", comment: "")
-        iconViewWeather.text = NSLocalizedString("iconViewWeather", comment: "")
-        iconViewBuoys.text = NSLocalizedString("iconViewBuoys", comment: "")
-        iconViewPatrols.text = NSLocalizedString("iconViewPatrols", comment: "")
-        iconViewFishes.text = NSLocalizedString("iconViewFishes", comment: "")
-        /* comment view */
-        commentViewDescription.text = NSLocalizedString("commentViewDescription", comment: "")
-        descriptionTextField.placeholder = NSLocalizedString("commentViewDescriptionTextField", comment: "")
-        commentViewSubmit.setTitle(NSLocalizedString("commentViewSubmit", comment: ""), for: .normal)
-        commentViewCancel.setTitle(NSLocalizedString("commentViewCancel", comment: ""), for: .normal)
-        /* edition view */
-        editionViewDescription.text = NSLocalizedString("editionViewDescription", comment: "")
-        newDescriptionTextField.placeholder = NSLocalizedString("newDescriptionTextField", comment: "")
-        editionViewSave.setTitle(NSLocalizedString("editionViewSave", comment: ""), for: .normal)
-        editionViewCancel.setTitle(NSLocalizedString("editionViewCancel", comment: ""), for: .normal)
-        editionViewDelete.setTitle(NSLocalizedString("editionViewDelete", comment: ""), for: .normal)
-        /* description view */
-        editButton.setTitle(NSLocalizedString("edit", comment: ""), for: .normal)
+    func geolocationAlert() {
+        let alertController = UIAlertController(title: NSLocalizedString("geolocAlert", comment: ""), message: NSLocalizedString("geolocAlertDesc", comment: ""), preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("geolocAlertOne", comment: ""), style: .default) { value in
+            let path = UIApplication.openSettingsURLString
+            guard let settingsURL = URL(string: path), !settingsURL.absoluteString.isEmpty else {
+              return
+                
+            }
+            UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+           
+        })
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("geolocTwo", comment: ""), style: .cancel) { value in
+            self.checkLocalisationService()
+        })
+        self.present(alertController, animated: true, completion: nil)
     }
     
-    /*
-     * Setup custom icons.
+    /**
+     - Description - Check if geolocation is enable or active, if not calls the alert displayer function.
      */
-    func setupCustomIcons() {
-        /* map view */
-        centerIcon.image = centerIcon.image!.withRenderingMode(.alwaysTemplate)
-        centerIcon.tintColor = registry.customDarkBlue
-        /* icon view */
-        closeIcon.image = closeIcon.image!.withRenderingMode(.alwaysTemplate)
-        closeIcon.tintColor = registry.customBlack
-        /* description view */
-        closeDescriptionIcon.image = closeDescriptionIcon.image!.withRenderingMode(.alwaysTemplate)
-        closeDescriptionIcon.tintColor = registry.customBlack
-        thumbUpIcon.image = thumbUpIcon.image!.withRenderingMode(.alwaysTemplate)
-        thumbUpIcon.tintColor = registry.customDarkGrey
-        thumbDownIcon.image = thumbDownIcon.image!.withRenderingMode(.alwaysTemplate)
-        thumbDownIcon.tintColor = registry.customDarkGrey
-        
-    }
-    
-    /*
-     * Setup the compass from mapview.
-     */
-    func setupCompass() {
-        var centerPoint = mapView.compassView.center
-        centerPoint.y = 65
-        mapView.compassView.center = centerPoint
-        
+    @objc func checkLocalisationService() {
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+                case .notDetermined, .restricted, .denied:
+                    isLocationActivated = false
+                    geolocationAlert()
+                    print("-x Localisation disabled.")
+                case .authorizedAlways, .authorizedWhenInUse:
+                    if isLocationActivated == false {
+                        isLocationActivated = true
+                        dismiss(animated: false, completion: nil)
+                        let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+                        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
+                        self.present(mainTabBarController, animated: true,completion: nil)
+                        print("~> Location is now activated.")
+                    }
+                    print("-> Localisation enabled.")
+                @unknown default:
+                break
+            }
+            } else {
+                isLocationActivated = false
+                geolocationAlert()
+                print("-x Localisation disabled.")
+        }
     }
     
     // MARK: - Animations
     
-    /*
-     * Display a message on the header depending of interactions the user has with markers.
-     * It takes the message to display and the alert type color as parameters.
+    /**
+      - Description - Display a message on the header depending of interactions the user has with markers.
+      - Inputs - msg `String` & color `UIColor` & error `Bool`
      */
     func PutMessageOnHeader(msg: String, color: UIColor, error: Bool) {
         headerView.backgroundColor = color
@@ -398,6 +455,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    /**
+     - Description - Animate the display of a view with optional blur effects.
+     - Inputs - view `UIView` & effect `Bool`
+     */
     func animateInWithOptionalEffect(view: UIView, effect: Bool) {
         if effect == true {
             visualEffectView.isHidden = false
@@ -421,6 +482,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    /**
+     - Description - Animate the closure of a view with optional blur effects.
+     - Inputs - effect `Bool`
+     */
     func animateOutWithOptionalEffect(effect: Bool) {
         UIView.animate(withDuration: 0.3, animations: {
             if effect == true {
@@ -447,16 +512,25 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     // MARK: - Map View
     
+    /**
+     - Description - Hide the speed warning when the user tap on it.
+     */
     @IBAction func hideWarning(_ sender: Any) {
         warningView.isHidden = true
         
     }
     
+    /**
+     - Description - Center the map to the user location.
+     */
     @IBAction func centerMapToUser(_ sender: Any) {
         mapView.setCenter(mapView.userLocation!.coordinate, animated: true)
         
     }
     
+    /**
+     - Description - Open the icon menu.
+     */
     @IBAction func openMenu(_ sender: Any) {
         viewStacked = iconView
         animateInWithOptionalEffect(view: iconView, effect: true)
@@ -467,56 +541,89 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     // MARK: - Icon View
     
+    /**
+     - Description - Hide the icon menu.
+     */
     @IBAction func closeMenu(_ sender: Any) {
         animateOutWithOptionalEffect(effect: true)
         
     }
     
+    /**
+     - Description - Activate the medusa event from the icon menu.
+     */
     @IBAction func medusaActivate(_ sender: Any) {
         eventActivator(eventId: 0, eventDescription: "Jellyfishs", eventMessage: self.registry.msgJellyfishs)
         
     }
     
+    /**
+    - Description - Activate the diver event from the icon menu.
+    */
     @IBAction func diverActivate(_ sender: Any) {
         eventActivator(eventId: 1, eventDescription: "Divers", eventMessage: self.registry.msgDivers)
         
     }
     
+    /**
+    - Description - Activate the waste event from the icon menu.
+    */
     @IBAction func wasteActivate(_ sender: Any) {
         eventActivator(eventId: 2, eventDescription: "Waste", eventMessage: self.registry.msgWaste)
         
     }
     
+    /**
+    - Description - Activate the warning event from the icon menu.
+    */
     @IBAction func warningActivate(_ sender: Any) {
         eventActivator(eventId: 3, eventDescription: "Warning", eventMessage: self.registry.msgWarning)
 
     }
     
+    /**
+    - Description - Activate the dolphin event from the icon menu.
+    */
     @IBAction func dolphinActivate(_ sender: Any) {
         eventActivator(eventId: 4, eventDescription: "Dolphins", eventMessage: self.registry.msgDolphins)
         
     }
     
+    /**
+    - Description - Activate the destination event from the icon menu.
+    */
     @IBAction func destinationActivate(_ sender: Any) {
         eventActivator(eventId: 5, eventDescription: "Destination", eventMessage: self.registry.msgDestination)
         
     }
     
+    /**
+    - Description - Activate the buoy event from the icon menu.
+    */
     @IBAction func buoyActivate(_ sender: Any) {
         eventActivator(eventId: 6, eventDescription: "Buoys", eventMessage: self.registry.msgBuoys)
         
     }
     
+    /**
+    - Description - Activate the patrol event from the icon menu.
+    */
     @IBAction func patrolActivate(_ sender: Any) {
         eventActivator(eventId: 7, eventDescription: "Patrols", eventMessage: self.registry.msgPatrols)
         
     }
     
+    /**
+    - Description - Activate the fish event from the icon menu.
+    */
     @IBAction func fishActivate(_ sender: Any) {
         eventActivator(eventId: 8, eventDescription: "Fishes", eventMessage: self.registry.msgFishes)
         
     }
     
+    /**
+    - Description - Activate the weather event from the icon menu.
+    */
     @IBAction func weatherActivate(_ sender: Any) {
         animateOutWithOptionalEffect(effect: true)
         putWeatherOnMap(activate: true)
@@ -526,6 +633,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    /**
+     - Description - Set the event properties to the icon that will be dropped and check the limit of event amount.
+     - Inputs - eventId `Int`  & eventDescription `String` & eventMessage `String`
+     */
     func eventActivator (eventId: Int, eventDescription: String, eventMessage: String) {
         if (droppedIconNumber! < 5) {
             tagProperties.id = eventId
@@ -553,23 +664,22 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     // MARK: - User Description View
     
-    /*
-    * Close the user description view.
-    */
+    /**
+     - Description - Close the user description view.
+     */
     @IBAction func closeUserDescription(_ sender: Any) {
         animateOutWithOptionalEffect(effect: true)
         
     }
     
-    /*
-     * Fetch user data to display it on the user description view.
+    /**
+     - Description - Fetch user data to display on the user description view.
      */
     func fetchUserDescription() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         
         viewStacked = userDescriptionView
         animateInWithOptionalEffect(view: userDescriptionView, effect: true)
-        
         
         userRef.child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot == snapshot {
@@ -600,27 +710,26 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
 
     // MARK: - Description View
-    
-    /*
-     * Close the description view.
+
+    /**
+     - Description - Close the description view.
      */
     @IBAction func closeDescription(_ sender: Any) {
         animateOutWithOptionalEffect(effect: true)
         
     }
-    
-    /*
-     * Open the edition view to modify the event.
+
+    /**
+     - Description - Open the edition view to modify the event.
      */
     @IBAction func editEvent(_ sender: Any) {
         overViewStacked = editionView
         animateInWithOptionalEffect(view: editionView, effect: false)
         
     }
-    
-    /*
-     * Downvote an event and check if the event has 3 or more downvotes.
-     * If it has, the function delete this event.
+
+    /**
+     - Description - Downvote an event and check if the event has 3 or more downvotes. If it has, the function delete this event.
      */
     @IBAction func downVoteEvent(_ sender: Any) {
         thumbDownView.backgroundColor = registry.customRed
@@ -652,9 +761,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             }
         }
     }
-    
-    /*
-     * Upvote an event.
+
+    /**
+     - Description - Upvote an event.
      */
     @IBAction func upVoteEvent(_ sender: Any) {
         thumbUpView.backgroundColor = registry.customFlashGreen
@@ -679,6 +788,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     // MARK: - Comment View
     
+    /**
+     - Set an optional description to the selected event before to drop it on the map.
+     */
     @IBAction func submitComment(_ sender: Any) {
         var firebaseId: String
         var markerHash: Int
@@ -698,6 +810,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    /**
+     - Description - Cancel the optional description edition.
+     */
     @IBAction func cancelComment(_ sender: Any) {
         animateOutWithOptionalEffect(effect: true)
         descriptionTextField.text = ""
@@ -707,6 +822,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     // MARK: - Edition View
     
+    /**
+     - Description - Change the optional event description of a dropped event.
+     */
     @IBAction func changeDescription(_ sender: Any) {
         ref.child(selectedTagId!).updateChildValues(["description": newDescriptionTextField.text!])
         fetchTag(MarkerHash: selectedTag.hash)
@@ -714,6 +832,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    /**
+     - Description - Delete a dropped event.
+     */
     @IBAction func deleteEvent(_ sender: Any) {
         let annotations = self.mapView.annotations!
         
@@ -729,6 +850,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    /**
+     - Hide the edition view of a dropped event.
+     */
     @IBAction func closeEdition(_ sender: Any) {
         animateOutWithOptionalEffect(effect: false)
 
@@ -736,8 +860,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
 
     // MARK: - Online Tags
     
-    /*
-     * Get the amount of markers dropped by the current logged user.
+    /**
+     - Description - Get the amount of markers dropped by the current logged user.
      */
     func getDroppedIconByUser() {
         let currentUser = Auth.auth().currentUser?.uid
@@ -764,8 +888,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-    /*
-     * Add markers on the map depending of its type from a tag id.
+    /**
+     - Description - Add markers on the map depending of its type from a tag id.
+     - Inputs - mapView `MLGMapView` & Tag `Tag`
+     - Output - `Int` marker hash
      */
     @discardableResult func putTag(mapView: MGLMapView, Tag: Tag) -> Int {
         let marker = MGLPointAnnotation()
@@ -807,8 +933,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         return marker.hash
     }
     
-    /*
-     * Add the marker hash to the hash list and the marker id from the id list.
+    /**
+     - Description - Add the marker hash to the hash list and the marker id from the id list.
+     - Inputs - MarkerHash `Int` & FirebaseID `String`
      */
     func putTagsinArray(MarkerHash: Int, FirebaseID: String) {
         tagIds.append(FirebaseID)
@@ -816,8 +943,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
-    /*
-     * Retrieve all the markers from database.
+    /**
+     - Description - Retrieve all the markers from database.
+     - Inputs - mapView `MLGMapView`
      */
     func getTagsFromServer(mapView: MGLMapView) {
         let trace = Performance.startTrace(name: registry.trace12)
@@ -848,9 +976,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             
         }
     }
-    
-    /*
-     * Observe child addition or deletion from background.
+
+    /**
+     - Description - Observe child addition or deletion from background.
      */
     func syncData() {
         ref.observe(.childAdded, with: { (snapshot) -> Void in
@@ -894,8 +1022,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         })
     }
     
-    /*
-     * Create the marker on the database and return its firebase id.
+    /**
+     - Description - Create the marker on the database and return its firebase id.
+     - Inputs - Tag `Tag`
+     - Output - `String` marker id
      */
     func saveTags(Tag: Tag) -> String {
         let key = self.ref.childByAutoId().key
@@ -916,9 +1046,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         return key!
         
     }
-    
-    /*
-     * Remove a marker from the hash list and the tag id list then reload data.
+
+    /**
+      - Description - Remove a marker from the hash list and the tag id list then reload data.
      */
     func removeTag() {
         var count = 0
@@ -938,8 +1068,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         reloadData()
     }
     
-    /*
-     * Put every markers from the database on the map.
+    /**
+     - Description - Put every markers from the database on the map.
      */
     func reloadData() {
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -967,10 +1097,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     // MARK: - Description View
-    
-    /*
-     * Retrieve marker's data from its hash and determine if the logged user
-     * has already rate it.
+
+    /**
+     - Description - Retrieve marker's data from its hash and determine if the logged user has already rate it.
+     - Intputs - MarkerHash `Int`
      */
     func fetchTag(MarkerHash: Int) {
         var count = 0
@@ -1056,8 +1186,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-    /*
-     * Set the rating button and the description view of an icon depending of its owner.
+    /**
+     - Description - Set the rating button and the description view of an icon depending of its owner.
+     - Inputs - isUpvoted `Bool` & isDownvoted `Bool` & isUserEvent `Bool` & isUnrated `Bool`
      */
     func setDescriptionViewFromRatingState(isUpvoted: Bool, isDownvoted: Bool, isUserEvent: Bool, isUnrated: Bool) {
         if (isUpvoted == true) {
@@ -1111,9 +1242,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             
         }
     }
-    
-    /*
-     * Set the image and a default label of a description's icon depending of its groupId.
+
+    /**
+     - Description - Set the image and a default label of a description's icon depending of its groupId.
+     - Inputs - id `Int` & description `String`
      */
     func setDescriptionViewById(id: Int, description: String) {
         switch id {
@@ -1177,10 +1309,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     
     }
-    
-    /*
-     * Retrieve the icon's owner from the userID in order to display
-     * it on the description view of the icon.
+
+    /**
+     - Description - Retrieve the icon's owner from the userID in order to display it on the description view of the icon.
+     - Inputs - userId `String`
      */
     func getUserNameById(userId: String) {
         let trace = Performance.startTrace(name: registry.trace1)
@@ -1203,20 +1335,32 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-    // MARK: - Annotation
+    // MARK: - Mapbox function
     
+    /**
+    - Description - Display the annotation.
+    - Inputs - mapView `MGLMapView` & annotation `MGLAnnotation`
+    - Output - `Bool` if annotation can be showed
+    */
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
         return true
 
     }
     
+    /**
+     - Description - Get a button on the annotation that open the annotation description view.
+     - Inputs - mapView `MGLMapView` & annotation `MGLAnnotation`
+     - Output - `UIView` description and button
+     */
     func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
         return UIButton(type: .contactAdd)
         
     }
-    
-    /*
-     * Return true if the annotation is a user location, else return false.
+
+    /**
+     - Description - Return true if the annotation is a user location, else return false.
+     - Inputs - title `String`
+     - Output - `Bool` is a user location or not
      */
     func isUserAnnotation(title: String) -> Bool {
         if (title == NSLocalizedString("gondola", comment: "")) ||
@@ -1230,6 +1374,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    /**
+     - Description - Get the data depending of the selected annotation.
+     - Inputs - mapView `MGLMapView` & annotation `MGLAnnotation` & control `UIControl`
+     */
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
         mapView.deselectAnnotation(annotation, animated: false)
         if (isUserAnnotation(title: annotation.title!!)) {
@@ -1243,6 +1391,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    /**
+     - Description - Get the user location annotation.
+     - Inputs - mapview `MGLMapView` & annotation `MGLAnnotation`
+     - Output - `MGLAnnotationView` annotation location view
+     */
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
         if annotation is MGLUserLocation && mapView.userLocation != nil {
             return CustomUserLocationAnnotationView()
@@ -1251,6 +1404,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         return nil
     }
     
+    /**
+     - Description - Define the annotation image depending of the marker type.
+     - Inputs - mapview `MGLMapView` & annotation `MGLAnnotation`
+     - Output - `MGLAnnotationImage` marker image
+     */
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
         var marker = MGLAnnotationImage()
@@ -1331,6 +1489,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     // MARK: - Gesture Recognizers
     
+    /**
+     - Description - Add an icon on map.
+     - Inputs - activate `Bool`
+     */
     func putIconOnMap(activate: Bool) {
         let pressRecognizer = UITapGestureRecognizer(target: self, action: #selector(pressOnMap))
         pressRecognizer.name = "pressRecognizer"
@@ -1356,6 +1518,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    /**
+     - Description - Detect the pressure on the screen when the user wants to drop a selected event.
+     - Input - recognizer `UITapGestureRecognizer`
+     */
     @objc func pressOnMap(_ recognizer: UITapGestureRecognizer) {
         if (self.isInside == true) {
             let pressScreenCoordinates = recognizer.location(in: mapView)
@@ -1382,6 +1548,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    /**
+     - Description - Open the weather description view on the map.
+     - Inputs - activate `Bool`
+     */
     func putWeatherOnMap(activate: Bool) {
         let pressRecognizerWithoutDisplay = UITapGestureRecognizer(target: self, action: #selector(pressOnMapWithoutDisplay))
         pressRecognizerWithoutDisplay.name = "pressRecognizerWithoutDisplay"
@@ -1407,6 +1577,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
 
+    /**
+    - Description - Detect the pressure on the screen when the user wants to drop a weather event.
+    - Input - recognizer `UITapGestureRecognizer`
+    */
     @objc func pressOnMapWithoutDisplay(_ recognizer: UITapGestureRecognizer) {
         if (self.isInside == true) {
             let pressScreenCoordinates = recognizer.location(in: mapView)
@@ -1431,8 +1605,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     // MARK: - Weather
     
-    /*
-     * Get weather from latitude and longitude.
+    /**
+     - Description - Get weather from latitude and longitude.
+     - Inputs - long `Double` & lat `Double`
      */
     func getWeatherFromSelectedLocation(long: Double, lat: Double) {
         let param: Parameters = [
@@ -1456,10 +1631,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         trace?.stop()
         
     }
-    
-    /*
-     * Get uv and weather data from json.
-     */
+
+    /**
+    - Description - Get uv and weather data from json.
+    - Intputs - rawData `JSON`
+    */
     func transformData(rawData: JSON) {
         // get uv index
         let uvData = rawData["uv"]
@@ -1478,8 +1654,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         self.didGetWeather(weather: weather)
     }
     
-    /*
-     * If the weather data are gotten, set the labels of the weather marker.
+    /**
+     - Description - If the weather data are gotten, set the labels of the weather marker.
+     - Inputs - weather `Weather`
      */
     func didGetWeather(weather: Weather) {
         DispatchQueue.main.async {
@@ -1531,12 +1708,19 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     // MARK: - Users Handlers
     
+    /**
+     - Description - Hide the skeleton animation on the user description view.
+     */
     func didFinishFetchingUserTag() {
         self.skeleton.turnOffSkeleton(image: self.userAvatar)
         self.skeleton.turnOffSkeletonContainer(view: self.skeletonName)
 
     }
     
+    /**
+     - Description - Get the data of the selected user.
+     - Inputs - MarkerHash `Int`
+     */
     func fetchUserTag(MarkerHash: Int) {
         var count = 0
         
@@ -1587,6 +1771,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         })
     }
     
+    /**
+     - Description - Check if a user is displayable depending of its preferences.
+     - Inputs - User `User`
+     - Output - `Bool` is the user displayable or not
+     */
     func isDisplayable(User: User) -> Bool {
         if (User.uid != Auth.auth().currentUser?.uid) {
             if (User.isActive == true) {
@@ -1607,9 +1796,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         return false
         
     }
-    
-    /*
-     * Retrives displayable users from database.
+
+    /**
+     - Description - Retrives displayable users from database.
      */
     @objc func getDisplayableUsers() {
         print("~> reload user location")
@@ -1630,6 +1819,11 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         })
     }
     
+    /**
+     - Description - Add a user on the map.
+     - Inputs - mapView `MLGMapView` & User `User`
+     - Output - `Int` user hash
+     */
     @discardableResult func putUsers(mapView: MGLMapView, User: User) -> Int {
         let user = MGLPointAnnotation()
         user.coordinate.latitude = User.latitude!
@@ -1655,12 +1849,18 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         return user.hash
     }
     
+    /**
+     - Description - Add a user in the user hash list and the user id list.
+     */
     func putUsersInArray(UserHash: Int, FirebaseID: String) {
         userIds.append(FirebaseID)
         userHashs.append(UserHash)
         
     }
     
+    /**
+     - Description - Remove all the users on the map and empty the user hash list and the user id list.
+     */
     func removeUsersFromMap() {
         let annotations = self.mapView.annotations
         
@@ -1682,17 +1882,17 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
 }
 
-// MARK: - Custom Class
+// MARK: - User location annotation
 
 class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     let size: CGFloat = 48
     var dot: CALayer!
     var arrow: CAShapeLayer!
     
-    /*
-     * Update is a method inherited from MGLUserLocationAnnotationView. It updates the appearance
-     * of the user location annotation when needed. This can be called many times a second, so be
-     * careful to keep it lightweight.
+    /**
+     - Description - Update is a method inherited from MGLUserLocationAnnotationView.
+                It updates the appearance of the user location annotation when needed.
+                This can be called many times a second, so be careful to keep it lightweight.
      */
     override func update() {
         if frame.isNull {
@@ -1708,6 +1908,9 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
         }
     }
     
+    /**
+     - Description - Update the direction of the arrow depending the user orientation.
+     */
     private func updateHeading() {
         if let heading = userLocation!.heading?.trueHeading {
             arrow.isHidden = false
@@ -1727,6 +1930,9 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
         }
     }
     
+    /**
+     - Description - Setup the user annotation.
+     */
     private func setupLayers() {
         /* This dot forms the base of the annotation. */
         if dot == nil {
@@ -1752,8 +1958,9 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
         }
     }
     
-    /*
-     * Calculate the vector path for an arrow, for use in a shape layer.
+    /**
+     - Description - Calculate the vector path for an arrow, for use in a shape layer.
+     - Output - `CGPath` vector path
      */
     private func arrowPath() -> CGPath {
         let max: CGFloat = size / 2

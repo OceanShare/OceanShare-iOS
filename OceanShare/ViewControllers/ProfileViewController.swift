@@ -17,9 +17,6 @@ import SkeletonView
 import FirebasePerformance
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    // MARK: - Database
-    
     var ref: DatabaseReference!
     let storageRef = Storage.storage().reference()
     let registry = Registry()
@@ -51,9 +48,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        overrideUserInterfaceStyle = .light
         ref = Database.database().reference()
-
         setupView()
         fetchUserInfo()
         
@@ -61,19 +57,21 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     // MARK: - Setup
     
+    /**
+    - Description - Setup the design of the view.
+    */
     func setupView() {
-        /* setup the profile picture and its container */
         profilePicture.layer.cornerRadius = 95
         profilePicture.clipsToBounds = true
-        /* setup the icons */
         setupCustomIcons()
-        /* setup the skeleton animation */
         skeleton.turnOnSkeleton(image: profilePicture, cornerRadius: 65)
-        /* set localized labels */
         setupLocalizedStrings()
         
     }
     
+    /**
+    - Description - Setup the translated labels.
+    */
     func setupLocalizedStrings() {
         viewTitle.text = NSLocalizedString("profileViewTitle", comment: "")
         settingsLabel.text = NSLocalizedString("profileSettingsLabel", comment: "")
@@ -83,6 +81,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
     }
     
+    /**
+    - Description - Setup icon design.
+    */
     func setupCustomIcons() {
         settingsIcon.image = settingsIcon.image!.withRenderingMode(.alwaysTemplate)
         settingsIcon.tintColor = registry.customGrey
@@ -97,6 +98,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     // MARK: - Actions
     
+    /**
+     - Description - Change the user profile picture.
+     */
     @IBAction func changeProfilePicture(_ sender: UIButton) {
         let picker = UIImagePickerController()
         picker.modalPresentationStyle = .fullScreen
@@ -110,6 +114,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     // MARK: - Updater
     
+    /**
+     - Description - Get the user data and displays it on the view.
+     */
     func fetchUserInfo() {
         let userId = User.getCurrentUser()
         
@@ -168,6 +175,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     // MARK: - Picker
     
+    /**
+     - Description - Open the image picker controller.
+     - Inputs - picker `UIImagePickerController` & info `[UIImagePickerController.InfoKey: Any]`
+     */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         var selectedImageFromPicker: UIImage?
@@ -193,27 +204,38 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
     }
     
+    /**
+     - Description - Dismiss the image picker if the cancel button is tapped
+     - Inputs - picker `UIImagePickerController`
+     */
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        // dismiss the image picker if the cancel button is tapped
         dismiss(animated: true, completion: nil)
         
     }
     
+    /**
+     - Description - Swift 4 function to convert value.
+     - Inputs - input `[UIImagePickerController.InfoKey: Any]`
+     - Output - `[String: Any]` photo library information
+     */
     func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
-        // swift 4 function to convert value
         return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
         
     }
     
     // MARK: - Storage
     
-    func createProfileChangeRequest(photoUrl: URL? = nil, name: String? = nil, _ callback: ((Error?) -> ())? = nil){
+    /**
+     - Description - Create a request to change the profile data.
+     - Inputs - photoUrl `URL` & name `String`
+     */
+    func createProfileChangeRequest(photoUrl: URL? = nil, name: String? = nil, _ callback: ((Error?) -> ())? = nil) {
         if let request = Auth.auth().currentUser?.createProfileChangeRequest(){
-            if let name = name{
+            if let name = name {
                 request.displayName = name
                 
             }
-            if let url = photoUrl{
+            if let url = photoUrl {
                 request.photoURL = url
                 
             }
@@ -225,6 +247,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
     
+    /**
+     - Description - Update the user information on the database.
+     - Inputs - image `Data` & name `String`
+     */
     func updateProfileInfo(withImage image: Data? = nil, name: String? = nil, _ callback: ((Error?) -> ())? = nil){
         guard let user = Auth.auth().currentUser else {
             callback?(nil)

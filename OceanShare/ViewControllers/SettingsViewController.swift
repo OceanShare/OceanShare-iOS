@@ -16,10 +16,6 @@ import FirebaseStorage
 import FirebasePerformance
 
 class SettingsViewController: UIViewController {
-
-    // MARK: - Variables
-
-    /* database */
     var userRef: DatabaseReference!
     let registry = Registry()
     
@@ -56,18 +52,17 @@ class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        overrideUserInterfaceStyle = .light
         userRef = Database.database().reference().child("users")
-        
         fetchSettings()
         setupView()
 
     }
     
     // MARK: - Setup
-    
-    /*
-     * Setup the state button and call the function that setup localized strings
+
+    /**
+     - Description - Setup the state button and call the function that setup localized strings.
      */
     func setupView() {
         if Defaults.getUserDetails().isCelsius == true {
@@ -79,8 +74,9 @@ class SettingsViewController: UIViewController {
         setupLocalizedStrings()
     }
     
-    /*
-     * Setup the preferences from the user database.
+    /**
+     - Description - Setup the preferences from the user database.
+     - Inputs - ghostMode `Bool` & showPicture `Bool` & boatId `Int`
      */
     func setupPreferences(ghostMode: Bool, showPicture: Bool, boatId: Int) {
         if (ghostMode == true) {
@@ -147,8 +143,8 @@ class SettingsViewController: UIViewController {
         }
     }
     
-    /*
-     * Setup the localized strings.
+    /**
+     - Description - Setup the localized strings.
      */
     func setupLocalizedStrings() {
         viewTitleLabel.text = NSLocalizedString("settingViewTitle", comment: "")
@@ -165,8 +161,8 @@ class SettingsViewController: UIViewController {
     
     // MARK: - Functions
     
-    /*
-     * Reload the view to get the user preferences from the database.
+    /**
+     - Description - Reload the view to get the user preferences from the database.
      */
     func fetchSettings() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
@@ -184,9 +180,10 @@ class SettingsViewController: UIViewController {
         })
         
     }
-    
-    /*
-     * Change the user boatId to determine the user avatar and the boat type.
+
+    /**
+     - Description - Change the user boatId to determine the user avatar and the boat type.
+     - Inputs - newBoatId `Int`
      */
     func updateBoatId(newBoatId: Int) {
         guard let userId = Auth.auth().currentUser?.uid else { return }
@@ -213,6 +210,9 @@ class SettingsViewController: UIViewController {
     
     // MARK: - Actions
     
+    /**
+     - Description - Log out the user from the app.
+     */
     @IBAction func handleLogout(_ sender: Any) {
         do {
             try Auth.auth().signOut()
@@ -230,9 +230,9 @@ class SettingsViewController: UIViewController {
             
         }
     }
-    
-    /*
-     * Go back to the profileViewController.
+
+    /**
+      - Description - Go back to the profileViewController.
      */
     @IBAction func handleBack(_ sender: Any) {
         let mainTabBarController = storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
@@ -241,8 +241,8 @@ class SettingsViewController: UIViewController {
         
     }
     
-    /*
-     * Update local memory to setup temperature type choosen by users.
+    /**
+      - Description - Update local memory to setup temperature type choosen by users.
      */
     @IBAction func degreeChanged(_ sender: Any) {
         switch degreeSegmentedControl.selectedSegmentIndex
@@ -256,10 +256,8 @@ class SettingsViewController: UIViewController {
         }
     }
     
-    /*
-     * Activate or desactivate the possibility to display user's profile picture
-     * on the map. When showProfileSwitch is off, the boat type avatar is shown
-     * on the map instead of profile picture.
+    /**
+      - Description - Activate or desactivate the possibility to display user's profile picture on the map. When showProfileSwitch is off, the boat type avatar is shown on the map instead of profile picture.
      */
     @IBAction func showProfilePicture(_ sender: Any) {
         guard let userId = Auth.auth().currentUser?.uid else { return }
@@ -281,9 +279,8 @@ class SettingsViewController: UIViewController {
         })
     }
     
-    /*
-     * When ghost mode is active, the user is completly invisible on the
-     * map and other users can't see its location.
+    /**
+      - Description - When ghost mode is active, the user is completly invisible on the map and other users can't see its location.
      */
     @IBAction func ghostMode(_ sender: Any) {
         guard let userId = Auth.auth().currentUser?.uid else { return }
@@ -304,30 +301,30 @@ class SettingsViewController: UIViewController {
                }
         })
     }
-    
-    /*
-     * Select the sailing boat as boat type and user avatar.
+
+    /**
+      - Description - Select the sailing boat as boat type and user avatar.
      */
     @IBAction func sailingBoatActivate(_ sender: Any) {
         updateBoatId(newBoatId: 1)
     }
     
-    /*
-    * Select the gondola as boat type and user avatar.
+    /**
+     - Description - Select the gondola as boat type and user avatar.
     */
     @IBAction func gondolaActivate(_ sender: Any) {
         updateBoatId(newBoatId: 2)
     }
     
-    /*
-    * Select the mini yacht as boat type and user avatar.
+    /**
+     - Description - Select the mini yacht as boat type and user avatar.
     */
     @IBAction func miniYachtActivate(_ sender: Any) {
         updateBoatId(newBoatId: 3)
     }
     
-    /*
-    * Select the yacht as boat type and user avatar.
+    /**
+     - Description - Select the yacht as boat type and user avatar.
     */
     @IBAction func yachtActivate(_ sender: Any) {
         updateBoatId(newBoatId: 4)

@@ -15,14 +15,12 @@ import GoogleSignIn
 import FBSDKLoginKit
 
 struct Defaults {
-    
     static let (uidKey, nameKey, emailKey, pictureKey, shipNameKey, boatIdKey, ghostModeKey, showPictureKey, isEmailKey, isCelsiusKey) = ("uid", "name", "email", "picture", "shipName", "boatId", "ghostMode", "showPicture", "isEmail", "isCelsius")
     static let userSessionKey = "com.save.usersession"
     private static let userDefault = UserDefaults.standard
     
     /**
-       - Description - It's using for the passing and fetching
-                    user values from the UserDefaults.
+     - Description - Structure using for the passing and fetching user values from the UserDefaults.
      */
     struct UserDetails {
         let uid: String
@@ -52,8 +50,8 @@ struct Defaults {
     }
     
     /**
-        - Description - Saving user details
-        - Inputs - name `String` & email `String` & picture `String` & shipName `String` & boatId `Int` & ghostMode `Bool` & showPicture `Bool`
+     - Description - Saving user details.
+     - Inputs - name `String` & email `String` & picture `String` & shipName `String` & boatId `Int` & ghostMode `Bool` & showPicture `Bool`
      */
     static func save(_ uid: String, name: String, email: String, picture: String, shipName: String, boatId: Int, ghostMode: Bool, showPicture: Bool, isEmail: Bool, isCelsius: Bool){
         userDefault.set([uidKey: uid, nameKey: name, emailKey: email, pictureKey: picture, shipNameKey: shipName, boatIdKey: boatId, ghostModeKey: ghostMode, showPictureKey: showPicture, isEmailKey: isEmail, isCelsiusKey: isCelsius],
@@ -61,15 +59,15 @@ struct Defaults {
     }
     
     /**
-        - Description - Fetching Values via Model `UserDetails` you can use it based on your uses.
-        - Output - `UserDetails` model
+     - Description - Fetching Values via Model `UserDetails` you can use it based on your uses.
+     - Output - `UserDetails` model
      */
     static func getUserDetails()-> UserDetails {
         return UserDetails((userDefault.value(forKey: userSessionKey) as? [String: Any]) ?? [:])
     }
     
     /**
-        - Description - Clearing user details for the user key `com.save.usersession`
+     - Description - Clearing user details for the user key `com.save.usersession`.
      */
     static func clearUserData(){
         userDefault.removeObject(forKey: userSessionKey)
@@ -77,8 +75,8 @@ struct Defaults {
     
     
     /**
-        - Description - Fetching user information from database then feeding `com.save.usersession` with the retrieved information.
-        - Inputs - uid `String` & isEmail `Bool`
+     - Description - Fetching user information from database then feeding `com.save.usersession` with the retrieved data.
+     - Inputs - uid `String` & isEmail `Bool`
      */
     static func feedDefault(uid: String, isEmail: Bool) {
         let userRef = Database.database().reference().child("users")

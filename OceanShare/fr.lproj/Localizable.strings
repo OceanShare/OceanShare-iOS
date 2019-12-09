@@ -6,6 +6,13 @@
   Copyright © 2019 Joseph Pereniguez. All rights reserved.
 */
 
+// MARK: - RootViewController
+
+"alertRootTitle" = "Confirmez votre adresse mail.";
+"alertRootDesc" = "Vous avez besoin de confirmer votre adresse mail pour terminer votre inscription.";
+"alertRootActionOne" = "Envoyez moi un nouvel email.";
+"alertRootActionTwo" = "Déjà fait, se connecter.";
+
 // MARK: - StartViewController
 
 "startButton" = "Commencer";
@@ -57,6 +64,12 @@
 "passwordMatch" = "Veuillez vous assurer que les mots de passe correspondent.";
 
 // MARK: - HomeViewController
+
+/* messages */
+"geolocAlert" = "La localisation est désactivée";
+"geolocAlertDesc" = "Pour utiliser OceanShare vous avez besoin de la localisation activée.";
+"geolocAlertOne" = "Paramètres";
+"geolocAlertTwo" = "Ok";
 
 /* view */
 "longitude" = "Long:";
