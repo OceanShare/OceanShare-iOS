@@ -6,6 +6,13 @@
   Copyright © 2019 Joseph Pereniguez. All rights reserved.
 */
 
+// MARK: - RootViewController
+
+"alertRootTitle" = "Confirmez votre adresse mail.";
+"alertRootDesc" = "Vous avez besoin de confirmer votre adresse mail pour terminer votre inscription.";
+"alertRootActionOne" = "Envoyez moi un nouvel email.";
+"alertRootActionTwo" = "Déjà fait, se connecter.";
+
 // MARK: - StartViewController
 
 "startButton" = "Commencer";

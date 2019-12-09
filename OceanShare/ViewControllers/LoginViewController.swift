@@ -17,6 +17,10 @@ import FBSDKLoginKit
 import Alamofire
 
 class LoginViewController: UIViewController {
+    var ref: DatabaseReference!
+    var imageURL: String?
+    let storageRef = Storage.storage().reference()
+    let registry = Registry()
     
     // MARK: - Outlets
     
@@ -34,18 +38,9 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var forgotButton: DesignableButton!
     @IBOutlet weak var registerButton: UIButton!
-    
-    // MARK: - Variables
-    
-    var ref: DatabaseReference!
-    var imageURL: String?
-    
-    let storageRef = Storage.storage().reference()
-    let registry = Registry()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
         overrideUserInterfaceStyle = .light
         ref = Database.database().reference()
         setupView()
@@ -54,6 +49,9 @@ class LoginViewController: UIViewController {
     
     // MARK: - Setup
     
+    /**
+    - Description - Setup the design of the view.
+    */
     func setupView() {
         view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
         observeKeyboardNotification()
@@ -67,6 +65,9 @@ class LoginViewController: UIViewController {
         
     }
     
+    /**
+    - Description - Setup the translated labels.
+    */
     func setupLocalizedStrings() {
         loginTitle.text = NSLocalizedString("loginTitle", comment: "")
         emailLabel.text = NSLocalizedString("emailLabel", comment: "")
@@ -77,6 +78,9 @@ class LoginViewController: UIViewController {
         
     }
     
+    /**
+    - Description - Setup icon design.
+    */
     func setupCustomIcons() {
         emailImage.image = emailImage.image!.withRenderingMode(.alwaysTemplate)
         emailImage.tintColor = registry.customWhite
@@ -85,8 +89,21 @@ class LoginViewController: UIViewController {
         
     }
     
-    // MARK: - Email Login
+    // MARK: - Login functions
     
+    /**
+     - Description - Present the `HomeViewController` when the user is logged.
+     */
+    func redirectToHome() {
+        let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
+        self.present(mainTabBarController, animated: true,completion: nil)
+        
+    }
+    
+    /**
+     - Description - Displays an alert if the user forgot its password.
+     */
     @IBAction func forgotHandler(_ sender: UIButton) {
         let email = emailTextField.text
         
@@ -108,30 +125,27 @@ class LoginViewController: UIViewController {
         
     }
     
+    /**
+     - Description - Handle login using an email account.
+     */
     @IBAction func loginButtonTapped(_ sender: UIButton) {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if let err = error {
-                print("(1) Email Authentication Failed: ", err.localizedDescription)
-                /* error handling */
+                print(err.localizedDescription)
                 let alertController = UIAlertController(title: NSLocalizedString("error", comment: ""), message: NSLocalizedString("wrongPassword", comment: ""), preferredStyle: .alert)
                 let defaultAction = UIAlertAction(title: NSLocalizedString("ok", comment: ""), style: .cancel, handler: nil)
                 alertController.addAction(defaultAction)
                 self.present(alertController, animated: true, completion: nil)
             } else {
-                /* check if the user has confirmed its email address */
+                /* Check if the user already has confirmed its email adress. */
                 if (Auth.auth().currentUser?.isEmailVerified == true) {
-                    print("-> Email Authentication Success.")
                     Defaults.feedDefault(uid: Auth.auth().currentUser!.uid, isEmail: true)
-                    /* access to the homeviewcontroller */
-                    let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                    mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
-                    self.present(mainTabBarController, animated: true,completion: nil)
+                    self.redirectToHome()
                     
                 } else {
-                    /* handle the email confirmation */
                     let alert = UIAlertController(title: NSLocalizedString("emailNeedsConfirmation", comment: ""), message: NSLocalizedString("emailNeedsConfirmationMessage", comment: ""), preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: NSLocalizedString("sendAnotherMailAction", comment: ""), style: .default, handler: { action in
                         User.sendEmailVerification()
@@ -147,36 +161,38 @@ class LoginViewController: UIViewController {
         }
     }
     
-    // MARK: - Facebook Login
-    
+    /**
+     - Description - Handle login using a Facebook account.
+     */
     @IBAction func facebookLogin(sender: AnyObject){
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self, handler:{(facebookResult, facebookError) -> Void in
             if facebookError != nil {
-                print("Facebook login failed : \(String(describing: facebookError)).")
+                print("\(String(describing: facebookError)).")
+                
             } else if facebookResult!.isCancelled {
                 print("Facebook login was cancelled.")
+                
             } else {
-                /* get the credentials */
+                /* Get the credentials. */
                 let accessToken = FBSDKAccessToken.current()
                 guard let accessTokenString = accessToken?.tokenString else { return }
                 let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
-                /* get user datas from the facebook account. */
                 FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
                     if err != nil {
                         print("(2) Facebook Authentication Failed: ", err as Any)
                         return
                         
                     }
-                    /* retrieve user profile picture from facebook */
+                    /* Retrieve user profile picture from facebook. */
                     let field = result! as? [String: Any]
                     if let retrievedURL = ((field!["picture"] as? [String: Any])?["data"] as? [String: Any])?["url"] as? String {
-                        /* set the value of the retrieved picture */
+                        /* Set the value of the retrieved picture. */
                         self.imageURL = retrievedURL
                         
                     }
                     Auth.auth().signIn(with: credentials, completion: { (authResult, err) in
                         if let err = err {
-                            print("(3) Facebook Authentication Failed: ", err)
+                            print(err)
                             return
                         
                         }
@@ -184,9 +200,10 @@ class LoginViewController: UIViewController {
                         let refToCheck = Database.database().reference().child("users")
                         
                         refToCheck.child(user!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                            /* Check if the user already has an account. */
                             if snapshot.hasChild("email") {
-                                print("-> Facebook user has already set its data.")
                                 Defaults.feedDefault(uid: user!.uid, isEmail: false)
+                                
                             } else {
                                 let userPreferencesData: [String: Any] = [
                                     "ghost_mode": false as Bool,
@@ -194,7 +211,6 @@ class LoginViewController: UIViewController {
                                     "boatId": 1 as Int,
                                     "user_active": true as Bool
                                 ]
-                                /* define the database structure */
                                 let userData: [String: Any] = [
                                     "name": user?.displayName as Any,
                                     "email": user?.email as Any,
@@ -202,9 +218,7 @@ class LoginViewController: UIViewController {
                                     "ship_name": "" as String,
                                     "preferences": userPreferencesData as [String: Any]
                                 ]
-                                
                                 self.ref = Database.database().reference()
-                                /* push the user datas on the database */
                                 guard let uid = authResult?.user.uid else { return }
                                 self.ref.child("users/\(uid)").setValue(userData)
                                 _ = Defaults.save(uid, name: (user?.displayName)!, email: (user?.email)!, picture: self.imageURL ?? "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: false, isCelsius: true)
@@ -212,17 +226,14 @@ class LoginViewController: UIViewController {
                         })
                     })
                 })
-                print("-> Facebook Authentication Success.")
-                /* access to the homeviewcontroller */
-                let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
-                self.present(mainTabBarController, animated: true,completion: nil)
+                self.redirectToHome()
             }
         })
     }
-    
-    // MARK: - Google Login
 
+    /**
+     - Description - Handle login using a Google account.
+     */
     @IBAction func googleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance()?.signIn()
@@ -231,6 +242,11 @@ class LoginViewController: UIViewController {
     
     // MARK: - Error Handling
     
+    /**
+     - Description - Displays a dynamic message.
+     - Inputs - userMessage `String`
+     - Output - `Void` alert
+     */
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
             let alertController = UIAlertController(title: NSLocalizedString("defaultErrorMessage", comment: ""), message: userMessage, preferredStyle: .alert)
@@ -239,17 +255,24 @@ class LoginViewController: UIViewController {
             }
             alertController.addAction(OKAction)
             self.present(alertController, animated: true, completion:nil)
+            
         }
     }
     
     // MARK: - Keyboard Handling
     
+    /**
+     - Description - Handle keyboard when user is typing on a textfield or outside a textfield.
+     */
     fileprivate func observeKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
     }
     
+    /**
+     - Description - Show the keyboard when its needed.
+     */
     @objc func keyboardShow() {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.view.frame = CGRect(x: 0, y: -100, width: self.view.frame.width, height: self.view.frame.height)
@@ -257,6 +280,9 @@ class LoginViewController: UIViewController {
         }, completion: nil)
     }
     
+    /**
+     - Description - Hide the keyboard when the user is typing outside a textfield.
+     */
     @objc func keyboardHide() {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)

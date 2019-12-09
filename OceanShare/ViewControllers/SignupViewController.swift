@@ -17,6 +17,11 @@ import FBSDKLoginKit
 import Alamofire
 
 class SignupViewController: UIViewController {
+    var ref: DatabaseReference!
+    var imageURL: String?
+    var currentTappedTextField : UITextField?
+    let storageRef = Storage.storage().reference()
+    let registry = Registry()
     
     // MARK: - Outlets
     
@@ -41,21 +46,11 @@ class SignupViewController: UIViewController {
     
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var signinButton: UIButton!
-    
-    // MARK: - Variables
-    
-    var ref: DatabaseReference!
-    var imageURL: String?
-    var currentTappedTextField : UITextField?
-    
-    let storageRef = Storage.storage().reference()
-    let registry = Registry()
 
     // MARK: - ViewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         overrideUserInterfaceStyle = .light
         ref = Database.database().reference()
         setupView()
@@ -64,6 +59,9 @@ class SignupViewController: UIViewController {
     
     // MARK: - Setup
     
+    /**
+    - Description - Setup the design of the view.
+    */
     func setupView() {
         view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
         observeKeyboardNotification()
@@ -77,6 +75,9 @@ class SignupViewController: UIViewController {
         
     }
 
+    /**
+    - Description - Setup icon design.
+    */
     func setupCustomIcons() {
         name.image = name.image!.withRenderingMode(.alwaysTemplate)
         name.tintColor = registry.customWhite
@@ -89,6 +90,9 @@ class SignupViewController: UIViewController {
         
     }
     
+    /**
+    - Description - Setup the translated labels.
+    */
     func setupLocalizedStrings() {
         signupTitle.text = NSLocalizedString("signupTitle", comment: "")
         usernameTitle.text = NSLocalizedString("usernameTitle", comment: "")
@@ -100,8 +104,21 @@ class SignupViewController: UIViewController {
         
     }
     
-    // MARK: - Email Registration
+    // MARK: - Signup functions
     
+    /**
+    - Description - Present the `HomeViewController` when the user is logged.
+    */
+    func redirectToHome() {
+        let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
+        mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
+        self.present(mainTabBarController, animated: true,completion: nil)
+        
+    }
+    
+    /**
+     - Description - Signup using an email account.
+     */
     @IBAction func registerButtonTapped(_ sender: UIButton) {
         let name = nameTextField.text
         let email = emailTextField.text
@@ -119,10 +136,9 @@ class SignupViewController: UIViewController {
         } else {
             Auth.auth().createUser(withEmail: email!, password: password!) { (authResult, err) in
                 if let err = err {
-                    print("(1) Registration Failed: ", err.localizedDescription)
-                    
+                    print(err.localizedDescription)
                     /* error handling */
-                    let alert = UIAlertController(title: NSLocalizedString("error", comment: ""), message: err.localizedDescription, preferredStyle: .alert) // TODO
+                    let alert = UIAlertController(title: NSLocalizedString("error", comment: ""), message: err.localizedDescription, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: NSLocalizedString("ok", comment: ""), style: .default, handler: { action in
                         print("~ Actions Informations: OK pressed.")
                     }))
@@ -144,12 +160,7 @@ class SignupViewController: UIViewController {
                     guard let uid = authResult?.user.uid else { return }
                     self.ref.child("users/\(uid)").setValue(userData)
                     _ = Defaults.save(uid, name: name!, email: email!, picture: "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: true, isCelsius: true)
-                    /* access to the homeviewcontroller */
-                    let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                    mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
-                    self.present(mainTabBarController, animated: true,completion: nil)
-                    
-                    /* send an email to the email address mentioned */
+                    self.redirectToHome()
                     User.sendEmailVerification()
                     
                 }
@@ -157,8 +168,9 @@ class SignupViewController: UIViewController {
         }
     }
     
-    // MARK: - Facebook Registration
-
+    /**
+     - Description - Signup using a Facebook account.
+     */
     @IBAction func facebookLogin(sender: AnyObject){
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self, handler:{(facebookResult, facebookError) -> Void in
             if facebookError != nil {
@@ -204,7 +216,6 @@ class SignupViewController: UIViewController {
                                     "boatId": 1 as Int,
                                     "user_active": true as Bool
                                 ]
-                                /* define the database structure */
                                 let userData: [String: Any] = [
                                     "name": user?.displayName as Any,
                                     "email": user?.email as Any,
@@ -212,7 +223,6 @@ class SignupViewController: UIViewController {
                                     "ship_name": "" as String,
                                     "preferences": userPreferencesData as [String: Any]
                                 ]
-                                
                                 self.ref = Database.database().reference()
                                 /* push the user datas on the database */
                                 guard let uid = authResult?.user.uid else { return }
@@ -223,50 +233,27 @@ class SignupViewController: UIViewController {
                     })
                 })
                 print("-> Facebook Authentication Success.")
-                /* access to the homeviewcontroller */
-                let mainTabBarController = self.storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-                mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[0]
-                self.present(mainTabBarController, animated: true,completion: nil)
+                self.redirectToHome()
             }
         })
     }
     
-    // MARK: - Google Registration
-    
+    /**
+     - Description - Signup using a Google account.
+     */
     @IBAction func googleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance().signIn()
         
     }
     
-    // MARK: - Keyboard Handling
-    
-    fileprivate func observeKeyboardNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-    }
-    
-    @objc func keyboardShow() {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            
-            self.view.frame = CGRect(x: 0, y: -200, width: self.view.frame.width, height: self.view.frame.height)
-            
-        }, completion: nil)
-        
-    }
-    
-    @objc func keyboardHide() {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            
-            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-            
-        }, completion: nil)
-        
-    }
-    
     // MARK: - Error Handling
     
+    /**
+    - Description - Displays a dynamic message.
+    - Inputs - userMessage `String`
+    - Output - `Void` alert
+    */
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
                 let alertController = UIAlertController(title: NSLocalizedString("defaultErrorMessage", comment: ""), message: userMessage, preferredStyle: .alert)
@@ -277,5 +264,40 @@ class SignupViewController: UIViewController {
                 self.present(alertController, animated: true, completion:nil)
         }
     }
-
+    
+    // MARK: - Keyboard Handling
+    
+    /**
+    - Description - Handle keyboard when user is typing on a textfield or outside a textfield.
+    */
+    fileprivate func observeKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+    }
+    
+    /**
+    - Description - Show the keyboard when its needed.
+    */
+    @objc func keyboardShow() {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            
+            self.view.frame = CGRect(x: 0, y: -200, width: self.view.frame.width, height: self.view.frame.height)
+            
+        }, completion: nil)
+        
+    }
+    
+    /**
+    - Description - Hide the keyboard when the user is typing outside a textfield.
+    */
+    @objc func keyboardHide() {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            
+            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+            
+        }, completion: nil)
+        
+    }
+    
 }

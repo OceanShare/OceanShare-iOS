@@ -18,18 +18,12 @@ import SkeletonView
 import FirebasePerformance
 
 class InformationViewController: UIViewController {
-    
-    // MARK: - Variables
-    
     var effect: UIVisualEffect!
     var currentTappedTextField : UITextField?
     var emailStacked: String?
     var nameStacked: String?
     var shipStacked: String?
     var viewStacked: UIView?
-    
-    // MARK: - Databse
-    
     var ref: DatabaseReference!
     let storageRef = Storage.storage().reference()
     let currentUser = Auth.auth().currentUser
@@ -109,11 +103,8 @@ class InformationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         overrideUserInterfaceStyle = .light
-        
         ref = Database.database().reference()
-        
         setupView()
         fetchUserInfo()
         
@@ -121,6 +112,9 @@ class InformationViewController: UIViewController {
     
     // MARK: - Setup
     
+    /**
+    - Description - Setup the design of the view.
+    */
     func setupView() {
         view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
         observeKeyboardNotification()
@@ -134,6 +128,9 @@ class InformationViewController: UIViewController {
         
     }
     
+    /**
+    - Description - Setup the translated labels.
+    */
     func setupLocalizedStrings() {
         viewTitleLabel.text = NSLocalizedString("informationTitle", comment: "")
         nameLabel.text = NSLocalizedString("informationNameTitle", comment: "")
@@ -171,6 +168,9 @@ class InformationViewController: UIViewController {
         deletePopUpCancel.setTitle(NSLocalizedString("InformationCancel", comment: ""), for: .normal)
     }
     
+    /**
+     - Description - Setup the icon design.
+     */
     func setupCustomIcons() {
         nameModifierPic.image = nameModifierPic.image!.withRenderingMode(.alwaysTemplate)
         nameModifierPic.tintColor = registry.customGrey
@@ -185,6 +185,10 @@ class InformationViewController: UIViewController {
     
     // MARK: - Animations
     
+    /**
+     - Description - Displays a view with an animation.
+     - Inputs - view `UIView`
+     */
     func animateIn(view: UIView) {
         visualEffectView.isHidden = false
         self.view.addSubview(view)
@@ -201,6 +205,9 @@ class InformationViewController: UIViewController {
         }
     }
     
+    /**
+    - Description - Hide a view with an animation.
+    */
     func animateOut() {
         UIView.animate(withDuration: 0.3, animations: {
             self.viewStacked!.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
@@ -214,6 +221,9 @@ class InformationViewController: UIViewController {
         }
     }
     
+    /**
+     - Description - Activate the skeleton animation.
+     */
     func turnOnSkeleton() {
         skeleton.turnOnSkeletonContainer(view: nameContainer!, cornerRadius: 0)
         skeleton.turnOnSkeletonContainer(view: emailContainer!, cornerRadius: 0)
@@ -222,6 +232,9 @@ class InformationViewController: UIViewController {
         
     }
     
+    /**
+     - Description - Desactivate the skeleton animation.
+     */
     func turnOffSkeleton() {
         nameContainer.hideSkeleton()
         emailContainer.hideSkeleton()
@@ -232,35 +245,53 @@ class InformationViewController: UIViewController {
     
     // MARK: - Popup Actions
     
+    /**
+     - Description - Hide the popup.
+     */
     @IBAction func cancelPopUp(_ sender: Any) {
         animateOut()
         
     }
     
+    /**
+     - Description - Open the name change popup.
+     */
     @IBAction func openChangeName(_ sender: Any) {
         viewStacked = namePopUp
         animateIn(view: namePopUp)
         
     }
     
+    /**
+     - Description - Open the email change popup.
+     */
     @IBAction func openChangeEmail(_ sender: Any) {
         viewStacked = emailPopUp
         animateIn(view: emailPopUp)
         
     }
     
+    /**
+     - Description - Open the password change popup.
+     */
     @IBAction func openChangePassword(_ sender: Any) {
         viewStacked = passwordPopUp
         animateIn(view: passwordPopUp)
         
     }
     
+    /**
+     - Description - Open the ship name change popup.
+     */
     @IBAction func openChangeShip(_ sender: Any) {
         viewStacked = shipPopUp
         animateIn(view: shipPopUp)
         
     }
     
+    /**
+     - Description - Open the account deletion popup.
+     */
     @IBAction func deleteHandler(_ sender: Any) {
         viewStacked = deletionPopUp
         animateIn(view: deletionPopUp)
@@ -269,6 +300,9 @@ class InformationViewController: UIViewController {
     
     // MARK: - Setter Actions
     
+    /**
+     - Description - Change the user name.
+     */
     @IBAction func acceptChangeName(_ sender: Any) {
         let name = nameFieldNameModifier.text
         let currentName = self.nameStacked
@@ -303,6 +337,9 @@ class InformationViewController: UIViewController {
         
     }
     
+    /**
+     - Description - Change the user email.
+     */
     @IBAction func acceptChangeEmail(_ sender: Any) {
         let currentEmail = self.emailStacked
         let password = self.passwordFieldEmailModifier.text
@@ -359,6 +396,9 @@ class InformationViewController: UIViewController {
         
     }
     
+    /**
+     - Description - Change the user password.
+     */
     @IBAction func acceptChangePassword(_ sender: Any) {
         let currentEmail = self.emailStacked
         let currentPassword = self.currentPasswordFieldPasswordMofidier.text
@@ -405,6 +445,9 @@ class InformationViewController: UIViewController {
         
     }
 
+    /**
+     - Description - Change the user shipname.
+     */
     @IBAction func acceptChangeShipName(_ sender: Any) {
         let currentShipName = self.shipStacked
         let shipName = self.shipFieldShipModifier.text
@@ -437,6 +480,9 @@ class InformationViewController: UIViewController {
         }
     }
     
+    /**
+     - Description - Delete the user account.
+     */
     @IBAction func acceptDeletion(_ sender: Any) {
         let password = self.passwordFieldDeleteModifier.text
         let email = self.emailStacked
@@ -485,6 +531,9 @@ class InformationViewController: UIViewController {
     
     // MARK: - Navigation Actions
     
+    /**
+     - Description - Redirect to the profile view controller.
+     */
     @IBAction func handleBack(_ sender: Any) {
         let mainTabBarController = storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
         mainTabBarController.selectedViewController = mainTabBarController.viewControllers?[2]
@@ -494,6 +543,9 @@ class InformationViewController: UIViewController {
 
     // MARK: - Updater
     
+    /**
+     - Description - Get the current user datas.
+     */
     func fetchUserInfo() {
         let userId = User.getCurrentUser()
         let trace = Performance.startTrace(name: self.registry.trace10)
@@ -527,6 +579,11 @@ class InformationViewController: UIViewController {
     
     // MARK: - Error Handling
     
+    /**
+     - Description - Displays a custom message in an alert.
+     - Inputs - userMessage `String`
+     - Output - `Void` custom alert
+     */
     func displayMessage(userMessage:String) -> Void {
         DispatchQueue.main.async {
             let alertController = UIAlertController(title: NSLocalizedString("errorTitleMessage", comment: ""), message: userMessage, preferredStyle: .alert)
@@ -542,12 +599,18 @@ class InformationViewController: UIViewController {
     
     // MARK: - Keyboard Handling
     
+    /**
+    - Description - Handle keyboard when user is typing on a textfield or outside a textfield.
+    */
     fileprivate func observeKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
     }
     
+    /**
+    - Description - Show the keyboard when its needed.
+    */
     @objc func keyboardShow() {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             
@@ -557,6 +620,9 @@ class InformationViewController: UIViewController {
         
     }
     
+    /**
+    - Description - Hide the keyboard when the user is typing outside a textfield.
+    */
     @objc func keyboardHide() {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             
@@ -566,6 +632,11 @@ class InformationViewController: UIViewController {
         
     }
     
+    /**
+     - Description - Determine when the given textfield should begin editing.
+     - Inputs - textField `UITextField`
+     - Output `Bool` if the textfield is edited.
+     */
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         currentTappedTextField = textField
         return true

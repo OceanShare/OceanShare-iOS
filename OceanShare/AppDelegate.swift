@@ -61,13 +61,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
     // MARK: - Authentication
     
+    /**
+     - Description - Sign in or signup the user with a Google account.
+     - Inputs - signIn `GIDSignIn` & user `GIDGoogleUser` & error `Error`
+     */
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if (error) != nil {
             print("(1) Google Authentification Failed: ", error!)
             return
         }
-        
-        // get the credentials
         guard let authentication = user.authentication else { return }
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken, accessToken: authentication.accessToken)
         
@@ -119,6 +121,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         })
     }
     
+    /**
+     - Description - Log out the user from the app.
+     - Inputs - signIn `GIDSignIn` & user `GIDGoogleUser` & error `Error`
+     */
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
         let firebaseAuth = Auth.auth()
         do {
