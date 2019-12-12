@@ -322,3 +322,14 @@
 "offerOnePrice" = "1.99 €";
 "offerTwoPrice" = "2.99 €";
 "offerThreePrice" = "9.99 €";
+
+"pay" = "Pay";
+"cancelPayment" = "Cancel";
+"gonnaSubOne" = "You're going to subscribe for one day! Have a great sailing day!";
+"gonnaSubTwo" = "You're going to subscribe for two days! Awesome for a week-end with friends!";
+"gonnaSubThree" = "You're going to subscribe for one month! A true pirate!";
+"alreadyPremium" = "You're a premium member of the OceanShare crew! Have a stunning sailing journey captain!";
+"subContinue" = "Continue";
+"subFailed" = "Payment failed";
+"subSucceededDesc" = "Payment succeeded!";
+

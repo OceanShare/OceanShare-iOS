@@ -271,7 +271,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                             self.createProfileChangeRequest(photoUrl: url, name: name, { (error) in
                                 callback?(error)
                             })
-                            Defaults.save(Defaults.getUserDetails().name, name: Defaults.getUserDetails().name, email: Defaults.getUserDetails().email, picture: String(describing: url), shipName: Defaults.getUserDetails().shipName, boatId: Defaults.getUserDetails().boatId, ghostMode: Defaults.getUserDetails().ghostMode, showPicture: Defaults.getUserDetails().showPicture, isEmail: Defaults.getUserDetails().isEmail, isCelsius: Defaults.getUserDetails().isCelsius)
+                            Defaults.save(Defaults.getUserDetails().name, name: Defaults.getUserDetails().name, email: Defaults.getUserDetails().email, picture: String(describing: url), shipName: Defaults.getUserDetails().shipName, boatId: Defaults.getUserDetails().boatId, ghostMode: Defaults.getUserDetails().ghostMode, showPicture: Defaults.getUserDetails().showPicture, isEmail: Defaults.getUserDetails().isEmail, isCelsius: Defaults.getUserDetails().isCelsius, subEnd: Defaults.getUserDetails().subEnd)
                         } else {
                             callback?(error)
                             
