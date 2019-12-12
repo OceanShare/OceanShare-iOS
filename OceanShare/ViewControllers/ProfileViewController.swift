@@ -32,6 +32,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var editingLabel: UILabel!
     @IBOutlet weak var profileItem: UITabBarItem!
     @IBOutlet weak var subscribeButton: DesignableButton!
+    @IBOutlet weak var isSub: UITextView!
     
     /* user information outlets */
     @IBOutlet weak var infoContainer: UIView!
@@ -53,6 +54,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupView()
         fetchUserInfo()
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        fetchSubscribtion()
     }
     
     // MARK: - Setup
@@ -78,6 +84,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         mediaLabel.text = NSLocalizedString("profileMediaLabel", comment: "")
         editingLabel.text = NSLocalizedString("profileEditLabel", comment: "")
         subscribeButton.setTitle(NSLocalizedString("subButton", comment: ""), for: .normal)
+        isSub.text = NSLocalizedString("isSubTextField", comment: "")
         
     }
     
@@ -113,6 +120,25 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     // MARK: - Updater
+    
+    /**
+     - Description - Check if the user is premium or not and displays or not the offers.
+     */
+    func fetchSubscribtion() {
+        let currentDate = NSDate() as Date
+        
+        if Defaults.getUserDetails().subEnd.timeIntervalSince(currentDate).sign == FloatingPointSign.minus {
+            print("-> not premium")
+            subscribeButton.isHidden = false
+            isSub.isHidden = true
+            
+        } else {
+            print("-> premium")
+            subscribeButton.isHidden = true
+            isSub.isHidden = false
+            
+        }
+    }
     
     /**
      - Description - Get the user data and displays it on the view.
