@@ -104,6 +104,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var iconViewWeather: UILabel!
     @IBOutlet weak var closeIcon: UIImageView!
     @IBOutlet weak var buttonMenu: DesignableButton!
+    @IBOutlet weak var weatherLock: DesignableView!
     
     /* comment view */
     @IBOutlet weak var commentView: UIView!
@@ -137,6 +138,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var userAvatar: UIImageView!
     @IBOutlet weak var userAvatarName: UILabel!
     @IBOutlet weak var skeletonName: DesignableView!
+    @IBOutlet weak var messagePadlockView: DesignableView!
     
     /* edition view */
     @IBOutlet weak var editionView: UIView!
@@ -314,6 +316,25 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         centerPoint.y = 65
         mapView.compassView.center = centerPoint
         
+    }
+    
+    /**
+     - Description - Check if the user is premium or not and displays or not the offers.
+     */
+    func fetchSubscribtion() {
+        let currentDate = NSDate() as Date
+        
+        if Defaults.getUserDetails().subEnd.timeIntervalSince(currentDate).sign == FloatingPointSign.minus {
+            print("-> not premium")
+            weatherLock.isHidden = false
+            messagePadlockView.isHidden = false
+            
+        } else {
+            print("-> premium")
+            weatherLock.isHidden = true
+            messagePadlockView.isHidden = true
+            
+        }
     }
     
     // MARK: - Location manager
@@ -535,6 +556,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         viewStacked = iconView
         animateInWithOptionalEffect(view: iconView, effect: true)
 
+        fetchSubscribtion()
         getDroppedIconByUser()
         
     }
@@ -626,10 +648,20 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     */
     @IBAction func weatherActivate(_ sender: Any) {
         animateOutWithOptionalEffect(effect: true)
-        putWeatherOnMap(activate: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.PutMessageOnHeader(msg: self.registry.msgWeather, color: self.registry.customGreen, error: false)
-            
+        let currentDate = NSDate() as Date
+        
+        if Defaults.getUserDetails().subEnd.timeIntervalSince(currentDate).sign == FloatingPointSign.minus {
+            print("-> not premium")
+            let subViewController = self.storyboard?.instantiateViewController(withIdentifier: "SubscribtionViewController") as! SubscribtionViewController
+            self.present(subViewController, animated: true,completion: nil)
+       
+        } else {
+            print("-> premium")
+            putWeatherOnMap(activate: true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.PutMessageOnHeader(msg: self.registry.msgWeather, color: self.registry.customGreen, error: false)
+                
+            }
         }
     }
     
@@ -663,6 +695,16 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     // MARK: - User Description View
+    
+    /**
+     - Description - Open the Subscribtion view controller from the message button.
+     */
+    @IBAction func openSubViewFromMessage(_ sender: Any) {
+        animateOutWithOptionalEffect(effect: true)
+        let subViewController = self.storyboard?.instantiateViewController(withIdentifier: "SubscribtionViewController") as! SubscribtionViewController
+        self.present(subViewController, animated: true,completion: nil)
+        
+    }
     
     /**
      - Description - Close the user description view.
@@ -1732,6 +1774,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 return
             }
         }
+        fetchSubscribtion()
         viewStacked = userDescriptionView
         animateInWithOptionalEffect(view: userDescriptionView, effect: true)
         skeleton.turnOnSkeleton(image: userAvatar, cornerRadius: 41)
