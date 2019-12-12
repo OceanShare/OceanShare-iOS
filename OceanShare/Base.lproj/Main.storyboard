@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ibu-AM-oVI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ibu-AM-oVI">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -5310,20 +5310,30 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="N6C-Uc-2Qf">
+                                <rect key="frame" x="30" y="148" width="354" height="119.33333333333331"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="20"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803915" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="9DH-9q-SFK" firstAttribute="top" secondItem="N6C-Uc-2Qf" secondAttribute="bottom" constant="30" id="0Et-dp-409"/>
                             <constraint firstItem="11U-Xj-f8A" firstAttribute="top" secondItem="EkA-nX-VjS" secondAttribute="top" constant="40" id="0xM-ZB-XZv"/>
                             <constraint firstItem="11U-Xj-f8A" firstAttribute="leading" secondItem="EkA-nX-VjS" secondAttribute="leading" constant="30" id="3pZ-zu-feO"/>
                             <constraint firstAttribute="trailing" secondItem="11U-Xj-f8A" secondAttribute="trailing" constant="30" id="6xF-dY-NKg"/>
                             <constraint firstAttribute="trailing" secondItem="SVD-hd-gEj" secondAttribute="trailing" constant="30" id="AS3-oa-66D"/>
                             <constraint firstItem="heK-Hn-uUr" firstAttribute="top" secondItem="f0K-Bm-AeG" secondAttribute="bottom" constant="8" id="EJZ-bf-sJg"/>
                             <constraint firstItem="Mme-Ui-0zc" firstAttribute="centerX" secondItem="EkA-nX-VjS" secondAttribute="centerX" id="FKo-rh-ohe"/>
+                            <constraint firstAttribute="trailing" secondItem="N6C-Uc-2Qf" secondAttribute="trailing" constant="30" id="H34-Pq-oQK"/>
                             <constraint firstItem="f0K-Bm-AeG" firstAttribute="leading" secondItem="EkA-nX-VjS" secondAttribute="leading" constant="30" id="Lw5-aU-cqb"/>
                             <constraint firstAttribute="trailing" secondItem="ozz-gJ-NbW" secondAttribute="trailing" constant="30" id="Tri-Ea-Z8g"/>
                             <constraint firstItem="Mme-Ui-0zc" firstAttribute="top" secondItem="HaW-6f-9LY" secondAttribute="bottom" constant="18" id="XgD-QZ-aoL"/>
                             <constraint firstItem="HaW-6f-9LY" firstAttribute="centerX" secondItem="EkA-nX-VjS" secondAttribute="centerX" id="ahU-Jz-giR"/>
+                            <constraint firstItem="N6C-Uc-2Qf" firstAttribute="top" secondItem="11U-Xj-f8A" secondAttribute="bottom" constant="8" id="dZT-vH-2G4"/>
                             <constraint firstItem="SVD-hd-gEj" firstAttribute="leading" secondItem="EkA-nX-VjS" secondAttribute="leading" constant="30" id="da1-cR-ZFN"/>
+                            <constraint firstItem="N6C-Uc-2Qf" firstAttribute="leading" secondItem="EkA-nX-VjS" secondAttribute="leading" constant="30" id="fUf-7A-F6g"/>
                             <constraint firstItem="heK-Hn-uUr" firstAttribute="leading" secondItem="EkA-nX-VjS" secondAttribute="leading" constant="30" id="fyX-Yt-QzW"/>
                             <constraint firstItem="f0K-Bm-AeG" firstAttribute="top" secondItem="11U-Xj-f8A" secondAttribute="bottom" constant="8" id="gsQ-ad-tMI"/>
                             <constraint firstAttribute="trailing" secondItem="heK-Hn-uUr" secondAttribute="trailing" constant="30" id="iFh-BJ-33u"/>
@@ -5341,6 +5351,7 @@
                     <connections>
                         <outlet property="firstPointLabel" destination="f0K-Bm-AeG" id="ThQ-UA-qlz"/>
                         <outlet property="fourthPointLabel" destination="SVD-hd-gEj" id="gDp-C6-x8d"/>
+                        <outlet property="offerDescription" destination="N6C-Uc-2Qf" id="KS6-Ns-qbE"/>
                         <outlet property="offerOne" destination="9DH-9q-SFK" id="lCD-6v-tdR"/>
                         <outlet property="offerOnePrice" destination="2nc-Di-0vD" id="2ni-I2-iSe"/>
                         <outlet property="offerOneTitle" destination="b3f-Vs-Vb9" id="8Tt-YR-epl"/>

@@ -15,7 +15,7 @@ import GoogleSignIn
 import FBSDKLoginKit
 
 struct Defaults {
-    static let (uidKey, nameKey, emailKey, pictureKey, shipNameKey, boatIdKey, ghostModeKey, showPictureKey, isEmailKey, isCelsiusKey) = ("uid", "name", "email", "picture", "shipName", "boatId", "ghostMode", "showPicture", "isEmail", "isCelsius")
+    static let (uidKey, nameKey, emailKey, pictureKey, shipNameKey, boatIdKey, ghostModeKey, showPictureKey, isEmailKey, isCelsiusKey, subEndKey) = ("uid", "name", "email", "picture", "shipName", "boatId", "ghostMode", "showPicture", "isEmail", "isCelsius", "subEnd")
     static let userSessionKey = "com.save.usersession"
     private static let userDefault = UserDefaults.standard
     
@@ -33,6 +33,7 @@ struct Defaults {
         let showPicture: Bool
         let isEmail: Bool
         let isCelsius: Bool
+        let subEnd: Date
         
         init(_ json: [String: Any]) {
             self.uid = json[uidKey] as? String ?? ""
@@ -45,6 +46,7 @@ struct Defaults {
             self.showPicture = json[showPictureKey] as? Bool ?? false
             self.isEmail = json[isEmailKey] as? Bool ?? false
             self.isCelsius = json[isCelsiusKey] as? Bool ?? true
+            self.subEnd = json[subEndKey] as? Date ?? NSDate() as Date
         
         }
     }
@@ -53,8 +55,8 @@ struct Defaults {
      - Description - Saving user details.
      - Inputs - name `String` & email `String` & picture `String` & shipName `String` & boatId `Int` & ghostMode `Bool` & showPicture `Bool`
      */
-    static func save(_ uid: String, name: String, email: String, picture: String, shipName: String, boatId: Int, ghostMode: Bool, showPicture: Bool, isEmail: Bool, isCelsius: Bool){
-        userDefault.set([uidKey: uid, nameKey: name, emailKey: email, pictureKey: picture, shipNameKey: shipName, boatIdKey: boatId, ghostModeKey: ghostMode, showPictureKey: showPicture, isEmailKey: isEmail, isCelsiusKey: isCelsius],
+    static func save(_ uid: String, name: String, email: String, picture: String, shipName: String, boatId: Int, ghostMode: Bool, showPicture: Bool, isEmail: Bool, isCelsius: Bool, subEnd: Date){
+        userDefault.set([uidKey: uid, nameKey: name, emailKey: email, pictureKey: picture, shipNameKey: shipName, boatIdKey: boatId, ghostModeKey: ghostMode, showPictureKey: showPicture, isEmailKey: isEmail, isCelsiusKey: isCelsius, subEndKey: subEnd],
                         forKey: userSessionKey)
     }
     
@@ -86,7 +88,7 @@ struct Defaults {
             userRef.child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 if snapshot == snapshot {
                     let userData = User(dataSnapshot: snapshot as DataSnapshot)
-                    _ = Defaults.save(uid, name: userData.name!, email: userData.email!, picture: userData.picture ?? "", shipName: userData.shipName ?? "", boatId: userData.boatId!, ghostMode: userData.ghostMode!, showPicture: userData.showPicture!, isEmail: true, isCelsius: true)
+                    _ = Defaults.save(uid, name: userData.name!, email: userData.email!, picture: userData.picture ?? "", shipName: userData.shipName ?? "", boatId: userData.boatId!, ghostMode: userData.ghostMode!, showPicture: userData.showPicture!, isEmail: true, isCelsius: true, subEnd: userData.subEnd!)
                 
                 }
             })
@@ -94,7 +96,7 @@ struct Defaults {
             userRef.child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 if snapshot == snapshot {
                     let userData = User(dataSnapshot: snapshot as DataSnapshot)
-                    _ = Defaults.save(uid, name: userData.name!, email: userData.email!, picture: userData.picture ?? "", shipName: userData.shipName ?? "", boatId: userData.boatId!, ghostMode: userData.ghostMode!, showPicture: userData.showPicture!, isEmail: false, isCelsius: true)
+                    _ = Defaults.save(uid, name: userData.name!, email: userData.email!, picture: userData.picture ?? "", shipName: userData.shipName ?? "", boatId: userData.boatId!, ghostMode: userData.ghostMode!, showPicture: userData.showPicture!, isEmail: false, isCelsius: true, subEnd: userData.subEnd!)
                 
                 }
             })

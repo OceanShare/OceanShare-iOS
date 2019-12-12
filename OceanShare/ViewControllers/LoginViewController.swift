@@ -221,7 +221,7 @@ class LoginViewController: UIViewController {
                                 self.ref = Database.database().reference()
                                 guard let uid = authResult?.user.uid else { return }
                                 self.ref.child("users/\(uid)").setValue(userData)
-                                _ = Defaults.save(uid, name: (user?.displayName)!, email: (user?.email)!, picture: self.imageURL ?? "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: false, isCelsius: true)
+                                _ = Defaults.save(uid, name: (user?.displayName)!, email: (user?.email)!, picture: self.imageURL ?? "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: false, isCelsius: true, subEnd: NSDate() as Date)
                             }
                         })
                     })

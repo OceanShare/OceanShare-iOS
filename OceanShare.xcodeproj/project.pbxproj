@@ -10,6 +10,7 @@
 		201E152B21E4C0E500050361 /* UITextFieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201E152A21E4C0E500050361 /* UITextFieldExtensions.swift */; };
 		3498DFD13C988E4213C9BCE5 /* Pods_OceanShareTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 171220035AD7E9421089E428 /* Pods_OceanShareTests.framework */; };
 		3D7D8576AEC9FA7FBD012875 /* Pods_OceanShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 021AC87DA7218724C5919087 /* Pods_OceanShare.framework */; };
+		BF01C2A723A271600059F6D8 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF01C2A623A271600059F6D8 /* DateExtensions.swift */; };
 		BF063B05236C84E900C82868 /* PrivateMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF063B04236C84E900C82868 /* PrivateMessageViewController.swift */; };
 		BF063B07236C8A1F00C82868 /* Skeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF063B06236C8A1F00C82868 /* Skeleton.swift */; };
 		BF0FE36E22D8C32600615109 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0FE36D22D8C32600615109 /* Weather.swift */; };
@@ -79,6 +80,7 @@
 		8B215D977B3A5F9731F6C755 /* Pods-OceanShareUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OceanShareUITests/Pods-OceanShareUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A235FBDF1316F4A5382A4E87 /* Pods-OceanShareTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShareTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OceanShareTests/Pods-OceanShareTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B18E3662CF66F9CED73A4100 /* Pods-OceanShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OceanShare.release.xcconfig"; path = "Pods/Target Support Files/Pods-OceanShare/Pods-OceanShare.release.xcconfig"; sourceTree = "<group>"; };
+		BF01C2A623A271600059F6D8 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		BF063B04236C84E900C82868 /* PrivateMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateMessageViewController.swift; sourceTree = "<group>"; };
 		BF063B06236C8A1F00C82868 /* Skeleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skeleton.swift; sourceTree = "<group>"; };
 		BF0FE36D22D8C32600615109 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				BFE633B823658DFD00DE4EFC /* FloatExtensions.swift */,
 				BFE633BA23658E4300DE4EFC /* DoubleExtensions.swift */,
 				BFE4DE5D236B905700033DEC /* StringExtensions.swift */,
+				BF01C2A623A271600059F6D8 /* DateExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -614,6 +617,7 @@
 				BF92739D21D231BB00BDCC16 /* UIColorExtensions.swift in Sources */,
 				BF0FE36E22D8C32600615109 /* Weather.swift in Sources */,
 				BF92736B21D1D57500BDCC16 /* StartViewController.swift in Sources */,
+				BF01C2A723A271600059F6D8 /* DateExtensions.swift in Sources */,
 				BFE633B923658DFD00DE4EFC /* FloatExtensions.swift in Sources */,
 				BFAFEF042313D4090023BD0C /* Slide.swift in Sources */,
 				BF92736921D1D57500BDCC16 /* AppDelegate.swift in Sources */,

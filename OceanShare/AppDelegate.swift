@@ -104,7 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                         // push the user datas on the database
                         guard let uid = authResult?.user.uid else { return }
                         self.ref.child("users/\(uid)").setValue(userData)
-                        _ = Defaults.save(uid, name: (user?.displayName)!, email: (user?.email)!, picture: "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: false, isCelsius: true)
+                        _ = Defaults.save(uid, name: (user?.displayName)!, email: (user?.email)!, picture: "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: false, isCelsius: true, subEnd: NSDate() as Date)
                     }
                 })
 
