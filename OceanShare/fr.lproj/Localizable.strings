@@ -96,6 +96,8 @@
 "sailing_boat" = "Voilier";
 "mini_yacht" = "Yacht";
 "yacht" = "Méga-yacht";
+"harbour" = "Port de plaisance";
+"upToDate" = "Infos à jour";
 
 /* description view */
 "edit" = "MODIFIER";
