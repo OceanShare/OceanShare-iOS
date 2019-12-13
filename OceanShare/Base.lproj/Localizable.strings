@@ -98,6 +98,8 @@
 "sailing_boat" = "Sailboat";
 "mini_yacht" = "Yacht";
 "yacht" = "Mega yacht";
+"harbour" = "Harbour";
+"upToDate" = "Up to date";
 
 /* description view */
 "edit" = "EDIT";
