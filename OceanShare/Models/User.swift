@@ -55,20 +55,30 @@ struct User {
         longitude = longitudeAsString?.toDouble()
         latitude = latitudeAsString?.toDouble()
         
-        let preferences = data?["preferences"] as? [String: AnyObject]
-        ghostMode = preferences?["ghost_mode"] as? Bool
-        boatId = preferences?["boatId"] as? Int
-        showPicture = preferences?["show_picture"] as? Bool
-        isActive = preferences?["user_active"] as? Bool
+        if let preferences = data?["preferences"] as? [String: AnyObject] {
+            ghostMode = preferences["ghost_mode"] as? Bool
+            boatId = preferences["boatId"] as? Int
+            showPicture = preferences["show_picture"] as? Bool
+            isActive = preferences["user_active"] as? Bool
+            
+        } else {
+            ghostMode = true
+            boatId = 1
+            showPicture = false
+            isActive = false
+            
+        }
         
         if let subInfo = data?["sub"] as? [String: AnyObject] {
             offerType = subInfo["type"] as? Int ?? nil
             subStart = Date(timeIntervalSince1970: subInfo["start"] as! TimeInterval)
             subEnd = Date(timeIntervalSince1970: subInfo["end"] as! TimeInterval)
+            
         } else {
             offerType = 0
             subStart = NSDate() as Date
             subEnd = NSDate() as Date
+            
         }
     }
     
