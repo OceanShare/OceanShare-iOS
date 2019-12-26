@@ -1848,7 +1848,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                                     
                                 }
                             } else {
-                                print(User.name as Any, "is not on water.")
+                                print(User.name!, "is not on water.")
                                 return false
                                 
                             }
@@ -2002,7 +2002,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
       
     func putHarbors(){
-        guard let urlBar = Bundle.main.url(forResource: "harbours", withExtension: "geojson") else { return }
+        guard let urlBar = Bundle.main.url(forResource: "harbour", withExtension: "geojson") else { return }
           
         do {
             let jsonData = try Data(contentsOf: urlBar)

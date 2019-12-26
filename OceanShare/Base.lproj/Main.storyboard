@@ -3171,7 +3171,7 @@
                                 <color key="textColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Vous êtes abonné à OceanShare premium." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="DxU-T0-hG3">
+                            <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="Vous êtes abonné à OceanShare premium." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DxU-T0-hG3">
                                 <rect key="frame" x="30" y="612.33333333333337" width="354" height="44.666666666666629"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <color key="textColor" red="0.3411764706" green="0.63137254899999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
