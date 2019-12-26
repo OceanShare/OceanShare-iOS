@@ -11,9 +11,26 @@ import Foundation
 
 class PrivateMessageViewController: UIViewController {
     
+    // MARK: - Outlets
+    
+    @IBOutlet weak var tempMessage: UITextView!
+    @IBOutlet weak var tempDismiss: DesignableButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         overrideUserInterfaceStyle = .light
+        setupLocalizedStrings()
+        
+    }
+    
+    // MARK: - Functions
+    
+    /**
+     - Description - Setup translated labels.
+     */
+    func setupLocalizedStrings() {
+        tempMessage.text = NSLocalizedString("pmTempMessage", comment: "")
+        tempDismiss.setTitle(NSLocalizedString("pmTempDismiss", comment: ""), for: .normal)
         
     }
     

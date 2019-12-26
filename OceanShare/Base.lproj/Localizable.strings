@@ -98,6 +98,8 @@
 "sailing_boat" = "Sailboat";
 "mini_yacht" = "Yacht";
 "yacht" = "Mega yacht";
+"harbour" = "Harbour";
+"upToDate" = "Up to date";
 
 /* description view */
 "edit" = "EDIT";
@@ -174,6 +176,7 @@
 "profileEditLabel" = "EDIT";
 "profileLogoutLabel" = "Log Out";
 "subButton" = "Subscribtion";
+"isSubTextField" = "You are a premium OceanShare member.";
 
 // MARK: - SettingViewController
 
@@ -322,3 +325,18 @@
 "offerOnePrice" = "1.99 €";
 "offerTwoPrice" = "2.99 €";
 "offerThreePrice" = "9.99 €";
+
+"pay" = "Pay";
+"cancelPayment" = "Cancel";
+"gonnaSubOne" = "You're going to subscribe for one day! Have a great sailing day!";
+"gonnaSubTwo" = "You're going to subscribe for two days! Awesome for a week-end with friends!";
+"gonnaSubThree" = "You're going to subscribe for one month! A true pirate!";
+"alreadyPremium" = "You're a premium member of the OceanShare crew! Have a stunning sailing journey captain!";
+"subContinue" = "Continue";
+"subFailed" = "Payment failed";
+"subSucceededDesc" = "Payment succeeded!";
+
+// MARK: - PrivateMessageViewController
+
+"pmTempMessage" = "Private messages are currently under development. Premium OceanShare members will soon be able to use this feature.";
+"pmTempDismiss" = "Dismiss";

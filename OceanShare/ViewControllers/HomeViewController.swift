@@ -42,6 +42,12 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var mustBeenDisplayed = true
     var isLocationActivated: Bool!
     
+    /*  Harbor properties */
+    
+    var HarborCoord = [String]()
+    var HarborName = [String]()
+    var HarborNumber = [String]()
+    
     /* tag properties */
     var tagIds = [String]()
     var tagHashs = [Int]()
@@ -104,6 +110,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var iconViewWeather: UILabel!
     @IBOutlet weak var closeIcon: UIImageView!
     @IBOutlet weak var buttonMenu: DesignableButton!
+    @IBOutlet weak var weatherLock: DesignableView!
     
     /* comment view */
     @IBOutlet weak var commentView: UIView!
@@ -137,6 +144,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBOutlet weak var userAvatar: UIImageView!
     @IBOutlet weak var userAvatarName: UILabel!
     @IBOutlet weak var skeletonName: DesignableView!
+    @IBOutlet weak var messagePadlockView: DesignableView!
     
     /* edition view */
     @IBOutlet weak var editionView: UIView!
@@ -174,8 +182,8 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         ref = Database.database().reference().child("markers")
         userRef = Database.database().reference().child("users")
         syncData()
-        setupView()
         setupInfo()
+        setupView()
 
     }
     
@@ -222,6 +230,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         mapView.attributionButton.isHidden = true
         mapView.userTrackingMode = .followWithHeading
         mapView.showsUserHeadingIndicator = true
+        putHarbors()
         getTagsFromServer(mapView: self.mapView)
         /* icon setup */
         setupCustomIcons()
@@ -316,6 +325,25 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
+    /**
+     - Description - Check if the user is premium or not and displays or not the offers.
+     */
+    func fetchSubscribtion() {
+        let currentDate = NSDate() as Date
+        
+        if Defaults.getUserDetails().subEnd.timeIntervalSince(currentDate).sign == FloatingPointSign.minus {
+            print("-> not premium")
+            weatherLock.isHidden = false
+            messagePadlockView.isHidden = false
+            
+        } else {
+            print("-> premium")
+            weatherLock.isHidden = true
+            messagePadlockView.isHidden = true
+            
+        }
+    }
+    
     // MARK: - Location manager
     
     /**
@@ -341,14 +369,14 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 self.userRef.child("\(uid)/preferences").updateChildValues(userActive)
                 
                 if (longitude != self.stackedLongitude) {
-                    let userLongitude: [String: Any] = ["longitude": longitude as Any]
+                    let userLongitude: [String: Any] = ["longitude": String(format:"%f", locValue.longitude) as Any]
                     self.userRef.child("\(uid)/location").updateChildValues(userLongitude)
                     self.stackedLongitude = longitude
                     
                 }
                 
                 if (latitude != self.stackedLatitude) {
-                    let userLattitude: [String: Any] = ["latitude": latitude as Any]
+                    let userLattitude: [String: Any] = ["latitude": String(format:"%f", locValue.latitude) as Any]
                     self.userRef.child("\(uid)/location").updateChildValues(userLattitude)
                     self.stackedLatitude = latitude
                     
@@ -535,6 +563,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         viewStacked = iconView
         animateInWithOptionalEffect(view: iconView, effect: true)
 
+        fetchSubscribtion()
         getDroppedIconByUser()
         
     }
@@ -626,10 +655,20 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     */
     @IBAction func weatherActivate(_ sender: Any) {
         animateOutWithOptionalEffect(effect: true)
-        putWeatherOnMap(activate: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.PutMessageOnHeader(msg: self.registry.msgWeather, color: self.registry.customGreen, error: false)
-            
+        let currentDate = NSDate() as Date
+        
+        if Defaults.getUserDetails().subEnd.timeIntervalSince(currentDate).sign == FloatingPointSign.minus {
+            print("-> not premium")
+            let subViewController = self.storyboard?.instantiateViewController(withIdentifier: "SubscribtionViewController") as! SubscribtionViewController
+            self.present(subViewController, animated: true,completion: nil)
+       
+        } else {
+            print("-> premium")
+            putWeatherOnMap(activate: true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.PutMessageOnHeader(msg: self.registry.msgWeather, color: self.registry.customGreen, error: false)
+                
+            }
         }
     }
     
@@ -663,6 +702,16 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     // MARK: - User Description View
+    
+    /**
+     - Description - Open the Subscribtion view controller from the message button.
+     */
+    @IBAction func openSubViewFromMessage(_ sender: Any) {
+        animateOutWithOptionalEffect(effect: true)
+        let subViewController = self.storyboard?.instantiateViewController(withIdentifier: "SubscribtionViewController") as! SubscribtionViewController
+        self.present(subViewController, animated: true,completion: nil)
+        
+    }
     
     /**
      - Description - Close the user description view.
@@ -1384,6 +1433,9 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             selectedTag = annotation
             fetchUserTag(MarkerHash: annotation.hash)
             
+        } else if annotation.subtitle == NSLocalizedString("upToDate", comment: "") {
+            displayAlert(title: getHarborName(long: annotation.coordinate.longitude, lat: annotation.coordinate.latitude), message: getHarborNumber(long: annotation.coordinate.longitude, lat: annotation.coordinate.latitude))
+            
         } else {
             selectedTag = annotation
             fetchTag(MarkerHash: annotation.hash)
@@ -1478,6 +1530,10 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/15, right: 0))
             marker = MGLAnnotationImage(image: image, reuseIdentifier: "Mega yacht")
             
+        } else if annotation.title == NSLocalizedString("harbour", comment: "") {
+            var image = UIImage(named: "pin_harbour")!
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/15, right: 0))
+            marker = MGLAnnotationImage(image: image, reuseIdentifier: "Harbour")
         } else {
             print()
             
@@ -1732,6 +1788,7 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 return
             }
         }
+        fetchSubscribtion()
         viewStacked = userDescriptionView
         animateInWithOptionalEffect(view: userDescriptionView, effect: true)
         skeleton.turnOnSkeleton(image: userAvatar, cornerRadius: 41)
@@ -1782,12 +1839,19 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 if (User.ghostMode == false) {
                     if ((User.longitude != nil) && (User.latitude != nil)) {
                         if ((User.longitude != 0.0) && (User.latitude != 0.0)) {
-                            //let location = CLLocationCoordinate2D.init(latitude: User.latitude!, longitude: User.longitude!)
-                            //let point = mapView.convert(location, toPointTo: mapView)
-                            //if (self.mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"]).isEmpty != false) {
-                            //}
-                            // TODO: check if users are on water
-                            return true
+                            let location = CLLocationCoordinate2D.init(latitude: User.latitude!, longitude: User.longitude!)
+                            let point = mapView.convert(location, toPointTo: mapView)
+                            let features = mapView.visibleFeatures(at: point, styleLayerIdentifiers: ["water"])
+                            if (features.description != "[]") {
+                                if (getMarkerDistance(lat1: (locationManager.location?.coordinate.latitude)!, long1: (locationManager.location?.coordinate.longitude)!, lat2: User.latitude! , long2: User.longitude!)) < 20000 {
+                                    return true
+                                    
+                                }
+                            } else {
+                                print(User.name!, "is not on water.")
+                                return false
+                                
+                            }
                         }
                     }
                 }
@@ -1880,6 +1944,94 @@ class HomeViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         userIds.removeAll()
         
     }
+    
+    struct Collection : Codable {
+        let type : String
+        let features : [Feature]
+    }
+
+    struct Feature : Codable {
+        let type : String
+        let properties : Properties
+        let geometry : Geometry
+    }
+     
+    struct Properties : Codable {
+        let name : String
+        let phone : String
+        let adresse : String
+        let description : String
+        let place_Id : String
+    }
+    
+    struct Geometry: Codable {
+        let type: String
+        let coordinates: [Double]
+    }
+     
+    func getHarborName(long: Double, lat: Double) -> String {
+        var i = 0
+        let chain = String(long) + String(lat)
+        for coord in self.HarborCoord {
+            if coord == chain {
+                return self.HarborName[i]
+                
+            }
+            i = i + 1
+        }
+        return "error"
+    }
+      
+    func getHarborNumber(long: Double, lat: Double) -> String {
+        var i = 0
+        let chain = String(long) + String(lat)
+        for coord in self.HarborCoord {
+            if coord == chain {
+                return self.HarborNumber[i]
+            }
+            i = i + 1
+        }
+        return "error"
+    }
+      
+    func getMarkerDistance(lat1: Double, long1: Double, lat2: Double, long2: Double) -> Double {
+        let loc1 = CLLocationCoordinate2D.init(latitude: lat1, longitude: long1)
+        let loc2 = CLLocationCoordinate2D.init(latitude: lat2, longitude: long2)
+        return(loc1.distance(to: loc2))
+      
+    }
+      
+    func putHarbors(){
+        guard let urlBar = Bundle.main.url(forResource: "harbour", withExtension: "geojson") else { return }
+          
+        do {
+            let jsonData = try Data(contentsOf: urlBar)
+            let result = try JSONDecoder().decode(Collection.self, from: jsonData)
+            for feature in result.features {
+                if (getMarkerDistance(lat1: (locationManager.location?.coordinate.latitude)!, long1: (locationManager.location?.coordinate.longitude)!, lat2: feature.geometry.coordinates[1] , long2: feature.geometry.coordinates[0])) < 20000 {
+                    let harbor = MGLPointAnnotation()
+                    harbor.coordinate.longitude = feature.geometry.coordinates[0]
+                    harbor.coordinate.latitude = feature.geometry.coordinates[1]
+                    harbor.title = NSLocalizedString("harbour", comment: "")
+                    harbor.subtitle = NSLocalizedString("upToDate", comment: "")
+                    mapView.addAnnotation(harbor)
+                    HarborName.append(feature.properties.name)
+                    HarborNumber.append(feature.properties.phone)
+                    HarborCoord.append(String(feature.geometry.coordinates[0]) + String(feature.geometry.coordinates[1]))
+      
+                }
+            }
+        } catch { print("Error while parsing: \(error)") }
+    }
+    
+    func displayAlert(title: String, message: String, restartDemo: Bool = false) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+                alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
 }
 
 // MARK: - User location annotation
@@ -1983,3 +2135,4 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
         
     }
 }
+

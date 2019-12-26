@@ -248,9 +248,9 @@ class SettingsViewController: UIViewController {
         switch degreeSegmentedControl.selectedSegmentIndex
         {
         case 0:
-            Defaults.save(Defaults.getUserDetails().uid, name: Defaults.getUserDetails().name, email: Defaults.getUserDetails().email, picture: Defaults.getUserDetails().picture, shipName: Defaults.getUserDetails().shipName, boatId: Defaults.getUserDetails().boatId, ghostMode: Defaults.getUserDetails().ghostMode, showPicture: Defaults.getUserDetails().showPicture, isEmail: Defaults.getUserDetails().isEmail, isCelsius: true)
+            Defaults.save(Defaults.getUserDetails().uid, name: Defaults.getUserDetails().name, email: Defaults.getUserDetails().email, picture: Defaults.getUserDetails().picture, shipName: Defaults.getUserDetails().shipName, boatId: Defaults.getUserDetails().boatId, ghostMode: Defaults.getUserDetails().ghostMode, showPicture: Defaults.getUserDetails().showPicture, isEmail: Defaults.getUserDetails().isEmail, isCelsius: true, subEnd: Defaults.getUserDetails().subEnd)
         case 1:
-            Defaults.save(Defaults.getUserDetails().uid, name: Defaults.getUserDetails().name, email: Defaults.getUserDetails().email, picture: Defaults.getUserDetails().picture, shipName: Defaults.getUserDetails().shipName, boatId: Defaults.getUserDetails().boatId, ghostMode: Defaults.getUserDetails().ghostMode, showPicture: Defaults.getUserDetails().showPicture, isEmail: Defaults.getUserDetails().isEmail, isCelsius: false)
+            Defaults.save(Defaults.getUserDetails().uid, name: Defaults.getUserDetails().name, email: Defaults.getUserDetails().email, picture: Defaults.getUserDetails().picture, shipName: Defaults.getUserDetails().shipName, boatId: Defaults.getUserDetails().boatId, ghostMode: Defaults.getUserDetails().ghostMode, showPicture: Defaults.getUserDetails().showPicture, isEmail: Defaults.getUserDetails().isEmail, isCelsius: false, subEnd: Defaults.getUserDetails().subEnd)
         default:
             break
         }

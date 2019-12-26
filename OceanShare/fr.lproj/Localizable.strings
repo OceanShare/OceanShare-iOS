@@ -96,6 +96,8 @@
 "sailing_boat" = "Voilier";
 "mini_yacht" = "Yacht";
 "yacht" = "Méga-yacht";
+"harbour" = "Port de plaisance";
+"upToDate" = "Infos à jour";
 
 /* description view */
 "edit" = "MODIFIER";
@@ -171,6 +173,7 @@
 "profileEditLabel" = "COMPTE";
 "profileLogoutLabel" = "Se Déconnecter";
 "subButton" = "Abonnement";
+"isSubTextField" = "Vous êtes un membre premium OceanShare.";
 
 // MARK: - SettingViewController
 
@@ -319,3 +322,18 @@
 "offerOnePrice" = "1,99 €";
 "offerTwoPrice" = "2,99 €";
 "offerThreePrice" = "9,99 €";
+
+"pay" = "Payer";
+"cancelPayment" = "Annuler";
+"gonnaSubOne" = "Vous allez vous abonner pour un jour ! Bonne navigation !";
+"gonnaSubTwo" = "Vous allez vous abonner pour deux jours ! Super pour un week-end entre amis !";
+"gonnaSubThree" = "Vous allez vous abonner un mois ! Un vrai pirate !";
+"alreadyPremium" = "Vous êtes un membre premium d'OceanShare ! Bonne navigation capitaine !";
+"subContinue" = "Continuer";
+"subFailed" = "Echec du paiement";
+"subSucceededDesc" = "Paiement réussi !";
+
+// MARK: - PrivateMessageViewController
+
+"pmTempMessage" = "Les messages privés sont actuellement en cours de développement. Les membres premium OceanShare pourront bientôt bénéficier de ce service.";
+"pmTempDismiss" = "Ok";

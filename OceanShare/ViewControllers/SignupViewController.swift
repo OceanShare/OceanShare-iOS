@@ -159,7 +159,7 @@ class SignupViewController: UIViewController {
                         ]
                     guard let uid = authResult?.user.uid else { return }
                     self.ref.child("users/\(uid)").setValue(userData)
-                    _ = Defaults.save(uid, name: name!, email: email!, picture: "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: true, isCelsius: true)
+                    _ = Defaults.save(uid, name: name!, email: email!, picture: "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: true, isCelsius: true, subEnd: NSDate() as Date)
                     self.redirectToHome()
                     User.sendEmailVerification()
                     
@@ -227,7 +227,7 @@ class SignupViewController: UIViewController {
                                 /* push the user datas on the database */
                                 guard let uid = authResult?.user.uid else { return }
                                 self.ref.child("users/\(uid)").setValue(userData)
-                                _ = Defaults.save(uid, name: (user?.displayName)!, email: (user?.email)!, picture: self.imageURL ?? "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: true, isCelsius: true)
+                                _ = Defaults.save(uid, name: (user?.displayName)!, email: (user?.email)!, picture: self.imageURL ?? "", shipName: "", boatId: 1, ghostMode: false, showPicture: false, isEmail: true, isCelsius: true, subEnd: NSDate() as Date)
                             }
                         })
                     })
